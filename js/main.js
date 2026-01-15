@@ -1,6 +1,6 @@
 /* ================================
    Sandile SystemsWorks – Auth Core
-   Simple JS-only Auth (MVP)
+   JS-only Auth (MVP / Demo Gate)
 ================================ */
 
 /* 🔐 MANUAL USERS (YOU CONTROL THIS) */
@@ -8,10 +8,6 @@ const USERS = {
   "thabethesandile44@gmail.com": {
     password: "12345",
     name: "Sandile"
-  },
-  "client2@email.com": {
-    password: "abcdef",
-    name: "Client Two"
   }
 };
 
@@ -39,7 +35,7 @@ function login() {
 }
 
 /* ================================
-   CHECK LOGIN (PROTECT PAGES)
+   REQUIRE LOGIN (PROTECT PAGES)
 ================================ */
 function requireLogin() {
   const loggedIn = localStorage.getItem("ssw_logged_in");
@@ -54,6 +50,7 @@ function requireLogin() {
 function displayUsername() {
   const name = localStorage.getItem("ssw_user_name");
   const el = document.getElementById("usernameDisplay");
+
   if (el && name) {
     el.textContent = name;
   }
