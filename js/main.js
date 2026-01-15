@@ -1,6 +1,7 @@
 /* ================================
    Sandile SystemsWorks – Auth Core
    JS-only Auth (MVP / Demo Gate)
+   With Auto-Logout on Inactivity
 ================================ */
 
 /* 🔐 MANUAL USERS (YOU CONTROL THIS) */
@@ -28,6 +29,9 @@ function login() {
     localStorage.setItem("ssw_user_email", email);
     localStorage.setItem("ssw_user_name", USERS[email].name);
 
+    // Start auto-logout timer
+    startAutoLogout();
+
     window.location.href = "dashboard.html";
   } else {
     alert("Invalid login details");
@@ -41,6 +45,9 @@ function requireLogin() {
   const loggedIn = localStorage.getItem("ssw_logged_in");
   if (loggedIn !== "true") {
     window.location.href = "login.html";
+  } else {
+    // Start auto-logout timer on page load
+    startAutoLogout();
   }
 }
 
@@ -76,3 +83,26 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutBtn.addEventListener("click", logout);
   }
 });
+
+/* ================================
+   AUTO-LOGOUT AFTER INACTIVITY
+================================ */
+let logoutTimer;
+const INACTIVITY_LIMIT = 20 * 60 * 1000; // 20 minutes
+
+function resetLogoutTimer() {
+  clearTimeout(logoutTimer);
+  logoutTimer = setTimeout(() => {
+    alert("You have been logged out due to inactivity.");
+    logout();
+  }, INACTIVITY_LIMIT);
+}
+
+// Reset timer on user activity
+["mousemove", "keydown", "scroll", "touchstart"].forEach(event => {
+  document.addEventListener(event, resetLogoutTimer);
+});
+
+function startAutoLogout() {
+  resetLogoutTimer();
+}
