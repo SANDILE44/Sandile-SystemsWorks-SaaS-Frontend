@@ -25,7 +25,6 @@
       --border-soft: rgba(255,255,255,0.08);
     }
 
-    /* ================= PAGE ================= */
     body {
       background: radial-gradient(circle at top, var(--bg-soft), var(--bg-main));
       color: var(--text-main);
@@ -41,7 +40,6 @@
       max-width: 500px;
     }
 
-    /* ================= CARD ================= */
     .card {
       background: var(--bg-main);
       border-radius: 20px;
@@ -57,7 +55,6 @@
       box-shadow: 0 35px 70px rgba(0, 0, 0, 0.6);
     }
 
-    /* ================= TITLE ================= */
     .card h1 {
       color: var(--accent);
       font-size: 1.8rem;
@@ -72,7 +69,6 @@
       line-height: 1.5;
     }
 
-    /* ================= FORM ================= */
     form {
       display: flex;
       flex-direction: column;
@@ -102,7 +98,6 @@
       box-shadow: 0 0 0 3px rgba(0,180,216,0.25);
     }
 
-    /* ================= BUTTON ================= */
     button {
       width: 100%;
       margin-top: 1rem;
@@ -122,7 +117,6 @@
       box-shadow: 0 12px 25px rgba(21, 147, 179, 0.829);
     }
 
-    /* ================= NOTE ================= */
     .note {
       margin-top: 1.2rem;
       font-size: 0.8rem;
@@ -131,7 +125,6 @@
       line-height: 1.4;
     }
 
-    /* ================= LINKS ================= */
     .note a {
       color: var(--accent);
       text-decoration: none;
@@ -143,7 +136,6 @@
       text-decoration: underline;
     }
 
-    /* ================= RESPONSIVE ================= */
     @media (max-width: 576px) {
       .card {
         padding: 2rem 1.5rem;
@@ -159,7 +151,8 @@
         Enter the credentials you received after payment to access all calculators and sector tools instantly. Our platform saves time, provides accurate financial insights, and gives full visibility into your business performance.
       </p>
 
-      <form>
+      <!-- Form without submit reload -->
+      <form id="loginForm">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="Email" required>
 
@@ -174,6 +167,16 @@
       </p>
     </div>
   </main>
+
+  <!-- JS -->
   <script src="js/main.js"></script>
+  <script>
+    // Prevent form submission from reloading page
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();  // stop reload
+      login();             // call your login function from main.js
+    });
+  </script>
 </body>
 </html>
