@@ -1,314 +1,376 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mining Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-  <!-- HEADER -->
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-  <!-- MAIN CONTENT -->
-  <main>
-    <div class="breadcrumb">
-      <a href="dashboard.html">Sectors</a>
-      <span>→</span>
-      <a href="sector-primary.html">Primary</a>
-      <span>→</span>
-      <span>Mining</span>
-    </div>
-
-    <h1>Mining Calculators</h1>
-    <p>Analyze production costs, revenue, profit, and ROI for mining operations.</p>
-
-    <!-- MINING PROFITABILITY CALCULATOR -->
-    <div class="calculator-container">
-      <h2>Mining Profitability Calculator</h2>
-      <p>Enter production and cost details to get per-ton metrics, profit, ROI, and revenue projections.</p>
-
-      <div class="calculator-grid">
-        <!-- INPUTS -->
-        <div class="input-section">
-          <h3>Inputs</h3>
-
-          <div class="input-group">
-            <label for="mining-production">Monthly Production (tons)</label>
-            <input type="number" id="mining-production" placeholder="Total production in tons">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mining Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
           </div>
 
-          <div class="input-group">
-            <label for="mining-price">Price Per Ton (R)</label>
-            <input type="number" id="mining-price" placeholder="Selling price per ton">
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
           </div>
-
-          <div class="input-group">
-            <label for="mining-variable">Variable Costs (R)</label>
-            <input type="number" id="mining-variable" placeholder="Cost per ton">
-          </div>
-
-          <div class="input-group">
-            <label for="mining-labor">Labor Costs (R)</label>
-            <input type="number" id="mining-labor" placeholder="Monthly labor costs">
-          </div>
-
-          <div class="input-group">
-            <label for="mining-fixed">Fixed Costs (R)</label>
-            <input type="number" id="mining-fixed" placeholder="Monthly fixed costs">
-          </div>
-
-          <button type="button" id="resetBtn" onclick="resetMiningCalculator()">Reset All</button>
-        </div>
-
-        <!-- OUTPUTS -->
-        <div class="output-section">
-          <h3>Results</h3>
-          <!-- Dynamic outputs will be appended here -->
         </div>
       </div>
-    </div>
-    <!-- ================================
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-primary.html">Primary</a>
+        <span>→</span>
+        <span>Mining</span>
+      </div>
+
+      <h1>Mining Calculators</h1>
+      <p>
+        Analyze production costs, revenue, profit, and ROI for mining
+        operations.
+      </p>
+
+      <!-- MINING PROFITABILITY CALCULATOR -->
+      <div class="calculator-container">
+        <h2>Mining Profitability Calculator</h2>
+        <p>
+          Enter production and cost details to get per-ton metrics, profit, ROI,
+          and revenue projections.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="mining-production">Monthly Production (tons)</label>
+              <input
+                type="number"
+                id="mining-production"
+                placeholder="Total production in tons"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="mining-price">Price Per Ton (R)</label>
+              <input
+                type="number"
+                id="mining-price"
+                placeholder="Selling price per ton"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="mining-variable">Variable Costs (R)</label>
+              <input
+                type="number"
+                id="mining-variable"
+                placeholder="Cost per ton"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="mining-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="mining-labor"
+                placeholder="Monthly labor costs"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="mining-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="mining-fixed"
+                placeholder="Monthly fixed costs"
+              />
+            </div>
+
+            <button
+              type="button"
+              id="resetBtn"
+              onclick="resetMiningCalculator()"
+            >
+              Reset All
+            </button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+            <!-- Dynamic outputs will be appended here -->
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-  </main>
-
-  <!-- FOOTER -->
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
-
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
-
-  </div>
-</footer>
-
-  <!-- JAVASCRIPT -->
-  <script>
-    function formatCurrency(value) {
-      return "R" + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function formatPercentage(value) {
-      return Number(value).toFixed(2) + "%";
-    }
-
-    class MiningCalculator {
-      calculate(production, pricePerTon, variable, labor, fixed) {
-        production = Number(production) || 0;
-        pricePerTon = Number(pricePerTon) || 0;
-        variable = Number(variable) || 0;
-        labor = Number(labor) || 0;
-        fixed = Number(fixed) || 0;
-
-        const revenue = production * pricePerTon;
-        const totalCosts = production * variable + labor + fixed;
-        const profit = revenue - totalCosts;
-        const costPerTon = production ? totalCosts / production : 0;
-        const revenuePerTon = production ? revenue / production : 0;
-        const profitPerTon = production ? profit / production : 0;
-        const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-        const margin = revenue ? (profit / revenue) * 100 : 0;
-        const breakEven = pricePerTon ? totalCosts / pricePerTon : 0;
-        const monthlyRevenue = revenue;
-        const annualRevenue = revenue * 12;
-        const annualProfit = profit * 12;
-
-        return { revenue, totalCosts, profit, costPerTon, revenuePerTon, profitPerTon, roi, margin, breakEven, monthlyRevenue, annualRevenue, annualProfit };
+    <script>
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
       }
-    }
 
-    const miningCalc = new MiningCalculator();
-    const miningInputs = ['mining-production','mining-price','mining-variable','mining-labor','mining-fixed'];
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-    miningInputs.forEach(id => {
-      document.getElementById(id).addEventListener('input', updateMiningCalculator);
-    });
+      class MiningCalculator {
+        calculate(production, pricePerTon, variable, labor, fixed) {
+          production = Number(production) || 0;
+          pricePerTon = Number(pricePerTon) || 0;
+          variable = Number(variable) || 0;
+          labor = Number(labor) || 0;
+          fixed = Number(fixed) || 0;
 
-    function updateMiningCalculator() {
-      const result = miningCalc.calculate(
-        document.getElementById('mining-production').value,
-        document.getElementById('mining-price').value,
-        document.getElementById('mining-variable').value,
-        document.getElementById('mining-labor').value,
-        document.getElementById('mining-fixed').value
-      );
+          const revenue = production * pricePerTon;
+          const totalCosts = production * variable + labor + fixed;
+          const profit = revenue - totalCosts;
+          const costPerTon = production ? totalCosts / production : 0;
+          const revenuePerTon = production ? revenue / production : 0;
+          const profitPerTon = production ? profit / production : 0;
+          const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
+          const margin = revenue ? (profit / revenue) * 100 : 0;
+          const breakEven = pricePerTon ? totalCosts / pricePerTon : 0;
+          const monthlyRevenue = revenue;
+          const annualRevenue = revenue * 12;
+          const annualProfit = profit * 12;
 
-      const outputSection = document.querySelector('.output-section');
-      outputSection.innerHTML = ''; // Clear previous outputs
+          return {
+            revenue,
+            totalCosts,
+            profit,
+            costPerTon,
+            revenuePerTon,
+            profitPerTon,
+            roi,
+            margin,
+            breakEven,
+            monthlyRevenue,
+            annualRevenue,
+            annualProfit,
+          };
+        }
+      }
 
-      const outputs = [
-        {label: 'Monthly Revenue', value: result.monthlyRevenue},
-        {label: 'Annual Revenue', value: result.annualRevenue},
-        {label: 'Total Costs', value: result.totalCosts},
-        {label: 'Profit / Loss', value: result.profit, dynamicColor: true},
-        {label: 'Cost Per Ton', value: result.costPerTon},
-        {label: 'Revenue Per Ton', value: result.revenuePerTon},
-        {label: 'Profit Per Ton', value: result.profitPerTon},
-        {label: 'ROI (%)', value: result.roi, isPercentage: true},
-        {label: 'Profit Margin (%)', value: result.margin, isPercentage: true},
-        {label: 'Break-even Production (tons)', value: result.breakEven},
-        {label: 'Annual Profit', value: result.annualProfit},
+      const miningCalc = new MiningCalculator();
+      const miningInputs = [
+        "mining-production",
+        "mining-price",
+        "mining-variable",
+        "mining-labor",
+        "mining-fixed",
       ];
 
-      outputs.forEach(o => {
-        const div = document.createElement('div');
-        div.className = 'output-group';
-        const valClass = o.dynamicColor ? (o.value >= 0 ? 'positive' : 'negative') : 'output-value';
-        div.innerHTML = `<div class="output-label">${o.label}</div>
-                         <div class="output-value ${valClass}" id="${o.label.toLowerCase().replace(/\s/g,'-')}">
+      miningInputs.forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateMiningCalculator);
+      });
+
+      function updateMiningCalculator() {
+        const result = miningCalc.calculate(
+          document.getElementById("mining-production").value,
+          document.getElementById("mining-price").value,
+          document.getElementById("mining-variable").value,
+          document.getElementById("mining-labor").value,
+          document.getElementById("mining-fixed").value,
+        );
+
+        const outputSection = document.querySelector(".output-section");
+        outputSection.innerHTML = ""; // Clear previous outputs
+
+        const outputs = [
+          { label: "Monthly Revenue", value: result.monthlyRevenue },
+          { label: "Annual Revenue", value: result.annualRevenue },
+          { label: "Total Costs", value: result.totalCosts },
+          { label: "Profit / Loss", value: result.profit, dynamicColor: true },
+          { label: "Cost Per Ton", value: result.costPerTon },
+          { label: "Revenue Per Ton", value: result.revenuePerTon },
+          { label: "Profit Per Ton", value: result.profitPerTon },
+          { label: "ROI (%)", value: result.roi, isPercentage: true },
+          {
+            label: "Profit Margin (%)",
+            value: result.margin,
+            isPercentage: true,
+          },
+          { label: "Break-even Production (tons)", value: result.breakEven },
+          { label: "Annual Profit", value: result.annualProfit },
+        ];
+
+        outputs.forEach((o) => {
+          const div = document.createElement("div");
+          div.className = "output-group";
+          const valClass = o.dynamicColor
+            ? o.value >= 0
+              ? "positive"
+              : "negative"
+            : "output-value";
+          div.innerHTML = `<div class="output-label">${o.label}</div>
+                         <div class="output-value ${valClass}" id="${o.label.toLowerCase().replace(/\s/g, "-")}">
                            ${o.isPercentage ? formatPercentage(o.value) : formatCurrency(o.value)}
                          </div>`;
-        outputSection.appendChild(div);
-      });
-    }
+          outputSection.appendChild(div);
+        });
+      }
 
-    function resetMiningCalculator() {
-      miningInputs.forEach(id => document.getElementById(id).value = '');
+      function resetMiningCalculator() {
+        miningInputs.forEach((id) => (document.getElementById(id).value = ""));
+        updateMiningCalculator();
+      }
+
+      // Initialize
       updateMiningCalculator();
-    }
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
 
-    // Initialize
-    updateMiningCalculator();
-  </script>
-  <script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
 
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
-      });
-    });
-  }
-</script>
-
-</body>
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

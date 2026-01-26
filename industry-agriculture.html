@@ -1,526 +1,634 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agriculture Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agriculture Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-primary.html">Primary</a>
-    <span>→</span>
-    <span>Agriculture</span>
-  </div>
-
-  <h1>Agriculture Calculators</h1>
-  <p>Manage farm and livestock economics with our comprehensive calculators.</p>
-
-  <!-- FARM PROFITABILITY CALCULATOR -->
-  <div class="calculator-container">
-    <h2>Farm Profitability Calculator</h2>
-    <p>Calculate profitability based on crop yield, acreage, and production costs.</p>
-
-    <div class="calculator-grid">
-      <div class="input-section">
-        <h3>Inputs</h3>
-        <div class="input-group">
-          <label for="farm-acreage">Acreage (acres)</label>
-          <input type="number" id="farm-acreage" placeholder="Enter total acreage" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-yield">Yield Per Acre (units)</label>
-          <input type="number" id="farm-yield" placeholder="Enter yield per acre" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-price">Price Per Unit (R)</label>
-          <input type="number" id="farm-price" placeholder="Enter price per unit" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-fixed">Fixed Costs (R)</label>
-          <input type="number" id="farm-fixed" placeholder="Rent, utilities, insurance" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-variable">Variable Costs (R per acre)</label>
-          <input type="number" id="farm-variable" placeholder="Seeds, fertilizer, equipment" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-labor">Labor Costs (R)</label>
-          <input type="number" id="farm-labor" placeholder="Wages and salaries" min="0">
-        </div>
-        <div class="input-group">
-          <label for="farm-months">Number of Months</label>
-          <input type="number" id="farm-months" placeholder="Months of production" min="1" >
-        </div>
-         <button class="resetBtn">Reset All</button>
-
-      </div>
-
-      <div class="output-section">
-        <h3>Results</h3>
-        <div class="output-group">
-          <div class="output-label">Total Yield (units)</div>
-          <div class="output-value" id="farm-yield-output">0</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Total Revenue</div>
-          <div class="output-value" id="farm-revenue">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="farm-total-costs">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="farm-profit">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="farm-roi">0.00%</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="farm-margin">0.00%</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Break-even Units</div>
-          <div class="output-value" id="farm-breakeven">0</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Cost Per Acre</div>
-          <div class="output-value" id="farm-cost-per-acre">R0.00</div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <!-- LIVESTOCK CALCULATOR -->
-  <div class="calculator-container">
-    <h2>Livestock Production Calculator</h2>
-    <p>Analyze profitability of livestock operations with accurate monthly calculations.</p>
-
-    <div class="calculator-grid">
-      <div class="input-section">
-        <h3>Inputs</h3>
-        <div class="input-group">
-          <label for="livestock-count">Number of Animals</label>
-          <input type="number" id="livestock-count" placeholder="Enter animal count" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-price">Market Price Per Animal (R)</label>
-          <input type="number" id="livestock-price" placeholder="Selling price per animal" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-feed">Monthly Feed Cost Per Animal (R)</label>
-          <input type="number" id="livestock-feed" placeholder="Feed and nutrition" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-health">Monthly Healthcare Cost Per Animal (R)</label>
-          <input type="number" id="livestock-health" placeholder="Veterinary and health" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-fixed">Fixed Costs (R)</label>
-          <input type="number" id="livestock-fixed" placeholder="Land, facilities, equipment" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-labor">Labor Costs (R)</label>
-          <input type="number" id="livestock-labor" placeholder="Wages and salaries" min="0">
-        </div>
-        <div class="input-group">
-          <label for="livestock-months">Number of Months</label>
-          <input type="number" id="livestock-months" placeholder="Months of operation" min="1" >
-        </div>
-        <div class="input-group">
-          <label for="livestock-mortality">Mortality Rate (%)</label>
-          <input type="number" id="livestock-mortality" placeholder="Expected % loss" min="0" max="100">
-        </div>
-        <button class="resetBtn">Reset All</button>
-
-      </div>
-
-      <div class="output-section">
-        <h3>Results</h3>
-        <div class="output-group">
-          <div class="output-label">Total Revenue</div>
-          <div class="output-value" id="livestock-revenue">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="livestock-costs">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="livestock-profit">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Profit Per Animal</div>
-          <div class="output-value" id="livestock-profit-per-animal">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Cost Per Animal</div>
-          <div class="output-value" id="livestock-per-animal">R0.00</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="livestock-roi">0.00%</div>
-        </div>
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="livestock-margin">0.00%</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-primary.html">Primary</a>
+        <span>→</span>
+        <span>Agriculture</span>
+      </div>
+
+      <h1>Agriculture Calculators</h1>
+      <p>
+        Manage farm and livestock economics with our comprehensive calculators.
+      </p>
+
+      <!-- FARM PROFITABILITY CALCULATOR -->
+      <div class="calculator-container">
+        <h2>Farm Profitability Calculator</h2>
+        <p>
+          Calculate profitability based on crop yield, acreage, and production
+          costs.
+        </p>
+
+        <div class="calculator-grid">
+          <div class="input-section">
+            <h3>Inputs</h3>
+            <div class="input-group">
+              <label for="farm-acreage">Acreage (acres)</label>
+              <input
+                type="number"
+                id="farm-acreage"
+                placeholder="Enter total acreage"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-yield">Yield Per Acre (units)</label>
+              <input
+                type="number"
+                id="farm-yield"
+                placeholder="Enter yield per acre"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-price">Price Per Unit (R)</label>
+              <input
+                type="number"
+                id="farm-price"
+                placeholder="Enter price per unit"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="farm-fixed"
+                placeholder="Rent, utilities, insurance"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-variable">Variable Costs (R per acre)</label>
+              <input
+                type="number"
+                id="farm-variable"
+                placeholder="Seeds, fertilizer, equipment"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="farm-labor"
+                placeholder="Wages and salaries"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="farm-months">Number of Months</label>
+              <input
+                type="number"
+                id="farm-months"
+                placeholder="Months of production"
+                min="1"
+              />
+            </div>
+            <button class="resetBtn">Reset All</button>
+          </div>
+
+          <div class="output-section">
+            <h3>Results</h3>
+            <div class="output-group">
+              <div class="output-label">Total Yield (units)</div>
+              <div class="output-value" id="farm-yield-output">0</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="farm-revenue">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="farm-total-costs">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="farm-profit">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="farm-roi">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="farm-margin">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Break-even Units</div>
+              <div class="output-value" id="farm-breakeven">0</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Cost Per Acre</div>
+              <div class="output-value" id="farm-cost-per-acre">R0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVESTOCK CALCULATOR -->
+      <div class="calculator-container">
+        <h2>Livestock Production Calculator</h2>
+        <p>
+          Analyze profitability of livestock operations with accurate monthly
+          calculations.
+        </p>
+
+        <div class="calculator-grid">
+          <div class="input-section">
+            <h3>Inputs</h3>
+            <div class="input-group">
+              <label for="livestock-count">Number of Animals</label>
+              <input
+                type="number"
+                id="livestock-count"
+                placeholder="Enter animal count"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-price">Market Price Per Animal (R)</label>
+              <input
+                type="number"
+                id="livestock-price"
+                placeholder="Selling price per animal"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-feed"
+                >Monthly Feed Cost Per Animal (R)</label
+              >
+              <input
+                type="number"
+                id="livestock-feed"
+                placeholder="Feed and nutrition"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-health"
+                >Monthly Healthcare Cost Per Animal (R)</label
+              >
+              <input
+                type="number"
+                id="livestock-health"
+                placeholder="Veterinary and health"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="livestock-fixed"
+                placeholder="Land, facilities, equipment"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="livestock-labor"
+                placeholder="Wages and salaries"
+                min="0"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-months">Number of Months</label>
+              <input
+                type="number"
+                id="livestock-months"
+                placeholder="Months of operation"
+                min="1"
+              />
+            </div>
+            <div class="input-group">
+              <label for="livestock-mortality">Mortality Rate (%)</label>
+              <input
+                type="number"
+                id="livestock-mortality"
+                placeholder="Expected % loss"
+                min="0"
+                max="100"
+              />
+            </div>
+            <button class="resetBtn">Reset All</button>
+          </div>
+
+          <div class="output-section">
+            <h3>Results</h3>
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="livestock-revenue">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="livestock-costs">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="livestock-profit">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit Per Animal</div>
+              <div class="output-value" id="livestock-profit-per-animal">
+                R0.00
+              </div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Cost Per Animal</div>
+              <div class="output-value" id="livestock-per-animal">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="livestock-roi">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="livestock-margin">0.00%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-  </div>
-</footer>
+      /* ================= FARM CALCULATOR ================= */
+      class FarmCalculator {
+        calculate(a, y, p, fixed, variable, labor, months) {
+          a = parseFloat(a) || 0;
+          y = parseFloat(y) || 0;
+          p = parseFloat(p) || 0;
+          fixed = parseFloat(fixed) || 0;
+          variable = parseFloat(variable) || 0;
+          labor = parseFloat(labor) || 0;
+          months = parseFloat(months) || 1;
 
-<script>
-  function formatCurrency(value) {
-    return 'R' + Number(value).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
+          const totalYield = a * y * months;
+          const totalRevenue = totalYield * p;
+          const totalVariable = variable * a * months;
+          const totalCosts = fixed + totalVariable + labor;
+          const profitLoss = totalRevenue - totalCosts;
+          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
+          const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
+          const breakEvenUnits = p ? totalCosts / p : 0;
+          const costPerAcre = a ? totalCosts / (a * months) : 0;
 
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + '%';
-  }
+          return {
+            totalYield,
+            totalRevenue,
+            totalCosts,
+            profitLoss,
+            roi,
+            margin,
+            breakEvenUnits,
+            costPerAcre,
+          };
+        }
+      }
 
-  /* ================= FARM CALCULATOR ================= */
-  class FarmCalculator {
-    calculate(a, y, p, fixed, variable, labor, months) {
-      a = parseFloat(a) || 0;
-      y = parseFloat(y) || 0;
-      p = parseFloat(p) || 0;
-      fixed = parseFloat(fixed) || 0;
-      variable = parseFloat(variable) || 0;
-      labor = parseFloat(labor) || 0;
-      months = parseFloat(months) || 1;
+      /* ================= LIVESTOCK CALCULATOR ================= */
+      class LivestockCalculator {
+        calculate(count, price, feed, health, fixed, labor, months, mortality) {
+          count = parseFloat(count) || 0;
+          price = parseFloat(price) || 0;
+          feed = parseFloat(feed) || 0;
+          health = parseFloat(health) || 0;
+          fixed = parseFloat(fixed) || 0;
+          labor = parseFloat(labor) || 0;
+          months = parseFloat(months) || 1;
+          mortality = parseFloat(mortality) || 0;
 
-      const totalYield = a * y * months;
-      const totalRevenue = totalYield * p;
-      const totalVariable = variable * a * months;
-      const totalCosts = fixed + totalVariable + labor;
-      const profitLoss = totalRevenue - totalCosts;
-      const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-      const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
-      const breakEvenUnits = p ? totalCosts / p : 0;
-      const costPerAcre = a ? totalCosts / (a * months) : 0;
+          const adjustedCount = count * (1 - mortality / 100);
+          const totalRevenue = adjustedCount * price;
+          const totalVariable = adjustedCount * (feed + health) * months;
+          const totalCosts = totalVariable + fixed + labor;
+          const profitLoss = totalRevenue - totalCosts;
+          const costPerAnimal = adjustedCount ? totalCosts / adjustedCount : 0;
+          const profitPerAnimal = adjustedCount
+            ? profitLoss / adjustedCount
+            : 0;
+          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
+          const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
 
-      return {
-        totalYield,
-        totalRevenue,
-        totalCosts,
-        profitLoss,
-        roi,
-        margin,
-        breakEvenUnits,
-        costPerAcre
-      };
-    }
-  }
+          return {
+            totalRevenue,
+            totalCosts,
+            profitLoss,
+            costPerAnimal,
+            profitPerAnimal,
+            roi,
+            margin,
+          };
+        }
+      }
 
-  /* ================= LIVESTOCK CALCULATOR ================= */
-  class LivestockCalculator {
-    calculate(count, price, feed, health, fixed, labor, months, mortality) {
-      count = parseFloat(count) || 0;
-      price = parseFloat(price) || 0;
-      feed = parseFloat(feed) || 0;
-      health = parseFloat(health) || 0;
-      fixed = parseFloat(fixed) || 0;
-      labor = parseFloat(labor) || 0;
-      months = parseFloat(months) || 1;
-      mortality = parseFloat(mortality) || 0;
+      const farmCalc = new FarmCalculator();
+      const livestockCalc = new LivestockCalculator();
 
-      const adjustedCount = count * (1 - mortality / 100);
-      const totalRevenue = adjustedCount * price;
-      const totalVariable = adjustedCount * (feed + health) * months;
-      const totalCosts = totalVariable + fixed + labor;
-      const profitLoss = totalRevenue - totalCosts;
-      const costPerAnimal = adjustedCount ? totalCosts / adjustedCount : 0;
-      const profitPerAnimal = adjustedCount ? profitLoss / adjustedCount : 0;
-      const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-      const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
+      /* ================= INPUT LISTS ================= */
+      const farmInputs = [
+        "farm-acreage",
+        "farm-yield",
+        "farm-price",
+        "farm-fixed",
+        "farm-variable",
+        "farm-labor",
+        "farm-months",
+      ];
 
-      return {
-        totalRevenue,
-        totalCosts,
-        profitLoss,
-        costPerAnimal,
-        profitPerAnimal,
-        roi,
-        margin
-      };
-    }
-  }
+      const livestockInputs = [
+        "livestock-count",
+        "livestock-price",
+        "livestock-feed",
+        "livestock-health",
+        "livestock-fixed",
+        "livestock-labor",
+        "livestock-months",
+        "livestock-mortality",
+      ];
 
-  const farmCalc = new FarmCalculator();
-  const livestockCalc = new LivestockCalculator();
-
-  /* ================= INPUT LISTS ================= */
-  const farmInputs = [
-    'farm-acreage',
-    'farm-yield',
-    'farm-price',
-    'farm-fixed',
-    'farm-variable',
-    'farm-labor',
-    'farm-months'
-  ];
-
-  const livestockInputs = [
-    'livestock-count',
-    'livestock-price',
-    'livestock-feed',
-    'livestock-health',
-    'livestock-fixed',
-    'livestock-labor',
-    'livestock-months',
-    'livestock-mortality'
-  ];
-
-  /* ================= FARM UPDATE ================= */
-  farmInputs.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateFarm);
-  });
-
-  function updateFarm() {
-    const r = farmCalc.calculate(
-      document.getElementById('farm-acreage').value,
-      document.getElementById('farm-yield').value,
-      document.getElementById('farm-price').value,
-      document.getElementById('farm-fixed').value,
-      document.getElementById('farm-variable').value,
-      document.getElementById('farm-labor').value,
-      document.getElementById('farm-months').value
-    );
-
-    document.getElementById('farm-yield-output').textContent = r.totalYield.toFixed(2);
-    document.getElementById('farm-revenue').textContent = formatCurrency(r.totalRevenue);
-    document.getElementById('farm-total-costs').textContent = formatCurrency(r.totalCosts);
-
-    const profitEl = document.getElementById('farm-profit');
-    profitEl.textContent = formatCurrency(r.profitLoss);
-    profitEl.className = 'output-value ' + (r.profitLoss >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('farm-roi').textContent = formatPercentage(r.roi);
-    document.getElementById('farm-margin').textContent = formatPercentage(r.margin);
-    document.getElementById('farm-breakeven').textContent = r.breakEvenUnits.toFixed(2);
-    document.getElementById('farm-cost-per-acre').textContent = formatCurrency(r.costPerAcre);
-  }
-
-  /* ================= LIVESTOCK UPDATE ================= */
-  livestockInputs.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateLivestock);
-  });
-
-  function updateLivestock() {
-    const r = livestockCalc.calculate(
-      document.getElementById('livestock-count').value,
-      document.getElementById('livestock-price').value,
-      document.getElementById('livestock-feed').value,
-      document.getElementById('livestock-health').value,
-      document.getElementById('livestock-fixed').value,
-      document.getElementById('livestock-labor').value,
-      document.getElementById('livestock-months').value,
-      document.getElementById('livestock-mortality').value
-    );
-
-    document.getElementById('livestock-revenue').textContent = formatCurrency(r.totalRevenue);
-    document.getElementById('livestock-costs').textContent = formatCurrency(r.totalCosts);
-
-    const profitEl = document.getElementById('livestock-profit');
-    profitEl.textContent = formatCurrency(r.profitLoss);
-    profitEl.className = 'output-value ' + (r.profitLoss >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('livestock-per-animal').textContent = formatCurrency(r.costPerAnimal);
-    document.getElementById('livestock-profit-per-animal').textContent = formatCurrency(r.profitPerAnimal);
-    document.getElementById('livestock-roi').textContent = formatPercentage(r.roi);
-    document.getElementById('livestock-margin').textContent = formatPercentage(r.margin);
-  }
-
-  /* ================= RESET BUTTONS (FIXED) ================= */
-  document.querySelectorAll('.resetBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-
-      farmInputs.forEach(id => {
+      /* ================= FARM UPDATE ================= */
+      farmInputs.forEach((id) => {
         const el = document.getElementById(id);
-        if (el) el.value = '';
+        if (el) el.addEventListener("input", updateFarm);
       });
 
-      livestockInputs.forEach(id => {
+      function updateFarm() {
+        const r = farmCalc.calculate(
+          document.getElementById("farm-acreage").value,
+          document.getElementById("farm-yield").value,
+          document.getElementById("farm-price").value,
+          document.getElementById("farm-fixed").value,
+          document.getElementById("farm-variable").value,
+          document.getElementById("farm-labor").value,
+          document.getElementById("farm-months").value,
+        );
+
+        document.getElementById("farm-yield-output").textContent =
+          r.totalYield.toFixed(2);
+        document.getElementById("farm-revenue").textContent = formatCurrency(
+          r.totalRevenue,
+        );
+        document.getElementById("farm-total-costs").textContent =
+          formatCurrency(r.totalCosts);
+
+        const profitEl = document.getElementById("farm-profit");
+        profitEl.textContent = formatCurrency(r.profitLoss);
+        profitEl.className =
+          "output-value " + (r.profitLoss >= 0 ? "positive" : "negative");
+
+        document.getElementById("farm-roi").textContent = formatPercentage(
+          r.roi,
+        );
+        document.getElementById("farm-margin").textContent = formatPercentage(
+          r.margin,
+        );
+        document.getElementById("farm-breakeven").textContent =
+          r.breakEvenUnits.toFixed(2);
+        document.getElementById("farm-cost-per-acre").textContent =
+          formatCurrency(r.costPerAcre);
+      }
+
+      /* ================= LIVESTOCK UPDATE ================= */
+      livestockInputs.forEach((id) => {
         const el = document.getElementById(id);
-        if (el) el.value = '';
+        if (el) el.addEventListener("input", updateLivestock);
       });
 
+      function updateLivestock() {
+        const r = livestockCalc.calculate(
+          document.getElementById("livestock-count").value,
+          document.getElementById("livestock-price").value,
+          document.getElementById("livestock-feed").value,
+          document.getElementById("livestock-health").value,
+          document.getElementById("livestock-fixed").value,
+          document.getElementById("livestock-labor").value,
+          document.getElementById("livestock-months").value,
+          document.getElementById("livestock-mortality").value,
+        );
+
+        document.getElementById("livestock-revenue").textContent =
+          formatCurrency(r.totalRevenue);
+        document.getElementById("livestock-costs").textContent = formatCurrency(
+          r.totalCosts,
+        );
+
+        const profitEl = document.getElementById("livestock-profit");
+        profitEl.textContent = formatCurrency(r.profitLoss);
+        profitEl.className =
+          "output-value " + (r.profitLoss >= 0 ? "positive" : "negative");
+
+        document.getElementById("livestock-per-animal").textContent =
+          formatCurrency(r.costPerAnimal);
+        document.getElementById("livestock-profit-per-animal").textContent =
+          formatCurrency(r.profitPerAnimal);
+        document.getElementById("livestock-roi").textContent = formatPercentage(
+          r.roi,
+        );
+        document.getElementById("livestock-margin").textContent =
+          formatPercentage(r.margin);
+      }
+
+      /* ================= RESET BUTTONS (FIXED) ================= */
+      document.querySelectorAll(".resetBtn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          farmInputs.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
+          });
+
+          livestockInputs.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
+          });
+
+          updateFarm();
+          updateLivestock();
+        });
+      });
+
+      /* ================= INIT ================= */
       updateFarm();
       updateLivestock();
-    });
-  });
+    </script>
 
-  /* ================= INIT ================= */
-  updateFarm();
-  updateLivestock();
-</script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
 
-  <script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
 
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
-      });
-    });
-  }
-</script>
-
-</body>
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

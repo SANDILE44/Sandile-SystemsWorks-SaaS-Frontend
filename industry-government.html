@@ -1,305 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Government Planning Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Government Planning Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-quinary.html">Quinary</a>
-    <span>→</span>
-    <span>Government</span>
-  </div>
-
-  <h1>Government Planning & Budgeting Tools</h1>
-  <p>Decision-support tools for public sector budgeting, program costing, and resource allocation.</p>
-
-  <div class="calculator-container">
-    <h2>Public Program Budget & Costing Calculator</h2>
-    <p>Analyze program feasibility, budget efficiency, and cost per beneficiary.</p>
-
-    <div class="calculator-grid">
-
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="gov-budget">Total Approved Budget (R)</label>
-          <input type="number" id="gov-budget" placeholder="Enter total budget" >
-        </div>
-
-        <div class="input-group">
-          <label for="gov-staff">Staff & Personnel Costs (R)</label>
-          <input type="number" id="gov-staff" placeholder="Salaries & wages" >
-        </div>
-
-        <div class="input-group">
-          <label for="gov-operations">Operational Costs (R)</label>
-          <input type="number" id="gov-operations" placeholder="Utilities, supplies, etc." >
-        </div>
-
-        <div class="input-group">
-          <label for="gov-infrastructure">Infrastructure & Assets (R)</label>
-          <input type="number" id="gov-infrastructure" placeholder="Buildings, equipment" >
-        </div>
-
-        <div class="input-group">
-          <label for="gov-beneficiaries">Number of Beneficiaries</label>
-          <input type="number" id="gov-beneficiaries" placeholder="Total people served" >
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
+    </header>
 
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Total Program Cost</div>
-          <div class="output-value" id="gov-total-cost">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Budget Balance</div>
-          <div class="output-value" id="gov-balance">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost Per Beneficiary</div>
-          <div class="output-value" id="gov-per-beneficiary">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Budget Utilisation (%)</div>
-          <div class="output-value" id="gov-utilisation">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Program Feasibility</div>
-          <div class="output-value" id="gov-feasibility">—</div>
-        </div>
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-quinary.html">Quinary</a>
+        <span>→</span>
+        <span>Government</span>
       </div>
 
-    </div>
-  </div>
-  <!-- ================================
+      <h1>Government Planning & Budgeting Tools</h1>
+      <p>
+        Decision-support tools for public sector budgeting, program costing, and
+        resource allocation.
+      </p>
+
+      <div class="calculator-container">
+        <h2>Public Program Budget & Costing Calculator</h2>
+        <p>
+          Analyze program feasibility, budget efficiency, and cost per
+          beneficiary.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="gov-budget">Total Approved Budget (R)</label>
+              <input
+                type="number"
+                id="gov-budget"
+                placeholder="Enter total budget"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="gov-staff">Staff & Personnel Costs (R)</label>
+              <input
+                type="number"
+                id="gov-staff"
+                placeholder="Salaries & wages"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="gov-operations">Operational Costs (R)</label>
+              <input
+                type="number"
+                id="gov-operations"
+                placeholder="Utilities, supplies, etc."
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="gov-infrastructure"
+                >Infrastructure & Assets (R)</label
+              >
+              <input
+                type="number"
+                id="gov-infrastructure"
+                placeholder="Buildings, equipment"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="gov-beneficiaries">Number of Beneficiaries</label>
+              <input
+                type="number"
+                id="gov-beneficiaries"
+                placeholder="Total people served"
+              />
+            </div>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Total Program Cost</div>
+              <div class="output-value" id="gov-total-cost">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Budget Balance</div>
+              <div class="output-value" id="gov-balance">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost Per Beneficiary</div>
+              <div class="output-value" id="gov-per-beneficiary">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Budget Utilisation (%)</div>
+              <div class="output-value" id="gov-utilisation">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Program Feasibility</div>
+              <div class="output-value" id="gov-feasibility">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      // Formatter helpers
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-  </div>
-</footer>
+      // Calculator logic
+      class GovernmentCalculator {
+        calculate(budget, staff, operations, infra, beneficiaries) {
+          budget = parseFloat(budget) || 0;
+          staff = parseFloat(staff) || 0;
+          operations = parseFloat(operations) || 0;
+          infra = parseFloat(infra) || 0;
+          beneficiaries = parseFloat(beneficiaries) || 0;
 
-<script>
-  // Formatter helpers
-  function formatCurrency(value) {
-    return 'R' + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
+          const totalCost = staff + operations + infra;
+          const balance = budget - totalCost;
+          const costPerBeneficiary =
+            beneficiaries > 0 ? totalCost / beneficiaries : 0;
+          const utilisation = budget > 0 ? (totalCost / budget) * 100 : 0;
+          const feasibility =
+            balance >= 0 ? "Within Budget ✅" : "Over Budget ⚠️";
 
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + '%';
-  }
+          return {
+            totalCost,
+            balance,
+            costPerBeneficiary,
+            utilisation,
+            feasibility,
+          };
+        }
+      }
 
-  // Calculator logic
-  class GovernmentCalculator {
-    calculate(budget, staff, operations, infra, beneficiaries) {
-      budget = parseFloat(budget) || 0;
-      staff = parseFloat(staff) || 0;
-      operations = parseFloat(operations) || 0;
-      infra = parseFloat(infra) || 0;
-      beneficiaries = parseFloat(beneficiaries) || 0;
+      const govCalc = new GovernmentCalculator();
 
-      const totalCost = staff + operations + infra;
-      const balance = budget - totalCost;
-      const costPerBeneficiary = beneficiaries > 0 ? totalCost / beneficiaries : 0;
-      const utilisation = budget > 0 ? (totalCost / budget) * 100 : 0;
-      const feasibility = balance >= 0 ? 'Within Budget ✅' : 'Over Budget ⚠️';
+      const inputs = [
+        "gov-budget",
+        "gov-staff",
+        "gov-operations",
+        "gov-infrastructure",
+        "gov-beneficiaries",
+      ];
 
-      return { totalCost, balance, costPerBeneficiary, utilisation, feasibility };
-    }
-  }
+      inputs.forEach((id) =>
+        document
+          .getElementById(id)
+          .addEventListener("input", updateGovCalculator),
+      );
 
-  const govCalc = new GovernmentCalculator();
+      function updateGovCalculator() {
+        const result = govCalc.calculate(
+          document.getElementById("gov-budget").value,
+          document.getElementById("gov-staff").value,
+          document.getElementById("gov-operations").value,
+          document.getElementById("gov-infrastructure").value,
+          document.getElementById("gov-beneficiaries").value,
+        );
 
-  const inputs = ['gov-budget','gov-staff','gov-operations','gov-infrastructure','gov-beneficiaries'];
+        document.getElementById("gov-total-cost").textContent = formatCurrency(
+          result.totalCost,
+        );
 
-  inputs.forEach(id => document.getElementById(id).addEventListener('input', updateGovCalculator));
+        const balanceEl = document.getElementById("gov-balance");
+        balanceEl.textContent = formatCurrency(result.balance);
+        balanceEl.className =
+          "output-value " + (result.balance >= 0 ? "positive" : "negative");
 
-  function updateGovCalculator() {
-    const result = govCalc.calculate(
-      document.getElementById('gov-budget').value,
-      document.getElementById('gov-staff').value,
-      document.getElementById('gov-operations').value,
-      document.getElementById('gov-infrastructure').value,
-      document.getElementById('gov-beneficiaries').value
-    );
+        document.getElementById("gov-per-beneficiary").textContent =
+          formatCurrency(result.costPerBeneficiary);
+        document.getElementById("gov-utilisation").textContent =
+          formatPercentage(result.utilisation);
+        document.getElementById("gov-feasibility").textContent =
+          result.feasibility;
+      }
 
-    document.getElementById('gov-total-cost').textContent = formatCurrency(result.totalCost);
+      // Initialize calculator
+      updateGovCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
 
-    const balanceEl = document.getElementById('gov-balance');
-    balanceEl.textContent = formatCurrency(result.balance);
-    balanceEl.className = 'output-value ' + (result.balance >= 0 ? 'positive' : 'negative');
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
 
-    document.getElementById('gov-per-beneficiary').textContent = formatCurrency(result.costPerBeneficiary);
-    document.getElementById('gov-utilisation').textContent = formatPercentage(result.utilisation);
-    document.getElementById('gov-feasibility').textContent = result.feasibility;
-  }
-
-  // Initialize calculator
-  updateGovCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
-      });
-    });
-  }
-</script>
-
-</body>
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

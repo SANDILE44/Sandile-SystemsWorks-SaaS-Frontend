@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/landing.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Logo"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
+
+          <nav class="nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="product.html">Product</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="company.html">Company</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+
+          <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-expanded="false"
+            aria-controls="mainNav"
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div class="header-actions">
+            <a href="login.html" class="link-muted">Sign in</a>
+            <a href="signup.html" class="btn btn-primary">Start free trial</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <!-- MAIN -->
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <!-- LEFT -->
+            <div>
+              <p class="eyebrow">PRODUCT</p>
+              <h1>
+                All the calculators and dashboards you need, in one platform.
+              </h1>
+              <p class="subhead">
+                From pricing decisions to profitability analysis, SystemsWorks
+                gives you instant clarity on every business decision.
+              </p>
+
+              <div class="hero-ctas">
+                <a href="signup.html" class="btn btn-primary"
+                  >Start free trial</a
+                >
+                <a href="pricing.html" class="btn btn-ghost">View pricing</a>
+              </div>
+
+              <div class="trustline">
+                <span class="dot"></span>
+                Explore calculators • See dashboards • Compare scenarios
+              </div>
+
+              <div class="stat-row">
+                <div class="stat">
+                  <div class="stat-num">5</div>
+                  <div class="stat-label">preview screens</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">Live</div>
+                  <div class="stat-label">instant updates</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">Fast</div>
+                  <div class="stat-label">decision making</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT (Mockup slideshow) -->
+            <div class="hero-visual">
+              <div class="mockup-card">
+                <div class="mockup-top">
+                  <span class="pill" id="mockupPill">Product Preview</span>
+                  <span class="mini" id="mockupMini">Calculators</span>
+                </div>
+
+                <div class="mockup-media">
+                  <!-- ONE image only (JS swaps src) -->
+                  <img
+                    src="images/products images/Screenshot 2026-01-26 125335.png"
+                    alt="Calculator preview"
+                    class="mockup-img"
+                    id="mockupImg"
+                  />
+
+                  <!-- Controls -->
+                  <div class="mockup-controls">
+                    <button
+                      type="button"
+                      class="mockup-btn"
+                      id="prevShot"
+                      aria-label="Previous image"
+                    >
+                      ‹
+                    </button>
+                    <div
+                      class="mockup-dots"
+                      id="mockupDots"
+                      aria-label="Preview selector"
+                    ></div>
+                    <button
+                      type="button"
+                      class="mockup-btn"
+                      id="nextShot"
+                      aria-label="Next image"
+                    >
+                      ›
+                    </button>
+                  </div>
+
+                  <button type="button" class="mockup-full" id="openLightbox">
+                    View full screen
+                  </button>
+                </div>
+
+                <div class="mockup-bottom">
+                  <div class="kpi">
+                    <span class="kpi-label">Preview type</span>
+                    <span class="kpi-value" id="kpiLeft">Calculator</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">Includes</span>
+                    <span class="kpi-value" id="kpiRight">Results</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /RIGHT -->
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT YOU GET -->
+      <section class="section section-soft">
+        <div class="container">
+          <div class="section-head">
+            <h2>What you get</h2>
+            <p>A complete toolkit for business decision-making.</p>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <h3>30+ Calculators</h3>
+              <p>
+                Pricing, profitability, ROI, breakeven, margins, cashflow, and
+                more. Ready to use.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Live Dashboards</h3>
+              <p>
+                Metrics that update as you change inputs. Track KPIs and spot
+                opportunities.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Scenario Planning</h3>
+              <p>
+                Test “what-if” scenarios instantly. Compare outcomes and decide
+                with confidence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALCULATOR CATEGORIES -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Calculator categories</h2>
+            <p>Everything organized by business function.</p>
+          </div>
+
+          <div class="split">
+            <div class="split-card">
+              <h3>Pricing & Revenue</h3>
+              <ul class="list">
+                <li>Cost-plus pricing</li>
+                <li>Value-based pricing</li>
+                <li>Profit margin analysis</li>
+                <li>Discount impact</li>
+              </ul>
+            </div>
+            <div class="split-card">
+              <h3>Operations & Cost</h3>
+              <ul class="list">
+                <li>Break-even analysis</li>
+                <li>Cost allocation</li>
+                <li>Labor cost tracking</li>
+                <li>Resource planning</li>
+              </ul>
+            </div>
+            <div class="split-card">
+              <h3>Financial & ROI</h3>
+              <ul class="list">
+                <li>ROI calculation</li>
+                <li>Payback period</li>
+                <li>Cashflow projection</li>
+                <li>Forecasting</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INDUSTRIES & SECTORS SUPPORTED (no links) -->
+      <section class="section section-soft">
+        <div class="container">
+          <div class="section-head">
+            <h2>Industries & sectors supported</h2>
+            <p>
+              SystemsWorks is designed to work across many industries. Full
+              calculator access is available after signup.
+            </p>
+          </div>
+
+          <div class="sectors-grid">
+            <div class="sector-group">
+              <h3>Primary Sector</h3>
+              <ul>
+                <li>Agriculture</li>
+                <li>Forestry</li>
+                <li>Fishing</li>
+                <li>Mining</li>
+                <li>Oil &amp; Gas</li>
+                <li>Renewable Energy</li>
+              </ul>
+            </div>
+
+            <div class="sector-group">
+              <h3>Secondary Sector</h3>
+              <ul>
+                <li>Manufacturing</li>
+                <li>Construction</li>
+                <li>Automotive</li>
+                <li>Electronics</li>
+                <li>Textiles</li>
+                <li>Food &amp; Beverage</li>
+              </ul>
+            </div>
+
+            <div class="sector-group">
+              <h3>Tertiary Sector</h3>
+              <ul>
+                <li>Real Estate</li>
+                <li>Retail</li>
+                <li>Restaurants</li>
+                <li>Hospitality</li>
+                <li>Logistics</li>
+                <li>Healthcare</li>
+                <li>Education</li>
+                <li>Finance</li>
+                <li>Marketing</li>
+                <li>Consulting</li>
+              </ul>
+            </div>
+
+            <div class="sector-group">
+              <h3>Quaternary Sector</h3>
+              <ul>
+                <li>Software</li>
+                <li>SaaS</li>
+                <li>IT Services</li>
+                <li>Media</li>
+                <li>R&amp;D</li>
+                <li>Telecommunications</li>
+              </ul>
+            </div>
+
+            <div class="sector-group">
+              <h3>Quinary Sector</h3>
+              <ul>
+                <li>Government</li>
+                <li>NGOs</li>
+                <li>Social &amp; Community Services</li>
+                <li>Public Administration</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sectors-note">
+            Coverage is broad by design — specific calculator sets may vary by
+            role and use case.
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section section-soft">
+        <div class="container">
+          <div class="section-head">
+            <h2>Designed for simplicity</h2>
+            <p>No technical knowledge required.</p>
+          </div>
+
+          <ol class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div>
+                <h3>Choose your calculator</h3>
+                <p>Browse by category or find what you need fast.</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div>
+                <h3>Input your numbers</h3>
+                <p>
+                  Enter costs, revenues, targets, or any data for your decision.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div>
+                <h3>Review results instantly</h3>
+                <p>
+                  Get outputs immediately. Share screenshots or results with
+                  your team.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- CTA BAND -->
+      <section class="section">
+        <div class="container">
+          <div class="cta-band">
+            <div>
+              <h3>Start making better decisions today.</h3>
+              <p>
+                Explore all our calculators and dashboards. Your first 3 days is
+                free.
+              </p>
+            </div>
+            <div class="cta-band-actions">
+              <a href="signup.html" class="btn btn-primary">Start free trial</a>
+              <a href="pricing.html" class="btn btn-ghost">View pricing</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <img
+              src="images/Untitled design.png"
+              alt="Logo"
+              class="brand-logo"
+            />
+            <p class="footer-desc">
+              Premium business decision tools: calculators, dashboards, and SaaS
+              systems built to help businesses move faster.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="product.html">Features</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="solutions.html">Solutions</a>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="mailto:thabethesandile44@gmail.com">Email</a>
+            <a href="tel:+27717378540">Phone</a>
+            <a href="contact.html">Get in touch</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Sandile SystemsWorks. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIGHTBOX (fullscreen slideshow) -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div
+        class="lightbox-inner"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Product screenshots"
+      >
+        <button class="lightbox-close" id="closeLightbox" aria-label="Close">
+          ✕
+        </button>
+
+        <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous">
+          ‹
+        </button>
+        <img class="lightbox-img" id="lbImg" alt="Screenshot fullscreen" />
+        <button class="lightbox-nav next" id="lbNext" aria-label="Next">
+          ›
+        </button>
+
+        <div class="lightbox-caption" id="lbCaption">Calculator preview</div>
+      </div>
+    </div>
+
+    <!-- HAMBURGER + NAV -->
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const mainNav = document.getElementById("mainNav");
+      const navOverlay = document.getElementById("navOverlay");
+
+      function openNav() {
+        mainNav.classList.add("open");
+        navToggle.classList.add("open");
+        navOverlay.classList.add("active");
+        navOverlay.setAttribute("aria-hidden", "false");
+        navToggle.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeNav() {
+        mainNav.classList.remove("open");
+        navToggle.classList.remove("open");
+        navOverlay.classList.remove("active");
+        navOverlay.setAttribute("aria-hidden", "true");
+        navToggle.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      }
+
+      if (navToggle && mainNav && navOverlay) {
+        navToggle.addEventListener("click", () => {
+          const isOpen = mainNav.classList.contains("open");
+          isOpen ? closeNav() : openNav();
+        });
+
+        navOverlay.addEventListener("click", closeNav);
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeNav();
+        });
+
+        mainNav.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeNav);
+        });
+      }
+    </script>
+
+    <!-- HERO SLIDESHOW + FULLSCREEN -->
+    <script>
+      // IMPORTANT: Replace these 5 paths with your REAL filenames in /images
+      // Keep it simple, 5 screenshots of calculators/dashboards.
+      const shots = [
+        {
+          src: "images/products images/Screenshot 2026-01-26 125335.png",
+          caption: "Calculator",
+          left: "Calculator",
+          right: "Inputs",
+        },
+        {
+          src: "images/products images/Screenshot 2026-01-26 130158.png",
+          caption: "Calculator",
+          left: "Calculator",
+          right: "Results",
+        },
+        {
+          src: "images/products images/Screenshot 2026-01-26 131143.png",
+          caption: "Calculator",
+          left: "Calculator",
+          right: "Profit",
+        },
+        {
+          src: "images/products images/Screenshot 2026-01-26 130625.png",
+          caption: "Dashboard",
+          left: "Dashboard",
+          right: "KPIs",
+        },
+        {
+          src: "images/products images/Screenshot 2026-01-26 131522.png",
+          caption: "Scenario",
+          left: "Scenario",
+          right: "Compare",
+        },
+      ];
+
+      let shotIndex = 0;
+
+      const mockupImg = document.getElementById("mockupImg");
+      const prevShot = document.getElementById("prevShot");
+      const nextShot = document.getElementById("nextShot");
+      const dotsWrap = document.getElementById("mockupDots");
+      const openLightbox = document.getElementById("openLightbox");
+
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lbImg");
+      const lbCaption = document.getElementById("lbCaption");
+      const closeLightbox = document.getElementById("closeLightbox");
+      const lbPrev = document.getElementById("lbPrev");
+      const lbNext = document.getElementById("lbNext");
+
+      const kpiLeft = document.getElementById("kpiLeft");
+      const kpiRight = document.getElementById("kpiRight");
+
+      function safeSrc(path) {
+        return encodeURI(path); // handles spaces
+      }
+
+      function renderDots() {
+        dotsWrap.innerHTML = "";
+        shots.forEach((_, i) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "mockup-dot" + (i === shotIndex ? " active" : "");
+          dot.setAttribute("aria-label", "Go to image " + (i + 1));
+          dot.addEventListener("click", () => {
+            shotIndex = i;
+            updateShot();
+          });
+          dotsWrap.appendChild(dot);
+        });
+      }
+
+      function updateShot() {
+        const item = shots[shotIndex];
+        mockupImg.src = safeSrc(item.src);
+        mockupImg.alt = item.caption;
+
+        if (kpiLeft) kpiLeft.textContent = item.left || "Calculator";
+        if (kpiRight) kpiRight.textContent = item.right || "Results";
+
+        renderDots();
+
+        if (lightbox.classList.contains("open")) {
+          lbImg.src = safeSrc(item.src);
+          lbCaption.textContent = item.caption;
+        }
+      }
+
+      function next() {
+        shotIndex = (shotIndex + 1) % shots.length;
+        updateShot();
+      }
+
+      function prev() {
+        shotIndex = (shotIndex - 1 + shots.length) % shots.length;
+        updateShot();
+      }
+
+      function openLB() {
+        const item = shots[shotIndex];
+        lbImg.src = safeSrc(item.src);
+        lbCaption.textContent = item.caption;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLB() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      if (
+        mockupImg &&
+        prevShot &&
+        nextShot &&
+        dotsWrap &&
+        openLightbox &&
+        lightbox &&
+        lbImg &&
+        lbCaption &&
+        closeLightbox &&
+        lbPrev &&
+        lbNext
+      ) {
+        prevShot.addEventListener("click", prev);
+        nextShot.addEventListener("click", next);
+
+        openLightbox.addEventListener("click", openLB);
+        mockupImg.addEventListener("click", openLB);
+
+        lbPrev.addEventListener("click", prev);
+        lbNext.addEventListener("click", next);
+
+        closeLightbox.addEventListener("click", closeLB);
+
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox) closeLB();
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (!lightbox.classList.contains("open")) return;
+          if (e.key === "Escape") closeLB();
+          if (e.key === "ArrowRight") next();
+          if (e.key === "ArrowLeft") prev();
+        });
+
+        updateShot();
+      } else {
+        console.warn("Slideshow missing elements. Check IDs in HTML.");
+      }
+    </script>
+  </body>
+</html>

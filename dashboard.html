@@ -1,129 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sandile SystemsWorks - Dashboard</title>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-<header>
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandile SystemsWorks - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <h1>Business Calculators</h1>
-  <p>Welcome, <span id="usernameDisplay"></span>! Select an industry sector below to find calculators for your business.</p>
-
-  <div class="cards-grid">
-
-    <!-- PRIMARY SECTOR -->
-    <div class="card">
-      <h3 class="card-title">Primary Sector</h3>
-      <p>This sector includes agriculture, livestock, poultry, fisheries, forestry, logging, mining, oil and gas extraction, renewable energy, and water resources.</p>
-      <a href="sector-primary.html">Explore Calculators →</a>
-    </div>
-
-    <!-- SECONDARY SECTOR -->
-    <div class="card">
-      <h3 class="card-title">Secondary Sector</h3>
-      <p>This sector covers manufacturing, construction, automotive, metal fabrication, electronics, industrial production, and packaging.</p>
-      <a href="sector-secondary.html">Explore Calculators →</a>
-    </div>
-
-    <!-- TERTIARY SECTOR -->
-    <div class="card">
-      <h3 class="card-title">Tertiary Sector</h3>
-      <p>This sector includes retail, wholesale, logistics, transport, hospitality, healthcare, education, financial services, real estate, marketing  and consulting.</p>
-      <a href="sector-tertiary.html">Explore Calculators →</a>
-    </div>
-
-    <!-- QUATERNARY SECTOR -->
-    <div class="card">
-      <h3 class="card-title">Quaternary Sector</h3>
-      <p>This sector covers IT, software development, SaaS, data science, analytics, AI, cybersecurity, R&D, telecommunications, and digital platforms.</p>
-      <a href="sector-quaternary.html">Explore Calculators →</a>
-    </div>
-
-    <!-- QUINARY SECTOR -->
-    <div class="card">
-      <h3 class="card-title">Quinary Sector</h3>
-      <p>This sector involves government, public administration, healthcare, NGOs, charities, community programs, sustainability, and social enterprises.</p>
-      <a href="sector-quinary.html">Explore Calculators →</a>
-    </div>
-
-  </div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </header>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <main>
+      <h1>Business Calculators</h1>
+      <p>
+        Welcome, <span id="usernameDisplay"></span>. Choose a sector to begin.
+      </p>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+      <div id="payBox" style="margin: 16px 0"></div>
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      <div class="cards-grid">
+        <!-- PRIMARY SECTOR -->
+        <div class="card">
+          <h3 class="card-title">Primary Sector</h3>
+          <p>
+            Agriculture, Forestry, Fishing, Mining, Oil &amp; Gas, Renewable
+            Energy
+          </p>
+          <a href="sector-primary.html">Explore Calculators →</a>
+        </div>
 
-  </div>
-</footer>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
+        <!-- SECONDARY SECTOR -->
+        <div class="card">
+          <h3 class="card-title">Secondary Sector</h3>
+          <p>
+            Manufacturing, Construction, Automotive, Electronics, Textiles, Food
+            &amp; Beverage
+          </p>
+          <a href="sector-secondary.html">Explore Calculators →</a>
+        </div>
 
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
+        <!-- TERTIARY SECTOR -->
+        <div class="card">
+          <h3 class="card-title">Tertiary Sector</h3>
+          <p>
+            Real Estate, Retail, Restaurants, Hospitality, Logistics,
+            Healthcare, Education, Finance, Marketing, Consulting
+          </p>
+          <a href="sector-tertiary.html">Explore Calculators →</a>
+        </div>
 
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
-      });
-    });
-  }
-</script>
+        <!-- QUATERNARY SECTOR -->
+        <div class="card">
+          <h3 class="card-title">Quaternary Sector</h3>
+          <p>Software, SaaS, IT Services, Media, R&amp;D, Telecommunications</p>
+          <a href="sector-quaternary.html">Explore Calculators →</a>
+        </div>
 
-</body>
+        <!-- QUINARY SECTOR -->
+        <div class="card">
+          <h3 class="card-title">Quinary Sector</h3>
+          <p>
+            Government, NGOs, Social &amp; Community Services, Public
+            Administration
+          </p>
+          <a href="sector-quinary.html">Explore Calculators →</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- IMPORTANT: load scripts first -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+      // ✅ correct call (because requireAccess is inside window.auth)
+      window.auth.requireAccess();
+
+      (async () => {
+        const profile = await window.auth.requireAuth();
+        if (!profile) return;
+
+        const el = document.getElementById("usernameDisplay");
+        if (el) el.textContent = profile.user?.name || "User";
+
+        const payBox = document.getElementById("payBox");
+        if (!payBox) return;
+
+        if (profile.user?.hasPaid) {
+          payBox.innerHTML = `<p style="color:#00ff7f;">✅ Active Subscription</p>`;
+          return;
+        }
+
+        payBox.innerHTML = `
+          <p style="color:#ffcc00;">Your account is not paid yet.</p>
+          <button type="button" class="btn-primary" id="payBtn">Pay now</button>
+        `;
+
+        document
+          .getElementById("payBtn")
+          .addEventListener("click", async () => {
+            try {
+              const token = window.auth.getToken();
+              const data = await window.api.createCheckoutRequest(token);
+              window.location.href = data.checkoutUrl;
+            } catch (e) {
+              alert(e.message || "Checkout failed");
+            }
+          });
+      })();
+    </script>
+  </body>
 </html>

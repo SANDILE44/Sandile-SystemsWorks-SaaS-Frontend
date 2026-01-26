@@ -1,426 +1,494 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Construction Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-  <!-- HEADER -->
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Construction Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-  <!-- MAIN CONTENT -->
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-secondary.html">Secondary</a>
-    <span>→</span>
-    <span>Construction</span>
-  </div>
-
-  <h1>Construction Calculators</h1>
-  <p>Project costing and construction profitability analysis.</p>
-
-  <!-- CONSTRUCTION CALCULATOR -->
-  <div class="calculator-container">
-    <h2>Construction Project Cost Calculator</h2>
-    <p>Calculate project profitability and cost management for construction contracts.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-       <div class="input-group">
-  <label for="const-value">Project Contract Value (R)</label>
-  <input type="number" id="const-value" placeholder="Enter total project value" min="0">
-</div>
-
-<div class="input-group">
-  <label for="const-material">Material Costs (R)</label>
-  <input type="number" id="const-material" placeholder="Enter total material costs" min="0">
-</div>
-
-<div class="input-group">
-  <label for="const-labor">Labor Costs (R)</label>
-  <input type="number" id="const-labor" placeholder="Enter monthly labor costs" min="0" >
-</div>
-
-<div class="input-group">
-  <label for="const-equipment">Equipment & Machinery Costs (R)</label>
-  <input type="number" id="const-equipment" placeholder="Enter monthly equipment costs" min="0" >
-</div>
-
-<div class="input-group">
-  <label for="const-fixed">Fixed Costs (R)</label>
-  <input type="number" id="const-fixed" placeholder="Enter monthly fixed costs" min="0">
-</div>
-
-<div class="input-group">
-  <label for="const-duration">Project Duration (Months)</label>
-  <input type="number" id="const-duration" placeholder="Enter project duration in months" min="1">
-</div>
-      
-<p class="calculator-note">
-Note: Material costs are once-off. Labor, equipment, and fixed costs are monthly. Duration is in months.
-</p>
-
-<button type="button" id="resetBtn">Reset All</button>
-      </div>
-
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Project Value</div>
-          <div class="output-value" id="const-project-value">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Material Costs</div>
-          <div class="output-value" id="const-material-output">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Labor Costs</div>
-          <div class="output-value" id="const-labor-output">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Equipment Costs</div>
-          <div class="output-value" id="const-equipment-output">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Fixed Costs</div>
-          <div class="output-value" id="const-fixed-output">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="const-total-costs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="const-profit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="const-margin">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="const-roi">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost Ratio (% of Revenue)</div>
-          <div class="output-value" id="const-ratio">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Break-even Revenue</div>
-          <div class="output-value" id="const-breakeven">R0.00</div>
-        </div>
-
-        <!-- Advanced metrics -->
-        <div class="output-group">
-          <div class="output-label">Profit per R1 Material</div>
-          <div class="output-value" id="const-profit-material">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit per R1 Labor</div>
-          <div class="output-value" id="const-profit-labor">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit per R1 Equipment</div>
-          <div class="output-value" id="const-profit-equipment">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Monthly Profit Projection</div>
-          <div class="output-value" id="const-monthly-profit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Annual Profit Projection</div>
-          <div class="output-value" id="const-annual-profit">R0.00</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-secondary.html">Secondary</a>
+        <span>→</span>
+        <span>Construction</span>
+      </div>
+
+      <h1>Construction Calculators</h1>
+      <p>Project costing and construction profitability analysis.</p>
+
+      <!-- CONSTRUCTION CALCULATOR -->
+      <div class="calculator-container">
+        <h2>Construction Project Cost Calculator</h2>
+        <p>
+          Calculate project profitability and cost management for construction
+          contracts.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="const-value">Project Contract Value (R)</label>
+              <input
+                type="number"
+                id="const-value"
+                placeholder="Enter total project value"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="const-material">Material Costs (R)</label>
+              <input
+                type="number"
+                id="const-material"
+                placeholder="Enter total material costs"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="const-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="const-labor"
+                placeholder="Enter monthly labor costs"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="const-equipment"
+                >Equipment & Machinery Costs (R)</label
+              >
+              <input
+                type="number"
+                id="const-equipment"
+                placeholder="Enter monthly equipment costs"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="const-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="const-fixed"
+                placeholder="Enter monthly fixed costs"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="const-duration">Project Duration (Months)</label>
+              <input
+                type="number"
+                id="const-duration"
+                placeholder="Enter project duration in months"
+                min="1"
+              />
+            </div>
+
+            <p class="calculator-note">
+              Note: Material costs are once-off. Labor, equipment, and fixed
+              costs are monthly. Duration is in months.
+            </p>
+
+            <button type="button" id="resetBtn">Reset All</button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Project Value</div>
+              <div class="output-value" id="const-project-value">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Material Costs</div>
+              <div class="output-value" id="const-material-output">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Labor Costs</div>
+              <div class="output-value" id="const-labor-output">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Equipment Costs</div>
+              <div class="output-value" id="const-equipment-output">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Fixed Costs</div>
+              <div class="output-value" id="const-fixed-output">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="const-total-costs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="const-profit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="const-margin">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="const-roi">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost Ratio (% of Revenue)</div>
+              <div class="output-value" id="const-ratio">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Break-even Revenue</div>
+              <div class="output-value" id="const-breakeven">R0.00</div>
+            </div>
+
+            <!-- Advanced metrics -->
+            <div class="output-group">
+              <div class="output-label">Profit per R1 Material</div>
+              <div class="output-value" id="const-profit-material">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit per R1 Labor</div>
+              <div class="output-value" id="const-profit-labor">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit per R1 Equipment</div>
+              <div class="output-value" id="const-profit-equipment">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Monthly Profit Projection</div>
+              <div class="output-value" id="const-monthly-profit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Annual Profit Projection</div>
+              <div class="output-value" id="const-annual-profit">R0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      // Helper functions
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      // Construction Calculator Class
+      class ConstructionProjectCalculator {
+        calculateFromInputs(
+          value,
+          material,
+          labor,
+          equipment,
+          fixed,
+          duration,
+        ) {
+          value = Number(value) || 0;
+          material = Number(material) || 0;
+          labor = Number(labor) || 0;
+          equipment = Number(equipment) || 0;
+          fixed = Number(fixed) || 0;
 
-  </div>
-</footer>
+          const totalCosts = material + labor + equipment + fixed;
+          const profitLoss = value - totalCosts;
+          const margin = value ? (profitLoss / value) * 100 : 0;
+          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
+          const costRatio = value ? (totalCosts / value) * 100 : 0;
+          const breakEven = totalCosts;
 
-<script>
-  // Helper functions
-  function formatCurrency(value) {
-    return "R" + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + "%";
-  }
+          // Advanced metrics
+          const profitMaterial = material ? profitLoss / material : 0;
+          const profitLabor = labor ? profitLoss / labor : 0;
+          const profitEquipment = equipment ? profitLoss / equipment : 0;
+          const monthlyProfit = profitLoss; // assuming 1 project/month
+          const annualProfit = profitLoss * 12;
 
-  // Construction Calculator Class
-  class ConstructionProjectCalculator {
-    calculateFromInputs(value, material, labor, equipment, fixed, duration) {
-      value = Number(value) || 0;
-      material = Number(material) || 0;
-      labor = Number(labor) || 0;
-      equipment = Number(equipment) || 0;
-      fixed = Number(fixed) || 0;
+          return {
+            projectValue: value,
+            material,
+            labor,
+            equipment,
+            fixed,
+            totalCosts,
+            profitLoss,
+            margin,
+            roi,
+            costRatio,
+            breakEven,
+            profitMaterial,
+            profitLabor,
+            profitEquipment,
+            monthlyProfit,
+            annualProfit,
+          };
+        }
+      }
 
-      const totalCosts = material + labor + equipment + fixed;
-      const profitLoss = value - totalCosts;
-      const margin = value ? (profitLoss / value) * 100 : 0;
-      const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-      const costRatio = value ? (totalCosts / value) * 100 : 0;
-      const breakEven = totalCosts;
+      const constCalc = new ConstructionProjectCalculator();
+      const constInputs = [
+        "const-value",
+        "const-material",
+        "const-labor",
+        "const-equipment",
+        "const-fixed",
+        "const-duration",
+      ];
 
-      // Advanced metrics
-      const profitMaterial = material ? profitLoss / material : 0;
-      const profitLabor = labor ? profitLoss / labor : 0;
-      const profitEquipment = equipment ? profitLoss / equipment : 0;
-      const monthlyProfit = profitLoss; // assuming 1 project/month
-      const annualProfit = profitLoss * 12;
-
-      return {
-        projectValue: value,
-        material,
-        labor,
-        equipment,
-        fixed,
-        totalCosts,
-        profitLoss,
-        margin,
-        roi,
-        costRatio,
-        breakEven,
-        profitMaterial,
-        profitLabor,
-        profitEquipment,
-        monthlyProfit,
-        annualProfit
-      };
-    }
-  }
-
-  const constCalc = new ConstructionProjectCalculator();
-  const constInputs = [
-  'const-value',
-  'const-material',
-  'const-labor',
-  'const-equipment',
-  'const-fixed',
-  'const-duration'
-];
-
-
-  constInputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', updateConstCalculator);
-  });
-
-  function updateConstCalculator() {
-    const result = constCalc.calculateFromInputs(
-      document.getElementById('const-value').value,
-      document.getElementById('const-material').value,
-      document.getElementById('const-labor').value,
-      document.getElementById('const-equipment').value,
-      document.getElementById('const-fixed').value
-    );
-
-    document.getElementById('const-project-value').textContent = formatCurrency(result.projectValue);
-    document.getElementById('const-material-output').textContent = formatCurrency(result.material);
-    document.getElementById('const-labor-output').textContent = formatCurrency(result.labor);
-    document.getElementById('const-equipment-output').textContent = formatCurrency(result.equipment);
-    document.getElementById('const-fixed-output').textContent = formatCurrency(result.fixed);
-    document.getElementById('const-total-costs').textContent = formatCurrency(result.totalCosts);
-
-    const profitEl = document.getElementById('const-profit');
-    profitEl.textContent = formatCurrency(result.profitLoss);
-    profitEl.classList.remove('positive','negative');
-profitEl.classList.add(result.profitLoss >= 0 ? 'positive' : 'negative');
-
-
-    document.getElementById('const-margin').textContent = formatPercentage(result.margin);
-    document.getElementById('const-roi').textContent = formatPercentage(result.roi);
-    document.getElementById('const-ratio').textContent = formatPercentage(result.costRatio);
-    document.getElementById('const-breakeven').textContent = formatCurrency(result.breakEven);
-
-    // Advanced metrics
-    document.getElementById('const-profit-material').textContent = formatCurrency(result.profitMaterial);
-    document.getElementById('const-profit-labor').textContent = formatCurrency(result.profitLabor);
-    document.getElementById('const-profit-equipment').textContent = formatCurrency(result.profitEquipment);
-    document.getElementById('const-monthly-profit').textContent = formatCurrency(result.monthlyProfit);
-    document.getElementById('const-annual-profit').textContent = formatCurrency(result.annualProfit);
-  }
-
-  // Reset button
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    constInputs.forEach(id => document.getElementById(id).value = '');
-    updateConstCalculator();
-  });
-
-  // Initialize
-  updateConstCalculator();
-</script>
-
-  <script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      constInputs.forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateConstCalculator);
       });
-    });
-  }
-</script>
-</body>
+
+      function updateConstCalculator() {
+        const result = constCalc.calculateFromInputs(
+          document.getElementById("const-value").value,
+          document.getElementById("const-material").value,
+          document.getElementById("const-labor").value,
+          document.getElementById("const-equipment").value,
+          document.getElementById("const-fixed").value,
+        );
+
+        document.getElementById("const-project-value").textContent =
+          formatCurrency(result.projectValue);
+        document.getElementById("const-material-output").textContent =
+          formatCurrency(result.material);
+        document.getElementById("const-labor-output").textContent =
+          formatCurrency(result.labor);
+        document.getElementById("const-equipment-output").textContent =
+          formatCurrency(result.equipment);
+        document.getElementById("const-fixed-output").textContent =
+          formatCurrency(result.fixed);
+        document.getElementById("const-total-costs").textContent =
+          formatCurrency(result.totalCosts);
+
+        const profitEl = document.getElementById("const-profit");
+        profitEl.textContent = formatCurrency(result.profitLoss);
+        profitEl.classList.remove("positive", "negative");
+        profitEl.classList.add(
+          result.profitLoss >= 0 ? "positive" : "negative",
+        );
+
+        document.getElementById("const-margin").textContent = formatPercentage(
+          result.margin,
+        );
+        document.getElementById("const-roi").textContent = formatPercentage(
+          result.roi,
+        );
+        document.getElementById("const-ratio").textContent = formatPercentage(
+          result.costRatio,
+        );
+        document.getElementById("const-breakeven").textContent = formatCurrency(
+          result.breakEven,
+        );
+
+        // Advanced metrics
+        document.getElementById("const-profit-material").textContent =
+          formatCurrency(result.profitMaterial);
+        document.getElementById("const-profit-labor").textContent =
+          formatCurrency(result.profitLabor);
+        document.getElementById("const-profit-equipment").textContent =
+          formatCurrency(result.profitEquipment);
+        document.getElementById("const-monthly-profit").textContent =
+          formatCurrency(result.monthlyProfit);
+        document.getElementById("const-annual-profit").textContent =
+          formatCurrency(result.annualProfit);
+      }
+
+      // Reset button
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        constInputs.forEach((id) => (document.getElementById(id).value = ""));
+        updateConstCalculator();
+      });
+
+      // Initialize
+      updateConstCalculator();
+    </script>
+
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

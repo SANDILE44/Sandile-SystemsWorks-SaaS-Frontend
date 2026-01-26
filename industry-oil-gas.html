@@ -1,307 +1,347 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oil & Gas Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-  <!-- HEADER -->
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oil & Gas Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<!-- MAIN CONTENT -->
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-primary.html">Primary</a>
-    <span>→</span>
-    <span>Oil & Gas</span>
-  </div>
-
-  <h1>Oil & Gas Calculators</h1>
-  <p>Analyze production revenue, operational costs, and profitability per unit for energy projects.</p>
-
-  <div class="calculator-container">
-    <h2>Oil & Gas Production Calculator</h2>
-    <p>Calculate revenue, expenses, profit, ROI, and cost efficiency per barrel.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="production-volume">Production Volume (Barrels)</label>
-          <input type="number" id="production-volume" placeholder="Total production">
-        </div>
-
-        <div class="input-group">
-          <label for="price-per-barrel">Price Per Barrel (R)</label>
-          <input type="number" id="price-per-barrel" placeholder="Selling price per barrel">
-        </div>
-
-        <div class="input-group">
-          <label for="operational-expenses">Operational Expenses (R)</label>
-          <input type="number" id="operational-expenses" placeholder="OPEX, fuel, maintenance">
-        </div>
-
-        <div class="input-group">
-          <label for="capex">Capital Expenditure (R)</label>
-          <input type="number" id="capex" placeholder="CAPEX investments">
-        </div>
-
-        <div class="input-group">
-          <label for="fixed-costs">Fixed Costs (R)</label>
-          <input type="number" id="fixed-costs" placeholder="Insurance, permits, admin">
-        </div>
-
-        <button type="button" id="resetBtn" onclick="resetOilGas()">Reset All</button>
-      </div>
-
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Total Revenue</div>
-          <div class="output-value" id="total-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="total-costs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="profit-loss">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Revenue Per Barrel</div>
-          <div class="output-value" id="revenue-per-barrel">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost Per Barrel</div>
-          <div class="output-value" id="cost-per-barrel">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="roi">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="margin">0.00%</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-primary.html">Primary</a>
+        <span>→</span>
+        <span>Oil & Gas</span>
+      </div>
+
+      <h1>Oil & Gas Calculators</h1>
+      <p>
+        Analyze production revenue, operational costs, and profitability per
+        unit for energy projects.
+      </p>
+
+      <div class="calculator-container">
+        <h2>Oil & Gas Production Calculator</h2>
+        <p>
+          Calculate revenue, expenses, profit, ROI, and cost efficiency per
+          barrel.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="production-volume">Production Volume (Barrels)</label>
+              <input
+                type="number"
+                id="production-volume"
+                placeholder="Total production"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="price-per-barrel">Price Per Barrel (R)</label>
+              <input
+                type="number"
+                id="price-per-barrel"
+                placeholder="Selling price per barrel"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="operational-expenses">Operational Expenses (R)</label>
+              <input
+                type="number"
+                id="operational-expenses"
+                placeholder="OPEX, fuel, maintenance"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="capex">Capital Expenditure (R)</label>
+              <input type="number" id="capex" placeholder="CAPEX investments" />
+            </div>
+
+            <div class="input-group">
+              <label for="fixed-costs">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="fixed-costs"
+                placeholder="Insurance, permits, admin"
+              />
+            </div>
+
+            <button type="button" id="resetBtn" onclick="resetOilGas()">
+              Reset All
+            </button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="total-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="total-costs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="profit-loss">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Revenue Per Barrel</div>
+              <div class="output-value" id="revenue-per-barrel">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost Per Barrel</div>
+              <div class="output-value" id="cost-per-barrel">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="roi">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="margin">0.00%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      const inputs = [
+        "production-volume",
+        "price-per-barrel",
+        "operational-expenses",
+        "capex",
+        "fixed-costs",
+      ];
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
-
-  </div>
-</footer>
-
-<!-- JAVASCRIPT -->
-<script>
-  const inputs = ['production-volume','price-per-barrel','operational-expenses','capex','fixed-costs'];
-
-  inputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', updateCalculator);
-  });
-
-  function updateCalculator() {
-    const volume = Number(document.getElementById('production-volume').value);
-    const price = Number(document.getElementById('price-per-barrel').value);
-    const operational = Number(document.getElementById('operational-expenses').value);
-    const capex = Number(document.getElementById('capex').value);
-    const fixed = Number(document.getElementById('fixed-costs').value);
-
-    const totalRevenue = volume * price;
-    const totalCosts = operational + capex + fixed;
-    const profitLoss = totalRevenue - totalCosts;
-    const revenuePerBarrel = volume > 0 ? totalRevenue / volume : 0;
-    const costPerBarrel = volume > 0 ? totalCosts / volume : 0;
-    const roi = totalCosts > 0 ? (profitLoss / totalCosts) * 100 : 0;
-    const margin = totalRevenue > 0 ? (profitLoss / totalRevenue) * 100 : 0;
-
-    document.getElementById('total-revenue').textContent = formatCurrency(totalRevenue);
-    document.getElementById('total-costs').textContent = formatCurrency(totalCosts);
-
-    const profitEl = document.getElementById('profit-loss');
-    profitEl.textContent = formatCurrency(profitLoss);
-    profitEl.className = 'output-value ' + (profitLoss >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('revenue-per-barrel').textContent = formatCurrency(revenuePerBarrel);
-    document.getElementById('cost-per-barrel').textContent = formatCurrency(costPerBarrel);
-    document.getElementById('roi').textContent = roi.toFixed(2) + '%';
-    document.getElementById('margin').textContent = margin.toFixed(2) + '%';
-  }
-
-  function formatCurrency(value) {
-    return 'R' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function resetOilGas() {
-    inputs.forEach(id => document.getElementById(id).value = '');
-    updateCalculator();
-  }
-
-  // initialize default
-  updateCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      inputs.forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateCalculator);
       });
-    });
-  }
-</script>
 
-</body>
+      function updateCalculator() {
+        const volume = Number(
+          document.getElementById("production-volume").value,
+        );
+        const price = Number(document.getElementById("price-per-barrel").value);
+        const operational = Number(
+          document.getElementById("operational-expenses").value,
+        );
+        const capex = Number(document.getElementById("capex").value);
+        const fixed = Number(document.getElementById("fixed-costs").value);
+
+        const totalRevenue = volume * price;
+        const totalCosts = operational + capex + fixed;
+        const profitLoss = totalRevenue - totalCosts;
+        const revenuePerBarrel = volume > 0 ? totalRevenue / volume : 0;
+        const costPerBarrel = volume > 0 ? totalCosts / volume : 0;
+        const roi = totalCosts > 0 ? (profitLoss / totalCosts) * 100 : 0;
+        const margin = totalRevenue > 0 ? (profitLoss / totalRevenue) * 100 : 0;
+
+        document.getElementById("total-revenue").textContent =
+          formatCurrency(totalRevenue);
+        document.getElementById("total-costs").textContent =
+          formatCurrency(totalCosts);
+
+        const profitEl = document.getElementById("profit-loss");
+        profitEl.textContent = formatCurrency(profitLoss);
+        profitEl.className =
+          "output-value " + (profitLoss >= 0 ? "positive" : "negative");
+
+        document.getElementById("revenue-per-barrel").textContent =
+          formatCurrency(revenuePerBarrel);
+        document.getElementById("cost-per-barrel").textContent =
+          formatCurrency(costPerBarrel);
+        document.getElementById("roi").textContent = roi.toFixed(2) + "%";
+        document.getElementById("margin").textContent = margin.toFixed(2) + "%";
+      }
+
+      function formatCurrency(value) {
+        return (
+          "R" +
+          value.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+
+      function resetOilGas() {
+        inputs.forEach((id) => (document.getElementById(id).value = ""));
+        updateCalculator();
+      }
+
+      // initialize default
+      updateCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

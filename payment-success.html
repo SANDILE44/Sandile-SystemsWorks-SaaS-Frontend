@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Success</title>
+</head>
+<body>
+  <h2>Payment successful. Activating your account…</h2>
+
+  <script src="js/main.js"></script>
+  <script>
+    (async () => {
+      try {
+        await confirmPayment();
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        alert('Activation failed. Contact support.');
+      }
+    })();
+  </script>
+</body>
+</html>

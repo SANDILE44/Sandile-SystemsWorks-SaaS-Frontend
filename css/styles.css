@@ -1,77 +1,3 @@
-header img {
-    mix-blend-mode: screen;
-}
-
-footer img{
-    mix-blend-mode: screen;
-}
-
-
-/* ALIGN HEADER WITH MAIN CONTENT */
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto; /* centers it */
-  padding: 1rem 1rem; /* reduce side padding to match main content */
-}
-
-/* Optional: keep header flex spacing */
-.header-container nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* GENERAL RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* HEADER */
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #ffffff;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.logo-img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
-
-.header-container nav a,
-.header-container nav button {
-  color:#ffffff; 
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.header-container nav a:hover,
-.header-container nav button:hover {
-  color: #00d5ff; /* Lighter blue on hover */
-}
-
-.header-container nav button {
-  background: none;
-  border: 1px solid #00d5ff;
-  padding: 0.3rem 0.8rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 /* MAIN CONTENT */
 main {
   max-width: 1200px;
@@ -97,7 +23,8 @@ h3 {
   color: #fff;
 }
 
-p, li {
+p,
+li {
   font-size: 1rem;
   margin-bottom: 0.8rem;
   color: #ccc;
@@ -115,13 +42,13 @@ p, li {
   background-color: #111; /* Dark card */
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
 }
 
 .card ul {
@@ -203,7 +130,7 @@ input[type="number"]:focus {
 }
 
 /* RESPONSIVE */
-@media(max-width: 768px){
+@media (max-width: 768px) {
   .header-container {
     flex-direction: column;
     gap: 1rem;
@@ -215,7 +142,8 @@ input[type="number"]:focus {
 }
 
 /* BUTTON STYLING */
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
   display: inline-block;
   text-decoration: none;
   padding: 0.7rem 1.5rem;
@@ -227,19 +155,20 @@ input[type="number"]:focus {
   cursor: pointer;
 }
 
-
 /* CARDS */
 .card {
   background-color: #1c1c1c;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 
 /* LINKS */
@@ -253,12 +182,15 @@ a:hover {
 }
 
 /* HEADINGS COLOR IMPROVEMENT */
-h1, h2, h3 {
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+h1,
+h2,
+h3 {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* MAIN PARAGRAPHS */
-p, li {
+p,
+li {
   color: #ccc;
 }
 
@@ -321,19 +253,10 @@ p, li {
 }
 
 /* SPACING BETWEEN MAIN CONTENT SECTIONS */
-main > section, main > .cards-grid, main > p {
+main > section,
+main > .cards-grid,
+main > p {
   margin-bottom: 2rem;
-}
-
-/* FOOTER LINKS (if any added later) */
-footer a {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: #00bfff;
-  text-decoration: underline;
 }
 
 /* RESPONSIVE IMPROVEMENTS */
@@ -358,7 +281,10 @@ footer a:hover {
 
 /* HOVER EFFECTS FOR CARDS */
 .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .card:hover {
@@ -384,57 +310,13 @@ html {
   scroll-behavior: smooth;
 }
 
-footer {
-  background-color: #000000;
-  color: #ccc;
-  padding: 2rem 1rem;
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-between;
-}
-
-.footer-about, .footer-contact, .footer-links {
-  flex: 1 1 250px;
-}
-
-.footer-about h3, .footer-contact h4, .footer-links h4 {
-  color: #00b4d8;
-  margin-bottom: 0.5rem;
-}
-
-.footer-links a {
-  color: #ffffff;
-  text-decoration: none;
-  margin-right: 0.8rem;
-}
-
-.footer-links a:hover {
-  color: #00bfff;
-  text-decoration: underline;
-}
-
-.footer-copy {
-  flex-basis: 100%;
-  margin-top: 1rem;
-  text-align: center;
-  color: #888;
-}
-
 /* ================= COLOR SYSTEM (LOGIN PAGE MATCH) ================= */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
   --bg-soft: #0f172a;
 
-  --border-soft: rgba(255,255,255,0.08);
+  --border-soft: rgba(255, 255, 255, 0.08);
 
   --text-main: #e5e7eb;
   --text-muted: #94a3b8;
@@ -460,11 +342,14 @@ footer,
   border: 1px solid var(--border-soft);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--text-main);
 }
 
-p, li {
+p,
+li {
   color: var(--text-muted);
 }
 
@@ -500,13 +385,12 @@ a:hover {
   background: var(--bg-main);
   border-radius: 16px;
   border: 1px solid var(--border-soft);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .card:hover {
   transform: translateY(-4px);
 }
-
 
 /* ================= MOBILE OVERLAY ================= */
 .nav-overlay {
@@ -517,7 +401,7 @@ a:hover {
   .nav-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 998;
   }
 
@@ -541,156 +425,125 @@ a:hover {
 }
 
 /* CALCULATOR OUTPUTS */
-.output-value.positive { color: #00ff7f; }
-.output-value.negative { color: #ff4d4d; }
-
-
-
-/* Logo on left */
-.logo img {
-  height: 50px;
+.output-value.positive {
+  color: #00ff7f;
+}
+.output-value.negative {
+  color: #ff4d4d;
 }
 
-/* MOBILE ONLY */
-@media screen and (max-width: 768px) {
-  
-  /* Hamburger icon */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 28px;
-    height: 22px;
-    cursor: pointer;
-    z-index: 1001; /* above overlay */
-  }
-
-  .hamburger span {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background-color: #00b4d8;
-    border-radius: 3px;
-    transition: all 0.4s ease;
-  }
-
-  /* Transform to X when active */
-  .hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translateY(9px);
-  }
-
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-9px);
-  }
-
-  /* Side navigation overlay */
-  #sideNav {
-    position: fixed;
-    top: 0;
-    right: -100%; /* hidden by default */
-    width: 100%;
-    max-width: 300px; /* menu width */
-    height: 100%;
-    background-color: #0f162a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 3rem 2rem;
-    gap: 1.5rem;
-    transition: right 0.4s ease;
-    z-index: 1000;
-    overflow-y: auto;
-  }
-
-  /* Show menu when active */
-  #sideNav.active {
-    right: 0;
-  }
-
-  #sideNav a {
-    text-decoration: none;
-    color: #00b4d8;
-    font-size: 1.2rem;
-    font-weight: 600;
-    width: 100%;
-  }
-
-  #sideNav a:hover {
-    color: #00d5ff;
-  }
+/* ================= HEADER ================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(14px);
+  background: rgba(2, 6, 23, 0.55);
+  border-bottom: 1px solid var(--border-soft);
 }
 
-/* DESKTOP: hide hamburger, show nav inline */
-@media screen and (min-width: 769px) {
-  .hamburger {
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 0;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 220px;
+}
+
+.brand-logo {
+  height: 44px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  justify-content: flex-end;
+  min-width: 240px;
+}
+
+@media (max-width: 860px) {
+  .brand-name {
     display: none;
   }
-
-  #sideNav {
-    position: static;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    height: auto;
-    background: none;
-    padding: 0;
-    max-width: none;
-    right: auto;
-  }
-
-  #sideNav a {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-
-  #sideNav a:hover {
-    color: #00d5ff;
-  }
 }
 
-@media screen and (max-width: 768px) {
-  .header-container {
-    flex-direction: row;       /* keep items in a row */
-    justify-content: space-between; /* logo left, hamburger right */
-    align-items: center;       /* vertical alignment */
-    padding: 0.8rem 1rem;      /* optional spacing */
-  }
+/* =========================
+   DASHBOARD ALIGN FIX (CSS ONLY)
+   Put this at the bottom
+========================= */
 
-  /* Make sure hamburger stays visible */
-  .hamburger {
-    display: flex;             
-    z-index: 1001;            
-  }
-
-  /* SideNav remains as is */
-  #sideNav {
-    right: -100%; /* hidden by default */
-  }
+/* 1) One source of truth for page width + side padding */
+:root {
+  --container: 1200px; /* same value you use in landing.css */
+  --gutter: 1rem; /* same padding as .container */
 }
 
-body {
-  background-color: #020617;
-  color: #e5e7eb;
-  line-height: 1.6;
+/* 2) Force header inner alignment */
+.header .container,
+.header .header-content {
+  max-width: var(--container) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
 }
 
-/* Header link hover zoom */
-.header-container nav a {
-  color: white;
-  transition: transform 0.3s ease, color 0.3s ease; /* smooth transform + color */
+/* 3) Force main alignment (works even if main has its own max-width) */
+main {
+  max-width: var(--container) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
 }
 
-.header-container nav a:hover {
-  transform: scale(1.2); /* slightly bigger */
-  color: #00d5ff;         /* keep your hover color */
+/* Optional: consistent vertical spacing */
+main {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
 }
 
-/* ================= SIDE NAV COLOR MATCH ================= */
-#sideNav {
-  background-color: #020617 !important;
+/* ================= LOGOUT BUTTON ================= */
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  padding: 0.55rem 0.95rem;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 180, 216, 0.12);
+  border-color: rgba(0, 180, 216, 0.45);
+  color: var(--accent);
+}
+
+.btn-ghost:active {
+  transform: translateY(1px);
+}
+
+.btn-ghost:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.25);
 }

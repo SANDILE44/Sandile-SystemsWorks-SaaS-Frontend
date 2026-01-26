@@ -1,337 +1,568 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sandile SystemsWorks | Business Calculator Suite</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandile SystemsWorks - Decision Calculators & Dashboards</title>
+    <link rel="stylesheet" href="css/landing.css" />
+  </head>
 
-/* CENTER ENTIRE MAIN CONTENT */
-main {
-  max-width: 1200px; /* keeps content from stretching too wide */
-  margin: 0 auto;    /* centers horizontally */
-  padding: 2rem 1rem; /* space around content */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center all sections inside */
-  gap: 3rem; /* space between sections */
-}
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Logo"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-/* MAKE SECTIONS FULL WIDTH UP TO MAX WIDTH */
-main > section {
-  width: 100%; /* allows sections like hero, cards-grid to stretch fully within max-width */
-  max-width: 800px; /* optional, keep text readable */
-}
+          <nav class="nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="product.html">Product</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="company.html">Company</a>
+            <a href="contact.html">Contact</a>
+          </nav>
 
-/* SPECIFIC FOR CARDS GRID */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  width: 100%; /* make grid take full width inside main */
-}
+          <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-expanded="false"
+            aria-controls="mainNav"
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
-/* CENTER HERO TEXT */
-.hero, .overview, .outputs, .pricing {
-  text-align: center;
-}
-
-    main {
-  margin: 2rem auto;
-  padding: 0 1rem;
-  line-height: 1.6;
-  color: var(--text-main); /* your light blue */
-}
-
-main h1, main h2, main h3 {
-  color: white;    /* light blue headings */
-  margin-bottom: 1rem;
-}
-
-main p {
-  margin-bottom: 1rem;
-}
-
-main ul {
-  margin-left: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--text-main);
-}
-
-/* STACK SECTOR CARDS VERTICALLY */
-.cards-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem; /* space between cards */
-  width: 100%; /* ensures cards take full width */
-}
-
-/* OPTIONAL: make each card full width */
-.cards-grid .card {
-  width: 100%;
-}
-
-/* ATTRACTIVE PRICING CARD */
-.pricing {
-  background: linear-gradient(145deg, #0f162a, #020617); /* subtle gradient */
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgb(0, 0, 0), 0 0 10px rgb(0, 0, 0);
-  max-width: 450px;
-  margin: 3rem auto;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.pricing:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 60px rgb(0, 0, 0), 0 0 15px rgb(0, 0, 0);
-}
-
-.pricing h2 {
-  font-size: 2rem;
-  color: var(--accent);
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.pricing p {
-  font-size: 1.05rem;
-  color: #cbd5e1;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
-
-/* BUTTONS STYLE */
-.pricing a {
-  display: inline-block;
-  margin: 0.5rem;
-  padding: 0.8rem 2rem;
-  font-weight: 600;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0, 180, 216, 0.4);
-}
-
-.pricing .btn-primary {
-  background: linear-gradient(135deg, #00b4d8, #00d5ff);
-  color: #000;
-  border: none;
-}
-
-.pricing .btn-primary:hover {
-  background: linear-gradient(135deg, #00d5ff, #00b4d8);
-  color: #fff;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 180, 216, 0.6);
-}
-
-.pricing .btn-secondary {
-  background: transparent;
-  color: #00b4d8;
-  border: 2px solid #00b4d8;
-}
-
-.pricing .btn-secondary:hover {
-  background: #00b4d8;
-  color: #fff;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 180, 216, 0.5);
-}
-
-
-  </style>
-
-</head>
-<body>
-
-<header>
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <h1>Professional Business Calculator Suite</h1>
-    <p>
-      Our platform is a comprehensive, data-driven business calculation system designed for founders, managers, enterprises, and institutions across <strong>all economic sectors</strong>. 
-      Save time, reduce errors, and make faster, smarter decisions with calculators built specifically to address the complexities of each industry.
-    </p>
-  </section>
-
-  <!-- OVERVIEW SECTION -->
-  <section class="overview">
-    <h2>Why Choose Our SaaS?</h2>
-    <p>
-      Businesses spend countless hours calculating costs, revenues, profits, and forecasting outcomes manually—often losing money due to errors or inefficiencies. 
-      <strong>Our platform eliminates that burden.</strong> Simply input your data, and our calculators generate all critical business metrics instantly. No advanced skills are required, no complications, and results are immediately actionable.
-    </p>
-    <p>
-      From agriculture to IT services, consulting, and public administration, our calculators cover every sector, providing a full suite of tools to save time, improve decision-making, and maximize profits.
-    </p>
-  </section>
-
-  <!-- SECTORS & CALCULATORS -->
-  <section class="cards-grid">
-    <div class="card">
-      <h3>Primary Sector</h3>
-      <p>Our calculators for agriculture, forestry, fisheries, mining, oil & gas, and renewable energy allow you to calculate everything from profitability and ROI to break-even, cost per unit, and revenue projections.</p>
-      <ul>
-        <li><strong>Agriculture:</strong> Farm profitability, societal revenue and costs, profit per animal, ROI, break-even units, cost per acre, livestock loss.</li>
-        <li><strong>Forestry:</strong> Timber volume, revenue, costs, profit per meter, break-even volume, profit margin.</li>
-        <li><strong>Fisheries:</strong> Net revenue, total costs, break-even, cash profits, monthly and annual revenue projections.</li>
-        <li><strong>Mining & Oil/Gas:</strong> Monthly & annual revenue, total costs, profits, cost per ton, revenue per ton, ROI, profit margin.</li>
-        <li><strong>Renewable Energy:</strong> Total costs, revenue, profits, ROI, annual payback, cost and revenue per kilowatt.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Secondary Sector</h3>
-      <p>For manufacturing, construction, automotive, electronics, textiles, and food & beverage industries, our calculators provide precise production and financial metrics.</p>
-      <ul>
-        <li>Units produced, total revenue, total cost, profit or loss, profit per unit.</li>
-        <li>Break-even units, cost per unit, revenue per unit, ROI, profit margin.</li>
-        <li>Monthly and annual revenue/profit projections.</li>
-        <li>Construction-specific: material, labor, equipment, fixed and social costs, profit ratios.</li>
-        <li>Food & Beverage & Textiles: gross and net profit, material cost per unit, monthly/annual projections.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Tertiary Sector</h3>
-      <p>Service-based industries including real estate, retail, hospitality, restaurants, logistics, healthcare, education, finance, marketing, and consulting are fully covered.</p>
-      <ul>
-        <li>Real estate: rental income, total expenses, net profit/loss, ROI, profit margins, monthly/annual profit.</li>
-        <li>Retail: total revenue, cost of goods sold, gross/net profits, markup, break-even units, profit per unit.</li>
-        <li>Restaurants: daily covers, revenue, total costs, profit margin, break-even cover, monthly/annual profits.</li>
-        <li>Hospitality: occupied rooms, revenue per room, cost per room, profit margin, ROI.</li>
-        <li>Logistics: monthly shipments, revenue per shipment, cost per shipment, ROI, profit margin.</li>
-        <li>Healthcare & Education: revenue, cost, profit per patient/student, ROI, profit margin.</li>
-        <li>Finance & Marketing & Consulting: client/project revenue, social cost, profit per client/campaign, ROI, break-even hours, monthly/annual profits.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Quaternary Sector</h3>
-      <p>This includes IT & software, data science, cybersecurity, R&D, telecommunications, media, and SaaS subscription services.</p>
-      <ul>
-        <li>IT & Software: revenue, costs, net profit, profit per hour, break-even hours, monthly & annual profits, ROI.</li>
-        <li>Media: revenue, social costs, cost per content, profit/loss, ROI, break-even content.</li>
-        <li>R&D: annual & monthly profits, net gains, ROI, payback period.</li>
-        <li>SaaS: monthly recurring revenue, net MRR, churn impact, social cost, ROI, profit margin, runway in months.</li>
-        <li>Telecommunications: subscribers, revenue, infrastructure & operating costs, net profit, ROI.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Quinary Sector</h3>
-      <p>Government, NGOs, community services, and public administration calculators are designed for social and public projects.</p>
-      <ul>
-        <li>Government & Public Admin: social program costs, purchase balances, staff costs, program efficiency.</li>
-        <li>NGOs: social costs, funds remaining/deficits, cost per program, impact efficiency.</li>
-        <li>Community Services: social participants, revenue, net impact/profit, ROI.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- OUTPUTS SECTION -->
-<section class="outputs">
-  <h2>What You Get From Our Calculators</h2>
-  <p>Detailed profitability and cost analysis for every industry sector.</p>
-  <p>Break-even calculations and revenue per unit, project, or program.</p>
-  <p>ROI, profit margins, and payback period projections.</p>
-  <p>Monthly and annual revenue, net profit, and cost projections.</p>
-  <p>Time-saving, automated calculations that require no special skills.</p>
-  <p>Full visibility of both operational and financial metrics to drive smarter business decisions.</p>
-</section>
-
-  <!-- PRICING SECTION -->
-  <section class="pricing">
-    <h2>Access & Pricing</h2>
-    <p><strong>Monthly Subscription:</strong> R12 499</p>
-    <p>Secure, private access for verified users only. Gain access to every sector and calculator instantly.</p>
-    <a href="https://pay.yoco.com/r/2Jqvq3" target="_blank" class="btn-primary">Pay Securely</a>
-    
-  </section>
-</main>
-
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <div class="header-actions" id="headerActions">
+            <a href="login.html" class="link-muted">Sign in</a>
+            <a href="signup.html" class="btn btn-primary">Start free trial</a>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
+    </header>
+
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <!-- MAIN -->
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <!-- LEFT -->
+            <div>
+              <p class="eyebrow">SMARTER DECISIONS</p>
+              <h1>
+                Make faster decisions with accurate, instant calculations.
+              </h1>
+              <p class="subhead">
+                A complete suite of calculators and dashboards built for
+                entrepreneurs and managers—no spreadsheets, no guesswork.
+              </p>
+
+              <div class="hero-ctas">
+                <a href="signup.html" class="btn btn-primary"
+                  >Start free trial</a
+                >
+                <a href="product.html" class="btn btn-ghost">View features</a>
+              </div>
+
+              <div class="trustline">
+                <span class="dot"></span>
+                Works across all sectors • Standardized results • Updated weekly
+              </div>
+
+              <div class="stat-row">
+                <div class="stat">
+                  <div class="stat-num">5 min</div>
+                  <div class="stat-label">typical calc time</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">0</div>
+                  <div class="stat-label">spreadsheet chaos</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">1</div>
+                  <div class="stat-label">source of truth</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT (Mockup with slideshow) -->
+            <div class="hero-visual">
+              <div class="mockup-card">
+                <div class="mockup-top">
+                  <span class="pill" id="mockupPill">Live Preview</span>
+                  <span class="mini" id="mockupMini">Dashboard</span>
+                </div>
+
+                <div class="mockup-media">
+                  <!-- ONE image only (JS swaps src) -->
+                  <img
+                    src="images/Screenshot 2026-01-26 114942.png"
+                    alt="Calculator"
+                    class="mockup-img"
+                    id="mockupImg"
+                  />
+
+                  <!-- Controls -->
+                  <div class="mockup-controls">
+                    <button
+                      type="button"
+                      class="mockup-btn"
+                      id="prevShot"
+                      aria-label="Previous image"
+                    >
+                      ‹
+                    </button>
+
+                    <div
+                      class="mockup-dots"
+                      id="mockupDots"
+                      aria-label="Preview selector"
+                    ></div>
+
+                    <button
+                      type="button"
+                      class="mockup-btn"
+                      id="nextShot"
+                      aria-label="Next image"
+                    >
+                      ›
+                    </button>
+                  </div>
+
+                  <button type="button" class="mockup-full" id="openLightbox">
+                    View full screen
+                  </button>
+                </div>
+
+                <div class="mockup-bottom">
+                  <div class="kpi">
+                    <span class="kpi-label">ROI</span>
+                    <span class="kpi-value" id="kpiRoi">Example</span>
+                  </div>
+                  <div class="kpi">
+                    <span class="kpi-label">Savings</span>
+                    <span class="kpi-value" id="kpiSavings">Example</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /RIGHT -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VALUE PROPS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Why choose Sandile SystemsWorks</h2>
+            <p>
+              Everything you need to make smarter business decisions, faster and
+              with less effort.
+            </p>
+          </div>
+          <div class="cards">
+            <div class="card">
+              <h3>Instant Calculations</h3>
+              <p>
+                Get accurate results in seconds, not hours. Built-in formulas
+                and standards save time.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Premium Dashboard</h3>
+              <p>
+                Track metrics that matter. Profitability, ROI, cashflow, and
+                performance at a glance.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Guided Workflows</h3>
+              <p>
+                Step-by-step decisions. No guessing. Clear inputs and actionable
+                outputs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLUTIONS -->
+      <section class="section section-soft">
+        <div class="container">
+          <div class="section-head">
+            <h2>Use cases by role</h2>
+            <p>
+              SystemsWorks adapts to your business needs—project managers,
+              service owners, consultants, ops teams.
+            </p>
+          </div>
+          <div class="split">
+            <div class="split-card">
+              <h3>Project-Based Businesses</h3>
+              <ul class="list">
+                <li>Project profitability analysis</li>
+                <li>Resource cost allocation</li>
+                <li>Break-even calculations</li>
+              </ul>
+            </div>
+            <div class="split-card">
+              <h3>Service Providers</h3>
+              <ul class="list">
+                <li>Service margin analysis</li>
+                <li>Pricing optimization</li>
+                <li>Labor cost tracking</li>
+              </ul>
+            </div>
+            <div class="split-card">
+              <h3>Consultants & Agencies</h3>
+              <ul class="list">
+                <li>Client profitability scorecards</li>
+                <li>Fee benchmarking</li>
+                <li>Utilization forecasts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>How it works</h2>
+            <p>Three simple steps to smarter decisions.</p>
+          </div>
+          <ol class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div>
+                <h3>Input your data</h3>
+                <p>
+                  Feed in costs, revenues, margins, targets—Sandile SystemsWorks
+                  handles the complexity.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div>
+                <h3>Get instant insights</h3>
+                <p>
+                  Watch calculations update in real-time. See the impact
+                  immediately.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div>
+                <h3>Make informed decisions</h3>
+                <p>Compare scenarios and move forward with confidence.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- PRICING TEASER -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Premium access at fair pricing</h2>
+            <p>Everything included. One plan. No surprise fees.</p>
+          </div>
+          <div class="pricing">
+            <div class="pricing-card">
+              <div class="pricing-top">
+                <h3>Business Access</h3>
+                <p class="pricing-sub">Full suite of tools and calculators</p>
+              </div>
+              <div class="price">
+                <span class="price-amount">R12,499</span>
+                <span class="price-period">/month</span>
+              </div>
+              <a href="signup.html" class="btn btn-primary btn-block"
+                >Start free trial</a
+              >
+              <p class="tiny">3 days free trial. Cancel anytime.</p>
+              <ul class="list">
+                <li>All calculators unlocked</li>
+                <li>Real-time dashboards</li>
+                <li>Scenario planning</li>
+                <li>Priority email support</li>
+                <li>Weekly updates</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA BAND -->
+      <section class="section">
+        <div class="container">
+          <div class="cta-band">
+            <div>
+              <h3>Ready to make smarter decisions?</h3>
+              <p>Start your free trial today and explore the full suite.</p>
+            </div>
+            <div class="cta-band-actions">
+              <a href="signup.html" class="btn btn-primary">Start free trial</a>
+              <a href="pricing.html" class="btn btn-ghost">View pricing</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <img
+              src="images/Untitled design.png"
+              alt="Logo"
+              class="brand-logo"
+            />
+            <p class="footer-desc">
+              Premium business decision tools: calculators, dashboards, and SaaS
+              systems built to help businesses move faster.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="product.html">Features</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="solutions.html">Solutions</a>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="mailto:thabethesandile44@gmail.com">Email</a>
+            <a href="tel:+27717378540">Phone</a>
+            <a href="contact.html">Get in touch</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Sandile SystemsWorks. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIGHTBOX (fullscreen slideshow) -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div
+        class="lightbox-inner"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Dashboard screenshots"
+      >
+        <button class="lightbox-close" id="closeLightbox" aria-label="Close">
+          ✕
+        </button>
+
+        <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous">
+          ‹
+        </button>
+        <img
+          class="lightbox-img"
+          id="lbImg"
+          alt="Dashboard screenshot fullscreen"
+        />
+        <button class="lightbox-nav next" id="lbNext" aria-label="Next">
+          ›
+        </button>
+
+        <div class="lightbox-caption" id="lbCaption">Dashboard preview</div>
+      </div>
     </div>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <!-- HAMBURGER + NAV (works) -->
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const mainNav = document.getElementById("mainNav");
+      const navOverlay = document.getElementById("navOverlay");
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+      function openNav() {
+        mainNav.classList.add("open");
+        navToggle.classList.add("open");
+        navOverlay.classList.add("active");
+        navOverlay.setAttribute("aria-hidden", "false");
+        navToggle.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
-
-  </div>
-</footer>
-
-
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
+      function closeNav() {
+        mainNav.classList.remove("open");
+        navToggle.classList.remove("open");
+        navOverlay.classList.remove("active");
+        navOverlay.setAttribute("aria-hidden", "true");
+        navToggle.setAttribute("aria-expanded", "false");
         document.body.style.overflow = "";
-      });
-    });
-  }
-</script>
+      }
 
+      if (navToggle && mainNav && navOverlay) {
+        navToggle.addEventListener("click", () => {
+          const isOpen = mainNav.classList.contains("open");
+          isOpen ? closeNav() : openNav();
+        });
 
-</body>
+        navOverlay.addEventListener("click", closeNav);
+
+        // close on Esc
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeNav();
+        });
+
+        // close when clicking a link
+        mainNav.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeNav);
+        });
+      }
+    </script>
+
+    <!-- HERO SLIDESHOW + FULLSCREEN (works) -->
+    <script>
+      // Use EXACT names you told me (with spaces)
+      const shots = [
+        {
+          src: "images/Screenshot 2026-01-26 114942.png",
+          caption: "Calculator",
+        },
+        {
+          src: "images/Screenshot 2026-01-26 115311.png",
+          caption: "Calculator",
+        },
+        {
+          src: "images/Screenshot 2026-01-26 115413.png",
+          caption: "Calculator",
+        },
+      ];
+
+      let shotIndex = 0;
+
+      const mockupImg = document.getElementById("mockupImg");
+      const prevShot = document.getElementById("prevShot");
+      const nextShot = document.getElementById("nextShot");
+      const dotsWrap = document.getElementById("mockupDots");
+      const openLightbox = document.getElementById("openLightbox");
+
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lbImg");
+      const lbCaption = document.getElementById("lbCaption");
+      const closeLightbox = document.getElementById("closeLightbox");
+      const lbPrev = document.getElementById("lbPrev");
+      const lbNext = document.getElementById("lbNext");
+
+      function safeSrc(path) {
+        // Encodes spaces and special chars -> prevents “not loading” when JS swaps src
+        return encodeURI(path);
+      }
+
+      function renderDots() {
+        dotsWrap.innerHTML = "";
+        shots.forEach((_, i) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "mockup-dot" + (i === shotIndex ? " active" : "");
+          dot.setAttribute("aria-label", "Go to image " + (i + 1));
+          dot.addEventListener("click", () => {
+            shotIndex = i;
+            updateShot();
+          });
+          dotsWrap.appendChild(dot);
+        });
+      }
+
+      function updateShot() {
+        const item = shots[shotIndex];
+        mockupImg.src = safeSrc(item.src);
+        mockupImg.alt = item.caption;
+        renderDots();
+
+        if (lightbox.classList.contains("open")) {
+          lbImg.src = safeSrc(item.src);
+          lbCaption.textContent = item.caption;
+        }
+      }
+
+      function next() {
+        shotIndex = (shotIndex + 1) % shots.length;
+        updateShot();
+      }
+
+      function prev() {
+        shotIndex = (shotIndex - 1 + shots.length) % shots.length;
+        updateShot();
+      }
+
+      function openLB() {
+        const item = shots[shotIndex];
+        lbImg.src = safeSrc(item.src);
+        lbCaption.textContent = item.caption;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLB() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      // bind if all elements exist
+      if (
+        mockupImg &&
+        prevShot &&
+        nextShot &&
+        dotsWrap &&
+        openLightbox &&
+        lightbox &&
+        lbImg &&
+        lbCaption &&
+        closeLightbox &&
+        lbPrev &&
+        lbNext
+      ) {
+        prevShot.addEventListener("click", prev);
+        nextShot.addEventListener("click", next);
+
+        openLightbox.addEventListener("click", openLB);
+        mockupImg.addEventListener("click", openLB);
+
+        lbPrev.addEventListener("click", prev);
+        lbNext.addEventListener("click", next);
+
+        closeLightbox.addEventListener("click", closeLB);
+
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox) closeLB();
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (!lightbox.classList.contains("open")) return;
+          if (e.key === "Escape") closeLB();
+          if (e.key === "ArrowRight") next();
+          if (e.key === "ArrowLeft") prev();
+        });
+
+        updateShot();
+      } else {
+        console.warn("Slideshow missing elements. Check IDs in HTML.");
+      }
+    </script>
+  </body>
 </html>

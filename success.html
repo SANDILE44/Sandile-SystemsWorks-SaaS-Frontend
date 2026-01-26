@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success - Sandile SystemsWorks</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main style="max-width:700px;margin:60px auto;text-align:center;">
+    <h1>Payment Successful ✅</h1>
+    <p>Thanks! Your subscription is now active. You can continue using all calculators.</p>
+
+    <button id="continueBtn" class="btn-primary">Go to Dashboard</button>
+    <p id="msg" style="margin-top:16px;"></p>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    document.getElementById("continueBtn").addEventListener("click", async () => {
+      const token = localStorage.getItem("token");
+      const msg = document.getElementById("msg");
+      msg.textContent = "";
+
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        // ✅ tells backend "mark me as paid"
+        await apiFetch("/api/payments/confirm", { method: "POST", token, body: {} });
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        msg.textContent = e.message || "Could not confirm payment. Please login again.";
+      }
+    });
+  </script>
+</body>
+</html>

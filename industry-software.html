@@ -1,301 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-<!-- HEADER -->
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Software Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-quaternary.html">Quaternary</a>
-    <span>→</span>
-    <span>Software</span>
-  </div>
-
-  <h1>Software Calculators</h1>
-  <p>Analyze software development costs, licensing revenue, and project profitability.</p>
-
-  <div class="calculator-container">
-    <h2>Software Profitability Calculator</h2>
-    <p>Calculate revenue, costs, net profit, ROI, and margins for software projects or licensing.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="software-units">Number of Licenses Sold</label>
-          <input type="number" id="software-units" placeholder="Enter total licenses sold" min="0">
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
+      </div>
+    </header>
 
-        <div class="input-group">
-          <label for="software-price">Price per License (R)</label>
-          <input type="number" id="software-price" placeholder="Price per license" min="0">
-        </div>
-
-        <div class="input-group">
-          <label for="software-dev-cost">Development Cost (R)</label>
-          <input type="number" id="software-dev-cost" placeholder="Software development costs" min="0">
-        </div>
-
-        <div class="input-group">
-          <label for="software-labor">Labor Costs (R)</label>
-          <input type="number" id="software-labor" placeholder="Staff salaries" min="0">
-        </div>
-
-        <div class="input-group">
-          <label for="software-operational">Operational Costs (R)</label>
-          <input type="number" id="software-operational" placeholder="Marketing, support, tools" min="0">
-        </div>
-
-        <button type="button" id="resetBtn">Reset All</button>
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-quaternary.html">Quaternary</a>
+        <span>→</span>
+        <span>Software</span>
       </div>
 
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
+      <h1>Software Calculators</h1>
+      <p>
+        Analyze software development costs, licensing revenue, and project
+        profitability.
+      </p>
 
-        <div class="output-group"><div class="output-label">Total Licenses Sold</div><div class="output-value" id="software-units-output">0</div></div>
-        <div class="output-group"><div class="output-label">Total Revenue</div><div class="output-value" id="software-revenue">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Development Cost</div><div class="output-value" id="software-dev-cost-output">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Labor Costs</div><div class="output-value" id="software-labor-output">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Operational Costs</div><div class="output-value" id="software-operational-output">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Total Costs</div><div class="output-value" id="software-total-costs">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Net Profit</div><div class="output-value" id="software-net-profit">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Profit Margin (%)</div><div class="output-value" id="software-margin">0.00%</div></div>
-        <div class="output-group"><div class="output-label">ROI (%)</div><div class="output-value" id="software-roi">0.00%</div></div>
+      <div class="calculator-container">
+        <h2>Software Profitability Calculator</h2>
+        <p>
+          Calculate revenue, costs, net profit, ROI, and margins for software
+          projects or licensing.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="software-units">Number of Licenses Sold</label>
+              <input
+                type="number"
+                id="software-units"
+                placeholder="Enter total licenses sold"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="software-price">Price per License (R)</label>
+              <input
+                type="number"
+                id="software-price"
+                placeholder="Price per license"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="software-dev-cost">Development Cost (R)</label>
+              <input
+                type="number"
+                id="software-dev-cost"
+                placeholder="Software development costs"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="software-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="software-labor"
+                placeholder="Staff salaries"
+                min="0"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="software-operational">Operational Costs (R)</label>
+              <input
+                type="number"
+                id="software-operational"
+                placeholder="Marketing, support, tools"
+                min="0"
+              />
+            </div>
+
+            <button type="button" id="resetBtn">Reset All</button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Total Licenses Sold</div>
+              <div class="output-value" id="software-units-output">0</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="software-revenue">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Development Cost</div>
+              <div class="output-value" id="software-dev-cost-output">
+                R0.00
+              </div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Labor Costs</div>
+              <div class="output-value" id="software-labor-output">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Operational Costs</div>
+              <div class="output-value" id="software-operational-output">
+                R0.00
+              </div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="software-total-costs">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Net Profit</div>
+              <div class="output-value" id="software-net-profit">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="software-margin">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="software-roi">0.00%</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      // Helper functions
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      // Software Calculator Class
+      class SoftwareCalculator {
+        calculateFromInputs(units, price, devCost, labor, operational) {
+          units = parseFloat(units) || 0;
+          price = parseFloat(price) || 0;
+          devCost = parseFloat(devCost) || 0;
+          labor = parseFloat(labor) || 0;
+          operational = parseFloat(operational) || 0;
 
-  </div>
-</footer>
+          const totalRevenue = units * price;
+          const totalCosts = devCost + labor + operational;
+          const netProfit = totalRevenue - totalCosts;
+          const profitMargin = totalRevenue
+            ? (netProfit / totalRevenue) * 100
+            : 0;
+          const roi = totalCosts ? (netProfit / totalCosts) * 100 : 0;
 
-<script>
-  // Helper functions
-  function formatCurrency(value) {
-    return 'R' + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + '%';
-  }
+          return {
+            units,
+            totalRevenue,
+            devCost,
+            labor,
+            operational,
+            totalCosts,
+            netProfit,
+            profitMargin,
+            roi,
+          };
+        }
+      }
 
-  // Software Calculator Class
-  class SoftwareCalculator {
-    calculateFromInputs(units, price, devCost, labor, operational) {
-      units = parseFloat(units) || 0;
-      price = parseFloat(price) || 0;
-      devCost = parseFloat(devCost) || 0;
-      labor = parseFloat(labor) || 0;
-      operational = parseFloat(operational) || 0;
+      const softwareCalc = new SoftwareCalculator();
+      const softwareInputs = [
+        "software-units",
+        "software-price",
+        "software-dev-cost",
+        "software-labor",
+        "software-operational",
+      ];
 
-      const totalRevenue = units * price;
-      const totalCosts = devCost + labor + operational;
-      const netProfit = totalRevenue - totalCosts;
-      const profitMargin = totalRevenue ? (netProfit / totalRevenue) * 100 : 0;
-      const roi = totalCosts ? (netProfit / totalCosts) * 100 : 0;
-
-      return { units, totalRevenue, devCost, labor, operational, totalCosts, netProfit, profitMargin, roi };
-    }
-  }
-
-  const softwareCalc = new SoftwareCalculator();
-  const softwareInputs = ['software-units','software-price','software-dev-cost','software-labor','software-operational'];
-
-  softwareInputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', updateSoftwareCalculator);
-  });
-
-  function updateSoftwareCalculator() {
-    const result = softwareCalc.calculateFromInputs(
-      document.getElementById('software-units').value,
-      document.getElementById('software-price').value,
-      document.getElementById('software-dev-cost').value,
-      document.getElementById('software-labor').value,
-      document.getElementById('software-operational').value
-    );
-
-    document.getElementById('software-units-output').textContent = result.units.toFixed(0);
-    document.getElementById('software-revenue').textContent = formatCurrency(result.totalRevenue);
-    document.getElementById('software-dev-cost-output').textContent = formatCurrency(result.devCost);
-    document.getElementById('software-labor-output').textContent = formatCurrency(result.labor);
-    document.getElementById('software-operational-output').textContent = formatCurrency(result.operational);
-    document.getElementById('software-total-costs').textContent = formatCurrency(result.totalCosts);
-
-    const netEl = document.getElementById('software-net-profit');
-    netEl.textContent = formatCurrency(result.netProfit);
-    netEl.className = 'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('software-margin').textContent = formatPercentage(result.profitMargin);
-    document.getElementById('software-roi').textContent = formatPercentage(result.roi);
-  }
-
-  // Reset button
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    softwareInputs.forEach(id => document.getElementById(id).value = '');
-    updateSoftwareCalculator();
-  });
-
-  // Initialize calculation
-  updateSoftwareCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      softwareInputs.forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateSoftwareCalculator);
       });
-    });
-  }
-</script>
 
-</body>
+      function updateSoftwareCalculator() {
+        const result = softwareCalc.calculateFromInputs(
+          document.getElementById("software-units").value,
+          document.getElementById("software-price").value,
+          document.getElementById("software-dev-cost").value,
+          document.getElementById("software-labor").value,
+          document.getElementById("software-operational").value,
+        );
+
+        document.getElementById("software-units-output").textContent =
+          result.units.toFixed(0);
+        document.getElementById("software-revenue").textContent =
+          formatCurrency(result.totalRevenue);
+        document.getElementById("software-dev-cost-output").textContent =
+          formatCurrency(result.devCost);
+        document.getElementById("software-labor-output").textContent =
+          formatCurrency(result.labor);
+        document.getElementById("software-operational-output").textContent =
+          formatCurrency(result.operational);
+        document.getElementById("software-total-costs").textContent =
+          formatCurrency(result.totalCosts);
+
+        const netEl = document.getElementById("software-net-profit");
+        netEl.textContent = formatCurrency(result.netProfit);
+        netEl.className =
+          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
+
+        document.getElementById("software-margin").textContent =
+          formatPercentage(result.profitMargin);
+        document.getElementById("software-roi").textContent = formatPercentage(
+          result.roi,
+        );
+      }
+
+      // Reset button
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        softwareInputs.forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        updateSoftwareCalculator();
+      });
+
+      // Initialize calculation
+      updateSoftwareCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

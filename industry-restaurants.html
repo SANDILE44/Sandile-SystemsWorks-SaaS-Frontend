@@ -1,332 +1,414 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a> → 
-    <a href="sector-tertiary.html">Tertiary</a> → 
-    <span>Restaurants</span>
-  </div>
-
-  <h1>Restaurant Calculators</h1>
-  <p>Advanced restaurant profitability and operational intelligence.</p>
-
-  <div class="calculator-container">
-    <h2>Restaurant Profitability Calculator</h2>
-    <p>Estimate revenue, costs, profits, and operational metrics.</p>
-
-    <div class="calculator-grid">
-
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="tables">Number of Tables</label>
-          <input type="number" id="tables" placeholder="e.g., 15">
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
+      </div>
+    </header>
 
-        <div class="input-group">
-          <label for="covers">Covers per Table (Daily)</label>
-          <input type="number" id="covers" placeholder="e.g., 4">
-        </div>
-
-        <div class="input-group">
-          <label for="check">Average Check per Customer (R)</label>
-          <input type="number" id="check" placeholder="e.g., 120">
-        </div>
-
-        <div class="input-group">
-          <label for="foodPercent">Food Cost (%)</label>
-          <input type="number" id="foodPercent" placeholder="e.g., 30" value="30">
-        </div>
-
-        <div class="input-group">
-          <label for="labor">Labor Costs (Monthly R)</label>
-          <input type="number" id="labor" placeholder="e.g., 25000">
-        </div>
-
-        <div class="input-group">
-          <label for="fixed">Fixed Costs (Monthly R)</label>
-          <input type="number" id="fixed" placeholder="e.g., 15000">
-        </div>
-
-        <div class="input-group">
-          <label for="days">Operating Days per Month</label>
-          <input type="number" id="days" placeholder="e.g., 30" value="30">
-        </div>
-
-        <button type="button" id="resetBtn">Reset All</button>
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a> →
+        <a href="sector-tertiary.html">Tertiary</a> →
+        <span>Restaurants</span>
       </div>
 
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
+      <h1>Restaurant Calculators</h1>
+      <p>Advanced restaurant profitability and operational intelligence.</p>
 
-        <div class="output-group"><div class="output-label">Daily Covers</div><div class="output-value" id="dailyCovers">0</div></div>
-        <div class="output-group"><div class="output-label">Monthly Revenue</div><div class="output-value" id="revenue">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Food Costs</div><div class="output-value" id="foodCost">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Total Costs</div><div class="output-value" id="totalCosts">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Net Profit</div><div class="output-value" id="profit">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Profit Margin (%)</div><div class="output-value" id="margin">0.00%</div></div>
-        <div class="output-group"><div class="output-label">Cost Ratio (% of Revenue)</div><div class="output-value" id="ratio">0.00%</div></div>
-        <div class="output-group"><div class="output-label">Profit per Cover</div><div class="output-value" id="profitCover">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Break-even Covers / Day</div><div class="output-value" id="breakeven">0</div></div>
-        <div class="output-group"><div class="output-label">Monthly Profit</div><div class="output-value" id="monthly">R0.00</div></div>
-        <div class="output-group"><div class="output-label">Annual Profit</div><div class="output-value" id="annual">R0.00</div></div>
+      <div class="calculator-container">
+        <h2>Restaurant Profitability Calculator</h2>
+        <p>Estimate revenue, costs, profits, and operational metrics.</p>
 
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="tables">Number of Tables</label>
+              <input type="number" id="tables" placeholder="e.g., 15" />
+            </div>
+
+            <div class="input-group">
+              <label for="covers">Covers per Table (Daily)</label>
+              <input type="number" id="covers" placeholder="e.g., 4" />
+            </div>
+
+            <div class="input-group">
+              <label for="check">Average Check per Customer (R)</label>
+              <input type="number" id="check" placeholder="e.g., 120" />
+            </div>
+
+            <div class="input-group">
+              <label for="foodPercent">Food Cost (%)</label>
+              <input
+                type="number"
+                id="foodPercent"
+                placeholder="e.g., 30"
+                value="30"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="labor">Labor Costs (Monthly R)</label>
+              <input type="number" id="labor" placeholder="e.g., 25000" />
+            </div>
+
+            <div class="input-group">
+              <label for="fixed">Fixed Costs (Monthly R)</label>
+              <input type="number" id="fixed" placeholder="e.g., 15000" />
+            </div>
+
+            <div class="input-group">
+              <label for="days">Operating Days per Month</label>
+              <input
+                type="number"
+                id="days"
+                placeholder="e.g., 30"
+                value="30"
+              />
+            </div>
+
+            <button type="button" id="resetBtn">Reset All</button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Daily Covers</div>
+              <div class="output-value" id="dailyCovers">0</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Monthly Revenue</div>
+              <div class="output-value" id="revenue">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Food Costs</div>
+              <div class="output-value" id="foodCost">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="totalCosts">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Net Profit</div>
+              <div class="output-value" id="profit">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="margin">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Cost Ratio (% of Revenue)</div>
+              <div class="output-value" id="ratio">0.00%</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Profit per Cover</div>
+              <div class="output-value" id="profitCover">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Break-even Covers / Day</div>
+              <div class="output-value" id="breakeven">0</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Monthly Profit</div>
+              <div class="output-value" id="monthly">R0.00</div>
+            </div>
+            <div class="output-group">
+              <div class="output-label">Annual Profit</div>
+              <div class="output-value" id="annual">R0.00</div>
+            </div>
+          </div>
+        </div>
       </div>
-
-    </div>
-  </div>
-  <!-- ================================
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      class RestaurantCalculator {
+        calculate(tables, covers, check, foodPercent, labor, fixed, days) {
+          tables = Number(tables) || 0;
+          covers = Number(covers) || 0;
+          check = Number(check) || 0;
+          foodPercent = Number(foodPercent) || 30;
+          labor = Number(labor) || 0;
+          fixed = Number(fixed) || 0;
+          days = Number(days) || 30;
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+          const dailyCovers = tables * covers;
+          const monthlyRevenue = dailyCovers * check * days;
+          const foodCost = monthlyRevenue * (foodPercent / 100);
+          const totalCosts = foodCost + labor + fixed;
+          const netProfit = monthlyRevenue - totalCosts;
+          const margin = monthlyRevenue
+            ? (netProfit / monthlyRevenue) * 100
+            : 0;
+          const ratio = monthlyRevenue
+            ? (totalCosts / monthlyRevenue) * 100
+            : 0;
+          const profitCover = dailyCovers
+            ? netProfit / (dailyCovers * days)
+            : 0;
+          const breakeven =
+            check - (check * foodPercent) / 100 > 0
+              ? Math.ceil(
+                  (labor + fixed) /
+                    ((check - (check * foodPercent) / 100) * days),
+                )
+              : 0;
 
-  </div>
-</footer>
+          return {
+            dailyCovers,
+            monthlyRevenue,
+            foodCost,
+            totalCosts,
+            netProfit,
+            margin,
+            ratio,
+            profitCover,
+            breakeven,
+            monthlyProfit: netProfit,
+            annualProfit: netProfit * 12,
+          };
+        }
+      }
 
-<script>
-class RestaurantCalculator {
-  calculate(tables, covers, check, foodPercent, labor, fixed, days){
-    tables = Number(tables)||0;
-    covers = Number(covers)||0;
-    check = Number(check)||0;
-    foodPercent = Number(foodPercent)||30;
-    labor = Number(labor)||0;
-    fixed = Number(fixed)||0;
-    days = Number(days)||30;
+      // Formatter functions
+      const f = (v) =>
+        "R" +
+        Number(v).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      const p = (v) => Number(v).toFixed(2) + "%";
 
-    const dailyCovers = tables * covers;
-    const monthlyRevenue = dailyCovers * check * days;
-    const foodCost = monthlyRevenue * (foodPercent/100);
-    const totalCosts = foodCost + labor + fixed;
-    const netProfit = monthlyRevenue - totalCosts;
-    const margin = monthlyRevenue ? (netProfit/monthlyRevenue*100) : 0;
-    const ratio = monthlyRevenue ? (totalCosts/monthlyRevenue*100) : 0;
-    const profitCover = dailyCovers ? netProfit/(dailyCovers*days) : 0;
-    const breakeven = (check - (check*foodPercent/100))>0 ? Math.ceil((labor+fixed)/((check-(check*foodPercent/100))*days)) : 0;
+      const calc = () => {
+        const t = document.getElementById("tables").value;
+        const c = document.getElementById("covers").value;
+        const a = document.getElementById("check").value;
+        const fp = document.getElementById("foodPercent").value;
+        const l = document.getElementById("labor").value;
+        const fx = document.getElementById("fixed").value;
+        const d = document.getElementById("days").value;
 
-    return {
-      dailyCovers, monthlyRevenue, foodCost, totalCosts, netProfit,
-      margin, ratio, profitCover, breakeven, monthlyProfit: netProfit, annualProfit: netProfit*12
-    };
-  }
-}
+        const result = new RestaurantCalculator().calculate(
+          t,
+          c,
+          a,
+          fp,
+          l,
+          fx,
+          d,
+        );
 
-// Formatter functions
-const f = v => "R"+Number(v).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
-const p = v => Number(v).toFixed(2)+"%";
+        dailyCovers.textContent = result.dailyCovers;
+        revenue.textContent = f(result.monthlyRevenue);
+        foodCost.textContent = f(result.foodCost);
+        totalCosts.textContent = f(result.totalCosts);
 
-const calc = ()=>{
-  const t = document.getElementById("tables").value;
-  const c = document.getElementById("covers").value;
-  const a = document.getElementById("check").value;
-  const fp = document.getElementById("foodPercent").value;
-  const l = document.getElementById("labor").value;
-  const fx = document.getElementById("fixed").value;
-  const d = document.getElementById("days").value;
+        profit.textContent = f(result.netProfit);
+        profit.className =
+          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
 
-  const result = new RestaurantCalculator().calculate(t,c,a,fp,l,fx,d);
+        margin.textContent = p(result.margin);
+        ratio.textContent = p(result.ratio);
+        profitCover.textContent = f(result.profitCover);
+        breakeven.textContent = result.breakeven;
+        monthly.textContent = f(result.monthlyProfit);
+        annual.textContent = f(result.annualProfit);
+      };
 
-  dailyCovers.textContent = result.dailyCovers;
-  revenue.textContent = f(result.monthlyRevenue);
-  foodCost.textContent = f(result.foodCost);
-  totalCosts.textContent = f(result.totalCosts);
-
-  profit.textContent = f(result.netProfit);
-  profit.className = "output-value "+(result.netProfit>=0?"positive":"negative");
-
-  margin.textContent = p(result.margin);
-  ratio.textContent = p(result.ratio);
-  profitCover.textContent = f(result.profitCover);
-  breakeven.textContent = result.breakeven;
-  monthly.textContent = f(result.monthlyProfit);
-  annual.textContent = f(result.annualProfit);
-};
-
-// Add input listeners
-["tables","covers","check","foodPercent","labor","fixed","days"].forEach(id=>{
-  document.getElementById(id).addEventListener("input",calc);
-});
-
-// Reset button
-document.getElementById("resetBtn").addEventListener("click", ()=>{
-  ["tables","covers","check","labor","fixed"].forEach(i=>document.getElementById(i).value="");
-  document.getElementById("foodPercent").value=30;
-  document.getElementById("days").value=30;
-  calc();
-});
-
-// Initialize
-const dailyCovers = document.getElementById("dailyCovers");
-const revenue = document.getElementById("revenue");
-const foodCost = document.getElementById("foodCost");
-const totalCosts = document.getElementById("totalCosts");
-const profit = document.getElementById("profit");
-const margin = document.getElementById("margin");
-const ratio = document.getElementById("ratio");
-const profitCover = document.getElementById("profitCover");
-const breakeven = document.getElementById("breakeven");
-const monthly = document.getElementById("monthly");
-const annual = document.getElementById("annual");
-
-calc();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      // Add input listeners
+      [
+        "tables",
+        "covers",
+        "check",
+        "foodPercent",
+        "labor",
+        "fixed",
+        "days",
+      ].forEach((id) => {
+        document.getElementById(id).addEventListener("input", calc);
       });
-    });
-  }
-</script>
 
-</body>
+      // Reset button
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        ["tables", "covers", "check", "labor", "fixed"].forEach(
+          (i) => (document.getElementById(i).value = ""),
+        );
+        document.getElementById("foodPercent").value = 30;
+        document.getElementById("days").value = 30;
+        calc();
+      });
+
+      // Initialize
+      const dailyCovers = document.getElementById("dailyCovers");
+      const revenue = document.getElementById("revenue");
+      const foodCost = document.getElementById("foodCost");
+      const totalCosts = document.getElementById("totalCosts");
+      const profit = document.getElementById("profit");
+      const margin = document.getElementById("margin");
+      const ratio = document.getElementById("ratio");
+      const profitCover = document.getElementById("profitCover");
+      const breakeven = document.getElementById("breakeven");
+      const monthly = document.getElementById("monthly");
+      const annual = document.getElementById("annual");
+
+      calc();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

@@ -1,349 +1,429 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forestry Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forestry Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-primary.html">Primary</a>
-    <span>→</span>
-    <span>Forestry</span>
-  </div>
-
-  <h1>Forestry Calculators</h1>
-  <p>Estimate timber revenue, production costs, and profitability for forest management projects.</p>
-
-  <div class="calculator-container">
-    <h2>Timber Profitability Calculator</h2>
-    <p>Calculate revenue and profit from timber harvesting, including operational and fixed costs.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="forestry-volume">Timber Volume (m³)</label>
-          <input type="number" id="forestry-volume" placeholder="Cubic meters of timber">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-price">Price per m³ (R)</label>
-          <input type="number" id="forestry-price" placeholder="Selling price per m³">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-labor">Labor Costs (R)</label>
-          <input type="number" id="forestry-labor" placeholder="Worker wages">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-equipment">Equipment & Maintenance (R)</label>
-          <input type="number" id="forestry-equipment" placeholder="Machinery, fuel, repairs">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-replanting">Reforestation Costs (R)</label>
-          <input type="number" id="forestry-replanting" placeholder="Saplings, planting">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-fixed">Fixed Costs (R)</label>
-          <input type="number" id="forestry-fixed" placeholder="Admin, insurance, permits">
-        </div>
-
-        <div class="input-group">
-          <label for="forestry-months">Number of Months / Harvest Cycles</label>
-          <input type="number" id="forestry-months" placeholder="1 for single harvest" min="1" value="1">
-        </div>
-
-        <button id="resetBtn" type="button" onclick="resetForestry()">Reset All</button>
-      </div>
-
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Timber Volume</div>
-          <div class="output-value" id="forestry-volume-output">0 m³</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Revenue</div>
-          <div class="output-value" id="forestry-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="forestry-total-costs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="forestry-profit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit per m³</div>
-          <div class="output-value" id="forestry-profit-per-unit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="forestry-margin">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Break-even Volume (m³)</div>
-          <div class="output-value" id="forestry-breakeven">0 m³</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="forestry-roi">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Annual / Multi-Harvest Profit</div>
-          <div class="output-value" id="forestry-annual-profit">R0.00</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-primary.html">Primary</a>
+        <span>→</span>
+        <span>Forestry</span>
+      </div>
+
+      <h1>Forestry Calculators</h1>
+      <p>
+        Estimate timber revenue, production costs, and profitability for forest
+        management projects.
+      </p>
+
+      <div class="calculator-container">
+        <h2>Timber Profitability Calculator</h2>
+        <p>
+          Calculate revenue and profit from timber harvesting, including
+          operational and fixed costs.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="forestry-volume">Timber Volume (m³)</label>
+              <input
+                type="number"
+                id="forestry-volume"
+                placeholder="Cubic meters of timber"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-price">Price per m³ (R)</label>
+              <input
+                type="number"
+                id="forestry-price"
+                placeholder="Selling price per m³"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-labor">Labor Costs (R)</label>
+              <input
+                type="number"
+                id="forestry-labor"
+                placeholder="Worker wages"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-equipment"
+                >Equipment & Maintenance (R)</label
+              >
+              <input
+                type="number"
+                id="forestry-equipment"
+                placeholder="Machinery, fuel, repairs"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-replanting">Reforestation Costs (R)</label>
+              <input
+                type="number"
+                id="forestry-replanting"
+                placeholder="Saplings, planting"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="forestry-fixed"
+                placeholder="Admin, insurance, permits"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="forestry-months"
+                >Number of Months / Harvest Cycles</label
+              >
+              <input
+                type="number"
+                id="forestry-months"
+                placeholder="1 for single harvest"
+                min="1"
+                value="1"
+              />
+            </div>
+
+            <button id="resetBtn" type="button" onclick="resetForestry()">
+              Reset All
+            </button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Timber Volume</div>
+              <div class="output-value" id="forestry-volume-output">0 m³</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="forestry-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="forestry-total-costs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="forestry-profit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit per m³</div>
+              <div class="output-value" id="forestry-profit-per-unit">
+                R0.00
+              </div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="forestry-margin">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Break-even Volume (m³)</div>
+              <div class="output-value" id="forestry-breakeven">0 m³</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="forestry-roi">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Annual / Multi-Harvest Profit</div>
+              <div class="output-value" id="forestry-annual-profit">R0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      // Helper functions
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      // Forestry Calculator Class
+      class ForestryCalculator {
+        calculate(volume, price, labor, equipment, replanting, fixed, months) {
+          volume = parseFloat(volume) || 0;
+          price = parseFloat(price) || 0;
+          labor = parseFloat(labor) || 0;
+          equipment = parseFloat(equipment) || 0;
+          replanting = parseFloat(replanting) || 0;
+          fixed = parseFloat(fixed) || 0;
+          months = parseInt(months) || 1;
 
-  </div>
-</footer>
+          const revenue = volume * price;
+          const totalCosts = labor + equipment + replanting + fixed;
+          const profit = revenue - totalCosts;
+          const profitPerUnit = volume ? profit / volume : 0;
+          const margin = revenue ? (profit / revenue) * 100 : 0;
+          const breakEvenVolume = price ? totalCosts / price : 0;
+          const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
+          const annualProfit = profit * months;
 
-<script>
-  // Helper functions
-  function formatCurrency(value) {
-    return 'R' + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + '%';
-  }
+          return {
+            volume,
+            revenue,
+            totalCosts,
+            profit,
+            profitPerUnit,
+            margin,
+            breakEvenVolume,
+            roi,
+            annualProfit,
+          };
+        }
+      }
 
-  // Forestry Calculator Class
-  class ForestryCalculator {
-    calculate(volume, price, labor, equipment, replanting, fixed, months) {
-      volume = parseFloat(volume) || 0;
-      price = parseFloat(price) || 0;
-      labor = parseFloat(labor) || 0;
-      equipment = parseFloat(equipment) || 0;
-      replanting = parseFloat(replanting) || 0;
-      fixed = parseFloat(fixed) || 0;
-      months = parseInt(months) || 1;
+      const forestryCalc = new ForestryCalculator();
+      const forestryInputs = [
+        "forestry-volume",
+        "forestry-price",
+        "forestry-labor",
+        "forestry-equipment",
+        "forestry-replanting",
+        "forestry-fixed",
+        "forestry-months",
+      ];
 
-      const revenue = volume * price;
-      const totalCosts = (labor + equipment + replanting + fixed);
-      const profit = revenue - totalCosts;
-      const profitPerUnit = volume ? profit / volume : 0;
-      const margin = revenue ? (profit / revenue) * 100 : 0;
-      const breakEvenVolume = price ? totalCosts / price : 0;
-      const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-      const annualProfit = profit * months;
-
-      return { volume, revenue, totalCosts, profit, profitPerUnit, margin, breakEvenVolume, roi, annualProfit };
-    }
-  }
-
-  const forestryCalc = new ForestryCalculator();
-  const forestryInputs = ['forestry-volume','forestry-price','forestry-labor','forestry-equipment','forestry-replanting','forestry-fixed','forestry-months'];
-
-  forestryInputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', updateForestryCalculator);
-  });
-
-  function updateForestryCalculator() {
-    const result = forestryCalc.calculate(
-      document.getElementById('forestry-volume').value,
-      document.getElementById('forestry-price').value,
-      document.getElementById('forestry-labor').value,
-      document.getElementById('forestry-equipment').value,
-      document.getElementById('forestry-replanting').value,
-      document.getElementById('forestry-fixed').value,
-      document.getElementById('forestry-months').value
-    );
-
-    document.getElementById('forestry-volume-output').textContent = result.volume.toFixed(0) + ' m³';
-    document.getElementById('forestry-revenue').textContent = formatCurrency(result.revenue);
-    document.getElementById('forestry-total-costs').textContent = formatCurrency(result.totalCosts);
-
-    const profitEl = document.getElementById('forestry-profit');
-    profitEl.textContent = formatCurrency(result.profit);
-    profitEl.className = 'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('forestry-profit-per-unit').textContent = formatCurrency(result.profitPerUnit);
-    document.getElementById('forestry-margin').textContent = formatPercentage(result.margin);
-    document.getElementById('forestry-breakeven').textContent = result.breakEvenVolume.toFixed(2) + ' m³';
-    document.getElementById('forestry-roi').textContent = formatPercentage(result.roi);
-    document.getElementById('forestry-annual-profit').textContent = formatCurrency(result.annualProfit);
-  }
-
-  function resetForestry() {
-    forestryInputs.forEach(id => document.getElementById(id).value = '');
-    document.getElementById('forestry-months').value = 1;
-    updateForestryCalculator();
-  }
-
-  updateForestryCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      forestryInputs.forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateForestryCalculator);
       });
-    });
-  }
-</script>
 
-</body>
+      function updateForestryCalculator() {
+        const result = forestryCalc.calculate(
+          document.getElementById("forestry-volume").value,
+          document.getElementById("forestry-price").value,
+          document.getElementById("forestry-labor").value,
+          document.getElementById("forestry-equipment").value,
+          document.getElementById("forestry-replanting").value,
+          document.getElementById("forestry-fixed").value,
+          document.getElementById("forestry-months").value,
+        );
+
+        document.getElementById("forestry-volume-output").textContent =
+          result.volume.toFixed(0) + " m³";
+        document.getElementById("forestry-revenue").textContent =
+          formatCurrency(result.revenue);
+        document.getElementById("forestry-total-costs").textContent =
+          formatCurrency(result.totalCosts);
+
+        const profitEl = document.getElementById("forestry-profit");
+        profitEl.textContent = formatCurrency(result.profit);
+        profitEl.className =
+          "output-value " + (result.profit >= 0 ? "positive" : "negative");
+
+        document.getElementById("forestry-profit-per-unit").textContent =
+          formatCurrency(result.profitPerUnit);
+        document.getElementById("forestry-margin").textContent =
+          formatPercentage(result.margin);
+        document.getElementById("forestry-breakeven").textContent =
+          result.breakEvenVolume.toFixed(2) + " m³";
+        document.getElementById("forestry-roi").textContent = formatPercentage(
+          result.roi,
+        );
+        document.getElementById("forestry-annual-profit").textContent =
+          formatCurrency(result.annualProfit);
+      }
+
+      function resetForestry() {
+        forestryInputs.forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        document.getElementById("forestry-months").value = 1;
+        updateForestryCalculator();
+      }
+
+      updateForestryCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

@@ -1,325 +1,413 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Healthcare Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-tertiary.html">Tertiary</a>
-    <span>→</span>
-    <span>Healthcare</span>
-  </div>
-
-  <h1>Healthcare Calculators</h1>
-  <p>Manage clinic operations and patient revenue analysis.</p>
-
-  <div class="calculator-container">
-    <h2>Clinic Profitability Calculator</h2>
-    <p>Calculate clinic revenue, costs, and profit margins based on patient volume.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="clinic-patients">Patients Per Day</label>
-          <input type="number" id="clinic-patients" placeholder="Enter average daily patients">
-        </div>
-
-        <div class="input-group">
-          <label for="clinic-fee">Consultation Fee (R)</label>
-          <input type="number" id="clinic-fee" placeholder="Fee per patient">
-        </div>
-
-        <div class="input-group">
-          <label for="clinic-working-days">Working Days Per Month</label>
-          <input type="number" id="clinic-working-days" placeholder="Clinic operating days">
-        </div>
-
-        <div class="input-group">
-          <label for="clinic-staff">Staff Costs (R)</label>
-          <input type="number" id="clinic-staff" placeholder="Monthly staff salaries">
-        </div>
-
-        <div class="input-group">
-          <label for="clinic-supplies">Medical Supplies & Equipment (R)</label>
-          <input type="number" id="clinic-supplies" placeholder="Monthly supplies cost">
-        </div>
-
-        <div class="input-group">
-          <label for="clinic-fixed">Fixed Costs (R)</label>
-          <input type="number" id="clinic-fixed" placeholder="Rent, utilities, insurance">
-        </div>
-
-        <button type="button" id="resetBtn">Reset All</button>
-      </div>
-
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Monthly Patients</div>
-          <div class="output-value" id="clinic-monthly-patients">0</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Monthly Revenue</div>
-          <div class="output-value" id="clinic-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="clinic-total-costs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="clinic-profit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost Per Patient</div>
-          <div class="output-value" id="clinic-per-patient">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Revenue Per Patient</div>
-          <div class="output-value" id="clinic-revenue-per-patient">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="clinic-roi">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="clinic-margin">0.00%</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-tertiary.html">Tertiary</a>
+        <span>→</span>
+        <span>Healthcare</span>
+      </div>
+
+      <h1>Healthcare Calculators</h1>
+      <p>Manage clinic operations and patient revenue analysis.</p>
+
+      <div class="calculator-container">
+        <h2>Clinic Profitability Calculator</h2>
+        <p>
+          Calculate clinic revenue, costs, and profit margins based on patient
+          volume.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="clinic-patients">Patients Per Day</label>
+              <input
+                type="number"
+                id="clinic-patients"
+                placeholder="Enter average daily patients"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="clinic-fee">Consultation Fee (R)</label>
+              <input
+                type="number"
+                id="clinic-fee"
+                placeholder="Fee per patient"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="clinic-working-days">Working Days Per Month</label>
+              <input
+                type="number"
+                id="clinic-working-days"
+                placeholder="Clinic operating days"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="clinic-staff">Staff Costs (R)</label>
+              <input
+                type="number"
+                id="clinic-staff"
+                placeholder="Monthly staff salaries"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="clinic-supplies"
+                >Medical Supplies & Equipment (R)</label
+              >
+              <input
+                type="number"
+                id="clinic-supplies"
+                placeholder="Monthly supplies cost"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="clinic-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="clinic-fixed"
+                placeholder="Rent, utilities, insurance"
+              />
+            </div>
+
+            <button type="button" id="resetBtn">Reset All</button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Monthly Patients</div>
+              <div class="output-value" id="clinic-monthly-patients">0</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Monthly Revenue</div>
+              <div class="output-value" id="clinic-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="clinic-total-costs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="clinic-profit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost Per Patient</div>
+              <div class="output-value" id="clinic-per-patient">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Revenue Per Patient</div>
+              <div class="output-value" id="clinic-revenue-per-patient">
+                R0.00
+              </div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="clinic-roi">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="clinic-margin">0.00%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
 
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-  </div>
-</div>
-</main>
+    <script>
+      class ClinicCalculator {
+        calculateFromInputs(
+          patientsPerDay,
+          fee,
+          workingDays,
+          staff,
+          supplies,
+          fixed,
+        ) {
+          patientsPerDay = parseFloat(patientsPerDay) || 0;
+          fee = parseFloat(fee) || 0;
+          workingDays = parseFloat(workingDays) || 0;
+          staff = parseFloat(staff) || 0;
+          supplies = parseFloat(supplies) || 0;
+          fixed = parseFloat(fixed) || 0;
 
-<footer>
-  <div class="footer-container">
-    <div class="footer-about">
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+          const monthlyPatients = patientsPerDay * workingDays;
+          const monthlyRevenue = monthlyPatients * fee;
+          const totalCosts = staff + supplies + fixed;
+          const profitLoss = monthlyRevenue - totalCosts;
+          const costPerPatient = monthlyPatients
+            ? totalCosts / monthlyPatients
+            : 0;
+          const revenuePerPatient = monthlyPatients
+            ? monthlyRevenue / monthlyPatients
+            : 0;
+          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
+          const margin = monthlyRevenue
+            ? (profitLoss / monthlyRevenue) * 100
+            : 0;
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+          return {
+            monthlyPatients,
+            monthlyRevenue,
+            totalCosts,
+            profitLoss,
+            costPerPatient,
+            revenuePerPatient,
+            roi,
+            margin,
+          };
+        }
+      }
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+      function formatCurrency(v) {
+        return (
+          "R" +
+          Number(v).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+      function formatPercentage(v) {
+        return Number(v).toFixed(2) + "%";
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
-  </div>
-</footer>
+      const clinicCalc = new ClinicCalculator();
+      const clinicInputs = [
+        "clinic-patients",
+        "clinic-fee",
+        "clinic-working-days",
+        "clinic-staff",
+        "clinic-supplies",
+        "clinic-fixed",
+      ];
 
-<script>
-class ClinicCalculator {
-  calculateFromInputs(patientsPerDay, fee, workingDays, staff, supplies, fixed) {
-    patientsPerDay = parseFloat(patientsPerDay) || 0;
-    fee = parseFloat(fee) || 0;
-    workingDays = parseFloat(workingDays) || 0;
-    staff = parseFloat(staff) || 0;
-    supplies = parseFloat(supplies) || 0;
-    fixed = parseFloat(fixed) || 0;
+      clinicInputs.forEach((id) =>
+        document
+          .getElementById(id)
+          .addEventListener("input", updateClinicCalculator),
+      );
 
-    const monthlyPatients = patientsPerDay * workingDays;
-    const monthlyRevenue = monthlyPatients * fee;
-    const totalCosts = staff + supplies + fixed;
-    const profitLoss = monthlyRevenue - totalCosts;
-    const costPerPatient = monthlyPatients ? totalCosts / monthlyPatients : 0;
-    const revenuePerPatient = monthlyPatients ? monthlyRevenue / monthlyPatients : 0;
-    const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-    const margin = monthlyRevenue ? (profitLoss / monthlyRevenue) * 100 : 0;
+      function updateClinicCalculator() {
+        const result = clinicCalc.calculateFromInputs(
+          document.getElementById("clinic-patients").value,
+          document.getElementById("clinic-fee").value,
+          document.getElementById("clinic-working-days").value,
+          document.getElementById("clinic-staff").value,
+          document.getElementById("clinic-supplies").value,
+          document.getElementById("clinic-fixed").value,
+        );
 
-    return { monthlyPatients, monthlyRevenue, totalCosts, profitLoss, costPerPatient, revenuePerPatient, roi, margin };
-  }
-}
+        document.getElementById("clinic-monthly-patients").textContent =
+          result.monthlyPatients.toFixed(0);
+        document.getElementById("clinic-revenue").textContent = formatCurrency(
+          result.monthlyRevenue,
+        );
+        document.getElementById("clinic-total-costs").textContent =
+          formatCurrency(result.totalCosts);
 
-function formatCurrency(v){ return 'R'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) }
-function formatPercentage(v){ return Number(v).toFixed(2)+'%' }
+        const profitEl = document.getElementById("clinic-profit");
+        profitEl.textContent = formatCurrency(result.profitLoss);
+        profitEl.className =
+          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
 
-const clinicCalc = new ClinicCalculator();
-const clinicInputs = ['clinic-patients','clinic-fee','clinic-working-days','clinic-staff','clinic-supplies','clinic-fixed'];
+        document.getElementById("clinic-per-patient").textContent =
+          formatCurrency(result.costPerPatient);
+        document.getElementById("clinic-revenue-per-patient").textContent =
+          formatCurrency(result.revenuePerPatient);
+        document.getElementById("clinic-roi").textContent = formatPercentage(
+          result.roi,
+        );
+        document.getElementById("clinic-margin").textContent = formatPercentage(
+          result.margin,
+        );
+      }
 
-clinicInputs.forEach(id => document.getElementById(id).addEventListener('input', updateClinicCalculator));
-
-function updateClinicCalculator() {
-  const result = clinicCalc.calculateFromInputs(
-    document.getElementById('clinic-patients').value,
-    document.getElementById('clinic-fee').value,
-    document.getElementById('clinic-working-days').value,
-    document.getElementById('clinic-staff').value,
-    document.getElementById('clinic-supplies').value,
-    document.getElementById('clinic-fixed').value
-  );
-
-  document.getElementById('clinic-monthly-patients').textContent = result.monthlyPatients.toFixed(0);
-  document.getElementById('clinic-revenue').textContent = formatCurrency(result.monthlyRevenue);
-  document.getElementById('clinic-total-costs').textContent = formatCurrency(result.totalCosts);
-
-  const profitEl = document.getElementById('clinic-profit');
-  profitEl.textContent = formatCurrency(result.profitLoss);
-  profitEl.className = 'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-  document.getElementById('clinic-per-patient').textContent = formatCurrency(result.costPerPatient);
-  document.getElementById('clinic-revenue-per-patient').textContent = formatCurrency(result.revenuePerPatient);
-  document.getElementById('clinic-roi').textContent = formatPercentage(result.roi);
-  document.getElementById('clinic-margin').textContent = formatPercentage(result.margin);
-}
-
-// Reset button
-document.getElementById('resetBtn').addEventListener('click', () => {
-  clinicInputs.forEach(id => document.getElementById(id).value = '');
-  updateClinicCalculator();
-});
-
-// Initialize
-updateClinicCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      // Reset button
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        clinicInputs.forEach((id) => (document.getElementById(id).value = ""));
+        updateClinicCalculator();
       });
-    });
-  }
-</script>
 
-</body>
+      // Initialize
+      updateClinicCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

@@ -1,389 +1,444 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electronics Calculators - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/calculators.css">
-</head>
-<body>
-  <!-- HEADER -->
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="images/Untitled design.png" alt="Logo" class="logo-img">
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electronics Calculators - Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/calculators.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <!-- BRAND -->
+          <div class="brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="brand-logo"
+            />
+            <span class="brand-name">Sandile SystemsWorks</span>
+          </div>
 
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sideNav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="dashboard.html">Calculators</a>
-    </nav>
-  </div>
-</header>
-
-
-<main>
-  <div class="breadcrumb">
-    <a href="dashboard.html">Sectors</a>
-    <span>→</span>
-    <a href="sector-secondary.html">Secondary</a>
-    <span>→</span>
-    <span>Electronics</span>
-  </div>
-
-  <h1>Electronics Calculators</h1>
-  <p>Analyze electronics manufacturing and component cost profitability.</p>
-
-  <!-- ELECTRONICS MANUFACTURING CALCULATOR -->
-  <div class="calculator-container">
-    <h2>Electronics Manufacturing Calculator</h2>
-    <p>Calculate total costs, revenue, and profitability for electronic components and assemblies.</p>
-
-    <div class="calculator-grid">
-      <!-- INPUTS -->
-      <div class="input-section">
-        <h3>Inputs</h3>
-
-        <div class="input-group">
-          <label for="elec-units">Units Produced</label>
-          <input type="number" id="elec-units" placeholder="Total units produced">
-        </div>
-
-        <div class="input-group">
-          <label for="elec-cost">Cost Per Unit (R)</label>
-          <input type="number" id="elec-cost" placeholder="Manufacturing cost per unit">
-        </div>
-
-        <div class="input-group">
-          <label for="elec-price">Selling Price Per Unit (R)</label>
-          <input type="number" id="elec-price" placeholder="Selling price per unit">
-        </div>
-
-        <div class="input-group">
-          <label for="elec-fixed">Fixed Costs (R)</label>
-          <input type="number" id="elec-fixed" placeholder="Rent, equipment, insurance">
-        </div>
-
-        <div class="input-group">
-          <label for="elec-labor">Labor Costs (R)</label>
-          <input type="number" id="elec-labor" placeholder="Staff wages">
-        </div>
-
-        <div class="input-group">
-          <label for="elec-operational">Operational Costs (R)</label>
-          <input type="number" id="elec-operational" placeholder="Utilities, marketing">
-        </div>
-
-        <button id="elec-reset">Reset Calculator</button>
-      </div>
-
-      <!-- OUTPUTS -->
-      <div class="output-section">
-        <h3>Results</h3>
-
-        <div class="output-group">
-          <div class="output-label">Units Produced</div>
-          <div class="output-value" id="elec-units-output">0</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Revenue</div>
-          <div class="output-value" id="elec-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost of Goods</div>
-          <div class="output-value" id="elec-cogs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Total Costs</div>
-          <div class="output-value" id="elec-total-costs">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit / Loss</div>
-          <div class="output-value" id="elec-profit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Profit Margin (%)</div>
-          <div class="output-value" id="elec-margin">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">ROI (%)</div>
-          <div class="output-value" id="elec-roi">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Markup (%)</div>
-          <div class="output-value" id="elec-markup">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Revenue Per Unit</div>
-          <div class="output-value" id="elec-revenue-unit">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Cost Contribution (%)</div>
-          <div class="output-value" id="elec-cost-contribution">0.00%</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Monthly Revenue Projection</div>
-          <div class="output-value" id="elec-monthly-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Annual Revenue Projection</div>
-          <div class="output-value" id="elec-annual-revenue">R0.00</div>
-        </div>
-
-        <div class="output-group">
-          <div class="output-label">Annual Net Profit</div>
-          <div class="output-value" id="elec-annual-profit">R0.00</div>
+          <!-- RIGHT ACTIONS -->
+          <div class="header-actions">
+            <button
+              type="button"
+              onclick="window.auth.logout()"
+              class="btn btn-ghost"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- ================================
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="dashboard.html">Sectors</a>
+        <span>→</span>
+        <a href="sector-secondary.html">Secondary</a>
+        <span>→</span>
+        <span>Electronics</span>
+      </div>
+
+      <h1>Electronics Calculators</h1>
+      <p>Analyze electronics manufacturing and component cost profitability.</p>
+
+      <!-- ELECTRONICS MANUFACTURING CALCULATOR -->
+      <div class="calculator-container">
+        <h2>Electronics Manufacturing Calculator</h2>
+        <p>
+          Calculate total costs, revenue, and profitability for electronic
+          components and assemblies.
+        </p>
+
+        <div class="calculator-grid">
+          <!-- INPUTS -->
+          <div class="input-section">
+            <h3>Inputs</h3>
+
+            <div class="input-group">
+              <label for="elec-units">Units Produced</label>
+              <input
+                type="number"
+                id="elec-units"
+                placeholder="Total units produced"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="elec-cost">Cost Per Unit (R)</label>
+              <input
+                type="number"
+                id="elec-cost"
+                placeholder="Manufacturing cost per unit"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="elec-price">Selling Price Per Unit (R)</label>
+              <input
+                type="number"
+                id="elec-price"
+                placeholder="Selling price per unit"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="elec-fixed">Fixed Costs (R)</label>
+              <input
+                type="number"
+                id="elec-fixed"
+                placeholder="Rent, equipment, insurance"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="elec-labor">Labor Costs (R)</label>
+              <input type="number" id="elec-labor" placeholder="Staff wages" />
+            </div>
+
+            <div class="input-group">
+              <label for="elec-operational">Operational Costs (R)</label>
+              <input
+                type="number"
+                id="elec-operational"
+                placeholder="Utilities, marketing"
+              />
+            </div>
+
+            <button id="elec-reset">Reset Calculator</button>
+          </div>
+
+          <!-- OUTPUTS -->
+          <div class="output-section">
+            <h3>Results</h3>
+
+            <div class="output-group">
+              <div class="output-label">Units Produced</div>
+              <div class="output-value" id="elec-units-output">0</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Revenue</div>
+              <div class="output-value" id="elec-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost of Goods</div>
+              <div class="output-value" id="elec-cogs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Total Costs</div>
+              <div class="output-value" id="elec-total-costs">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit / Loss</div>
+              <div class="output-value" id="elec-profit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Profit Margin (%)</div>
+              <div class="output-value" id="elec-margin">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">ROI (%)</div>
+              <div class="output-value" id="elec-roi">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Markup (%)</div>
+              <div class="output-value" id="elec-markup">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Revenue Per Unit</div>
+              <div class="output-value" id="elec-revenue-unit">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Cost Contribution (%)</div>
+              <div class="output-value" id="elec-cost-contribution">0.00%</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Monthly Revenue Projection</div>
+              <div class="output-value" id="elec-monthly-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Annual Revenue Projection</div>
+              <div class="output-value" id="elec-annual-revenue">R0.00</div>
+            </div>
+
+            <div class="output-group">
+              <div class="output-label">Annual Net Profit</div>
+              <div class="output-value" id="elec-annual-profit">R0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-<div class="sectors-navigation">
-  <h2>Explore All Sectors & Industries</h2>
-  <p>Jump to any sector or industry calculators to quickly compare and analyze multiple business areas.</p>
+      <div class="sectors-navigation">
+        <h2>Explore All Sectors & Industries</h2>
+        <p>
+          Jump to any sector or industry calculators to quickly compare and
+          analyze multiple business areas.
+        </p>
 
-  <div class="sectors-grid">
+        <div class="sectors-grid">
+          <!-- Primary Sector -->
+          <div class="sector-group">
+            <h3>Primary Sector</h3>
+            <ul>
+              <li><a href="industry-agriculture.html">Agriculture</a></li>
+              <li><a href="industry-forestry.html">Forestry</a></li>
+              <li><a href="industry-fishing.html">Fishing</a></li>
+              <li><a href="industry-mining.html">Mining</a></li>
+              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+              <li>
+                <a href="industry-renewable-energy.html">Renewable Energy</a>
+              </li>
+            </ul>
+          </div>
 
-    <!-- Primary Sector -->
-    <div class="sector-group">
-      <h3>Primary Sector</h3>
-      <ul>
-        <li><a href="industry-agriculture.html">Agriculture</a></li>
-        <li><a href="industry-forestry.html">Forestry</a></li>
-        <li><a href="industry-fishing.html">Fishing</a></li>
-        <li><a href="industry-mining.html">Mining</a></li>
-        <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-        <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-      </ul>
-    </div>
+          <!-- Secondary Sector -->
+          <div class="sector-group">
+            <h3>Secondary Sector</h3>
+            <ul>
+              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+              <li><a href="industry-construction.html">Construction</a></li>
+              <li><a href="industry-automotive.html">Automotive</a></li>
+              <li><a href="industry-electronics.html">Electronics</a></li>
+              <li><a href="industry-textiles.html">Textiles</a></li>
+              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+            </ul>
+          </div>
 
-    <!-- Secondary Sector -->
-    <div class="sector-group">
-      <h3>Secondary Sector</h3>
-      <ul>
-        <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-        <li><a href="industry-construction.html">Construction</a></li>
-        <li><a href="industry-automotive.html">Automotive</a></li>
-        <li><a href="industry-electronics.html">Electronics</a></li>
-        <li><a href="industry-textiles.html">Textiles</a></li>
-        <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-      </ul>
-    </div>
+          <!-- Tertiary Sector -->
+          <div class="sector-group">
+            <h3>Tertiary Sector</h3>
+            <ul>
+              <li><a href="industry-real-estate.html">Real Estate</a></li>
+              <li><a href="industry-retail.html">Retail</a></li>
+              <li><a href="industry-restaurants.html">Restaurants</a></li>
+              <li><a href="industry-hospitality.html">Hospitality</a></li>
+              <li><a href="industry-logistics.html">Logistics</a></li>
+              <li><a href="industry-healthcare.html">Healthcare</a></li>
+              <li><a href="industry-education.html">Education</a></li>
+              <li><a href="industry-finance.html">Finance</a></li>
+              <li><a href="industry-marketing.html">Marketing</a></li>
+              <li><a href="industry-consulting.html">Consulting</a></li>
+            </ul>
+          </div>
 
-    <!-- Tertiary Sector -->
-    <div class="sector-group">
-      <h3>Tertiary Sector</h3>
-      <ul>
-        <li><a href="industry-real-estate.html">Real Estate</a></li>
-        <li><a href="industry-retail.html">Retail</a></li>
-        <li><a href="industry-restaurants.html">Restaurants</a></li>
-        <li><a href="industry-hospitality.html">Hospitality</a></li>
-        <li><a href="industry-logistics.html">Logistics</a></li>
-        <li><a href="industry-healthcare.html">Healthcare</a></li>
-        <li><a href="industry-education.html">Education</a></li>
-        <li><a href="industry-finance.html">Finance</a></li>
-        <li><a href="industry-marketing.html">Marketing</a></li>
-        <li><a href="industry-consulting.html">Consulting</a></li>
-      </ul>
-    </div>
+          <!-- Quaternary Sector -->
+          <div class="sector-group">
+            <h3>Quaternary Sector</h3>
+            <ul>
+              <li><a href="industry-software.html">Software</a></li>
+              <li><a href="industry-saas.html">SaaS</a></li>
+              <li><a href="industry-it-services.html">IT Services</a></li>
+              <li><a href="industry-media.html">Media</a></li>
+              <li><a href="industry-research-development.html">R&D</a></li>
+              <li>
+                <a href="industry-telecommunications.html"
+                  >Telecommunications</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    <!-- Quaternary Sector -->
-    <div class="sector-group">
-      <h3>Quaternary Sector</h3>
-      <ul>
-        <li><a href="industry-software.html">Software</a></li>
-        <li><a href="industry-saas.html">SaaS</a></li>
-        <li><a href="industry-it-services.html">IT Services</a></li>
-        <li><a href="industry-media.html">Media</a></li>
-        <li><a href="industry-research-development.html">R&D</a></li>
-        <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-      </ul>
-    </div>
-
-    <!-- Quinary Sector -->
-    <div class="sector-group">
-      <h3>Quinary Sector</h3>
-      <ul>
-        <li><a href="industry-government.html">Government</a></li>
-        <li><a href="industry-ngos.html">NGOs</a></li>
-        <li><a href="industry-social-services.html">Social & Community Services</a></li>
-        <li><a href="industry-public-administration.html">Public Administration</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-container">
-    
-    <div class="footer-about">
-      <div class="logo">
-        <img src="images/Untitled design.png" alt="Logo" class="logo-img">
+          <!-- Quinary Sector -->
+          <div class="sector-group">
+            <h3>Quinary Sector</h3>
+            <ul>
+              <li><a href="industry-government.html">Government</a></li>
+              <li><a href="industry-ngos.html">NGOs</a></li>
+              <li>
+                <a href="industry-social-services.html"
+                  >Social & Community Services</a
+                >
+              </li>
+              <li>
+                <a href="industry-public-administration.html"
+                  >Public Administration</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h3>Sandile SystemsWorks</h3>
-      <p>Professional business solutions and calculators for all sectors. We also provide <strong>web development, systems suites, and SaaS tools</strong> to help your business grow.</p>
-    </div>
+    </main>
 
-    <div class="footer-contact">
-      <h4>Contact Us</h4>
-      <p>Email: <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a></p>
-      <p>Phone: <a href="tel:+27717378540">071 737 8540</a></p>
-    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+    </script>
 
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a><br>
-      <a href="about.html">About</a><br>
-      <a href="dashboard.html">Calculators</a><br>
-    </div>
+    <script>
+      function formatCurrency(value) {
+        return (
+          "R" +
+          Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
 
-    <div class="footer-copy">
-      <p>&copy; 2026 Sandile SystemsWorks. All rights reserved.</p>
-    </div>
+      function formatPercentage(value) {
+        return Number(value).toFixed(2) + "%";
+      }
 
-  </div>
-</footer>
+      class ElectronicsCalculator {
+        calculateFromInputs(units, cost, price, fixed, labor, operational) {
+          units = parseFloat(units) || 0;
+          cost = parseFloat(cost) || 0;
+          price = parseFloat(price) || 0;
+          fixed = parseFloat(fixed) || 0;
+          labor = parseFloat(labor) || 0;
+          operational = parseFloat(operational) || 0;
 
-<!-- JAVASCRIPT -->
-<script>
-  function formatCurrency(value) {
-    return 'R' + Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
+          const totalRevenue = units * price;
+          const costOfGoods = units * cost;
+          const totalCosts = costOfGoods + fixed + labor + operational;
+          const profitLoss = totalRevenue - totalCosts;
+          const profitMargin = totalRevenue
+            ? (profitLoss / totalRevenue) * 100
+            : 0;
+          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
+          const markup = cost ? ((price - cost) / cost) * 100 : 0;
 
-  function formatPercentage(value) {
-    return Number(value).toFixed(2) + '%';
-  }
+          const revenuePerUnit = units ? totalRevenue / units : 0;
+          const costContribution = totalCosts
+            ? (costOfGoods / totalCosts) * 100
+            : 0;
+          const monthlyRevenue = totalRevenue;
+          const annualRevenue = monthlyRevenue * 12;
+          const annualProfit = profitLoss * 12;
 
-  class ElectronicsCalculator {
-    calculateFromInputs(units, cost, price, fixed, labor, operational) {
-      units = parseFloat(units) || 0;
-      cost = parseFloat(cost) || 0;
-      price = parseFloat(price) || 0;
-      fixed = parseFloat(fixed) || 0;
-      labor = parseFloat(labor) || 0;
-      operational = parseFloat(operational) || 0;
+          return {
+            units,
+            totalRevenue,
+            costOfGoods,
+            totalCosts,
+            profitLoss,
+            profitMargin,
+            roi,
+            markup,
+            revenuePerUnit,
+            costContribution,
+            monthlyRevenue,
+            annualRevenue,
+            annualProfit,
+          };
+        }
+      }
 
-      const totalRevenue = units * price;
-      const costOfGoods = units * cost;
-      const totalCosts = costOfGoods + fixed + labor + operational;
-      const profitLoss = totalRevenue - totalCosts;
-      const profitMargin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
-      const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-      const markup = cost ? ((price - cost) / cost) * 100 : 0;
+      const elecCalc = new ElectronicsCalculator();
+      const elecInputs = [
+        "elec-units",
+        "elec-cost",
+        "elec-price",
+        "elec-fixed",
+        "elec-labor",
+        "elec-operational",
+      ];
 
-      const revenuePerUnit = units ? totalRevenue / units : 0;
-      const costContribution = totalCosts ? (costOfGoods / totalCosts) * 100 : 0;
-      const monthlyRevenue = totalRevenue;
-      const annualRevenue = monthlyRevenue * 12;
-      const annualProfit = profitLoss * 12;
-
-      return {
-        units,
-        totalRevenue,
-        costOfGoods,
-        totalCosts,
-        profitLoss,
-        profitMargin,
-        roi,
-        markup,
-        revenuePerUnit,
-        costContribution,
-        monthlyRevenue,
-        annualRevenue,
-        annualProfit
-      };
-    }
-  }
-
-  const elecCalc = new ElectronicsCalculator();
-  const elecInputs = ['elec-units','elec-cost','elec-price','elec-fixed','elec-labor','elec-operational'];
-
-  elecInputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', updateElecCalculator);
-  });
-
-  document.getElementById('elec-reset').addEventListener('click', () => {
-    elecInputs.forEach(id => document.getElementById(id).value = '');
-    updateElecCalculator();
-  });
-
-  function updateElecCalculator() {
-    const result = elecCalc.calculateFromInputs(
-      document.getElementById('elec-units').value,
-      document.getElementById('elec-cost').value,
-      document.getElementById('elec-price').value,
-      document.getElementById('elec-fixed').value,
-      document.getElementById('elec-labor').value,
-      document.getElementById('elec-operational').value
-    );
-
-    document.getElementById('elec-units-output').textContent = result.units.toFixed(0);
-    document.getElementById('elec-revenue').textContent = formatCurrency(result.totalRevenue);
-    document.getElementById('elec-cogs').textContent = formatCurrency(result.costOfGoods);
-    document.getElementById('elec-total-costs').textContent = formatCurrency(result.totalCosts);
-
-    const profitEl = document.getElementById('elec-profit');
-    profitEl.textContent = formatCurrency(result.profitLoss);
-    profitEl.className = 'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('elec-margin').textContent = formatPercentage(result.profitMargin);
-    document.getElementById('elec-roi').textContent = formatPercentage(result.roi);
-    document.getElementById('elec-markup').textContent = formatPercentage(result.markup);
-    document.getElementById('elec-revenue-unit').textContent = formatCurrency(result.revenuePerUnit);
-    document.getElementById('elec-cost-contribution').textContent = formatPercentage(result.costContribution);
-    document.getElementById('elec-monthly-revenue').textContent = formatCurrency(result.monthlyRevenue);
-    document.getElementById('elec-annual-revenue').textContent = formatCurrency(result.annualRevenue);
-    document.getElementById('elec-annual-profit').textContent = formatCurrency(result.annualProfit);
-  }
-
-  // Initialize
-  updateElecCalculator();
-</script>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sideNav = document.getElementById("sideNav");
-
-  if (hamburger && sideNav) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sideNav.classList.toggle("active");
-      document.body.style.overflow =
-        sideNav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll("#sideNav a").forEach(link => {
-      link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
-        sideNav.classList.remove("active");
-        document.body.style.overflow = "";
+      elecInputs.forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateElecCalculator);
       });
-    });
-  }
-</script>
 
-</body>
+      document.getElementById("elec-reset").addEventListener("click", () => {
+        elecInputs.forEach((id) => (document.getElementById(id).value = ""));
+        updateElecCalculator();
+      });
+
+      function updateElecCalculator() {
+        const result = elecCalc.calculateFromInputs(
+          document.getElementById("elec-units").value,
+          document.getElementById("elec-cost").value,
+          document.getElementById("elec-price").value,
+          document.getElementById("elec-fixed").value,
+          document.getElementById("elec-labor").value,
+          document.getElementById("elec-operational").value,
+        );
+
+        document.getElementById("elec-units-output").textContent =
+          result.units.toFixed(0);
+        document.getElementById("elec-revenue").textContent = formatCurrency(
+          result.totalRevenue,
+        );
+        document.getElementById("elec-cogs").textContent = formatCurrency(
+          result.costOfGoods,
+        );
+        document.getElementById("elec-total-costs").textContent =
+          formatCurrency(result.totalCosts);
+
+        const profitEl = document.getElementById("elec-profit");
+        profitEl.textContent = formatCurrency(result.profitLoss);
+        profitEl.className =
+          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
+
+        document.getElementById("elec-margin").textContent = formatPercentage(
+          result.profitMargin,
+        );
+        document.getElementById("elec-roi").textContent = formatPercentage(
+          result.roi,
+        );
+        document.getElementById("elec-markup").textContent = formatPercentage(
+          result.markup,
+        );
+        document.getElementById("elec-revenue-unit").textContent =
+          formatCurrency(result.revenuePerUnit);
+        document.getElementById("elec-cost-contribution").textContent =
+          formatPercentage(result.costContribution);
+        document.getElementById("elec-monthly-revenue").textContent =
+          formatCurrency(result.monthlyRevenue);
+        document.getElementById("elec-annual-revenue").textContent =
+          formatCurrency(result.annualRevenue);
+        document.getElementById("elec-annual-profit").textContent =
+          formatCurrency(result.annualProfit);
+      }
+
+      // Initialize
+      updateElecCalculator();
+    </script>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sideNav = document.getElementById("sideNav");
+
+      if (hamburger && sideNav) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          sideNav.classList.toggle("active");
+          document.body.style.overflow = sideNav.classList.contains("active")
+            ? "hidden"
+            : "";
+        });
+
+        document.querySelectorAll("#sideNav a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            sideNav.classList.remove("active");
+            document.body.style.overflow = "";
+          });
+        });
+      }
+    </script>
+  </body>
 </html>
