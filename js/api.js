@@ -1,4 +1,5 @@
 // js/api.js
+
 async function apiFetch(path, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -10,15 +11,7 @@ async function apiFetch(path, { method = "GET", body, token } = {}) {
   });
 
   const data = await res.json().catch(() => ({}));
-
-  // Keep your original behavior + add status for debugging
-  if (!res.ok) {
-    const err = new Error(data.error || "Request failed");
-    err.status = res.status;
-    err.data = data;
-    throw err;
-  }
-
+  if (!res.ok) throw new Error(data.error || "Request failed");
   return data;
 }
 
@@ -56,7 +49,7 @@ async function confirmPaymentRequest(token) {
   });
 }
 
-// ✅ THIS IS CORRECT FOR HTML (unchanged)
+// ✅ Export for HTML
 window.api = {
   apiFetch,
   signupRequest,

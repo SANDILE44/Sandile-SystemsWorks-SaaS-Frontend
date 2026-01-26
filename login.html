@@ -125,8 +125,8 @@
 
       function showMsg(text, type = "") {
         msg.textContent = text;
-        msg.classList.remove("error", "success");
-        if (type) msg.classList.add(type);
+        msg.className = type;
+        msg.style.display = text ? "block" : "none";
       }
 
       loginForm.addEventListener("submit", async (e) => {
@@ -137,36 +137,16 @@
 
         showMsg("");
 
-        // Basic frontend checks (doesn't affect backend)
-        if (!email) return showMsg("Please enter your email address.", "error");
-        if (!password) return showMsg("Please enter your password.", "error");
-
-        const btn = loginForm.querySelector('button[type="submit"]');
-        const oldBtnText = btn.textContent;
-
         try {
-          btn.disabled = true;
-          btn.textContent = "Signing in...";
+          const data = await window.api.loginRequest(email, password);
+          if (!data?.token) throw new Error("Login failed");
 
-          const data = await loginRequest(email, password);
-
-          // Guardrail: only continue if backend returned a token
-          if (!data?.token) {
-            throw new Error(data?.error || "Login failed. Check your details.");
-          }
-
-          setToken(data.token);
-          showMsg("Signed in. Redirecting...", "success");
+          window.auth.setToken(data.token);
+          showMsg("Logged in. Redirecting...", "success");
 
           window.location.href = "dashboard.html";
         } catch (err) {
-          showMsg(
-            err?.message || "Something went wrong. Please try again.",
-            "error",
-          );
-        } finally {
-          btn.disabled = false;
-          btn.textContent = oldBtnText;
+          showMsg(err.message || "Login failed", "error");
         }
       });
     </script>
