@@ -1,42 +1,45 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment Success - Sandile SystemsWorks</title>
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
-<body>
-  <main style="max-width:700px;margin:60px auto;text-align:center;">
-    <h1>Payment Successful ✅</h1>
-    <p>Thanks! Your subscription is now active. You can continue using all calculators.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Successful - Sandile SystemsWorks</title>
 
-    <button id="continueBtn" class="btn-primary">Go to Dashboard</button>
-    <p id="msg" style="margin-top:16px;"></p>
-  </main>
+    <!-- Page-only CSS -->
+    <link rel="stylesheet" href="css/success.css" />
+  </head>
+  <body>
+    <main class="status-page">
+      <div class="status-card">
+        <div class="icon success">✓</div>
 
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
+        <h1>Payment successful</h1>
+        <p id="statusText">Finalizing your access… please wait a moment.</p>
 
-  <script>
-    document.getElementById("continueBtn").addEventListener("click", async () => {
-      const token = localStorage.getItem("token");
-      const msg = document.getElementById("msg");
-      msg.textContent = "";
+        <div class="actions">
+          <a
+            href="dashboard.html"
+            class="btn btn-primary"
+            id="goDashboardBtn"
+            style="display: none"
+          >
+            Go to Dashboard
+          </a>
+          <a href="pricing.html" class="btn btn-ghost"> View Pricing </a>
+        </div>
 
-      if (!token) {
-        window.location.href = "login.html";
-        return;
-      }
+        <p class="small-note">
+          If you don’t get redirected, tap “Go to Dashboard”.
+        </p>
+      </div>
+    </main>
 
-      try {
-        // ✅ tells backend "mark me as paid"
-        await apiFetch("/api/payments/confirm", { method: "POST", token, body: {} });
-        window.location.href = "dashboard.html";
-      } catch (e) {
-        msg.textContent = e.message || "Could not confirm payment. Please login again.";
-      }
-    });
-  </script>
-</body>
+    <!-- IMPORTANT: load shared JS first -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- Page-only JS -->
+    <script src="js/success.js"></script>
+  </body>
 </html>

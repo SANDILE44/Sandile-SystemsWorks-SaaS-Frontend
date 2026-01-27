@@ -318,25 +318,37 @@
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script>
-      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+      window.auth.requireAccess(); // no token -> login, no access -> payment
     </script>
 
     <script>
-      // Helper functions
+      // =========================
+      // Helpers
+      // =========================
+      function n(v) {
+        const x = Number(v);
+        return Number.isFinite(x) ? x : 0;
+      }
+
       function formatCurrency(value) {
+        const x = n(value);
         return (
           "R" +
-          Number(value).toLocaleString(undefined, {
+          x.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })
         );
       }
+
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        const x = n(value);
+        return x.toFixed(2) + "%";
       }
 
-      // Construction Calculator Class
+      // =========================
+      // Construction Calculator
+      // =========================
       class ConstructionProjectCalculator {
         calculateFromInputs(
           value,
@@ -346,13 +358,16 @@
           fixed,
           duration,
         ) {
-          value = Number(value) || 0;
-          material = Number(material) || 0;
-          labor = Number(labor) || 0;
-          equipment = Number(equipment) || 0;
-          fixed = Number(fixed) || 0;
+          value = n(value);
+          material = n(material);
+          labor = n(labor); // monthly
+          equipment = n(equipment); // monthly
+          fixed = n(fixed); // monthly
+          duration = Math.max(1, Math.floor(n(duration) || 1));
 
-          const totalCosts = material + labor + equipment + fixed;
+          const monthlyCosts = labor + equipment + fixed;
+          const totalCosts = material + monthlyCosts * duration;
+
           const profitLoss = value - totalCosts;
           const margin = value ? (profitLoss / value) * 100 : 0;
           const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
@@ -363,8 +378,10 @@
           const profitMaterial = material ? profitLoss / material : 0;
           const profitLabor = labor ? profitLoss / labor : 0;
           const profitEquipment = equipment ? profitLoss / equipment : 0;
-          const monthlyProfit = profitLoss; // assuming 1 project/month
-          const annualProfit = profitLoss * 12;
+
+          // Project-based: spread profit across duration
+          const monthlyProfit = duration ? profitLoss / duration : profitLoss;
+          const annualProfit = monthlyProfit * 12;
 
           return {
             projectValue: value,
@@ -372,6 +389,8 @@
             labor,
             equipment,
             fixed,
+            duration,
+            monthlyCosts,
             totalCosts,
             profitLoss,
             margin,
@@ -388,87 +407,125 @@
       }
 
       const constCalc = new ConstructionProjectCalculator();
-      const constInputs = [
-        "const-value",
-        "const-material",
-        "const-labor",
-        "const-equipment",
-        "const-fixed",
-        "const-duration",
+
+      const ids = {
+        // inputs
+        value: "const-value",
+        material: "const-material",
+        labor: "const-labor",
+        equipment: "const-equipment",
+        fixed: "const-fixed",
+        duration: "const-duration",
+
+        // outputs
+        outProjectValue: "const-project-value",
+        outMaterial: "const-material-output",
+        outLabor: "const-labor-output",
+        outEquipment: "const-equipment-output",
+        outFixed: "const-fixed-output",
+        outTotalCosts: "const-total-costs",
+        outProfit: "const-profit",
+        outMargin: "const-margin",
+        outRoi: "const-roi",
+        outRatio: "const-ratio",
+        outBreakEven: "const-breakeven",
+        outProfitMaterial: "const-profit-material",
+        outProfitLabor: "const-profit-labor",
+        outProfitEquipment: "const-profit-equipment",
+        outMonthlyProfit: "const-monthly-profit",
+        outAnnualProfit: "const-annual-profit",
+      };
+
+      const inputIds = [
+        ids.value,
+        ids.material,
+        ids.labor,
+        ids.equipment,
+        ids.fixed,
+        ids.duration,
       ];
 
-      constInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener("input", updateConstCalculator);
-      });
+      function getVal(id) {
+        const el = document.getElementById(id);
+        return el ? el.value : "";
+      }
+
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
 
       function updateConstCalculator() {
         const result = constCalc.calculateFromInputs(
-          document.getElementById("const-value").value,
-          document.getElementById("const-material").value,
-          document.getElementById("const-labor").value,
-          document.getElementById("const-equipment").value,
-          document.getElementById("const-fixed").value,
+          getVal(ids.value),
+          getVal(ids.material),
+          getVal(ids.labor),
+          getVal(ids.equipment),
+          getVal(ids.fixed),
+          getVal(ids.duration),
         );
 
-        document.getElementById("const-project-value").textContent =
-          formatCurrency(result.projectValue);
-        document.getElementById("const-material-output").textContent =
-          formatCurrency(result.material);
-        document.getElementById("const-labor-output").textContent =
-          formatCurrency(result.labor);
-        document.getElementById("const-equipment-output").textContent =
-          formatCurrency(result.equipment);
-        document.getElementById("const-fixed-output").textContent =
-          formatCurrency(result.fixed);
-        document.getElementById("const-total-costs").textContent =
-          formatCurrency(result.totalCosts);
+        setText(ids.outProjectValue, formatCurrency(result.projectValue));
+        setText(ids.outMaterial, formatCurrency(result.material));
+        setText(ids.outLabor, formatCurrency(result.labor));
+        setText(ids.outEquipment, formatCurrency(result.equipment));
+        setText(ids.outFixed, formatCurrency(result.fixed));
+        setText(ids.outTotalCosts, formatCurrency(result.totalCosts));
 
-        const profitEl = document.getElementById("const-profit");
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.classList.remove("positive", "negative");
-        profitEl.classList.add(
-          result.profitLoss >= 0 ? "positive" : "negative",
-        );
+        const profitEl = document.getElementById(ids.outProfit);
+        if (profitEl) {
+          profitEl.textContent = formatCurrency(result.profitLoss);
+          profitEl.classList.remove("positive", "negative");
+          profitEl.classList.add(
+            result.profitLoss >= 0 ? "positive" : "negative",
+          );
+        }
 
-        document.getElementById("const-margin").textContent = formatPercentage(
-          result.margin,
-        );
-        document.getElementById("const-roi").textContent = formatPercentage(
-          result.roi,
-        );
-        document.getElementById("const-ratio").textContent = formatPercentage(
-          result.costRatio,
-        );
-        document.getElementById("const-breakeven").textContent = formatCurrency(
-          result.breakEven,
-        );
+        setText(ids.outMargin, formatPercentage(result.margin));
+        setText(ids.outRoi, formatPercentage(result.roi));
+        setText(ids.outRatio, formatPercentage(result.costRatio));
+        setText(ids.outBreakEven, formatCurrency(result.breakEven));
 
-        // Advanced metrics
-        document.getElementById("const-profit-material").textContent =
-          formatCurrency(result.profitMaterial);
-        document.getElementById("const-profit-labor").textContent =
-          formatCurrency(result.profitLabor);
-        document.getElementById("const-profit-equipment").textContent =
-          formatCurrency(result.profitEquipment);
-        document.getElementById("const-monthly-profit").textContent =
-          formatCurrency(result.monthlyProfit);
-        document.getElementById("const-annual-profit").textContent =
-          formatCurrency(result.annualProfit);
+        setText(ids.outProfitMaterial, formatCurrency(result.profitMaterial));
+        setText(ids.outProfitLabor, formatCurrency(result.profitLabor));
+        setText(ids.outProfitEquipment, formatCurrency(result.profitEquipment));
+        setText(ids.outMonthlyProfit, formatCurrency(result.monthlyProfit));
+        setText(ids.outAnnualProfit, formatCurrency(result.annualProfit));
       }
 
-      // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        constInputs.forEach((id) => (document.getElementById(id).value = ""));
-        updateConstCalculator();
+      // Bind inputs
+      inputIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", updateConstCalculator);
       });
 
-      // Initialize
-      updateConstCalculator();
+      // Reset button
+      const resetBtn = document.getElementById("resetBtn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          inputIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
+          });
+          // default duration to 1 so it doesn't feel broken
+          const dur = document.getElementById(ids.duration);
+          if (dur) dur.value = "1";
+          updateConstCalculator();
+        });
+      }
+
+      // Init
+      (function init() {
+        const dur = document.getElementById(ids.duration);
+        if (dur && !dur.value) dur.value = "1";
+        updateConstCalculator();
+      })();
     </script>
 
     <script>
+      // =========================
+      // Mobile menu (if present)
+      // =========================
       const hamburger = document.getElementById("hamburger");
       const sideNav = document.getElementById("sideNav");
 

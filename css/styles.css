@@ -581,3 +581,47 @@ main {
     padding: 0.45rem 0.65rem;
   }
 }
+
+/* ================= PAY BOX (CENTERED CTA) ================= */
+.pay-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5rem 0;
+  text-align: center;
+  gap: 0.8rem;
+}
+
+/* Upgrade / Pay CTA */
+.pay-box .btn-primary {
+  padding: 0.9rem 2.2rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border-radius: 999px; /* pill shape */
+  background: linear-gradient(135deg, var(--accent), #38d9ff);
+  box-shadow: 0 10px 30px rgba(0, 180, 216, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* Hover effect */
+.pay-box .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 45px rgba(0, 180, 216, 0.55);
+  filter: brightness(1.08);
+}
+
+/* Active click */
+.pay-box .btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(0, 180, 216, 0.4);
+}
+
+/* Status text */
+.pay-box p {
+  font-size: 1rem;
+  color: var(--text-muted);
+}

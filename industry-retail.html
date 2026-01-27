@@ -268,9 +268,8 @@
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script>
-      requireAccess(); // kicks them to login if no token, and to payment if trial expired/unpaid
+      window.auth.requireAccess(); // no token -> login, no access -> payment
     </script>
-
     <script>
       // Helpers
       const formatCurrency = (v) =>
