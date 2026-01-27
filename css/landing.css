@@ -1012,48 +1012,71 @@ details p {
 }
 
 /* ==========================================
-   MOBILE LIGHTBOX = REAL "PHONE PHOTO VIEWER"
-   Fills the screen and makes image big
+   MOBILE: MAKE THE PNG ITSELF FILL THE SCREEN
+   (keep X button visible + reduce frame space)
 ========================================== */
 @media (max-width: 860px) {
+  /* Full overlay uses full phone area */
   .lightbox {
     padding: 0;
     align-items: stretch;
     justify-content: stretch;
   }
 
+  /* Make the dialog truly fullscreen */
   .lightbox-inner {
     width: 100vw;
-    height: 100dvh; /* better than 100vh on phones */
+    height: 100dvh;          /* better on phones than 100vh */
     max-height: none;
     border-radius: 0;
-    padding: 0;
+    padding: 0;              /* remove inner padding = less "frame" */
+    overflow: hidden;
     background: rgba(0, 0, 0, 0.92);
     display: flex;
     flex-direction: column;
   }
 
-  /* keep buttons above image */
-  .lightbox-close,
-  .lightbox-nav {
-    z-index: 10;
-  }
-
+  /* IMAGE gets the whole screen minus tiny UI */
   .lightbox-img {
     flex: 1;
     width: 100%;
     height: 100%;
     max-height: none;
-    border-radius: 0;
+    object-fit: contain;     /* no cropping, just BIG */
     border: 0;
-    object-fit: contain; /* shows full screenshot like gallery */
+    border-radius: 0;
+    background: transparent;
   }
 
+  /* Optional: hide caption to give image even more height */
   .lightbox-caption {
-    padding: 10px 12px;
-    margin: 0;
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.85;
+    display: none;
+  }
+
+  /* KEEP THE X BUTTON (always visible) */
+  .lightbox-close {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    right: 12px;
+    z-index: 9999;
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Keep arrows visible too */
+  .lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    width: 52px;
+    height: 52px;
+  }
+
+  .lightbox-nav.prev {
+    left: 10px;
+  }
+  .lightbox-nav.next {
+    right: 10px;
   }
 }
