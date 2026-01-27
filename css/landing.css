@@ -1012,67 +1012,118 @@ details p {
 }
 
 /* ==========================================
-   MOBILE: MAKE THE PNG ITSELF FILL THE SCREEN
-   (keep X button visible + reduce frame space)
+   DESKTOP: LIGHTBOX UNDER STICKY NAVBAR
+   (keeps X always visible)
 ========================================== */
-@media (max-width: 860px) {
-  /* Full overlay uses full phone area */
+
+/* set your header height once (adjust if needed) */
+:root {
+  --header-h: 72px;
+}
+
+/* lightbox should not cover the header area */
+@media (min-width: 861px) {
   .lightbox {
-    padding: 0;
+    inset: var(--header-h) 0 0 0; /* top starts under header */
+    padding: 18px;
+    z-index: 900; /* below header (header is 1000) */
+  }
+
+  .lightbox-inner {
+    max-height: calc(100vh - var(--header-h) - 36px);
+  }
+
+  /* X button always visible (not trapped inside) */
+  .lightbox-close {
+    position: fixed;
+    top: calc(var(--header-h) + 12px); /* below header */
+    right: 12px;
+    z-index: 1100; /* above everything */
+    width: 44px;
+    height: 44px;
+  }
+
+  /* arrows also safe */
+  .lightbox-nav {
+    position: fixed;
+    top: calc(var(--header-h) + (50vh - (var(--header-h) / 2)));
+    z-index: 1100;
+  }
+  .lightbox-nav.prev {
+    left: 12px;
+  }
+  .lightbox-nav.next {
+    right: 12px;
+  }
+}
+
+/* ==========================================
+   MOBILE: LIGHTBOX UNDER NAV + BIG SCREENSHOT
+========================================== */
+
+/* keep this matching your real header height */
+:root {
+  --header-h: 72px;
+}
+
+@media (max-width: 860px) {
+  /* Lightbox should NOT cover the sticky header */
+  .lightbox {
+    inset: var(--header-h) 0 0 0; /* start under nav */
+    padding: 0; /* remove padding that creates "small box" */
+    z-index: 900; /* below header (header is 1000) */
     align-items: stretch;
     justify-content: stretch;
   }
 
-  /* Make the dialog truly fullscreen */
+  /* The frame/dialog must fill the available space under the header */
   .lightbox-inner {
     width: 100vw;
-    height: 100dvh;          /* better on phones than 100vh */
+    height: calc(100dvh - var(--header-h)); /* full phone height minus navbar */
     max-height: none;
     border-radius: 0;
-    padding: 0;              /* remove inner padding = less "frame" */
-    overflow: hidden;
+    padding: 0; /* remove inner padding = more space for image */
     background: rgba(0, 0, 0, 0.92);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
-  /* IMAGE gets the whole screen minus tiny UI */
+  /* The PNG itself becomes big */
   .lightbox-img {
     flex: 1;
     width: 100%;
     height: 100%;
     max-height: none;
-    object-fit: contain;     /* no cropping, just BIG */
+    object-fit: contain; /* show whole screenshot */
     border: 0;
     border-radius: 0;
-    background: transparent;
   }
 
-  /* Optional: hide caption to give image even more height */
+  /* Optional: hide caption to give image more height */
   .lightbox-caption {
     display: none;
   }
 
-  /* KEEP THE X BUTTON (always visible) */
+  /* X button ALWAYS visible, under navbar */
   .lightbox-close {
     position: fixed;
-    top: max(12px, env(safe-area-inset-top));
-    right: 12px;
-    z-index: 9999;
+    top: calc(var(--header-h) + 10px);
+    right: 10px;
+    z-index: 1100;
     width: 44px;
     height: 44px;
   }
 
-  /* Keep arrows visible too */
+  /* arrows also always visible */
   .lightbox-nav {
     position: fixed;
-    top: 50%;
+    top: calc(var(--header-h) + ((100dvh - var(--header-h)) / 2));
     transform: translateY(-50%);
-    z-index: 9999;
+    z-index: 1100;
     width: 52px;
     height: 52px;
   }
-
   .lightbox-nav.prev {
     left: 10px;
   }
