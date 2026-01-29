@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
+    <div id="payBox" class="pay-box"></div>
     <main style="max-width: 600px; margin: 50px auto; text-align: center">
       <h1>Payment Required</h1>
       <p>
@@ -23,6 +24,40 @@
       </p>
     </main>
 
+    <script>
+      (async () => {
+        const profile = await window.auth.requireAuth();
+        if (!profile) return;
+
+        const el = document.getElementById('usernameDisplay');
+        if (el) el.textContent = profile.user?.name || 'User';
+
+        const payBox = document.getElementById('payBox');
+        if (!payBox) return;
+
+        if (profile.user?.hasPaid) {
+          payBox.innerHTML = `<p style="color:#00ff7f;">✅ Active Subscription</p>`;
+          return;
+        }
+
+        payBox.innerHTML = `
+          <p style="color:#ffcc00;">Your account is not paid yet.</p>
+          <button type="button" class="btn-primary" id="payBtn">Pay now</button>
+        `;
+
+        document
+          .getElementById('payBtn')
+          .addEventListener('click', async () => {
+            try {
+              const token = window.auth.getToken();
+              const data = await window.api.createCheckoutRequest(token);
+              window.location.href = data.checkoutUrl;
+            } catch (e) {
+              alert(e.message || 'Checkout failed');
+            }
+          });
+      })();
+    </script>
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/payments.js"></script>

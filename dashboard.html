@@ -6,12 +6,12 @@
     <title>Sandile SystemsWorks - Dashboard</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
+
   <body>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
         <div class="header-inner">
-          <!-- BRAND -->
           <div class="brand">
             <img
               src="images/Untitled design.png"
@@ -21,12 +21,11 @@
             <span class="brand-name">Sandile SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
           <div class="header-actions">
             <button
               type="button"
-              onclick="window.auth.logout()"
               class="btn btn-ghost"
+              onclick="window.auth.logout()"
             >
               Logout
             </button>
@@ -44,7 +43,6 @@
       <div id="payBox" class="pay-box"></div>
 
       <div class="cards-grid">
-        <!-- PRIMARY SECTOR -->
         <div class="card">
           <h3 class="card-title">Primary Sector</h3>
           <p>
@@ -54,7 +52,6 @@
           <a href="sector-primary.html">Explore Calculators →</a>
         </div>
 
-        <!-- SECONDARY SECTOR -->
         <div class="card">
           <h3 class="card-title">Secondary Sector</h3>
           <p>
@@ -64,7 +61,6 @@
           <a href="sector-secondary.html">Explore Calculators →</a>
         </div>
 
-        <!-- TERTIARY SECTOR -->
         <div class="card">
           <h3 class="card-title">Tertiary Sector</h3>
           <p>
@@ -74,14 +70,12 @@
           <a href="sector-tertiary.html">Explore Calculators →</a>
         </div>
 
-        <!-- QUATERNARY SECTOR -->
         <div class="card">
           <h3 class="card-title">Quaternary Sector</h3>
           <p>Software, SaaS, IT Services, Media, R&amp;D, Telecommunications</p>
           <a href="sector-quaternary.html">Explore Calculators →</a>
         </div>
 
-        <!-- QUINARY SECTOR -->
         <div class="card">
           <h3 class="card-title">Quinary Sector</h3>
           <p>
@@ -93,39 +87,44 @@
       </div>
     </main>
 
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+    <!-- REQUIRED GLOBALS (ORDER MATTERS) -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
     <script>
       (async () => {
         const profile = await window.auth.requireAuth();
         if (!profile) return;
 
-        const el = document.getElementById("usernameDisplay");
-        if (el) el.textContent = profile.user?.name || "User";
+        const el = document.getElementById('usernameDisplay');
+        if (el) el.textContent = profile.user?.name || 'User';
 
-        const payBox = document.getElementById("payBox");
+        const payBox = document.getElementById('payBox');
         if (!payBox) return;
 
         if (profile.user?.hasPaid) {
-          payBox.innerHTML = `<p style="color:#00ff7f;">✅ Active Subscription</p>`;
+          payBox.innerHTML =
+            '<p style="color:#00ff7f;">✅ Active Subscription</p>';
           return;
         }
 
         payBox.innerHTML = `
-          <p style="color:#ffcc00;">Your account is not paid yet.</p>
-          <button type="button" class="btn-primary" id="payBtn">Pay now</button>
+          <p style="color:#ffcc00;">Trial active or payment required.</p>
+          <button type="button" class="btn btn-primary" id="payBtn">
+            Pay now
+          </button>
         `;
 
         document
-          .getElementById("payBtn")
-          .addEventListener("click", async () => {
+          .getElementById('payBtn')
+          .addEventListener('click', async () => {
             try {
               const token = window.auth.getToken();
               const data = await window.api.createCheckoutRequest(token);
               window.location.href = data.checkoutUrl;
             } catch (e) {
-              alert(e.message || "Checkout failed");
+              alert(e.message || 'Payment initialization failed');
             }
           });
       })();

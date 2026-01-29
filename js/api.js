@@ -1,7 +1,7 @@
 // js/api.js
 
-async function apiFetch(path, { method = "GET", body, token } = {}) {
-  const headers = { "Content-Type": "application/json" };
+async function apiFetch(path, { method = 'GET', body, token } = {}) {
+  const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const res = await fetch(`${window.API_BASE}${path}`, {
@@ -11,45 +11,45 @@ async function apiFetch(path, { method = "GET", body, token } = {}) {
   });
 
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || "Request failed");
+  if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
 }
 
-// ---- AUTH CALLS ----
+// ---- AUTH ----
 async function signupRequest(name, email, password) {
-  return apiFetch("/api/users/signup", {
-    method: "POST",
+  return apiFetch('/api/users/signup', {
+    method: 'POST',
     body: { name, email, password },
   });
 }
 
 async function loginRequest(email, password) {
-  return apiFetch("/api/users/login", {
-    method: "POST",
+  return apiFetch('/api/users/login', {
+    method: 'POST',
     body: { email, password },
   });
 }
 
 async function getProfileRequest(token) {
-  return apiFetch("/api/users/profile", { token });
+  return apiFetch('/api/users/profile', { token });
 }
 
-// ---- PAYMENT ----
+// ---- PAYMENTS ----
 async function createCheckoutRequest(token) {
-  return apiFetch("/api/payments/checkout", {
-    method: "POST",
+  return apiFetch('/api/payments/checkout', {
+    method: 'POST',
     token,
   });
 }
 
 async function confirmPaymentRequest(token) {
-  return apiFetch("/api/payments/confirm", {
-    method: "POST",
+  return apiFetch('/api/payments/confirm', {
+    method: 'POST',
     token,
   });
 }
 
-// ✅ Export for HTML
+// Expose globally
 window.api = {
   apiFetch,
   signupRequest,
