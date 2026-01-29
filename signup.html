@@ -157,39 +157,39 @@
     <script src="js/auth.js"></script>
 
     <script>
-      const signupForm = document.getElementById("signupForm");
-      const msg = document.getElementById("msg");
+      const signupForm = document.getElementById('signupForm');
+      const msg = document.getElementById('msg');
 
-      function showMsg(text, type = "") {
+      function showMsg(text, type = '') {
         msg.textContent = text;
         msg.className = type;
-        msg.style.display = text ? "block" : "none";
+        msg.style.display = text ? 'block' : 'none';
       }
 
-      signupForm.addEventListener("submit", async (e) => {
+      signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-        showMsg("");
+        showMsg('');
 
-        if (!name) return showMsg("Enter your name", "error");
-        if (!email) return showMsg("Enter your email", "error");
+        if (!name) return showMsg('Enter your name', 'error');
+        if (!email) return showMsg('Enter your email', 'error');
         if (password.length < 8)
-          return showMsg("Password must be at least 8 characters", "error");
+          return showMsg('Password must be at least 8 characters', 'error');
 
         try {
           const data = await window.api.signupRequest(name, email, password);
-          if (!data?.token) throw new Error("Signup failed");
+          if (!data?.token) throw new Error('Signup failed');
 
           window.auth.setToken(data.token);
-          showMsg("Account created. Redirecting...", "success");
+          showMsg('Account created. Redirecting...', 'success');
 
-          window.location.href = "dashboard.html";
+          window.location.href = 'dashboard.html';
         } catch (err) {
-          showMsg(err.message || "Signup failed", "error");
+          showMsg(err.message || 'Signup failed', 'error');
         }
       });
     </script>

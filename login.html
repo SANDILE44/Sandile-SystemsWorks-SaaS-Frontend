@@ -70,6 +70,13 @@
             />
           </div>
 
+          <div class="auth-help">
+            <a class="auth-link" href="forgot-password.html"
+              >Forgot password?</a
+            >
+          </div>
+          <br />
+
           <button type="submit" class="auth-submit">Sign in</button>
 
           <p id="msg"></p>
@@ -104,9 +111,7 @@
             <p class="footer-note">
               Need a premium website too? We deliver fast, high-converting
               sites.
-              <a href="#website-service" class="footer-link"
-                >See website service</a
-              >
+              <a href="company.html" class="footer-link">See website service</a>
             </p>
           </div>
 
@@ -149,33 +154,33 @@
     <script src="js/auth.js"></script>
 
     <script>
-      const loginForm = document.getElementById("loginForm");
-      const msg = document.getElementById("msg");
+      const loginForm = document.getElementById('loginForm');
+      const msg = document.getElementById('msg');
 
-      function showMsg(text, type = "") {
+      function showMsg(text, type = '') {
         msg.textContent = text;
         msg.className = type;
-        msg.style.display = text ? "block" : "none";
+        msg.style.display = text ? 'block' : 'none';
       }
 
-      loginForm.addEventListener("submit", async (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-        showMsg("");
+        showMsg('');
 
         try {
           const data = await window.api.loginRequest(email, password);
-          if (!data?.token) throw new Error("Login failed");
+          if (!data?.token) throw new Error('Login failed');
 
           window.auth.setToken(data.token);
-          showMsg("Logged in. Redirecting...", "success");
+          showMsg('Logged in. Redirecting...', 'success');
 
-          window.location.href = "dashboard.html";
+          window.location.href = 'dashboard.html';
         } catch (err) {
-          showMsg(err.message || "Login failed", "error");
+          showMsg(err.message || 'Login failed', 'error');
         }
       });
     </script>

@@ -145,7 +145,7 @@
 
 .auth-divider::before,
 .auth-divider::after {
-  content: "";
+  content: '';
   flex: 1;
   height: 1px;
   background: var(--border-soft);
@@ -187,4 +187,23 @@
     padding: 0.8rem 1rem;
     font-size: 0.95rem;
   }
+}
+
+.form-extra {
+  margin: 0.4rem 0 1rem;
+  text-align: left;
+}
+
+.forgot-link {
+  background: none;
+  border: none;
+  color: #00b4d8;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
 }

@@ -42,6 +42,22 @@ async function createCheckoutRequest(token) {
   });
 }
 
+// ---- PASSWORD RESET ----
+async function requestPasswordReset(email) {
+  return apiFetch('/api/users/forgot-password', {
+    method: 'POST',
+    body: { email },
+  });
+}
+
+// Reset Password
+async function resetPassword(token, newPassword) {
+  return apiFetch('/api/users/reset-password', {
+    method: 'POST',
+    body: { token, newPassword },
+  });
+}
+
 async function confirmPaymentRequest(token) {
   return apiFetch('/api/payments/confirm', {
     method: 'POST',
@@ -57,4 +73,6 @@ window.api = {
   getProfileRequest,
   createCheckoutRequest,
   confirmPaymentRequest,
+  requestPasswordReset,
+  resetPassword,
 };
