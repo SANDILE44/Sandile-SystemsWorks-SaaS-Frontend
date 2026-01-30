@@ -128,26 +128,50 @@
     </script>
 
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }
+    </script>
+    <script>
+      (async function () {
+        try {
+          const token = window.auth.getToken();
+          if (!token) return;
+
+          await fetch(
+            'https://sandile-systemsworks-saas-backend-2.onrender.com/api/users/recent-calculators',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+              body: JSON.stringify({
+                key: 'sector-secondary', // change per page
+                title: 'Secondary Sector Industries', // change per page
+                url: 'sector-secondary.html', // change per page
+              }),
+            }
+          );
+        } catch (e) {}
+      })();
     </script>
   </body>
 </html>

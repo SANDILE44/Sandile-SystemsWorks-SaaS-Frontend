@@ -6,7 +6,94 @@
     <title>Pricing - Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/landing.css" />
   </head>
-  <body>
+
+  <body class="pricing-page">
+    <style>
+      /* =========================================
+   PRICING PAGE — HERO (ISOLATED & FINAL)
+   Applies ONLY to Pricing page
+========================================= */
+
+      .pricing-page .hero {
+        padding: 4.5rem 0 3.5rem;
+      }
+
+      /* Center the hero container */
+      .pricing-page .hero-center {
+        text-align: center;
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Eyebrow */
+      .pricing-page .hero-center .eyebrow {
+        display: inline-block;
+        margin: 0 auto 0.7rem;
+        text-align: center;
+        color: var(--accent);
+        letter-spacing: 1.4px;
+        font-weight: 900;
+        font-size: 0.85rem;
+      }
+
+      /* Headline */
+      .pricing-page .hero-center h1 {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.08;
+      }
+
+      /* Subhead */
+      .pricing-page .hero-center .subhead {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 62ch;
+      }
+
+      /* Trustline */
+      .pricing-page .hero-center .trustline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      /* Dot stays inline */
+      .pricing-page .hero-center .trustline .dot {
+        flex-shrink: 0;
+      }
+
+      /* =========================================
+   PRICING PAGE — FORCE HERO TITLE CENTER
+========================================= */
+
+      .pricing-page .hero-center h1 {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* =========================================
+   SAFETY OVERRIDES (kills global leaks)
+========================================= */
+
+      /* Neutralize global .subhead rules */
+      .pricing-page .subhead {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Neutralize hero-grid rules if any exist */
+      .pricing-page .hero-grid {
+        display: block !important;
+      }
+    </style>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
@@ -473,30 +560,30 @@
     </footer>
 
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const mainNav = document.getElementById("mainNav");
-      const navOverlay = document.getElementById("navOverlay");
+      const navToggle = document.getElementById('navToggle');
+      const mainNav = document.getElementById('mainNav');
+      const navOverlay = document.getElementById('navOverlay');
 
-      navToggle.addEventListener("click", () => {
-        const isOpen = mainNav.classList.toggle("open");
-        navToggle.classList.toggle("open");
-        navOverlay.classList.toggle("active");
-        navToggle.setAttribute("aria-expanded", isOpen);
+      navToggle.addEventListener('click', () => {
+        const isOpen = mainNav.classList.toggle('open');
+        navToggle.classList.toggle('open');
+        navOverlay.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', isOpen);
       });
 
-      navOverlay.addEventListener("click", () => {
-        mainNav.classList.remove("open");
-        navToggle.classList.remove("open");
-        navOverlay.classList.remove("active");
-        navToggle.setAttribute("aria-expanded", false);
+      navOverlay.addEventListener('click', () => {
+        mainNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navOverlay.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', false);
       });
 
-      mainNav.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          mainNav.classList.remove("open");
-          navToggle.classList.remove("open");
-          navOverlay.classList.remove("active");
-          navToggle.setAttribute("aria-expanded", false);
+      mainNav.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mainNav.classList.remove('open');
+          navToggle.classList.remove('open');
+          navOverlay.classList.remove('active');
+          navToggle.setAttribute('aria-expanded', false);
         });
       });
     </script>

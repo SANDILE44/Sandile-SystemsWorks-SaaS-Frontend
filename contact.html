@@ -6,7 +6,49 @@
     <title>Contact - Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/landing.css" />
   </head>
-  <body>
+
+  <body class="contact-page">
+    <style>
+      /* =========================================
+   CONTACT PAGE — HERO HARD OVERRIDE
+   (kills landing.css interference)
+========================================= */
+
+      /* Disable any hero grid/layout coming from landing.css */
+      .contact-page .hero-grid {
+        display: block !important;
+      }
+
+      /* Center container */
+      .contact-page .hero .hero-center {
+        max-width: 760px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+      }
+
+      /* Eyebrow */
+      .contact-page .hero .hero-center .eyebrow {
+        display: inline-block;
+        text-align: center !important;
+        margin: 0 auto 0.7rem !important;
+      }
+
+      /* Title */
+      .contact-page .hero .hero-center h1 {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Subhead */
+      .contact-page .hero .hero-center .subhead {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        max-width: 60ch;
+      }
+    </style>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
@@ -61,7 +103,7 @@
       <!-- HERO -->
       <section class="hero">
         <div class="container">
-          <div style="text-align: center">
+          <div class="hero-center">
             <p class="eyebrow">CONTACT</p>
             <h1>Get in touch with Sandile SystemsWorks</h1>
             <p class="subhead">
@@ -376,73 +418,73 @@
 
     <script>
       // Mobile nav
-      const navToggle = document.getElementById("navToggle");
-      const mainNav = document.getElementById("mainNav");
-      const navOverlay = document.getElementById("navOverlay");
+      const navToggle = document.getElementById('navToggle');
+      const mainNav = document.getElementById('mainNav');
+      const navOverlay = document.getElementById('navOverlay');
 
-      navToggle.addEventListener("click", () => {
-        const isOpen = mainNav.classList.toggle("open");
-        navToggle.classList.toggle("open");
-        navOverlay.classList.toggle("active");
-        navToggle.setAttribute("aria-expanded", isOpen);
+      navToggle.addEventListener('click', () => {
+        const isOpen = mainNav.classList.toggle('open');
+        navToggle.classList.toggle('open');
+        navOverlay.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', isOpen);
       });
 
-      navOverlay.addEventListener("click", () => {
-        mainNav.classList.remove("open");
-        navToggle.classList.remove("open");
-        navOverlay.classList.remove("active");
-        navToggle.setAttribute("aria-expanded", false);
+      navOverlay.addEventListener('click', () => {
+        mainNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navOverlay.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', false);
       });
 
-      mainNav.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          mainNav.classList.remove("open");
-          navToggle.classList.remove("open");
-          navOverlay.classList.remove("active");
-          navToggle.setAttribute("aria-expanded", false);
+      mainNav.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mainNav.classList.remove('open');
+          navToggle.classList.remove('open');
+          navOverlay.classList.remove('active');
+          navToggle.setAttribute('aria-expanded', false);
         });
       });
 
       // Formspree submit via fetch (stays on page + shows message)
-      const contactForm = document.getElementById("contactForm");
-      const contactMsg = document.getElementById("contactMsg");
+      const contactForm = document.getElementById('contactForm');
+      const contactMsg = document.getElementById('contactMsg');
 
-      contactForm.addEventListener("submit", async (e) => {
+      contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        contactMsg.style.display = "none";
+        contactMsg.style.display = 'none';
 
         try {
           const formData = new FormData(contactForm);
           const res = await fetch(contactForm.action, {
-            method: "POST",
+            method: 'POST',
             body: formData,
-            headers: { Accept: "application/json" },
+            headers: { Accept: 'application/json' },
           });
 
           if (res.ok) {
             contactMsg.textContent =
-              "Thanks! Your message has been sent. We’ll reply within 24 hours.";
-            contactMsg.style.background = "rgba(34, 197, 94, 0.1)";
-            contactMsg.style.border = "1px solid rgba(34, 197, 94, 0.3)";
-            contactMsg.style.color = "#86efac";
-            contactMsg.style.display = "block";
+              'Thanks! Your message has been sent. We’ll reply within 24 hours.';
+            contactMsg.style.background = 'rgba(34, 197, 94, 0.1)';
+            contactMsg.style.border = '1px solid rgba(34, 197, 94, 0.3)';
+            contactMsg.style.color = '#86efac';
+            contactMsg.style.display = 'block';
             contactForm.reset();
           } else {
             contactMsg.textContent =
-              "Something went wrong. Please try again or email us directly.";
-            contactMsg.style.background = "rgba(239, 68, 68, 0.12)";
-            contactMsg.style.border = "1px solid rgba(239, 68, 68, 0.35)";
-            contactMsg.style.color = "#fecaca";
-            contactMsg.style.display = "block";
+              'Something went wrong. Please try again or email us directly.';
+            contactMsg.style.background = 'rgba(239, 68, 68, 0.12)';
+            contactMsg.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+            contactMsg.style.color = '#fecaca';
+            contactMsg.style.display = 'block';
           }
         } catch (err) {
           contactMsg.textContent =
-            "Network error. Please try again or email us directly.";
-          contactMsg.style.background = "rgba(239, 68, 68, 0.12)";
-          contactMsg.style.border = "1px solid rgba(239, 68, 68, 0.35)";
-          contactMsg.style.color = "#fecaca";
-          contactMsg.style.display = "block";
+            'Network error. Please try again or email us directly.';
+          contactMsg.style.background = 'rgba(239, 68, 68, 0.12)';
+          contactMsg.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+          contactMsg.style.color = '#fecaca';
+          contactMsg.style.display = 'block';
         }
       });
     </script>

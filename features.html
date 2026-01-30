@@ -8,7 +8,107 @@
          <link rel="stylesheet" href="css/landing.css" />
   </head>
 
-  <body>
+   <body class="features-page">
+    <style>
+      /* =========================================
+   HERO CTAs — CENTER ALIGN (GLOBAL)
+========================================= */
+
+.hero-ctas {
+  display: flex;
+  justify-content: center;   /* ✅ centers horizontally */
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+      /* =========================================
+   PRICING PAGE — HERO (ISOLATED & FINAL)
+   Applies ONLY to Pricing page
+========================================= */
+
+      .features-page .hero {
+        padding: 4.5rem 0 3.5rem;
+      }
+
+      /* Center the hero container */
+      .features-page .hero-center {
+        text-align: center;
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Eyebrow */
+      .features-page .hero-center .eyebrow {
+        display: inline-block;
+        margin: 0 auto 0.7rem;
+        text-align: center;
+        color: var(--accent);
+        letter-spacing: 1.4px;
+        font-weight: 900;
+        font-size: 0.85rem;
+      }
+
+      /* Headline */
+      .features-page .hero-center h1 {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.08;
+      }
+
+      /* Subhead */
+      .features-page .hero-center .subhead {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 62ch;
+      }
+
+      /* Trustline */
+      .features-page .hero-center .trustline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      /* Dot stays inline */
+      .features-page .hero-center .trustline .dot {
+        flex-shrink: 0;
+      }
+
+      /* =========================================
+   features PAGE — FORCE HERO TITLE CENTER
+========================================= */
+
+      .features-page .hero-center h1 {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* =========================================
+   SAFETY OVERRIDES (kills global leaks)
+========================================= */
+
+      /* Neutralize global .subhead rules */
+      .features-page .subhead {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Neutralize hero-grid rules if any exist */
+      .features-page .hero-grid {
+        display: block !important;
+      }
+    </style>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
@@ -31,7 +131,7 @@
             <a href="company.html">Company</a>
             <a href="contact.html">Contact</a>
 
-            <div class="nav-mobile-actions">
+            <div class="nav-mobile-actions" >
               <a href="login.html" class="nav-link-muted">Sign in</a>
               <a href="signup.html" class="btn btn-primary btn-block"
                 >Start free trial</a

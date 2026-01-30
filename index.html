@@ -6,6 +6,7 @@
     <title>Sandile SystemsWorks - Decision Calculators & Dashboards</title>
     <link rel="stylesheet" href="css/landing.css" />
   </head>
+  <style></style>
 
   <body>
     <!-- HEADER -->
@@ -88,18 +89,22 @@
                 Works across all sectors • Standardized results • Updated weekly
               </div>
 
+              <p class="stat-context">
+                Used by founders to make faster decisions
+              </p>
+
               <div class="stat-row">
                 <div class="stat">
                   <div class="stat-num">5 min</div>
-                  <div class="stat-label">typical calc time</div>
+                  <div class="stat-label">decision time</div>
                 </div>
                 <div class="stat">
                   <div class="stat-num">0</div>
-                  <div class="stat-label">spreadsheet chaos</div>
+                  <div class="stat-label">spreadsheet mess</div>
                 </div>
                 <div class="stat">
                   <div class="stat-num">1</div>
-                  <div class="stat-label">source of truth</div>
+                  <div class="stat-label">trusted source</div>
                 </div>
               </div>
             </div>
@@ -155,12 +160,13 @@
 
                 <div class="mockup-bottom">
                   <div class="kpi">
-                    <span class="kpi-label">ROI</span>
-                    <span class="kpi-value" id="kpiRoi">Example</span>
+                    <span class="kpi-label"></span>
+                    <span class="kpi-label">ROI Impact</span>
+                    <span class="kpi-value" id="kpiRoi">+32%</span>
                   </div>
                   <div class="kpi">
-                    <span class="kpi-label">Savings</span>
-                    <span class="kpi-value" id="kpiSavings">Example</span>
+                    <span class="kpi-label">Profit Increase</span>
+                    <span class="kpi-value">+R42k</span>
                   </div>
                 </div>
               </div>
@@ -434,44 +440,44 @@
 
     <!-- HAMBURGER + NAV (works) -->
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const mainNav = document.getElementById("mainNav");
-      const navOverlay = document.getElementById("navOverlay");
+      const navToggle = document.getElementById('navToggle');
+      const mainNav = document.getElementById('mainNav');
+      const navOverlay = document.getElementById('navOverlay');
 
       function openNav() {
-        mainNav.classList.add("open");
-        navToggle.classList.add("open");
-        navOverlay.classList.add("active");
-        navOverlay.setAttribute("aria-hidden", "false");
-        navToggle.setAttribute("aria-expanded", "true");
-        document.body.style.overflow = "hidden";
+        mainNav.classList.add('open');
+        navToggle.classList.add('open');
+        navOverlay.classList.add('active');
+        navOverlay.setAttribute('aria-hidden', 'false');
+        navToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeNav() {
-        mainNav.classList.remove("open");
-        navToggle.classList.remove("open");
-        navOverlay.classList.remove("active");
-        navOverlay.setAttribute("aria-hidden", "true");
-        navToggle.setAttribute("aria-expanded", "false");
-        document.body.style.overflow = "";
+        mainNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navOverlay.classList.remove('active');
+        navOverlay.setAttribute('aria-hidden', 'true');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
       }
 
       if (navToggle && mainNav && navOverlay) {
-        navToggle.addEventListener("click", () => {
-          const isOpen = mainNav.classList.contains("open");
+        navToggle.addEventListener('click', () => {
+          const isOpen = mainNav.classList.contains('open');
           isOpen ? closeNav() : openNav();
         });
 
-        navOverlay.addEventListener("click", closeNav);
+        navOverlay.addEventListener('click', closeNav);
 
         // close on Esc
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeNav();
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeNav();
         });
 
         // close when clicking a link
-        mainNav.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", closeNav);
+        mainNav.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', closeNav);
         });
       }
     </script>
@@ -481,33 +487,33 @@
       // Use EXACT names you told me (with spaces)
       const shots = [
         {
-          src: "images/Screenshot 2026-01-26 114942.png",
-          caption: "Calculator",
+          src: 'images/Screenshot 2026-01-26 114942.png',
+          caption: 'Real Estate',
         },
         {
-          src: "images/Screenshot 2026-01-26 115311.png",
-          caption: "Calculator",
+          src: 'images/Screenshot 2026-01-26 115311.png',
+          caption: 'Consulting',
         },
         {
-          src: "images/Screenshot 2026-01-26 115413.png",
-          caption: "Calculator",
+          src: 'images/Screenshot 2026-01-26 115413.png',
+          caption: 'Industries',
         },
       ];
 
       let shotIndex = 0;
 
-      const mockupImg = document.getElementById("mockupImg");
-      const prevShot = document.getElementById("prevShot");
-      const nextShot = document.getElementById("nextShot");
-      const dotsWrap = document.getElementById("mockupDots");
-      const openLightbox = document.getElementById("openLightbox");
+      const mockupImg = document.getElementById('mockupImg');
+      const prevShot = document.getElementById('prevShot');
+      const nextShot = document.getElementById('nextShot');
+      const dotsWrap = document.getElementById('mockupDots');
+      const openLightbox = document.getElementById('openLightbox');
 
-      const lightbox = document.getElementById("lightbox");
-      const lbImg = document.getElementById("lbImg");
-      const lbCaption = document.getElementById("lbCaption");
-      const closeLightbox = document.getElementById("closeLightbox");
-      const lbPrev = document.getElementById("lbPrev");
-      const lbNext = document.getElementById("lbNext");
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbCaption = document.getElementById('lbCaption');
+      const closeLightbox = document.getElementById('closeLightbox');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
 
       function safeSrc(path) {
         // Encodes spaces and special chars -> prevents “not loading” when JS swaps src
@@ -515,13 +521,13 @@
       }
 
       function renderDots() {
-        dotsWrap.innerHTML = "";
+        dotsWrap.innerHTML = '';
         shots.forEach((_, i) => {
-          const dot = document.createElement("button");
-          dot.type = "button";
-          dot.className = "mockup-dot" + (i === shotIndex ? " active" : "");
-          dot.setAttribute("aria-label", "Go to image " + (i + 1));
-          dot.addEventListener("click", () => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'mockup-dot' + (i === shotIndex ? ' active' : '');
+          dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
+          dot.addEventListener('click', () => {
             shotIndex = i;
             updateShot();
           });
@@ -535,7 +541,7 @@
         mockupImg.alt = item.caption;
         renderDots();
 
-        if (lightbox.classList.contains("open")) {
+        if (lightbox.classList.contains('open')) {
           lbImg.src = safeSrc(item.src);
           lbCaption.textContent = item.caption;
         }
@@ -555,15 +561,15 @@
         const item = shots[shotIndex];
         lbImg.src = safeSrc(item.src);
         lbCaption.textContent = item.caption;
-        lightbox.classList.add("open");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeLB() {
-        lightbox.classList.remove("open");
-        lightbox.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
       }
 
       // bind if all elements exist
@@ -580,31 +586,31 @@
         lbPrev &&
         lbNext
       ) {
-        prevShot.addEventListener("click", prev);
-        nextShot.addEventListener("click", next);
+        prevShot.addEventListener('click', prev);
+        nextShot.addEventListener('click', next);
 
-        openLightbox.addEventListener("click", openLB);
-        mockupImg.addEventListener("click", openLB);
+        openLightbox.addEventListener('click', openLB);
+        mockupImg.addEventListener('click', openLB);
 
-        lbPrev.addEventListener("click", prev);
-        lbNext.addEventListener("click", next);
+        lbPrev.addEventListener('click', prev);
+        lbNext.addEventListener('click', next);
 
-        closeLightbox.addEventListener("click", closeLB);
+        closeLightbox.addEventListener('click', closeLB);
 
-        lightbox.addEventListener("click", (e) => {
+        lightbox.addEventListener('click', (e) => {
           if (e.target === lightbox) closeLB();
         });
 
-        document.addEventListener("keydown", (e) => {
-          if (!lightbox.classList.contains("open")) return;
-          if (e.key === "Escape") closeLB();
-          if (e.key === "ArrowRight") next();
-          if (e.key === "ArrowLeft") prev();
+        document.addEventListener('keydown', (e) => {
+          if (!lightbox.classList.contains('open')) return;
+          if (e.key === 'Escape') closeLB();
+          if (e.key === 'ArrowRight') next();
+          if (e.key === 'ArrowLeft') prev();
         });
 
         updateShot();
       } else {
-        console.warn("Slideshow missing elements. Check IDs in HTML.");
+        console.warn('Slideshow missing elements. Check IDs in HTML.');
       }
     </script>
   </body>

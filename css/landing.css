@@ -228,7 +228,6 @@ a {
   align-items: center;
 }
 .eyebrow {
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--accent);
@@ -898,34 +897,6 @@ details p {
   .header-actions .link-muted {
     display: none;
   }
-}
-
-.hero-center {
-  text-align: center;
-  max-width: 720px; /* controls line length */
-  margin: 0 auto; /* centers the block */
-}
-
-.hero-center .subhead {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero .subhead {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.hero-center {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.hero-center .subhead {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* ===============================
@@ -1716,3 +1687,218 @@ details p {
     padding: 10px 12px;
   }
 }
+
+/* =========================================
+   HERO TEXT ALIGNMENT (FINAL OVERRIDE)
+   Mobile: CENTER
+   Desktop: LEFT
+========================================= */
+
+/* Mobile first – center everything */
+.hero .eyebrow,
+.hero h1,
+.hero .subhead {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Desktop override – force left */
+@media (min-width: 861px) {
+  .hero .eyebrow,
+  .hero h1,
+  .hero .subhead {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .hero .subhead {
+    max-width: 52ch !important; /* keeps desktop readable */
+  }
+}
+
+/* =========================================
+   HERO EYEBROW – MOBILE CENTER FIX
+========================================= */
+
+/* Mobile */
+.hero .eyebrow {
+  display: inline-block; /* allows centering */
+  justify-content: center;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+/* Desktop */
+@media (min-width: 861px) {
+  .hero .eyebrow {
+    justify-content: flex-start;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+  }
+}
+
+/* =========================================
+   HERO TEXT ALIGNMENT (CLEAN & CORRECT)
+   Mobile: CENTER
+   Desktop: LEFT
+========================================= */
+
+/* Mobile first: center the LEFT hero column */
+.hero-grid > div:first-child {
+  text-align: center;
+}
+
+/* Ensure block elements center nicely */
+.hero-grid > div:first-child .subhead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Desktop: left-align the LEFT hero column */
+@media (min-width: 861px) {
+  .hero-grid > div:first-child {
+    text-align: left;
+  }
+
+  .hero-grid > div:first-child .subhead {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 52ch;
+  }
+}
+
+/* =========================================
+   PREMIUM STATS ROW
+========================================= */
+
+.stat-context {
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+/* Divider */
+.stat-divider {
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  margin: 0 auto 1rem;
+  opacity: 0.6;
+}
+
+/* Base row */
+.stat-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  flex-wrap: nowrap; /* IMPORTANT */
+}
+
+/* Individual stat */
+.stat {
+  text-align: center;
+  padding: 0.85rem 0.9rem;
+  min-width: 110px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+}
+
+/* Number */
+.stat-num {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+/* Label */
+.stat-label {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+/* =========================
+   MOBILE — FORCE ONE LINE
+========================= */
+@media (max-width: 520px) {
+  .stat-row {
+    gap: 0.55rem;
+  }
+
+  .stat {
+    min-width: auto;
+    padding: 0.7rem 0.6rem;
+  }
+
+  .stat-num {
+    font-size: 1.05rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+  }
+}
+
+/* =========================================
+   HERO ACTIONS + STATS
+   Mobile: CENTER
+   Desktop: LEFT
+========================================= */
+
+/* Mobile-first: center everything */
+.hero-ctas,
+.trustline,
+.stat-context,
+.stat-row {
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Make CTAs look intentional when centered */
+.hero-ctas {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* Desktop: align everything to the LEFT */
+@media (min-width: 861px) {
+  .hero-ctas {
+    justify-content: flex-start;
+  }
+
+  .trustline {
+    justify-content: flex-start;
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .stat-context {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .stat-row {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+}
+
+

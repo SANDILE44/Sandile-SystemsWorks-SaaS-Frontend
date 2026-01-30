@@ -396,7 +396,7 @@
     <script>
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -405,7 +405,7 @@
       }
 
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       /* ================= FARM CALCULATOR ================= */
@@ -483,119 +483,119 @@
 
       /* ================= INPUT LISTS ================= */
       const farmInputs = [
-        "farm-acreage",
-        "farm-yield",
-        "farm-price",
-        "farm-fixed",
-        "farm-variable",
-        "farm-labor",
-        "farm-months",
+        'farm-acreage',
+        'farm-yield',
+        'farm-price',
+        'farm-fixed',
+        'farm-variable',
+        'farm-labor',
+        'farm-months',
       ];
 
       const livestockInputs = [
-        "livestock-count",
-        "livestock-price",
-        "livestock-feed",
-        "livestock-health",
-        "livestock-fixed",
-        "livestock-labor",
-        "livestock-months",
-        "livestock-mortality",
+        'livestock-count',
+        'livestock-price',
+        'livestock-feed',
+        'livestock-health',
+        'livestock-fixed',
+        'livestock-labor',
+        'livestock-months',
+        'livestock-mortality',
       ];
 
       /* ================= FARM UPDATE ================= */
       farmInputs.forEach((id) => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener("input", updateFarm);
+        if (el) el.addEventListener('input', updateFarm);
       });
 
       function updateFarm() {
         const r = farmCalc.calculate(
-          document.getElementById("farm-acreage").value,
-          document.getElementById("farm-yield").value,
-          document.getElementById("farm-price").value,
-          document.getElementById("farm-fixed").value,
-          document.getElementById("farm-variable").value,
-          document.getElementById("farm-labor").value,
-          document.getElementById("farm-months").value,
+          document.getElementById('farm-acreage').value,
+          document.getElementById('farm-yield').value,
+          document.getElementById('farm-price').value,
+          document.getElementById('farm-fixed').value,
+          document.getElementById('farm-variable').value,
+          document.getElementById('farm-labor').value,
+          document.getElementById('farm-months').value
         );
 
-        document.getElementById("farm-yield-output").textContent =
+        document.getElementById('farm-yield-output').textContent =
           r.totalYield.toFixed(2);
-        document.getElementById("farm-revenue").textContent = formatCurrency(
-          r.totalRevenue,
+        document.getElementById('farm-revenue').textContent = formatCurrency(
+          r.totalRevenue
         );
-        document.getElementById("farm-total-costs").textContent =
+        document.getElementById('farm-total-costs').textContent =
           formatCurrency(r.totalCosts);
 
-        const profitEl = document.getElementById("farm-profit");
+        const profitEl = document.getElementById('farm-profit');
         profitEl.textContent = formatCurrency(r.profitLoss);
         profitEl.className =
-          "output-value " + (r.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (r.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("farm-roi").textContent = formatPercentage(
-          r.roi,
+        document.getElementById('farm-roi').textContent = formatPercentage(
+          r.roi
         );
-        document.getElementById("farm-margin").textContent = formatPercentage(
-          r.margin,
+        document.getElementById('farm-margin').textContent = formatPercentage(
+          r.margin
         );
-        document.getElementById("farm-breakeven").textContent =
+        document.getElementById('farm-breakeven').textContent =
           r.breakEvenUnits.toFixed(2);
-        document.getElementById("farm-cost-per-acre").textContent =
+        document.getElementById('farm-cost-per-acre').textContent =
           formatCurrency(r.costPerAcre);
       }
 
       /* ================= LIVESTOCK UPDATE ================= */
       livestockInputs.forEach((id) => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener("input", updateLivestock);
+        if (el) el.addEventListener('input', updateLivestock);
       });
 
       function updateLivestock() {
         const r = livestockCalc.calculate(
-          document.getElementById("livestock-count").value,
-          document.getElementById("livestock-price").value,
-          document.getElementById("livestock-feed").value,
-          document.getElementById("livestock-health").value,
-          document.getElementById("livestock-fixed").value,
-          document.getElementById("livestock-labor").value,
-          document.getElementById("livestock-months").value,
-          document.getElementById("livestock-mortality").value,
+          document.getElementById('livestock-count').value,
+          document.getElementById('livestock-price').value,
+          document.getElementById('livestock-feed').value,
+          document.getElementById('livestock-health').value,
+          document.getElementById('livestock-fixed').value,
+          document.getElementById('livestock-labor').value,
+          document.getElementById('livestock-months').value,
+          document.getElementById('livestock-mortality').value
         );
 
-        document.getElementById("livestock-revenue").textContent =
+        document.getElementById('livestock-revenue').textContent =
           formatCurrency(r.totalRevenue);
-        document.getElementById("livestock-costs").textContent = formatCurrency(
-          r.totalCosts,
+        document.getElementById('livestock-costs').textContent = formatCurrency(
+          r.totalCosts
         );
 
-        const profitEl = document.getElementById("livestock-profit");
+        const profitEl = document.getElementById('livestock-profit');
         profitEl.textContent = formatCurrency(r.profitLoss);
         profitEl.className =
-          "output-value " + (r.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (r.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("livestock-per-animal").textContent =
+        document.getElementById('livestock-per-animal').textContent =
           formatCurrency(r.costPerAnimal);
-        document.getElementById("livestock-profit-per-animal").textContent =
+        document.getElementById('livestock-profit-per-animal').textContent =
           formatCurrency(r.profitPerAnimal);
-        document.getElementById("livestock-roi").textContent = formatPercentage(
-          r.roi,
+        document.getElementById('livestock-roi').textContent = formatPercentage(
+          r.roi
         );
-        document.getElementById("livestock-margin").textContent =
+        document.getElementById('livestock-margin').textContent =
           formatPercentage(r.margin);
       }
 
       /* ================= RESET BUTTONS (FIXED) ================= */
-      document.querySelectorAll(".resetBtn").forEach((btn) => {
-        btn.addEventListener("click", () => {
+      document.querySelectorAll('.resetBtn').forEach((btn) => {
+        btn.addEventListener('click', () => {
           farmInputs.forEach((id) => {
             const el = document.getElementById(id);
-            if (el) el.value = "";
+            if (el) el.value = '';
           });
 
           livestockInputs.forEach((id) => {
             const el = document.getElementById(id);
-            if (el) el.value = "";
+            if (el) el.value = '';
           });
 
           updateFarm();
@@ -609,26 +609,51 @@
     </script>
 
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }
+    </script>
+
+    <script>
+      (async function () {
+        try {
+          const token = window.auth.getToken();
+          if (!token) return;
+
+          // ✅ CHANGE THESE 3 VALUES PER PAGE
+          const meta = {
+            key: 'break-even',
+            title: 'Break-even Calculator',
+            url: 'break-even.html',
+          };
+
+          await fetch('https://YOUR_BACKEND_URL/api/users/recent-calculators', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify(meta),
+          });
+        } catch (e) {}
+      })();
     </script>
   </body>
 </html>

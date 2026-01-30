@@ -40,7 +40,12 @@
         Welcome, <span id="usernameDisplay"></span>. Choose a sector to begin.
       </p>
 
-      <div id="payBox" class="pay-box"></div>
+      <div id="payBox"></div>
+
+      <div class="card" style="margin-top: 16px">
+        <h3 style="margin-bottom: 10px">Recently opened calculators</h3>
+        <div id="recentList"></div>
+      </div>
 
       <div class="cards-grid">
         <div class="card">
@@ -128,6 +133,123 @@
             }
           });
       })();
+    </script>
+    <script>
+      function formatRemaining(ms) {
+        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        return `${days}d ${hours}h ${mins}m`;
+      }
+
+      function dateFmt(d) {
+        return new Date(d).toLocaleString();
+      }
+
+      function pickActiveEnd(user) {
+        const now = Date.now();
+
+        const subEnd = user.subscriptionEnd
+          ? new Date(user.subscriptionEnd).getTime()
+          : 0;
+        if (subEnd && subEnd > now) return { type: 'sub', end: subEnd };
+
+        const trialEnd = user.trialEnd ? new Date(user.trialEnd).getTime() : 0;
+        if (trialEnd && trialEnd > now) return { type: 'trial', end: trialEnd };
+
+        return null;
+      }
+
+      function esc(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#039;',
+            })[m]
+        );
+      }
+
+      function renderRecents(recents) {
+        const el = document.getElementById('recentList');
+        if (!el) return;
+
+        if (!recents || recents.length === 0) {
+          el.innerHTML = `<p style="color:#777;">No calculators opened yet.</p>`;
+          return;
+        }
+
+        el.innerHTML = recents
+          .map(
+            (c) => `
+    <a href="${esc(c.url)}"
+       style="display:block;padding:12px;border:1px solid #222;border-radius:12px;margin:10px 0;text-decoration:none;">
+      <div style="color:#fff;font-weight:700;">${esc(c.title)}</div>
+      <div style="color:#777;font-size:.9rem;">Last opened: ${new Date(c.lastOpenedAt).toLocaleString()}</div>
+    </a>
+  `
+          )
+          .join('');
+      }
+
+      async function renderDashboard() {
+        const payBox = document.getElementById('payBox');
+
+        const token = window.auth.getToken();
+        const profile = await window.api.getProfile(token); // must call /api/auth/profile (your route)
+        const user = profile.user;
+
+        // ✅ TIMER UI
+        const active = pickActiveEnd(user);
+
+        if (!active) {
+          payBox.innerHTML = `
+      <p style="color:#ff4d4d;">🔒 Access expired</p>
+      <button class="btn btn-primary" id="payBtn">Renew</button>
+    `;
+        } else {
+          const label =
+            active.type === 'sub'
+              ? '✅ Subscription active'
+              : '🆓 Trial active';
+
+          payBox.innerHTML = `
+      <p style="color:#00ff7f;">${label}</p>
+      <p style="color:#ccc;">⏳ Remaining: <span id="timeLeft"></span></p>
+      <p style="color:#777;">Expires: ${dateFmt(active.end)}</p>
+      <button class="btn btn-primary" id="payBtn">Upgrade / Renew</button>
+    `;
+
+          const el = document.getElementById('timeLeft');
+          const tick = () =>
+            (el.textContent = formatRemaining(active.end - Date.now()));
+          tick();
+          setInterval(tick, 1000 * 30);
+        }
+
+        // ✅ PAY BUTTON always works
+        document
+          .getElementById('payBtn')
+          .addEventListener('click', async () => {
+            try {
+              const token = window.auth.getToken();
+              const data = await window.api.createCheckoutRequest(token);
+              window.location.href = data.checkoutUrl;
+            } catch (e) {
+              alert(e.message || 'Payment initialization failed');
+            }
+          });
+
+        // ✅ RECENTS UI (navigates via links)
+        renderRecents(user.recentCalculators);
+      }
+
+      renderDashboard().catch(console.error);
     </script>
   </body>
 </html>

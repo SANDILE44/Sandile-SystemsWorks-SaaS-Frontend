@@ -6,7 +6,74 @@
     <title>Product - Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/landing.css" />
   </head>
-  <body>
+  <body class="product-page">
+    <style>
+      /* =========================================
+   PRODUCT PAGE — HERO ALIGNMENT (FINAL)
+   Mobile: CENTER
+   Desktop: LEFT
+========================================= */
+
+      /* ---------- DEFAULT (Mobile & Tablet) ---------- */
+
+      .hero .hero-grid > div:first-child {
+        text-align: center;
+      }
+
+      .hero .hero-grid > div:first-child .subhead,
+      .hero .hero-grid > div:first-child .trustline {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .hero .hero-ctas,
+      .hero .stat-row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero .trustline {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* ---------- DESKTOP ONLY ---------- */
+      @media (min-width: 1024px) {
+        /* Text alignment */
+        .hero .hero-grid > div:first-child {
+          text-align: left;
+        }
+
+        /* Subhead & trustline */
+        .hero .hero-grid > div:first-child .subhead,
+        .hero .hero-grid > div:first-child .trustline {
+          margin-left: 0;
+          margin-right: 0;
+          text-align: left;
+        }
+
+        /* CTA buttons */
+        .hero .hero-ctas {
+          justify-content: flex-start;
+        }
+
+        /* Trustline */
+        .hero .trustline {
+          justify-content: flex-start;
+        }
+
+        /* Stats row */
+        .hero .stat-row {
+          justify-content: flex-start;
+        }
+
+        .hero .stat {
+          text-align: left;
+        }
+      }
+    </style>
+
     <!-- HEADER -->
     <header class="header">
       <div class="container">
@@ -473,42 +540,42 @@
 
     <!-- HAMBURGER + NAV -->
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const mainNav = document.getElementById("mainNav");
-      const navOverlay = document.getElementById("navOverlay");
+      const navToggle = document.getElementById('navToggle');
+      const mainNav = document.getElementById('mainNav');
+      const navOverlay = document.getElementById('navOverlay');
 
       function openNav() {
-        mainNav.classList.add("open");
-        navToggle.classList.add("open");
-        navOverlay.classList.add("active");
-        navOverlay.setAttribute("aria-hidden", "false");
-        navToggle.setAttribute("aria-expanded", "true");
-        document.body.style.overflow = "hidden";
+        mainNav.classList.add('open');
+        navToggle.classList.add('open');
+        navOverlay.classList.add('active');
+        navOverlay.setAttribute('aria-hidden', 'false');
+        navToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeNav() {
-        mainNav.classList.remove("open");
-        navToggle.classList.remove("open");
-        navOverlay.classList.remove("active");
-        navOverlay.setAttribute("aria-hidden", "true");
-        navToggle.setAttribute("aria-expanded", "false");
-        document.body.style.overflow = "";
+        mainNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navOverlay.classList.remove('active');
+        navOverlay.setAttribute('aria-hidden', 'true');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
       }
 
       if (navToggle && mainNav && navOverlay) {
-        navToggle.addEventListener("click", () => {
-          const isOpen = mainNav.classList.contains("open");
+        navToggle.addEventListener('click', () => {
+          const isOpen = mainNav.classList.contains('open');
           isOpen ? closeNav() : openNav();
         });
 
-        navOverlay.addEventListener("click", closeNav);
+        navOverlay.addEventListener('click', closeNav);
 
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeNav();
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeNav();
         });
 
-        mainNav.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", closeNav);
+        mainNav.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', closeNav);
         });
       }
     </script>
@@ -519,67 +586,67 @@
       // Keep it simple, 5 screenshots of calculators/dashboards.
       const shots = [
         {
-          src: "images/products images/Screenshot 2026-01-26 125335.png",
-          caption: "Calculator",
-          left: "Calculator",
-          right: "Inputs",
+          src: 'images/products images/Screenshot 2026-01-26 125335.png',
+          caption: 'Calculator',
+          left: 'Construction Calculator',
+          right: 'Costs, materials, margins, etc.',
         },
         {
-          src: "images/products images/Screenshot 2026-01-26 130158.png",
-          caption: "Calculator",
-          left: "Calculator",
-          right: "Results",
+          src: 'images/products images/Screenshot 2026-01-26 130158.png',
+          caption: 'Healthcare',
+          left: 'Healthcare',
+          right: 'Pricing, expenses, profit, etc.',
         },
         {
-          src: "images/products images/Screenshot 2026-01-26 131143.png",
-          caption: "Calculator",
-          left: "Calculator",
-          right: "Profit",
+          src: 'images/products images/Screenshot 2026-01-26 131143.png',
+          caption: 'Marketing',
+          left: 'Marketing',
+          right: 'Ad spend, ROI, revenue, etc.',
         },
         {
-          src: "images/products images/Screenshot 2026-01-26 130625.png",
-          caption: "Dashboard",
-          left: "Dashboard",
-          right: "KPIs",
+          src: 'images/products images/Screenshot 2026-01-26 130625.png',
+          caption: 'Logistics',
+          left: 'Logistics',
+          right: 'Fuel, delivery costs, margins, etc.',
         },
         {
-          src: "images/products images/Screenshot 2026-01-26 131522.png",
-          caption: "Scenario",
-          left: "Scenario",
-          right: "Compare",
+          src: 'images/products images/Screenshot 2026-01-26 131522.png',
+          caption: 'Real Estate',
+          left: 'Real Estate',
+          right: 'Purchase price, rent, ROI, etc.',
         },
       ];
 
       let shotIndex = 0;
 
-      const mockupImg = document.getElementById("mockupImg");
-      const prevShot = document.getElementById("prevShot");
-      const nextShot = document.getElementById("nextShot");
-      const dotsWrap = document.getElementById("mockupDots");
-      const openLightbox = document.getElementById("openLightbox");
+      const mockupImg = document.getElementById('mockupImg');
+      const prevShot = document.getElementById('prevShot');
+      const nextShot = document.getElementById('nextShot');
+      const dotsWrap = document.getElementById('mockupDots');
+      const openLightbox = document.getElementById('openLightbox');
 
-      const lightbox = document.getElementById("lightbox");
-      const lbImg = document.getElementById("lbImg");
-      const lbCaption = document.getElementById("lbCaption");
-      const closeLightbox = document.getElementById("closeLightbox");
-      const lbPrev = document.getElementById("lbPrev");
-      const lbNext = document.getElementById("lbNext");
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbCaption = document.getElementById('lbCaption');
+      const closeLightbox = document.getElementById('closeLightbox');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
 
-      const kpiLeft = document.getElementById("kpiLeft");
-      const kpiRight = document.getElementById("kpiRight");
+      const kpiLeft = document.getElementById('kpiLeft');
+      const kpiRight = document.getElementById('kpiRight');
 
       function safeSrc(path) {
         return encodeURI(path); // handles spaces
       }
 
       function renderDots() {
-        dotsWrap.innerHTML = "";
+        dotsWrap.innerHTML = '';
         shots.forEach((_, i) => {
-          const dot = document.createElement("button");
-          dot.type = "button";
-          dot.className = "mockup-dot" + (i === shotIndex ? " active" : "");
-          dot.setAttribute("aria-label", "Go to image " + (i + 1));
-          dot.addEventListener("click", () => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'mockup-dot' + (i === shotIndex ? ' active' : '');
+          dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
+          dot.addEventListener('click', () => {
             shotIndex = i;
             updateShot();
           });
@@ -592,12 +659,12 @@
         mockupImg.src = safeSrc(item.src);
         mockupImg.alt = item.caption;
 
-        if (kpiLeft) kpiLeft.textContent = item.left || "Calculator";
-        if (kpiRight) kpiRight.textContent = item.right || "Results";
+        if (kpiLeft) kpiLeft.textContent = item.left || 'Calculator';
+        if (kpiRight) kpiRight.textContent = item.right || 'Results';
 
         renderDots();
 
-        if (lightbox.classList.contains("open")) {
+        if (lightbox.classList.contains('open')) {
           lbImg.src = safeSrc(item.src);
           lbCaption.textContent = item.caption;
         }
@@ -617,15 +684,15 @@
         const item = shots[shotIndex];
         lbImg.src = safeSrc(item.src);
         lbCaption.textContent = item.caption;
-        lightbox.classList.add("open");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeLB() {
-        lightbox.classList.remove("open");
-        lightbox.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
       }
 
       if (
@@ -641,31 +708,31 @@
         lbPrev &&
         lbNext
       ) {
-        prevShot.addEventListener("click", prev);
-        nextShot.addEventListener("click", next);
+        prevShot.addEventListener('click', prev);
+        nextShot.addEventListener('click', next);
 
-        openLightbox.addEventListener("click", openLB);
-        mockupImg.addEventListener("click", openLB);
+        openLightbox.addEventListener('click', openLB);
+        mockupImg.addEventListener('click', openLB);
 
-        lbPrev.addEventListener("click", prev);
-        lbNext.addEventListener("click", next);
+        lbPrev.addEventListener('click', prev);
+        lbNext.addEventListener('click', next);
 
-        closeLightbox.addEventListener("click", closeLB);
+        closeLightbox.addEventListener('click', closeLB);
 
-        lightbox.addEventListener("click", (e) => {
+        lightbox.addEventListener('click', (e) => {
           if (e.target === lightbox) closeLB();
         });
 
-        document.addEventListener("keydown", (e) => {
-          if (!lightbox.classList.contains("open")) return;
-          if (e.key === "Escape") closeLB();
-          if (e.key === "ArrowRight") next();
-          if (e.key === "ArrowLeft") prev();
+        document.addEventListener('keydown', (e) => {
+          if (!lightbox.classList.contains('open')) return;
+          if (e.key === 'Escape') closeLB();
+          if (e.key === 'ArrowRight') next();
+          if (e.key === 'ArrowLeft') prev();
         });
 
         updateShot();
       } else {
-        console.warn("Slideshow missing elements. Check IDs in HTML.");
+        console.warn('Slideshow missing elements. Check IDs in HTML.');
       }
     </script>
   </body>

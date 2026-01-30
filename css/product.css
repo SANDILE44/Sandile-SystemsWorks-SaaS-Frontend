@@ -8,23 +8,6 @@
   }
 }
 
-.hero-center {
-  text-align: center;
-  max-width: 720px; /* controls line length */
-  margin: 0 auto; /* centers the block */
-}
-
-.hero-center .subhead {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero .subhead {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
 /* ===============================
    INDUSTRIES / SECTORS (no links)
 ================================ */
@@ -752,4 +735,33 @@
   .nav.open .nav-mobile-actions .nav-link-muted {
     padding: 10px 12px;
   }
+}
+
+/* =========================================
+   PRODUCT PAGE HERO — FORCE CENTER
+   (page-specific, final authority)
+========================================= */
+
+/* Center the LEFT hero column */
+.hero .hero-grid > div:first-child {
+  text-align: center;
+}
+
+/* Force subhead + trustline to center */
+.hero .hero-grid > div:first-child .subhead,
+.hero .hero-grid > div:first-child .trustline {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Center CTAs + stats */
+.hero .hero-grid > div:first-child .hero-ctas,
+.hero .hero-grid > div:first-child .stat-row {
+  justify-content: center;
+}
+
+/* Center trustline content (dot + text) */
+.hero .hero-grid > div:first-child .trustline {
+  justify-content: center;
 }

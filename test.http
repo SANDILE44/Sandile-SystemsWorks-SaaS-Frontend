@@ -1,0 +1,6 @@
+POST https://sandile-systemsworks-saas-backend-2.onrender.com/api/users/forgot-password
+Content-Type: application/json
+
+{
+  "email": "thabethesandile44@gmail.com"
+}
