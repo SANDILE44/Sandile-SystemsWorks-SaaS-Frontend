@@ -3,53 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact - Sandile SystemsWorks</title>
+    <title>Contact — Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/landing.css" />
   </head>
 
   <body class="contact-page">
-    <style>
-      /* =========================================
-   CONTACT PAGE — HERO HARD OVERRIDE
-   (kills landing.css interference)
-========================================= */
-
-      /* Disable any hero grid/layout coming from landing.css */
-      .contact-page .hero-grid {
-        display: block !important;
-      }
-
-      /* Center container */
-      .contact-page .hero .hero-center {
-        max-width: 760px;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        text-align: center !important;
-      }
-
-      /* Eyebrow */
-      .contact-page .hero .hero-center .eyebrow {
-        display: inline-block;
-        text-align: center !important;
-        margin: 0 auto 0.7rem !important;
-      }
-
-      /* Title */
-      .contact-page .hero .hero-center h1 {
-        text-align: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      /* Subhead */
-      .contact-page .hero .hero-center .subhead {
-        text-align: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        max-width: 60ch;
-      }
-    </style>
-    <!-- HEADER -->
+    <!-- ================= HEADER ================= -->
     <header class="header">
       <div class="container">
         <div class="header-inner">
@@ -69,22 +28,17 @@
             <a href="solutions.html">Solutions</a>
             <a href="pricing.html">Pricing</a>
             <a href="company.html">Company</a>
-            <a href="contact.html">Contact</a>
+            <a href="contact.html" class="active">Contact</a>
 
             <div class="nav-mobile-actions">
               <a href="login.html" class="nav-link-muted">Sign in</a>
-              <a href="signup.html" class="btn btn-primary btn-block"
-                >Start free trial</a
-              >
+              <a href="signup.html" class="btn btn-primary btn-block">
+                Start free trial
+              </a>
             </div>
           </nav>
 
-          <button
-            class="nav-toggle"
-            id="navToggle"
-            aria-expanded="false"
-            aria-label="Toggle menu"
-          >
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
             <span></span><span></span><span></span>
           </button>
 
@@ -98,73 +52,49 @@
 
     <div class="nav-overlay" id="navOverlay"></div>
 
-    <!-- MAIN -->
+    <!-- ================= MAIN ================= -->
     <main>
       <!-- HERO -->
       <section class="hero">
         <div class="container">
-          <div class="hero-center">
+          <div
+            class="hero-center"
+            style="text-align: center; max-width: 760px; margin: 0 auto"
+          >
             <p class="eyebrow">CONTACT</p>
             <h1>Get in touch with Sandile SystemsWorks</h1>
             <p class="subhead">
-              Have questions? Want to learn more? We’re here to help. Reach out
-              and we’ll get back to you as soon as we can.
+              Have questions or want to learn more? Send us a message and we’ll
+              respond within 24 hours.
             </p>
           </div>
         </div>
       </section>
 
-      <!-- CONTACT CARDS -->
+      <!-- CONTACT INFO -->
       <section class="section section-soft">
         <div class="container">
           <div class="cards">
             <div class="card">
               <h3>Email</h3>
-              <p>Send us a message anytime. We'll respond within 24 hours.</p>
-              <a
-                href="mailto:thabethesandile44@gmail.com"
-                style="
-                  color: var(--accent);
-                  font-weight: 700;
-                  margin-top: 0.8rem;
-                  display: inline-block;
-                "
-              >
+              <p>Reach us anytime.</p>
+              <a href="mailto:thabethesandile44@gmail.com" class="link-accent">
                 thabethesandile44@gmail.com
               </a>
             </div>
 
             <div class="card">
               <h3>Phone</h3>
-              <p>Call us during business hours for immediate assistance.</p>
-              <a
-                href="tel:+27717378540"
-                style="
-                  color: var(--accent);
-                  font-weight: 700;
-                  margin-top: 0.8rem;
-                  display: inline-block;
-                "
-              >
+              <p>Business hours only.</p>
+              <a href="tel:+27717378540" class="link-accent">
                 +27 71 737 8540
               </a>
             </div>
 
             <div class="card">
               <h3>Hours</h3>
-              <p>
-                Monday to Friday, 9am to 5pm SAST. Closed on weekends and
-                holidays.
-              </p>
-              <p
-                style="
-                  color: var(--accent);
-                  font-weight: 700;
-                  margin-top: 0.8rem;
-                "
-              >
-                Quick response.
-              </p>
+              <p>Mon–Fri · 9am–5pm (SAST)</p>
+              <strong class="link-accent">Fast response</strong>
             </div>
           </div>
         </div>
@@ -174,17 +104,25 @@
       <section class="section">
         <div class="container">
           <div style="max-width: 620px; margin: 0 auto">
-            <div
-              class="section-head"
-              style="margin-bottom: 2rem; text-align: center"
-            >
-              <h2>Send us a message</h2>
-              <p>
-                Tell us what's on your mind. We'll be in touch within 24 hours.
-              </p>
+            <div class="section-head" style="text-align: center">
+              <h2>Send a message</h2>
+              <p>We’ll get back to you within 24 hours.</p>
             </div>
 
-            <!-- FORM (Formspree) -->
+            <!-- SUCCESS / ERROR MESSAGE -->
+            <div
+              id="contactMsg"
+              style="
+                display: none;
+                margin-bottom: 16px;
+                padding: 14px 16px;
+                border-radius: 12px;
+                font-weight: 700;
+                text-align: center;
+              "
+            ></div>
+
+            <!-- FORM -->
             <form
               id="contactForm"
               action="https://formspree.io/f/mpqrardv"
@@ -196,226 +134,65 @@
                 padding: 18px;
               "
             >
-              <!-- Spam honeypot -->
-              <input
-                type="text"
-                name="_gotcha"
-                style="display: none"
-                tabindex="-1"
-                autocomplete="off"
-              />
+              <!-- Required for AJAX -->
+              <input type="hidden" name="_format" value="json" />
 
-              <!-- Optional subject -->
-              <input
-                type="hidden"
-                name="_subject"
-                value="New message from Sandile SystemsWorks website"
-              />
+              <!-- Honeypot -->
+              <input type="text" name="_gotcha" style="display: none" />
 
               <div style="display: grid; gap: 14px">
-                <div style="display: grid; gap: 8px">
-                  <label for="contactName" style="font-weight: 700"
-                    >Full name</label
-                  >
-                  <input
-                    id="contactName"
-                    name="name"
-                    type="text"
-                    required
-                    placeholder="Your name"
-                    style="
-                      width: 100%;
-                      padding: 12px 12px;
-                      border-radius: 12px;
-                      border: 1px solid rgba(255, 255, 255, 0.12);
-                      background: rgba(0, 0, 0, 0.25);
-                      color: #fff;
-                      outline: none;
-                    "
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Full name"
+                  class="input"
+                />
 
-                <div style="display: grid; gap: 8px">
-                  <label for="contactEmail" style="font-weight: 700"
-                    >Email</label
-                  >
-                  <input
-                    id="contactEmail"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="you@example.com"
-                    style="
-                      width: 100%;
-                      padding: 12px 12px;
-                      border-radius: 12px;
-                      border: 1px solid rgba(255, 255, 255, 0.12);
-                      background: rgba(0, 0, 0, 0.25);
-                      color: #fff;
-                      outline: none;
-                    "
-                  />
-                </div>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Email address"
+                  class="input"
+                />
 
-                <div style="display: grid; gap: 8px">
-                  <label for="contactSubject" style="font-weight: 700"
-                    >Subject</label
-                  >
-                  <input
-                    id="contactSubject"
-                    name="subject"
-                    type="text"
-                    required
-                    placeholder="Website / Product / Support"
-                    style="
-                      width: 100%;
-                      padding: 12px 12px;
-                      border-radius: 12px;
-                      border: 1px solid rgba(255, 255, 255, 0.12);
-                      background: rgba(0, 0, 0, 0.25);
-                      color: #fff;
-                      outline: none;
-                    "
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="subject"
+                  required
+                  placeholder="Subject"
+                  class="input"
+                />
 
-                <div style="display: grid; gap: 8px">
-                  <label for="contactMessage" style="font-weight: 700"
-                    >Message</label
-                  >
-                  <textarea
-                    id="contactMessage"
-                    name="message"
-                    rows="5"
-                    required
-                    placeholder="Tell us what you need..."
-                    style="
-                      width: 100%;
-                      padding: 12px 12px;
-                      border-radius: 12px;
-                      border: 1px solid rgba(255, 255, 255, 0.12);
-                      background: rgba(0, 0, 0, 0.25);
-                      color: #fff;
-                      outline: none;
-                      resize: vertical;
-                    "
-                  ></textarea>
-                </div>
+                <textarea
+                  name="message"
+                  rows="5"
+                  required
+                  placeholder="Your message..."
+                  class="input"
+                ></textarea>
 
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  style="width: 100%"
-                >
+                <button type="submit" class="btn btn-primary" id="submitBtn">
                   Send message
                 </button>
-
-                <p style="opacity: 0.8; font-size: 0.95rem; margin: 0">
-                  Prefer email?
-                  <a
-                    href="mailto:thabethesandile44@gmail.com"
-                    class="link-muted"
-                  >
-                    thabethesandile44@gmail.com
-                  </a>
-                </p>
               </div>
             </form>
-            <!-- Success / error message -->
-            <div
-              id="contactMsg"
-              style="
-                display: none;
-                padding: 14px 16px;
-                border-radius: 12px;
-                margin-bottom: 16px;
-                font-weight: 700;
-              "
-            ></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA BAND -->
-      <section class="section">
-        <div class="container">
-          <div class="cta-band">
-            <div>
-              <h3>Ready to transform your decision-making?</h3>
-              <p>
-                Start your free trial today and join business leaders using
-                Sandile SystemsWorks.
-              </p>
-            </div>
-            <div class="cta-band-actions">
-              <a href="signup.html" class="btn btn-primary">Start free trial</a>
-              <a href="pricing.html" class="btn btn-ghost">View pricing</a>
-            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- ================= FOOTER ================= -->
     <footer class="footer">
       <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <div class="footer-logo-row">
-              <img
-                src="images/Untitled design.png"
-                alt="Sandile SystemsWorks"
-                class="brand-logo"
-              />
-              <div>
-                <div class="brand-name">Sandile SystemsWorks</div>
-                <p class="footer-desc">
-                  Premium business decision tools: calculators, dashboards, and
-                  SaaS systems built to help businesses move faster.
-                </p>
-              </div>
-            </div>
-
-            <p class="footer-note">
-              Need a premium website too? We build high-converting sites.
-              <a href="company.html" class="footer-link">See our work</a>
-            </p>
-          </div>
-
-          <div class="footer-col">
-            <h4>Pages</h4>
-            <a href="index.html">Home</a>
-            <a href="product.html">Product</a>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="company.html">Company</a>
-            <a href="contact.html">Contact</a>
-          </div>
-
-          <div class="footer-col">
-            <h4>Product</h4>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html">Pricing</a>
-          </div>
-
-          <div class="footer-col">
-            <h4>Contact</h4>
-            <a href="mailto:thabethesandile44@gmail.com"
-              >thabethesandile44@gmail.com</a
-            >
-            <a href="tel:0717378540">0717378540</a>
-            <a href="contact.html">Send a message</a>
-          </div>
-        </div>
-
         <div class="footer-bottom">
           <p>© 2026 Sandile SystemsWorks. All rights reserved.</p>
         </div>
       </div>
     </footer>
 
+    <!-- ================= SCRIPT ================= -->
     <script>
       // Mobile nav
       const navToggle = document.getElementById('navToggle');
@@ -423,69 +200,55 @@
       const navOverlay = document.getElementById('navOverlay');
 
       navToggle.addEventListener('click', () => {
-        const isOpen = mainNav.classList.toggle('open');
-        navToggle.classList.toggle('open');
+        mainNav.classList.toggle('open');
         navOverlay.classList.toggle('active');
-        navToggle.setAttribute('aria-expanded', isOpen);
       });
 
       navOverlay.addEventListener('click', () => {
         mainNav.classList.remove('open');
-        navToggle.classList.remove('open');
         navOverlay.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', false);
       });
 
-      mainNav.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-          mainNav.classList.remove('open');
-          navToggle.classList.remove('open');
-          navOverlay.classList.remove('active');
-          navToggle.setAttribute('aria-expanded', false);
-        });
-      });
+      // Formspree AJAX submit
+      const form = document.getElementById('contactForm');
+      const msg = document.getElementById('contactMsg');
+      const btn = document.getElementById('submitBtn');
 
-      // Formspree submit via fetch (stays on page + shows message)
-      const contactForm = document.getElementById('contactForm');
-      const contactMsg = document.getElementById('contactMsg');
-
-      contactForm.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        contactMsg.style.display = 'none';
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.style.display = 'none';
 
         try {
-          const formData = new FormData(contactForm);
-          const res = await fetch(contactForm.action, {
+          const res = await fetch(form.action, {
             method: 'POST',
-            body: formData,
+            body: new FormData(form),
             headers: { Accept: 'application/json' },
           });
 
           if (res.ok) {
-            contactMsg.textContent =
-              'Thanks! Your message has been sent. We’ll reply within 24 hours.';
-            contactMsg.style.background = 'rgba(34, 197, 94, 0.1)';
-            contactMsg.style.border = '1px solid rgba(34, 197, 94, 0.3)';
-            contactMsg.style.color = '#86efac';
-            contactMsg.style.display = 'block';
-            contactForm.reset();
+            msg.textContent =
+              '✅ Message sent successfully. We’ll be in touch within 24 hours.';
+            msg.style.background = 'rgba(34,197,94,0.12)';
+            msg.style.border = '1px solid rgba(34,197,94,0.35)';
+            msg.style.color = '#86efac';
+            msg.style.display = 'block';
+            form.reset();
           } else {
-            contactMsg.textContent =
-              'Something went wrong. Please try again or email us directly.';
-            contactMsg.style.background = 'rgba(239, 68, 68, 0.12)';
-            contactMsg.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-            contactMsg.style.color = '#fecaca';
-            contactMsg.style.display = 'block';
+            throw new Error('Submission failed');
           }
-        } catch (err) {
-          contactMsg.textContent =
-            'Network error. Please try again or email us directly.';
-          contactMsg.style.background = 'rgba(239, 68, 68, 0.12)';
-          contactMsg.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-          contactMsg.style.color = '#fecaca';
-          contactMsg.style.display = 'block';
+        } catch {
+          msg.textContent =
+            '❌ Something went wrong. Please try again or email us directly.';
+          msg.style.background = 'rgba(239,68,68,0.12)';
+          msg.style.border = '1px solid rgba(239,68,68,0.35)';
+          msg.style.color = '#fecaca';
+          msg.style.display = 'block';
         }
+
+        btn.disabled = false;
+        btn.textContent = 'Send message';
       });
     </script>
   </body>
