@@ -8,6 +8,93 @@
   </head>
 
   <body class="contact-page">
+    <style>
+      /* =========================================
+   PRICING PAGE — HERO (ISOLATED & FINAL)
+   Applies ONLY to Pricing page
+========================================= */
+
+      .contact-page .hero {
+        padding: 4.5rem 0 3.5rem;
+      }
+
+      /* Center the hero container */
+      .contact-page .hero-center {
+        text-align: center;
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Eyebrow */
+      .contact-page .hero-center .eyebrow {
+        display: inline-block;
+        margin: 0 auto 0.7rem;
+        text-align: center;
+        color: var(--accent);
+        letter-spacing: 1.4px;
+        font-weight: 900;
+        font-size: 0.85rem;
+      }
+
+      /* Headline */
+      .contact-page .hero-center h1 {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.08;
+      }
+
+      /* Subhead */
+      .contact-page .hero-center .subhead {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 62ch;
+      }
+
+      /* Trustline */
+      .contact-page .hero-center .trustline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      /* Dot stays inline */
+      .contact-page .hero-center .trustline .dot {
+        flex-shrink: 0;
+      }
+
+      /* =========================================
+   contact PAGE — FORCE HERO TITLE CENTER
+========================================= */
+
+      .contact-page .hero-center h1 {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* =========================================
+   SAFETY OVERRIDES (kills global leaks)
+========================================= */
+
+      /* Neutralize global .subhead rules */
+      .contact-page .subhead {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Neutralize hero-grid rules if any exist */
+      .contact-page .hero-grid {
+        display: block !important;
+      }
+    </style>
+
     <!-- ================= HEADER ================= -->
     <header class="header">
       <div class="container">
@@ -57,10 +144,7 @@
       <!-- HERO -->
       <section class="hero">
         <div class="container">
-          <div
-            class="hero-center"
-            style="text-align: center; max-width: 760px; margin: 0 auto"
-          >
+          <div class="hero-center">
             <p class="eyebrow">CONTACT</p>
             <h1>Get in touch with Sandile SystemsWorks</h1>
             <p class="subhead">
@@ -101,86 +185,57 @@
       </section>
 
       <!-- CONTACT FORM -->
-      <section class="section">
-        <div class="container">
-          <div style="max-width: 620px; margin: 0 auto">
-            <div class="section-head" style="text-align: center">
-              <h2>Send a message</h2>
-              <p>We’ll get back to you within 24 hours.</p>
-            </div>
+      <!--
+<section class="section">
+  <div class="container">
+    <div style="max-width: 620px; margin: 0 auto">
+      <div class="section-head" style="text-align: center">
+        <h2>Send a message</h2>
+        <p>We’ll get back to you within 24 hours.</p>
+      </div>
 
-            <!-- SUCCESS / ERROR MESSAGE -->
-            <div
-              id="contactMsg"
-              style="
-                display: none;
-                margin-bottom: 16px;
-                padding: 14px 16px;
-                border-radius: 12px;
-                font-weight: 700;
-                text-align: center;
-              "
-            ></div>
+      <!-- SUCCESS / ERROR MESSAGE --
+      <div
+        id="contactMsg"
+        style="
+          display: none;
+          margin-bottom: 16px;
+          padding: 14px 16px;
+          border-radius: 12px;
+          font-weight: 700;
+          text-align: center;
+        "
+      ></div>
 
-            <!-- FORM -->
-            <form
-              id="contactForm"
-              action="https://formspree.io/f/mpqrardv"
-              method="POST"
-              style="
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 16px;
-                padding: 18px;
-              "
-            >
-              <!-- Required for AJAX -->
-              <input type="hidden" name="_format" value="json" />
+      <!-- FORM --
+      <form
+        id="contactForm"
+        action="https://formspree.io/f/mpqrardv"
+        method="POST"
+        style="
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          padding: 18px;
+        "
+      >
+        <input type="hidden" name="_format" value="json" />
+        <input type="text" name="_gotcha" style="display: none" />
 
-              <!-- Honeypot -->
-              <input type="text" name="_gotcha" style="display: none" />
-
-              <div style="display: grid; gap: 14px">
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  placeholder="Full name"
-                  class="input"
-                />
-
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="Email address"
-                  class="input"
-                />
-
-                <input
-                  type="text"
-                  name="subject"
-                  required
-                  placeholder="Subject"
-                  class="input"
-                />
-
-                <textarea
-                  name="message"
-                  rows="5"
-                  required
-                  placeholder="Your message..."
-                  class="input"
-                ></textarea>
-
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                  Send message
-                </button>
-              </div>
-            </form>
-          </div>
+        <div style="display: grid; gap: 14px">
+          <input type="text" name="name" required placeholder="Full name" class="input" />
+          <input type="email" name="email" required placeholder="Email address" class="input" />
+          <input type="text" name="subject" required placeholder="Subject" class="input" />
+          <textarea name="message" rows="5" required placeholder="Your message..." class="input"></textarea>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            Send message
+          </button>
         </div>
-      </section>
+      </form>
+    </div>
+  </div>
+</section>
+-->
     </main>
 
     <!-- ================= FOOTER ================= -->
