@@ -6,43 +6,45 @@
     <title>Payment - Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
+
   <body>
-    <div id="payBox" class="pay-box"></div>
     <main style="max-width: 600px; margin: 50px auto; text-align: center">
       <h1>Payment Required</h1>
-      <p>
-        Your free access has ended. Please subscribe to continue using the
-        calculators.
-      </p>
+      <p>Your free access has ended. Please subscribe to continue.</p>
 
-      <button onclick="startCheckout()" class="btn-primary">
-        Pay R12,499 / month
-      </button>
+      <div id="payBox" style="margin: 18px 0"></div>
 
       <p style="margin-top: 20px">
         <a href="dashboard.html">Back</a>
       </p>
     </main>
 
+    <!-- ✅ REQUIRED GLOBALS FIRST (ORDER MATTERS) -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- ✅ PAGE LOGIC AFTER globals are loaded -->
     <script>
       (async () => {
         const profile = await window.auth.requireAuth();
         if (!profile) return;
 
-        const el = document.getElementById('usernameDisplay');
-        if (el) el.textContent = profile.user?.name || 'User';
-
         const payBox = document.getElementById('payBox');
         if (!payBox) return;
 
+        // If already paid, show status and go back to dashboard
         if (profile.user?.hasPaid) {
-          payBox.innerHTML = `<p style="color:#00ff7f;">✅ Active Subscription</p>`;
+          payBox.innerHTML = `<p style="color:#00ff7f; font-weight:800;">✅ Active Subscription</p>
+                              <p style="color:#94a3b8;">Redirecting you back...</p>`;
+          setTimeout(() => (window.location.href = 'dashboard.html'), 900);
           return;
         }
 
+        // Not paid → show pay button
         payBox.innerHTML = `
-          <p style="color:#ffcc00;">Your account is not paid yet.</p>
-          <button type="button" class="btn-primary" id="payBtn">Pay now</button>
+          <p style="color:#ffcc00; font-weight:800;">Payment required</p>
+          <button type="button" class="btn" id="payBtn">Pay R12,499 / month</button>
         `;
 
         document
@@ -58,8 +60,5 @@
           });
       })();
     </script>
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/payments.js"></script>
   </body>
 </html>
