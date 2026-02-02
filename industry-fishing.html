@@ -8,36 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html" class="active">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
-
+      </aside>
     <!-- MAIN CONTENT -->
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -266,14 +276,12 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       // Helper functions
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -281,7 +289,7 @@
         );
       }
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       // Fishing Calculator Class
@@ -292,7 +300,7 @@
           fuel,
           labor,
           equipment,
-          fixed,
+          fixed
         ) {
           catchVolume = parseFloat(catchVolume) || 0;
           pricePerKg = parseFloat(pricePerKg) || 0;
@@ -330,59 +338,59 @@
 
       const fishCalc = new FishingCalculator();
       const fishInputs = [
-        "fish-catch",
-        "fish-price",
-        "fish-fuel",
-        "fish-labor",
-        "fish-equipment",
-        "fish-fixed",
+        'fish-catch',
+        'fish-price',
+        'fish-fuel',
+        'fish-labor',
+        'fish-equipment',
+        'fish-fixed',
       ];
 
       fishInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateFishCalculator);
+          .addEventListener('input', updateFishCalculator);
       });
 
       function updateFishCalculator() {
         const result = fishCalc.calculateFromInputs(
-          document.getElementById("fish-catch").value,
-          document.getElementById("fish-price").value,
-          document.getElementById("fish-fuel").value,
-          document.getElementById("fish-labor").value,
-          document.getElementById("fish-equipment").value,
-          document.getElementById("fish-fixed").value,
+          document.getElementById('fish-catch').value,
+          document.getElementById('fish-price').value,
+          document.getElementById('fish-fuel').value,
+          document.getElementById('fish-labor').value,
+          document.getElementById('fish-equipment').value,
+          document.getElementById('fish-fixed').value
         );
 
-        document.getElementById("fish-catch-output").textContent =
+        document.getElementById('fish-catch-output').textContent =
           result.catchVolume.toFixed(0);
-        document.getElementById("fish-revenue").textContent = formatCurrency(
-          result.revenue,
+        document.getElementById('fish-revenue').textContent = formatCurrency(
+          result.revenue
         );
-        document.getElementById("fish-total-costs").textContent =
+        document.getElementById('fish-total-costs').textContent =
           formatCurrency(result.totalCosts);
-        document.getElementById("fish-breakeven").textContent =
+        document.getElementById('fish-breakeven').textContent =
           result.breakEvenCatch.toFixed(2);
 
-        const profitEl = document.getElementById("fish-profit");
+        const profitEl = document.getElementById('fish-profit');
         profitEl.textContent = formatCurrency(result.profit);
         profitEl.className =
-          "output-value " + (result.profit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("fish-profit-per-kg").textContent =
+        document.getElementById('fish-profit-per-kg').textContent =
           formatCurrency(result.profitPerKg);
-        document.getElementById("fish-margin").textContent = formatPercentage(
-          result.margin,
+        document.getElementById('fish-margin').textContent = formatPercentage(
+          result.margin
         );
-        document.getElementById("fish-monthly-revenue").textContent =
+        document.getElementById('fish-monthly-revenue').textContent =
           formatCurrency(result.monthlyRevenue);
-        document.getElementById("fish-annual-revenue").textContent =
+        document.getElementById('fish-annual-revenue').textContent =
           formatCurrency(result.annualRevenue);
       }
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        fishInputs.forEach((id) => (document.getElementById(id).value = ""));
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        fishInputs.forEach((id) => (document.getElementById(id).value = ''));
         updateFishCalculator();
       });
 
@@ -390,23 +398,23 @@
       updateFishCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

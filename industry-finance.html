@@ -8,35 +8,45 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
-
-    <main>
+      </aside>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -260,14 +270,12 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       // Helpers
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -275,7 +283,7 @@
         );
       }
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       // Financial Calculator
@@ -286,7 +294,7 @@
           staff,
           technology,
           fixed,
-          operational,
+          operational
         ) {
           clients = parseFloat(clients) || 0;
           fee = parseFloat(fee) || 0;
@@ -318,60 +326,60 @@
 
       const finCalc = new FinancialServiceCalculator();
       const finInputs = [
-        "fin-clients",
-        "fin-fee",
-        "fin-staff",
-        "fin-technology",
-        "fin-fixed",
-        "fin-operational",
+        'fin-clients',
+        'fin-fee',
+        'fin-staff',
+        'fin-technology',
+        'fin-fixed',
+        'fin-operational',
       ];
 
       finInputs.forEach((id) =>
         document
           .getElementById(id)
-          .addEventListener("input", updateFinCalculator),
+          .addEventListener('input', updateFinCalculator)
       );
 
       function updateFinCalculator() {
         const result = finCalc.calculateFromInputs(
-          document.getElementById("fin-clients").value,
-          document.getElementById("fin-fee").value,
-          document.getElementById("fin-staff").value,
-          document.getElementById("fin-technology").value,
-          document.getElementById("fin-fixed").value,
-          document.getElementById("fin-operational").value,
+          document.getElementById('fin-clients').value,
+          document.getElementById('fin-fee').value,
+          document.getElementById('fin-staff').value,
+          document.getElementById('fin-technology').value,
+          document.getElementById('fin-fixed').value,
+          document.getElementById('fin-operational').value
         );
 
-        document.getElementById("fin-clients-output").textContent =
+        document.getElementById('fin-clients-output').textContent =
           result.clients.toFixed(0);
-        document.getElementById("fin-revenue").textContent = formatCurrency(
-          result.totalRevenue,
+        document.getElementById('fin-revenue').textContent = formatCurrency(
+          result.totalRevenue
         );
-        document.getElementById("fin-total-costs").textContent = formatCurrency(
-          result.totalCosts,
+        document.getElementById('fin-total-costs').textContent = formatCurrency(
+          result.totalCosts
         );
 
-        const profitEl = document.getElementById("fin-profit");
+        const profitEl = document.getElementById('fin-profit');
         profitEl.textContent = formatCurrency(result.profitLoss);
         profitEl.className =
-          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("fin-per-client").textContent = formatCurrency(
-          result.profitPerClient,
+        document.getElementById('fin-per-client').textContent = formatCurrency(
+          result.profitPerClient
         );
-        document.getElementById("fin-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('fin-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("fin-margin").textContent = formatPercentage(
-          result.margin,
+        document.getElementById('fin-margin').textContent = formatPercentage(
+          result.margin
         );
-        document.getElementById("fin-cost-per-client").textContent =
+        document.getElementById('fin-cost-per-client').textContent =
           formatCurrency(result.costPerClient);
       }
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        finInputs.forEach((id) => (document.getElementById(id).value = ""));
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        finInputs.forEach((id) => (document.getElementById(id).value = ''));
         updateFinCalculator();
       });
 
@@ -379,23 +387,23 @@
       updateFinCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

@@ -9,35 +9,46 @@
     <style></style>
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html"  class="active">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -248,9 +259,7 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       class SocialCalculator {
         calculate(participants, fee, staff, supplies, operational) {
@@ -281,7 +290,7 @@
 
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -290,58 +299,58 @@
       }
 
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       const socialCalc = new SocialCalculator();
       const inputs = [
-        "participants",
-        "fee",
-        "staff",
-        "supplies",
-        "operational",
+        'participants',
+        'fee',
+        'staff',
+        'supplies',
+        'operational',
       ];
 
       inputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateSocialCalculator);
+          .addEventListener('input', updateSocialCalculator);
       });
 
       function updateSocialCalculator() {
         const result = socialCalc.calculate(
-          document.getElementById("participants").value,
-          document.getElementById("fee").value,
-          document.getElementById("staff").value,
-          document.getElementById("supplies").value,
-          document.getElementById("operational").value,
+          document.getElementById('participants').value,
+          document.getElementById('fee').value,
+          document.getElementById('staff').value,
+          document.getElementById('supplies').value,
+          document.getElementById('operational').value
         );
 
-        document.getElementById("total-participants").textContent =
-          result.participants || "";
-        document.getElementById("total-revenue").textContent =
-          result.totalRevenue ? formatCurrency(result.totalRevenue) : "";
-        document.getElementById("total-costs").textContent = result.totalCosts
+        document.getElementById('total-participants').textContent =
+          result.participants || '';
+        document.getElementById('total-revenue').textContent =
+          result.totalRevenue ? formatCurrency(result.totalRevenue) : '';
+        document.getElementById('total-costs').textContent = result.totalCosts
           ? formatCurrency(result.totalCosts)
-          : "";
+          : '';
 
-        const netEl = document.getElementById("net-impact");
+        const netEl = document.getElementById('net-impact');
         netEl.textContent = result.netImpact
           ? formatCurrency(result.netImpact)
-          : "";
+          : '';
         netEl.className =
-          "output-value " + (result.netImpact >= 0 ? "positive" : "negative");
+          'output-value ' + (result.netImpact >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("profit-margin").textContent =
-          result.profitMargin ? formatPercentage(result.profitMargin) : "";
-        document.getElementById("roi").textContent = result.roi
+        document.getElementById('profit-margin').textContent =
+          result.profitMargin ? formatPercentage(result.profitMargin) : '';
+        document.getElementById('roi').textContent = result.roi
           ? formatPercentage(result.roi)
-          : "";
+          : '';
       }
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        inputs.forEach((id) => (document.getElementById(id).value = ""));
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        inputs.forEach((id) => (document.getElementById(id).value = ''));
         updateSocialCalculator();
       });
 
@@ -349,23 +358,23 @@
       updateSocialCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

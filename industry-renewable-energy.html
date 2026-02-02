@@ -8,36 +8,47 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="sector-primary.html" class="active">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
     <!-- MAIN CONTENT -->
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -249,9 +260,6 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
 
     <!-- SCRIPT -->
     <script src="calculators.js"></script>
@@ -284,22 +292,22 @@
 
       const energyCalc = new RenewableEnergyCalculator();
       const energyInputs = [
-        "energy-capacity",
-        "energy-install",
-        "energy-maintenance",
-        "energy-revenue",
-        "energy-life",
+        'energy-capacity',
+        'energy-install',
+        'energy-maintenance',
+        'energy-revenue',
+        'energy-life',
       ];
 
       energyInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateEnergyCalculator);
+          .addEventListener('input', updateEnergyCalculator);
       });
 
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -308,78 +316,78 @@
       }
 
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       function updateEnergyCalculator() {
         const result = energyCalc.calculate(
-          document.getElementById("energy-capacity").value,
-          document.getElementById("energy-install").value,
-          document.getElementById("energy-maintenance").value,
-          document.getElementById("energy-revenue").value,
-          document.getElementById("energy-life").value,
+          document.getElementById('energy-capacity').value,
+          document.getElementById('energy-install').value,
+          document.getElementById('energy-maintenance').value,
+          document.getElementById('energy-revenue').value,
+          document.getElementById('energy-life').value
         );
 
-        document.getElementById("energy-total-costs").textContent =
+        document.getElementById('energy-total-costs').textContent =
           formatCurrency(result.totalCosts);
-        document.getElementById("energy-total-revenue").textContent =
+        document.getElementById('energy-total-revenue').textContent =
           formatCurrency(result.totalRevenue);
 
-        const profitEl = document.getElementById("energy-profit");
+        const profitEl = document.getElementById('energy-profit');
         profitEl.textContent = formatCurrency(result.profitLoss);
         profitEl.className =
-          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("energy-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('energy-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("energy-payback").textContent =
+        document.getElementById('energy-payback').textContent =
           result.paybackYears.toFixed(1);
 
         // Optional annual profit display
-        if (!document.getElementById("energy-annual-profit")) {
-          const annualDiv = document.createElement("div");
-          annualDiv.className = "output-group";
+        if (!document.getElementById('energy-annual-profit')) {
+          const annualDiv = document.createElement('div');
+          annualDiv.className = 'output-group';
           annualDiv.innerHTML = `<div class="output-label">Annual Profit (R)</div>
                              <div class="output-value" id="energy-annual-profit">${formatCurrency(result.annualProfit)}</div>`;
-          document.querySelector(".output-section").appendChild(annualDiv);
+          document.querySelector('.output-section').appendChild(annualDiv);
         } else {
-          document.getElementById("energy-annual-profit").textContent =
+          document.getElementById('energy-annual-profit').textContent =
             formatCurrency(result.annualProfit);
         }
       }
 
       function resetEnergyCalculator() {
-        energyInputs.forEach((id) => (document.getElementById(id).value = ""));
+        energyInputs.forEach((id) => (document.getElementById(id).value = ''));
         updateEnergyCalculator();
       }
 
       function updateEnergyCalculator() {
         const capacity =
-          Number(document.getElementById("energy-capacity").value) || 0;
+          Number(document.getElementById('energy-capacity').value) || 0;
 
         const result = energyCalc.calculate(
           capacity,
-          document.getElementById("energy-install").value,
-          document.getElementById("energy-maintenance").value,
-          document.getElementById("energy-revenue").value,
-          document.getElementById("energy-life").value,
+          document.getElementById('energy-install').value,
+          document.getElementById('energy-maintenance').value,
+          document.getElementById('energy-revenue').value,
+          document.getElementById('energy-life').value
         );
 
-        document.getElementById("energy-total-costs").textContent =
+        document.getElementById('energy-total-costs').textContent =
           formatCurrency(result.totalCosts);
-        document.getElementById("energy-total-revenue").textContent =
+        document.getElementById('energy-total-revenue').textContent =
           formatCurrency(result.totalRevenue);
 
-        const profitEl = document.getElementById("energy-profit");
+        const profitEl = document.getElementById('energy-profit');
         profitEl.textContent = formatCurrency(result.profitLoss);
         profitEl.className =
-          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("energy-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('energy-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("energy-payback").textContent =
+        document.getElementById('energy-payback').textContent =
           result.paybackYears.toFixed(1);
 
         // Optional outputs using capacity
@@ -388,25 +396,25 @@
         const profitPerKW = capacity ? result.profitLoss / capacity : 0;
 
         // Create extra output if not exist
-        if (!document.getElementById("energy-cost-per-kw")) {
-          const outSec = document.querySelector(".output-section");
+        if (!document.getElementById('energy-cost-per-kw')) {
+          const outSec = document.querySelector('.output-section');
 
-          ["Cost per kW", "Revenue per kW", "Profit per kW"].forEach(
+          ['Cost per kW', 'Revenue per kW', 'Profit per kW'].forEach(
             (label, i) => {
-              const div = document.createElement("div");
-              div.className = "output-group";
+              const div = document.createElement('div');
+              div.className = 'output-group';
               div.innerHTML = `<div class="output-label">${label}</div>
-                       <div class="output-value" id="energy-${label.toLowerCase().replace(/\s/g, "-")}">R0.00</div>`;
+                       <div class="output-value" id="energy-${label.toLowerCase().replace(/\s/g, '-')}">R0.00</div>`;
               outSec.appendChild(div);
-            },
+            }
           );
         }
 
-        document.getElementById("energy-cost-per-kw").textContent =
+        document.getElementById('energy-cost-per-kw').textContent =
           formatCurrency(costPerKW);
-        document.getElementById("energy-revenue-per-kw").textContent =
+        document.getElementById('energy-revenue-per-kw').textContent =
           formatCurrency(revenuePerKW);
-        document.getElementById("energy-profit-per-kw").textContent =
+        document.getElementById('energy-profit-per-kw').textContent =
           formatCurrency(profitPerKW);
       }
 
@@ -414,23 +422,23 @@
       updateEnergyCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

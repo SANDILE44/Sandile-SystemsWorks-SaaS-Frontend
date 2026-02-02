@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings – Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
+            <img src="images/Untitled design.png" class="sidebar-logo" />
+            <span class="sidebar-name">SystemsWorks</span>
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="tools.html">Decision Tools</a>
+            <a href="settings.html" class="active">Settings</a>
+          </nav>
+        </div>
+
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">S</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="dashboard.html">🏠 Dashboard</a>
+            <a href="profile.html">👤 Profile</a>
+            <button onclick="window.auth.logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main-content">
+        <header class="page-header">
+          <h1>Settings</h1>
+          <p>Manage access, usage cycles, and billing.</p>
+        </header>
+
+        <section class="card">
+          <h3>Access status</h3>
+          <p id="accessType">—</p>
+          <p id="accessExpiry">—</p>
+        </section>
+
+        <section class="card">
+          <h3>Usage cycle</h3>
+          <div class="output-group">
+            <div class="output-label">Time remaining</div>
+            <div class="output-value" id="timeRemaining">—</div>
+          </div>
+          <div class="output-group">
+            <div class="output-label">Resets on</div>
+            <div class="output-value" id="resetDate">—</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Features</h3>
+          <ul>
+            <li>Decision tools: Unlimited</li>
+            <li>Calculators: Unlimited</li>
+            <li>Exports: Coming soon</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>Subscription</h3>
+          <button class="btn btn-primary" id="payBtn">
+            Manage subscription
+          </button>
+        </section>
+
+        <section class="card">
+          <h3>Danger zone</h3>
+          <button class="btn btn-premium" disabled>Delete account</button>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+      function formatRemaining(ms) {
+        const s = Math.max(0, Math.floor(ms / 1000));
+        const d = Math.floor(s / 86400);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        return `${d}d ${h}h ${m}m`;
+      }
+
+      function pickActiveEnd(user) {
+        const now = Date.now();
+        if (user.subscriptionEnd && new Date(user.subscriptionEnd) > now)
+          return user.subscriptionEnd;
+        if (user.trialEnd && new Date(user.trialEnd) > now)
+          return user.trialEnd;
+        return null;
+      }
+
+      (async () => {
+        const profile = await window.auth.requireAuth();
+        if (!profile) return;
+
+        const user = profile.user;
+        const display = user.name || user.email.split('@')[0];
+
+        document.getElementById('accountAvatar').textContent = display
+          .charAt(0)
+          .toUpperCase();
+        document.getElementById('accountName').textContent = display;
+
+        const end = pickActiveEnd(user);
+        if (!end) return;
+
+        document.getElementById('accessType').textContent = user.subscriptionEnd
+          ? '✅ Subscription active'
+          : '🆓 Trial active';
+
+        document.getElementById('accessExpiry').textContent =
+          'Expires on ' + new Date(end).toLocaleString();
+
+        const tick = () => {
+          document.getElementById('timeRemaining').textContent =
+            formatRemaining(new Date(end) - Date.now());
+        };
+
+        tick();
+        setInterval(tick, 30000);
+
+        document.getElementById('resetDate').textContent = new Date(
+          end
+        ).toDateString();
+
+        document.getElementById('payBtn').onclick = async () => {
+          const token = window.auth.getToken();
+          const data = await window.api.createCheckoutRequest(token);
+          window.location.href = data.checkoutUrl;
+        };
+      })();
+
+      const btn = document.getElementById('accountBtn');
+      const menu = document.getElementById('accountMenu');
+
+      btn.addEventListener('click', () => {
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decision Tools – Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
+            <img src="images/Untitled design.png" class="sidebar-logo" />
+            <span class="sidebar-name">SystemsWorks</span>
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="tools.html" class="active">Decision Tools</a>
+            <a href="settings.html">Settings</a>
+          </nav>
+        </div>
+
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">S</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="dashboard.html">🏠 Dashboard</a>
+            <a href="profile.html">👤 Profile</a>
+            <button onclick="window.auth.logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main-content">
+        <header class="page-header">
+          <h1>Decision Tools</h1>
+          <p>
+            Structured business calculators designed to help you make confident,
+            data-driven decisions.
+          </p>
+        </header>
+
+        <section class="card">
+          <h3>What these tools do</h3>
+          <ul>
+            <li>Calculate Profit & Loss using real business logic</li>
+            <li>Measure Margin %, ROI %, and cost efficiency</li>
+            <li>Identify break-even points before committing money</li>
+            <li>Evaluate scenarios and projections</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>How to use them</h3>
+          <ol>
+            <li>Select a sector from the dashboard</li>
+            <li>Choose your industry</li>
+            <li>Enter your numbers</li>
+            <li>Use the results to guide real decisions</li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h3>Supported sectors</h3>
+          <div class="cards-grid">
+            <div class="card">
+              <h4>Primary</h4>
+              <p>Agriculture, Mining, Energy</p>
+            </div>
+            <div class="card">
+              <h4>Secondary</h4>
+              <p>Manufacturing, Construction</p>
+            </div>
+            <div class="card">
+              <h4>Tertiary</h4>
+              <p>Retail, Finance, Logistics</p>
+            </div>
+            <div class="card">
+              <h4>Quaternary</h4>
+              <p>Software, SaaS, IT</p>
+            </div>
+            <div class="card">
+              <h4>Quinary</h4>
+              <p>Government, NGOs</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Start using the tools</h3>
+          <a href="dashboard.html" class="btn btn-primary">
+            Go to Dashboard →
+          </a>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+      // Soft auth only
+      (async () => {
+        const profile = await window.auth.requireAuth();
+        if (!profile) return;
+
+        const user = profile.user;
+        const display = user.name || user.email.split('@')[0];
+
+        document.getElementById('accountAvatar').textContent = display
+          .charAt(0)
+          .toUpperCase();
+        document.getElementById('accountName').textContent = display;
+      })();
+
+      const btn = document.getElementById('accountBtn');
+      const menu = document.getElementById('accountMenu');
+
+      btn.addEventListener('click', () => {
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

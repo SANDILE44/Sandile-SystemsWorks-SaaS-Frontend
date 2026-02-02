@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -268,26 +279,23 @@
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
-    <script>
       // Helpers
       const formatCurrency = (v) =>
-        "R" +
+        'R' +
         Number(v).toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-      const formatPercentage = (v) => Number(v).toFixed(2) + "%";
+      const formatPercentage = (v) => Number(v).toFixed(2) + '%';
 
       // Main Calculator
       function calcRetail() {
-        const u = +document.getElementById("retail-units").value || 0;
-        const c = +document.getElementById("retail-cost").value || 0;
-        const p = +document.getElementById("retail-price").value || 0;
-        const f = +document.getElementById("retail-fixed").value || 0;
-        const l = +document.getElementById("retail-labor").value || 0;
-        const o = +document.getElementById("retail-operational").value || 0;
+        const u = +document.getElementById('retail-units').value || 0;
+        const c = +document.getElementById('retail-cost').value || 0;
+        const p = +document.getElementById('retail-price').value || 0;
+        const f = +document.getElementById('retail-fixed').value || 0;
+        const l = +document.getElementById('retail-labor').value || 0;
+        const o = +document.getElementById('retail-operational').value || 0;
 
         const revenue = u * p;
         const cogs = u * c;
@@ -298,58 +306,58 @@
         const markup = c ? ((p - c) / c) * 100 : 0;
         const roi = total ? (profit / total) * 100 : 0;
         const ratio = revenue ? (total / revenue) * 100 : 0;
-        const breakeven = p - c > 0 ? Math.ceil((f + l + o) / (p - c)) : "-";
+        const breakeven = p - c > 0 ? Math.ceil((f + l + o) / (p - c)) : '-';
 
-        document.getElementById("revenue").textContent =
+        document.getElementById('revenue').textContent =
           formatCurrency(revenue);
-        document.getElementById("cogs").textContent = formatCurrency(cogs);
-        document.getElementById("gross").textContent = formatCurrency(gross);
-        document.getElementById("totalCosts").textContent =
+        document.getElementById('cogs').textContent = formatCurrency(cogs);
+        document.getElementById('gross').textContent = formatCurrency(gross);
+        document.getElementById('totalCosts').textContent =
           formatCurrency(total);
 
-        const profitEl = document.getElementById("profit");
+        const profitEl = document.getElementById('profit');
         profitEl.textContent = formatCurrency(profit);
         profitEl.className =
-          "output-value " + (profit >= 0 ? "positive" : "negative");
+          'output-value ' + (profit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("margin").textContent =
+        document.getElementById('margin').textContent =
           formatPercentage(margin);
-        document.getElementById("markup").textContent =
+        document.getElementById('markup').textContent =
           formatPercentage(markup);
-        document.getElementById("roi").textContent = formatPercentage(roi);
-        document.getElementById("ratio").textContent = formatPercentage(ratio);
+        document.getElementById('roi').textContent = formatPercentage(roi);
+        document.getElementById('ratio').textContent = formatPercentage(ratio);
 
-        document.getElementById("breakeven").textContent = breakeven;
-        document.getElementById("profitUnit").textContent = formatCurrency(
-          p - c,
+        document.getElementById('breakeven').textContent = breakeven;
+        document.getElementById('profitUnit').textContent = formatCurrency(
+          p - c
         );
-        document.getElementById("monthly").textContent = formatCurrency(profit);
-        document.getElementById("annual").textContent = formatCurrency(
-          profit * 12,
+        document.getElementById('monthly').textContent = formatCurrency(profit);
+        document.getElementById('annual').textContent = formatCurrency(
+          profit * 12
         );
       }
 
       [
-        "retail-units",
-        "retail-cost",
-        "retail-price",
-        "retail-fixed",
-        "retail-labor",
-        "retail-operational",
+        'retail-units',
+        'retail-cost',
+        'retail-price',
+        'retail-fixed',
+        'retail-labor',
+        'retail-operational',
       ].forEach((id) => {
-        document.getElementById(id).addEventListener("input", calcRetail);
+        document.getElementById(id).addEventListener('input', calcRetail);
       });
 
-      document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById('resetBtn').addEventListener('click', () => {
         [
-          "retail-units",
-          "retail-cost",
-          "retail-price",
-          "retail-fixed",
-          "retail-labor",
-          "retail-operational",
+          'retail-units',
+          'retail-cost',
+          'retail-price',
+          'retail-fixed',
+          'retail-labor',
+          'retail-operational',
         ].forEach((i) => {
-          document.getElementById(i).value = "";
+          document.getElementById(i).value = '';
         });
         calcRetail();
       });
@@ -357,23 +365,23 @@
       calcRetail(); // initialize
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

@@ -1,5 +1,7 @@
 // js/auth.js
-
+// ==========================
+// TOKEN STORAGE
+// ==========================
 function getToken() {
   return localStorage.getItem('token');
 }
@@ -12,12 +14,17 @@ function clearToken() {
   localStorage.removeItem('token');
 }
 
+// ==========================
+// LOGOUT
+// ==========================
 function logout() {
   clearToken();
   window.location.href = 'login.html';
 }
 
-// Logged-in check ONLY
+// ==========================
+// AUTH CHECK (LOGIN REQUIRED)
+// ==========================
 async function requireAuth() {
   const token = getToken();
 
@@ -27,15 +34,20 @@ async function requireAuth() {
   }
 
   try {
-    return await window.api.getProfileRequest(token);
+    // Verify token + get profile
+    const res = await window.api.apiFetch('/api/users/profile', { token });
+    return res; // { user: {...} }
   } catch (err) {
+    console.warn('Auth failed, clearing token');
     clearToken();
     window.location.href = 'login.html';
     return null;
   }
 }
 
-// Access check (trial OR paid — backend decides)
+// ==========================
+// ACCESS CHECK (TRIAL OR PAID)
+// ==========================
 async function requireAccess() {
   const token = getToken();
 
@@ -45,6 +57,7 @@ async function requireAccess() {
   }
 
   try {
+    // Backend decides trial/sub validity
     await window.api.apiFetch('/api/users/dashboard', { token });
     return true;
   } catch (err) {
@@ -53,7 +66,9 @@ async function requireAccess() {
   }
 }
 
-// Expose globally
+// ==========================
+// GLOBAL EXPORT
+// ==========================
 window.auth = {
   getToken,
   setToken,

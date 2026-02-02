@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html" class="active">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -261,15 +272,12 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
 
     <script>
       // Helper functions
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -277,7 +285,7 @@
         );
       }
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       // Software Calculator Class
@@ -313,57 +321,57 @@
 
       const softwareCalc = new SoftwareCalculator();
       const softwareInputs = [
-        "software-units",
-        "software-price",
-        "software-dev-cost",
-        "software-labor",
-        "software-operational",
+        'software-units',
+        'software-price',
+        'software-dev-cost',
+        'software-labor',
+        'software-operational',
       ];
 
       softwareInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateSoftwareCalculator);
+          .addEventListener('input', updateSoftwareCalculator);
       });
 
       function updateSoftwareCalculator() {
         const result = softwareCalc.calculateFromInputs(
-          document.getElementById("software-units").value,
-          document.getElementById("software-price").value,
-          document.getElementById("software-dev-cost").value,
-          document.getElementById("software-labor").value,
-          document.getElementById("software-operational").value,
+          document.getElementById('software-units').value,
+          document.getElementById('software-price').value,
+          document.getElementById('software-dev-cost').value,
+          document.getElementById('software-labor').value,
+          document.getElementById('software-operational').value
         );
 
-        document.getElementById("software-units-output").textContent =
+        document.getElementById('software-units-output').textContent =
           result.units.toFixed(0);
-        document.getElementById("software-revenue").textContent =
+        document.getElementById('software-revenue').textContent =
           formatCurrency(result.totalRevenue);
-        document.getElementById("software-dev-cost-output").textContent =
+        document.getElementById('software-dev-cost-output').textContent =
           formatCurrency(result.devCost);
-        document.getElementById("software-labor-output").textContent =
+        document.getElementById('software-labor-output').textContent =
           formatCurrency(result.labor);
-        document.getElementById("software-operational-output").textContent =
+        document.getElementById('software-operational-output').textContent =
           formatCurrency(result.operational);
-        document.getElementById("software-total-costs").textContent =
+        document.getElementById('software-total-costs').textContent =
           formatCurrency(result.totalCosts);
 
-        const netEl = document.getElementById("software-net-profit");
+        const netEl = document.getElementById('software-net-profit');
         netEl.textContent = formatCurrency(result.netProfit);
         netEl.className =
-          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("software-margin").textContent =
+        document.getElementById('software-margin').textContent =
           formatPercentage(result.profitMargin);
-        document.getElementById("software-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('software-roi').textContent = formatPercentage(
+          result.roi
         );
       }
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById('resetBtn').addEventListener('click', () => {
         softwareInputs.forEach(
-          (id) => (document.getElementById(id).value = ""),
+          (id) => (document.getElementById(id).value = '')
         );
         updateSoftwareCalculator();
       });
@@ -372,23 +380,23 @@
       updateSoftwareCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

@@ -3,249 +3,254 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sandile SystemsWorks - Dashboard</title>
+    <title>Sandile SystemsWorks – Dashboard</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
 
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <div class="header-actions">
-            <button
-              type="button"
-              class="btn btn-ghost"
-              onclick="window.auth.logout()"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
-      <h1>Business Calculators</h1>
-      <p>
-        Welcome, <span id="usernameDisplay"></span>. Choose a sector to begin.
-      </p>
-
-      <div id="payBox"></div>
-
-    
-      <div class="cards-grid">
-        <div class="card">
-          <h3 class="card-title">Primary Sector</h3>
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <header class="page-header">
+          <h1>Business Calculators</h1>
           <p>
-            Agriculture, Forestry, Fishing, Mining, Oil &amp; Gas, Renewable
-            Energy
+            Welcome, <span id="usernameDisplay">User</span>. Choose a sector to
+            begin.
           </p>
-          <a href="sector-primary.html">Explore Calculators →</a>
-        </div>
+        </header>
 
-        <div class="card">
-          <h3 class="card-title">Secondary Sector</h3>
-          <p>
-            Manufacturing, Construction, Automotive, Electronics, Textiles, Food
-            &amp; Beverage
-          </p>
-          <a href="sector-secondary.html">Explore Calculators →</a>
-        </div>
+        <!-- SUBSCRIPTION STATUS -->
+        <section id="payBox" class="pay-box"></section>
+<!-- SECTORS -->
+<section class="cards-grid">
+  <div class="card">
+    <h3 class="card-title">Primary Sector</h3>
+    <p>Agriculture, Mining, Oil & Gas, Renewable Energy</p>
+    <a href="sector-primary.html">Explore →</a>
+  </div>
 
-        <div class="card">
-          <h3 class="card-title">Tertiary Sector</h3>
-          <p>
-            Real Estate, Retail, Restaurants, Hospitality, Logistics,
-            Healthcare, Education, Finance, Marketing, Consulting
-          </p>
-          <a href="sector-tertiary.html">Explore Calculators →</a>
-        </div>
+  <div class="card">
+    <h3 class="card-title">Secondary Sector</h3>
+    <p>Manufacturing, Construction, Automotive, Electronics</p>
+    <a href="sector-secondary.html">Explore →</a>
+  </div>
 
-        <div class="card">
-          <h3 class="card-title">Quaternary Sector</h3>
-          <p>Software, SaaS, IT Services, Media, R&amp;D, Telecommunications</p>
-          <a href="sector-quaternary.html">Explore Calculators →</a>
-        </div>
+  <div class="card">
+    <h3 class="card-title">Tertiary Sector</h3>
+    <p>Retail, Logistics, Healthcare, Finance, Consulting</p>
+    <a href="sector-tertiary.html">Explore →</a>
+  </div>
 
-        <div class="card">
-          <h3 class="card-title">Quinary Sector</h3>
-          <p>
-            Government, NGOs, Social &amp; Community Services, Public
-            Administration
-          </p>
-          <a href="sector-quinary.html">Explore Calculators →</a>
-        </div>
-      </div>
-    </main>
+  <div class="card">
+    <h3 class="card-title">Quaternary Sector</h3>
+    <p>Software, SaaS, IT Services, Media, R&D</p>
+    <a href="sector-quaternary.html">Explore →</a>
+  </div>
 
-    <!-- REQUIRED GLOBALS (ORDER MATTERS) -->
+  <div class="card">
+    <h3 class="card-title">Quinary Sector</h3>
+    <p>Government, NGOs, Education, Public Services</p>
+    <a href="sector-quinary.html">Explore →</a>
+  </div>
+</section>
+
+
+    <!-- REQUIRED GLOBALS -->
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
 
+    <!-- DASHBOARD LOGIC -->
     <script>
-      (async () => {
-        const profile = await window.auth.requireAuth();
-        if (!profile) return;
+      (async function initDashboard() {
+        try {
+          // ===============================
+          // 1️⃣ AUTH (single source of truth)
+          // ===============================
+          const profile = await window.auth.requireAuth();
+          if (!profile || !profile.user) return;
 
-        const el = document.getElementById('usernameDisplay');
-        if (el) el.textContent = profile.user?.name || 'User';
+          const user = profile.user;
+          const now = Date.now();
 
-        const payBox = document.getElementById('payBox');
-        if (!payBox) return;
+          // ===============================
+          // 2️⃣ HEADER / ACCOUNT UI
+          // ===============================
+          const usernameEl = document.getElementById('usernameDisplay');
+          if (usernameEl) {
+            usernameEl.textContent = user.name || 'User';
+          }
 
-        if (profile.user?.hasPaid) {
-          payBox.innerHTML =
-            '<p style="color:#00ff7f;">✅ Active Subscription</p>';
-          return;
-        }
+          const displayName =
+            user.name || (user.email ? user.email.split('@')[0] : 'Account');
 
-        payBox.innerHTML = `
-          <p style="color:#ffcc00;">Trial active or payment required.</p>
-          <button type="button" class="btn btn-primary" id="payBtn">
-            Pay now
-          </button>
+          const accountName = document.getElementById('accountName');
+          const accountAvatar = document.getElementById('accountAvatar');
+
+          if (accountName) accountName.textContent = displayName;
+          if (accountAvatar)
+            accountAvatar.textContent = displayName.charAt(0).toUpperCase();
+
+          // ===============================
+          // 3️⃣ SUBSCRIPTION STATE
+          // ===============================
+          const payBox = document.getElementById('payBox');
+          if (!payBox) return;
+
+          const subscriptionEnd = user.subscriptionEnd
+            ? new Date(user.subscriptionEnd).getTime()
+            : 0;
+
+          const trialEnd = user.trialEnd
+            ? new Date(user.trialEnd).getTime()
+            : 0;
+
+          const subActive = subscriptionEnd && subscriptionEnd > now;
+          const trialActive = trialEnd && trialEnd > now;
+
+          // ===============================
+          // 4️⃣ RENDER UI
+          // ===============================
+          if (subActive || trialActive) {
+            payBox.innerHTML = `
+          <p class="status active">
+            ${subActive ? '✅ Subscription active' : '🆓 Trial active'}
+          </p>
+        `;
+          } else {
+            payBox.innerHTML = `
+          <p class="status expired">🔒 Access expired</p>
+          <button id="payBtn" class="btn btn-primary">Renew</button>
         `;
 
-        document
-          .getElementById('payBtn')
-          .addEventListener('click', async () => {
-            try {
-              const token = window.auth.getToken();
-              const data = await window.api.createCheckoutRequest(token);
-              window.location.href = data.checkoutUrl;
-            } catch (e) {
-              alert(e.message || 'Payment initialization failed');
-            }
-          });
+            const payBtn = document.getElementById('payBtn');
+            payBtn.addEventListener('click', async () => {
+              try {
+                const token = window.auth.getToken();
+                const data = await window.api.createCheckoutRequest(token);
+
+                if (!data || !data.checkoutUrl) {
+                  throw new Error('Checkout URL missing');
+                }
+
+                window.location.href = data.checkoutUrl;
+              } catch (err) {
+                alert(err.message || 'Payment initialization failed');
+              }
+            });
+          }
+        } catch (err) {
+          console.error('Dashboard init failed:', err);
+        }
       })();
+
+      // ===============================
+      // ACCOUNT DROPDOWN
+      // ===============================
+      const accountBtn = document.getElementById('accountBtn');
+      const accountMenu = document.getElementById('accountMenu');
+
+      if (accountBtn && accountMenu) {
+        accountBtn.addEventListener('click', () => {
+          accountMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!accountBtn.contains(e.target)) {
+            accountMenu.classList.remove('open');
+          }
+        });
+      }
+
+      // ===============================
+      // LOGOUT
+      // ===============================
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          window.auth.logout();
+        });
+      }
     </script>
+
     <script>
-      function formatRemaining(ms) {
-        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const mins = Math.floor((totalSeconds % 3600) / 60);
-        return `${days}d ${hours}h ${mins}m`;
+      const hamburger = document.getElementById('hamburger');
+      const sidebar = document.querySelector('.sidebar');
+      const backdrop = document.getElementById('mobileBackdrop');
+
+      if (hamburger && sidebar && backdrop) {
+        const openMenu = () => {
+          sidebar.classList.add('open');
+          hamburger.classList.add('active');
+          backdrop.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        };
+
+        const closeMenu = () => {
+          sidebar.classList.remove('open');
+          hamburger.classList.remove('active');
+          backdrop.classList.add('hidden');
+          document.body.style.overflow = '';
+        };
+
+        // Toggle menu
+        hamburger.addEventListener('click', () => {
+          sidebar.classList.contains('open') ? closeMenu() : openMenu();
+        });
+
+        // Close when clicking backdrop
+        backdrop.addEventListener('click', closeMenu);
+
+        // Close when clicking any sidebar link
+        sidebar.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', closeMenu);
+        });
+
+        // Safety: reset on resize to desktop
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 700) {
+            closeMenu();
+          }
+        });
       }
-
-      function dateFmt(d) {
-        return new Date(d).toLocaleString();
-      }
-
-      function pickActiveEnd(user) {
-        const now = Date.now();
-
-        const subEnd = user.subscriptionEnd
-          ? new Date(user.subscriptionEnd).getTime()
-          : 0;
-        if (subEnd && subEnd > now) return { type: 'sub', end: subEnd };
-
-        const trialEnd = user.trialEnd ? new Date(user.trialEnd).getTime() : 0;
-        if (trialEnd && trialEnd > now) return { type: 'trial', end: trialEnd };
-
-        return null;
-      }
-
-      function esc(s) {
-        return String(s).replace(
-          /[&<>"']/g,
-          (m) =>
-            ({
-              '&': '&amp;',
-              '<': '&lt;',
-              '>': '&gt;',
-              '"': '&quot;',
-              "'": '&#039;',
-            })[m]
-        );
-      }
-
-      function renderRecents(recents) {
-        const el = document.getElementById('recentList');
-        if (!el) return;
-
-        if (!recents || recents.length === 0) {
-          el.innerHTML = `<p style="color:#777;">No calculators opened yet.</p>`;
-          return;
-        }
-
-        el.innerHTML = recents
-          .map(
-            (c) => `
-    <a href="${esc(c.url)}"
-       style="display:block;padding:12px;border:1px solid #222;border-radius:12px;margin:10px 0;text-decoration:none;">
-      <div style="color:#fff;font-weight:700;">${esc(c.title)}</div>
-      <div style="color:#777;font-size:.9rem;">Last opened: ${new Date(c.lastOpenedAt).toLocaleString()}</div>
-    </a>
-  `
-          )
-          .join('');
-      }
-
-      async function renderDashboard() {
-        const payBox = document.getElementById('payBox');
-
-        const token = window.auth.getToken();
-        const profile = await window.api.getProfile(token); // must call /api/auth/profile (your route)
-        const user = profile.user;
-
-        // ✅ TIMER UI
-        const active = pickActiveEnd(user);
-
-        if (!active) {
-          payBox.innerHTML = `
-      <p style="color:#ff4d4d;">🔒 Access expired</p>
-      <button class="btn btn-primary" id="payBtn">Renew</button>
-    `;
-        } else {
-          const label =
-            active.type === 'sub'
-              ? '✅ Subscription active'
-              : '🆓 Trial active';
-
-          payBox.innerHTML = `
-      <p style="color:#00ff7f;">${label}</p>
-      <p style="color:#ccc;">⏳ Remaining: <span id="timeLeft"></span></p>
-      <p style="color:#777;">Expires: ${dateFmt(active.end)}</p>
-      <button class="btn btn-primary" id="payBtn">Upgrade / Renew</button>
-    `;
-
-          const el = document.getElementById('timeLeft');
-          const tick = () =>
-            (el.textContent = formatRemaining(active.end - Date.now()));
-          tick();
-          setInterval(tick, 1000 * 30);
-        }
-
-        // ✅ PAY BUTTON always works
-        document
-          .getElementById('payBtn')
-          .addEventListener('click', async () => {
-            try {
-              const token = window.auth.getToken();
-              const data = await window.api.createCheckoutRequest(token);
-              window.location.href = data.checkoutUrl;
-            } catch (e) {
-              alert(e.message || 'Payment initialization failed');
-            }
-          });
-
-        // ✅ RECENTS UI (navigates via links)
-        renderRecents(user.recentCalculators);
-      }
-
-      renderDashboard().catch(console.error);
     </script>
   </body>
 </html>

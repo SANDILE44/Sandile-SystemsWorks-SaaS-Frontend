@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a> →
         <a href="sector-tertiary.html">Tertiary</a> →
@@ -252,9 +263,7 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       class RestaurantCalculator {
         calculate(tables, covers, check, foodPercent, labor, fixed, days) {
@@ -284,7 +293,7 @@
             check - (check * foodPercent) / 100 > 0
               ? Math.ceil(
                   (labor + fixed) /
-                    ((check - (check * foodPercent) / 100) * days),
+                    ((check - (check * foodPercent) / 100) * days)
                 )
               : 0;
 
@@ -306,21 +315,21 @@
 
       // Formatter functions
       const f = (v) =>
-        "R" +
+        'R' +
         Number(v).toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-      const p = (v) => Number(v).toFixed(2) + "%";
+      const p = (v) => Number(v).toFixed(2) + '%';
 
       const calc = () => {
-        const t = document.getElementById("tables").value;
-        const c = document.getElementById("covers").value;
-        const a = document.getElementById("check").value;
-        const fp = document.getElementById("foodPercent").value;
-        const l = document.getElementById("labor").value;
-        const fx = document.getElementById("fixed").value;
-        const d = document.getElementById("days").value;
+        const t = document.getElementById('tables').value;
+        const c = document.getElementById('covers').value;
+        const a = document.getElementById('check').value;
+        const fp = document.getElementById('foodPercent').value;
+        const l = document.getElementById('labor').value;
+        const fx = document.getElementById('fixed').value;
+        const d = document.getElementById('days').value;
 
         const result = new RestaurantCalculator().calculate(
           t,
@@ -329,7 +338,7 @@
           fp,
           l,
           fx,
-          d,
+          d
         );
 
         dailyCovers.textContent = result.dailyCovers;
@@ -339,7 +348,7 @@
 
         profit.textContent = f(result.netProfit);
         profit.className =
-          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
 
         margin.textContent = p(result.margin);
         ratio.textContent = p(result.ratio);
@@ -351,60 +360,60 @@
 
       // Add input listeners
       [
-        "tables",
-        "covers",
-        "check",
-        "foodPercent",
-        "labor",
-        "fixed",
-        "days",
+        'tables',
+        'covers',
+        'check',
+        'foodPercent',
+        'labor',
+        'fixed',
+        'days',
       ].forEach((id) => {
-        document.getElementById(id).addEventListener("input", calc);
+        document.getElementById(id).addEventListener('input', calc);
       });
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        ["tables", "covers", "check", "labor", "fixed"].forEach(
-          (i) => (document.getElementById(i).value = ""),
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        ['tables', 'covers', 'check', 'labor', 'fixed'].forEach(
+          (i) => (document.getElementById(i).value = '')
         );
-        document.getElementById("foodPercent").value = 30;
-        document.getElementById("days").value = 30;
+        document.getElementById('foodPercent').value = 30;
+        document.getElementById('days').value = 30;
         calc();
       });
 
       // Initialize
-      const dailyCovers = document.getElementById("dailyCovers");
-      const revenue = document.getElementById("revenue");
-      const foodCost = document.getElementById("foodCost");
-      const totalCosts = document.getElementById("totalCosts");
-      const profit = document.getElementById("profit");
-      const margin = document.getElementById("margin");
-      const ratio = document.getElementById("ratio");
-      const profitCover = document.getElementById("profitCover");
-      const breakeven = document.getElementById("breakeven");
-      const monthly = document.getElementById("monthly");
-      const annual = document.getElementById("annual");
+      const dailyCovers = document.getElementById('dailyCovers');
+      const revenue = document.getElementById('revenue');
+      const foodCost = document.getElementById('foodCost');
+      const totalCosts = document.getElementById('totalCosts');
+      const profit = document.getElementById('profit');
+      const margin = document.getElementById('margin');
+      const ratio = document.getElementById('ratio');
+      const profitCover = document.getElementById('profitCover');
+      const breakeven = document.getElementById('breakeven');
+      const monthly = document.getElementById('monthly');
+      const annual = document.getElementById('annual');
 
       calc();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

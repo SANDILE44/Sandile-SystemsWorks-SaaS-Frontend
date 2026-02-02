@@ -8,36 +8,47 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html" class="active">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
     <!-- MAIN CONTENT -->
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -311,15 +322,13 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+  
 
     <script>
       /* ====================== FORMATTING ====================== */
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -328,7 +337,7 @@
       }
 
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       /* ====================== REAL ESTATE CALCULATOR ====================== */
@@ -366,50 +375,50 @@
 
       const propertyCalc = new RealEstateCalculator();
       const propertyInputs = [
-        "property-cost",
-        "property-rent",
-        "property-expenses",
-        "property-vacancy",
-        "property-years",
+        'property-cost',
+        'property-rent',
+        'property-expenses',
+        'property-vacancy',
+        'property-years',
       ];
 
       propertyInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updatePropertyCalculator);
+          .addEventListener('input', updatePropertyCalculator);
       });
 
       function updatePropertyCalculator() {
         const result = propertyCalc.calculateFromInputs(
-          document.getElementById("property-cost").value,
-          document.getElementById("property-rent").value,
-          document.getElementById("property-expenses").value,
-          document.getElementById("property-vacancy").value,
-          document.getElementById("property-years").value,
+          document.getElementById('property-cost').value,
+          document.getElementById('property-rent').value,
+          document.getElementById('property-expenses').value,
+          document.getElementById('property-vacancy').value,
+          document.getElementById('property-years').value
         );
 
-        document.getElementById("property-annual-income").textContent =
+        document.getElementById('property-annual-income').textContent =
           formatCurrency(result.annualIncome);
-        document.getElementById("property-total-income").textContent =
+        document.getElementById('property-total-income').textContent =
           formatCurrency(result.totalIncome);
-        document.getElementById("property-total-expenses").textContent =
+        document.getElementById('property-total-expenses').textContent =
           formatCurrency(result.totalExpenses);
 
-        const profitEl = document.getElementById("property-profit");
+        const profitEl = document.getElementById('property-profit');
         profitEl.textContent = formatCurrency(result.netProfit);
         profitEl.className =
-          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("property-profit-per-r").textContent =
+        document.getElementById('property-profit-per-r').textContent =
           formatCurrency(result.profitPerR);
-        document.getElementById("property-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('property-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("property-margin").textContent =
+        document.getElementById('property-margin').textContent =
           formatPercentage(result.margin);
-        document.getElementById("property-monthly-profit").textContent =
+        document.getElementById('property-monthly-profit').textContent =
           formatCurrency(result.monthlyProfit);
-        document.getElementById("property-annual-profit").textContent =
+        document.getElementById('property-annual-profit').textContent =
           formatCurrency(result.annualProfit);
       }
 
@@ -465,83 +474,83 @@
 
       const vehicleCalc = new VehicleCalculator();
       const vehicleInputs = [
-        "vehicle-units",
-        "vehicle-cost",
-        "vehicle-price",
-        "vehicle-fixed",
-        "vehicle-labor",
-        "vehicle-operational",
+        'vehicle-units',
+        'vehicle-cost',
+        'vehicle-price',
+        'vehicle-fixed',
+        'vehicle-labor',
+        'vehicle-operational',
       ];
 
       vehicleInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateVehicleCalculator);
+          .addEventListener('input', updateVehicleCalculator);
       });
 
       function updateVehicleCalculator() {
         const result = vehicleCalc.calculateFromInputs(
-          document.getElementById("vehicle-units").value,
-          document.getElementById("vehicle-cost").value,
-          document.getElementById("vehicle-price").value,
-          document.getElementById("vehicle-fixed").value,
-          document.getElementById("vehicle-labor").value,
-          document.getElementById("vehicle-operational").value,
+          document.getElementById('vehicle-units').value,
+          document.getElementById('vehicle-cost').value,
+          document.getElementById('vehicle-price').value,
+          document.getElementById('vehicle-fixed').value,
+          document.getElementById('vehicle-labor').value,
+          document.getElementById('vehicle-operational').value
         );
 
-        document.getElementById("vehicle-units-output").textContent =
+        document.getElementById('vehicle-units-output').textContent =
           result.unitsProduced.toFixed(0);
-        document.getElementById("vehicle-revenue").textContent = formatCurrency(
-          result.totalRevenue,
+        document.getElementById('vehicle-revenue').textContent = formatCurrency(
+          result.totalRevenue
         );
-        document.getElementById("vehicle-cogs").textContent = formatCurrency(
-          result.costOfProduction,
+        document.getElementById('vehicle-cogs').textContent = formatCurrency(
+          result.costOfProduction
         );
-        document.getElementById("vehicle-gross").textContent = formatCurrency(
-          result.grossProfit,
+        document.getElementById('vehicle-gross').textContent = formatCurrency(
+          result.grossProfit
         );
-        document.getElementById("vehicle-total-costs").textContent =
+        document.getElementById('vehicle-total-costs').textContent =
           formatCurrency(result.totalCosts);
 
-        const profitEl = document.getElementById("vehicle-profit");
+        const profitEl = document.getElementById('vehicle-profit');
         profitEl.textContent = formatCurrency(result.netProfit);
         profitEl.className =
-          "output-value " + (result.netProfit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("vehicle-margin").textContent =
+        document.getElementById('vehicle-margin').textContent =
           formatPercentage(result.profitMargin);
-        document.getElementById("vehicle-markup").textContent =
+        document.getElementById('vehicle-markup').textContent =
           formatPercentage(result.markup);
-        document.getElementById("vehicle-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('vehicle-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("vehicle-breakeven").textContent =
+        document.getElementById('vehicle-breakeven').textContent =
           result.breakEvenUnits.toFixed(2);
-        document.getElementById("vehicle-revenue-unit").textContent =
+        document.getElementById('vehicle-revenue-unit').textContent =
           formatCurrency(result.revenuePerUnit);
-        document.getElementById("vehicle-cost-contribution").textContent =
+        document.getElementById('vehicle-cost-contribution').textContent =
           formatPercentage(result.costContribution);
-        document.getElementById("vehicle-monthly-revenue").textContent =
+        document.getElementById('vehicle-monthly-revenue').textContent =
           formatCurrency(result.monthlyRevenue);
-        document.getElementById("vehicle-annual-revenue").textContent =
+        document.getElementById('vehicle-annual-revenue').textContent =
           formatCurrency(result.annualRevenue);
-        document.getElementById("vehicle-annual-profit").textContent =
+        document.getElementById('vehicle-annual-profit').textContent =
           formatCurrency(result.annualProfit);
       }
 
       /* ====================== UNIVERSAL RESET BUTTONS ====================== */
-      document.querySelectorAll(".reset-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
+      document.querySelectorAll('.reset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
           const target = btn.dataset.target; // e.g., 'vehicle', 'property'
           let inputs = [];
 
-          if (target === "vehicle") inputs = vehicleInputs;
-          else if (target === "property") inputs = propertyInputs;
+          if (target === 'vehicle') inputs = vehicleInputs;
+          else if (target === 'property') inputs = propertyInputs;
 
-          inputs.forEach((id) => (document.getElementById(id).value = ""));
+          inputs.forEach((id) => (document.getElementById(id).value = ''));
 
-          if (target === "vehicle") updateVehicleCalculator();
-          else if (target === "property") updatePropertyCalculator();
+          if (target === 'vehicle') updateVehicleCalculator();
+          else if (target === 'property') updatePropertyCalculator();
         });
       });
 
@@ -551,23 +560,23 @@
     </script>
 
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

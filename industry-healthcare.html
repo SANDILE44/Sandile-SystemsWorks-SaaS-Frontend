@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -265,9 +276,7 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       class ClinicCalculator {
         calculateFromInputs(
@@ -276,7 +285,7 @@
           workingDays,
           staff,
           supplies,
-          fixed,
+          fixed
         ) {
           patientsPerDay = parseFloat(patientsPerDay) || 0;
           fee = parseFloat(fee) || 0;
@@ -315,7 +324,7 @@
 
       function formatCurrency(v) {
         return (
-          "R" +
+          'R' +
           Number(v).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -323,63 +332,63 @@
         );
       }
       function formatPercentage(v) {
-        return Number(v).toFixed(2) + "%";
+        return Number(v).toFixed(2) + '%';
       }
 
       const clinicCalc = new ClinicCalculator();
       const clinicInputs = [
-        "clinic-patients",
-        "clinic-fee",
-        "clinic-working-days",
-        "clinic-staff",
-        "clinic-supplies",
-        "clinic-fixed",
+        'clinic-patients',
+        'clinic-fee',
+        'clinic-working-days',
+        'clinic-staff',
+        'clinic-supplies',
+        'clinic-fixed',
       ];
 
       clinicInputs.forEach((id) =>
         document
           .getElementById(id)
-          .addEventListener("input", updateClinicCalculator),
+          .addEventListener('input', updateClinicCalculator)
       );
 
       function updateClinicCalculator() {
         const result = clinicCalc.calculateFromInputs(
-          document.getElementById("clinic-patients").value,
-          document.getElementById("clinic-fee").value,
-          document.getElementById("clinic-working-days").value,
-          document.getElementById("clinic-staff").value,
-          document.getElementById("clinic-supplies").value,
-          document.getElementById("clinic-fixed").value,
+          document.getElementById('clinic-patients').value,
+          document.getElementById('clinic-fee').value,
+          document.getElementById('clinic-working-days').value,
+          document.getElementById('clinic-staff').value,
+          document.getElementById('clinic-supplies').value,
+          document.getElementById('clinic-fixed').value
         );
 
-        document.getElementById("clinic-monthly-patients").textContent =
+        document.getElementById('clinic-monthly-patients').textContent =
           result.monthlyPatients.toFixed(0);
-        document.getElementById("clinic-revenue").textContent = formatCurrency(
-          result.monthlyRevenue,
+        document.getElementById('clinic-revenue').textContent = formatCurrency(
+          result.monthlyRevenue
         );
-        document.getElementById("clinic-total-costs").textContent =
+        document.getElementById('clinic-total-costs').textContent =
           formatCurrency(result.totalCosts);
 
-        const profitEl = document.getElementById("clinic-profit");
+        const profitEl = document.getElementById('clinic-profit');
         profitEl.textContent = formatCurrency(result.profitLoss);
         profitEl.className =
-          "output-value " + (result.profitLoss >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("clinic-per-patient").textContent =
+        document.getElementById('clinic-per-patient').textContent =
           formatCurrency(result.costPerPatient);
-        document.getElementById("clinic-revenue-per-patient").textContent =
+        document.getElementById('clinic-revenue-per-patient').textContent =
           formatCurrency(result.revenuePerPatient);
-        document.getElementById("clinic-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('clinic-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("clinic-margin").textContent = formatPercentage(
-          result.margin,
+        document.getElementById('clinic-margin').textContent = formatPercentage(
+          result.margin
         );
       }
 
       // Reset button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        clinicInputs.forEach((id) => (document.getElementById(id).value = ""));
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        clinicInputs.forEach((id) => (document.getElementById(id).value = ''));
         updateClinicCalculator();
       });
 
@@ -387,23 +396,23 @@
       updateClinicCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

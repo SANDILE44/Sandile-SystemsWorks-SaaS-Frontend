@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile – Sandile SystemsWorks</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <!-- APP SHELL -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="sidebar-logo"
+            />
+            <span class="sidebar-name">SystemsWorks</span>
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="tools.html">Decision Tools</a>
+            <a href="settings.html">Account</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span class="account-avatar" id="accountAvatar">S</span>
+            <span class="account-name" id="accountName">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 My Profile</a>
+            <button onclick="window.auth.logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <h1>Profile</h1>
+        </header>
+
+        <section class="card">
+          <h3>Email</h3>
+          <p id="email"></p>
+        </section>
+
+        <section class="card">
+          <h3>Joined</h3>
+          <p id="joined"></p>
+        </section>
+
+        <section class="card">
+          <h3>Delete account</h3>
+          <button class="btn btn-premium" disabled>Delete account</button>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+      (async () => {
+        const profile = await window.auth.requireAuth();
+        if (!profile) return;
+
+        const user = profile.user;
+        document.getElementById('email').textContent = user.email;
+        document.getElementById('joined').textContent = new Date(
+          user.createdAt || Date.now()
+        ).toDateString();
+      })();
+    </script>
+  </body>
+</html>

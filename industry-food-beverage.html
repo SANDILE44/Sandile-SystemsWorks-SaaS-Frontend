@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="sector-primary.html">Primary Sector</a>
+            <a href="sector-secondary.html" class="active">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -271,14 +282,12 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
 
     <script>
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -287,7 +296,7 @@
       }
 
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       class FoodBeverageCalculator {
@@ -297,7 +306,7 @@
           ingredients,
           labor,
           equipment,
-          fixed,
+          fixed
         ) {
           units = parseFloat(units) || 0;
           price = parseFloat(price) || 0;
@@ -334,62 +343,62 @@
 
       const fbCalc = new FoodBeverageCalculator();
       const fbInputs = [
-        "fb-units",
-        "fb-price",
-        "fb-ingredients",
-        "fb-labor",
-        "fb-equipment",
-        "fb-fixed",
+        'fb-units',
+        'fb-price',
+        'fb-ingredients',
+        'fb-labor',
+        'fb-equipment',
+        'fb-fixed',
       ];
 
       fbInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateFbCalculator);
+          .addEventListener('input', updateFbCalculator);
       });
 
-      document.getElementById("fb-reset")?.addEventListener("click", () => {
-        fbInputs.forEach((id) => (document.getElementById(id).value = ""));
+      document.getElementById('fb-reset')?.addEventListener('click', () => {
+        fbInputs.forEach((id) => (document.getElementById(id).value = ''));
         updateFbCalculator();
       });
 
       function updateFbCalculator() {
         const result = fbCalc.calculateFromInputs(
-          document.getElementById("fb-units").value,
-          document.getElementById("fb-price").value,
-          document.getElementById("fb-ingredients").value,
-          document.getElementById("fb-labor").value,
-          document.getElementById("fb-equipment").value,
-          document.getElementById("fb-fixed").value,
+          document.getElementById('fb-units').value,
+          document.getElementById('fb-price').value,
+          document.getElementById('fb-ingredients').value,
+          document.getElementById('fb-labor').value,
+          document.getElementById('fb-equipment').value,
+          document.getElementById('fb-fixed').value
         );
 
-        document.getElementById("fb-units-output").textContent =
+        document.getElementById('fb-units-output').textContent =
           result.units.toFixed(0);
-        document.getElementById("fb-revenue").textContent = formatCurrency(
-          result.revenue,
+        document.getElementById('fb-revenue').textContent = formatCurrency(
+          result.revenue
         );
-        document.getElementById("fb-total-costs").textContent = formatCurrency(
-          result.totalCosts,
+        document.getElementById('fb-total-costs').textContent = formatCurrency(
+          result.totalCosts
         );
 
-        const profitEl = document.getElementById("fb-profit");
+        const profitEl = document.getElementById('fb-profit');
         profitEl.textContent = formatCurrency(result.profit);
         profitEl.className =
-          "output-value " + (result.profit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("fb-profit-per-unit").textContent =
+        document.getElementById('fb-profit-per-unit').textContent =
           formatCurrency(result.profitPerUnit);
-        document.getElementById("fb-margin").textContent = formatPercentage(
-          result.margin,
+        document.getElementById('fb-margin').textContent = formatPercentage(
+          result.margin
         );
-        document.getElementById("fb-revenue-unit").textContent = formatCurrency(
-          result.revenuePerUnit,
+        document.getElementById('fb-revenue-unit').textContent = formatCurrency(
+          result.revenuePerUnit
         );
-        document.getElementById("fb-monthly-revenue").textContent =
+        document.getElementById('fb-monthly-revenue').textContent =
           formatCurrency(result.monthlyRevenue);
-        document.getElementById("fb-annual-revenue").textContent =
+        document.getElementById('fb-annual-revenue').textContent =
           formatCurrency(result.annualRevenue);
-        document.getElementById("fb-annual-profit").textContent =
+        document.getElementById('fb-annual-profit').textContent =
           formatCurrency(result.annualProfit);
       }
 
@@ -397,23 +406,23 @@
       updateFbCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }

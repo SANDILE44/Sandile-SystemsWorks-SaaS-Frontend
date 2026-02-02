@@ -8,34 +8,45 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <!-- BRAND -->
-          <div class="brand">
+    <!-- APP LAYOUT -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
               alt="Sandile SystemsWorks"
-              class="brand-logo"
+              class="sidebar-logo"
             />
-            <span class="brand-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">SystemsWorks</span>
           </div>
 
-          <!-- RIGHT ACTIONS -->
-          <div class="header-actions">
-            <button
-              type="button"
-              onclick="window.auth.logout()"
-              class="btn btn-ghost"
-            >
-              Logout
-            </button>
+          <nav class="sidebar-nav">
+            <a href="dashboard.html" >Dashboard</a>
+            <a href="sector-primary.html" class="active">Primary Sector</a>
+            <a href="sector-secondary.html">Secondary Sector</a>
+            <a href="sector-tertiary.html">Tertiary Sector</a>
+            <a href="sector-quaternary.html">Quaternary Sector</a>
+            <a href="sector-quinary.html">Quinary Sector</a>
+          </nav>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span id="accountName" class="account-name">Account</span>
+          </button>
+
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="profile.html">👤 Profile</a>
+            <button id="logoutBtn">🚪 Logout</button>
           </div>
         </div>
-      </div>
-    </header>
-    <main>
+      </aside>
+    <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -287,14 +298,12 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      window.auth.requireAccess(); // no token -> login, no access -> payment
-    </script>
+
     <script>
       // Helper functions
       function formatCurrency(value) {
         return (
-          "R" +
+          'R' +
           Number(value).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -302,7 +311,7 @@
         );
       }
       function formatPercentage(value) {
-        return Number(value).toFixed(2) + "%";
+        return Number(value).toFixed(2) + '%';
       }
 
       // Forestry Calculator Class
@@ -341,85 +350,85 @@
 
       const forestryCalc = new ForestryCalculator();
       const forestryInputs = [
-        "forestry-volume",
-        "forestry-price",
-        "forestry-labor",
-        "forestry-equipment",
-        "forestry-replanting",
-        "forestry-fixed",
-        "forestry-months",
+        'forestry-volume',
+        'forestry-price',
+        'forestry-labor',
+        'forestry-equipment',
+        'forestry-replanting',
+        'forestry-fixed',
+        'forestry-months',
       ];
 
       forestryInputs.forEach((id) => {
         document
           .getElementById(id)
-          .addEventListener("input", updateForestryCalculator);
+          .addEventListener('input', updateForestryCalculator);
       });
 
       function updateForestryCalculator() {
         const result = forestryCalc.calculate(
-          document.getElementById("forestry-volume").value,
-          document.getElementById("forestry-price").value,
-          document.getElementById("forestry-labor").value,
-          document.getElementById("forestry-equipment").value,
-          document.getElementById("forestry-replanting").value,
-          document.getElementById("forestry-fixed").value,
-          document.getElementById("forestry-months").value,
+          document.getElementById('forestry-volume').value,
+          document.getElementById('forestry-price').value,
+          document.getElementById('forestry-labor').value,
+          document.getElementById('forestry-equipment').value,
+          document.getElementById('forestry-replanting').value,
+          document.getElementById('forestry-fixed').value,
+          document.getElementById('forestry-months').value
         );
 
-        document.getElementById("forestry-volume-output").textContent =
-          result.volume.toFixed(0) + " m³";
-        document.getElementById("forestry-revenue").textContent =
+        document.getElementById('forestry-volume-output').textContent =
+          result.volume.toFixed(0) + ' m³';
+        document.getElementById('forestry-revenue').textContent =
           formatCurrency(result.revenue);
-        document.getElementById("forestry-total-costs").textContent =
+        document.getElementById('forestry-total-costs').textContent =
           formatCurrency(result.totalCosts);
 
-        const profitEl = document.getElementById("forestry-profit");
+        const profitEl = document.getElementById('forestry-profit');
         profitEl.textContent = formatCurrency(result.profit);
         profitEl.className =
-          "output-value " + (result.profit >= 0 ? "positive" : "negative");
+          'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
 
-        document.getElementById("forestry-profit-per-unit").textContent =
+        document.getElementById('forestry-profit-per-unit').textContent =
           formatCurrency(result.profitPerUnit);
-        document.getElementById("forestry-margin").textContent =
+        document.getElementById('forestry-margin').textContent =
           formatPercentage(result.margin);
-        document.getElementById("forestry-breakeven").textContent =
-          result.breakEvenVolume.toFixed(2) + " m³";
-        document.getElementById("forestry-roi").textContent = formatPercentage(
-          result.roi,
+        document.getElementById('forestry-breakeven').textContent =
+          result.breakEvenVolume.toFixed(2) + ' m³';
+        document.getElementById('forestry-roi').textContent = formatPercentage(
+          result.roi
         );
-        document.getElementById("forestry-annual-profit").textContent =
+        document.getElementById('forestry-annual-profit').textContent =
           formatCurrency(result.annualProfit);
       }
 
       function resetForestry() {
         forestryInputs.forEach(
-          (id) => (document.getElementById(id).value = ""),
+          (id) => (document.getElementById(id).value = '')
         );
-        document.getElementById("forestry-months").value = 1;
+        document.getElementById('forestry-months').value = 1;
         updateForestryCalculator();
       }
 
       updateForestryCalculator();
     </script>
     <script>
-      const hamburger = document.getElementById("hamburger");
-      const sideNav = document.getElementById("sideNav");
+      const hamburger = document.getElementById('hamburger');
+      const sideNav = document.getElementById('sideNav');
 
       if (hamburger && sideNav) {
-        hamburger.addEventListener("click", () => {
-          hamburger.classList.toggle("active");
-          sideNav.classList.toggle("active");
-          document.body.style.overflow = sideNav.classList.contains("active")
-            ? "hidden"
-            : "";
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          sideNav.classList.toggle('active');
+          document.body.style.overflow = sideNav.classList.contains('active')
+            ? 'hidden'
+            : '';
         });
 
-        document.querySelectorAll("#sideNav a").forEach((link) => {
-          link.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            sideNav.classList.remove("active");
-            document.body.style.overflow = "";
+        document.querySelectorAll('#sideNav a').forEach((link) => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideNav.classList.remove('active');
+            document.body.style.overflow = '';
           });
         });
       }
