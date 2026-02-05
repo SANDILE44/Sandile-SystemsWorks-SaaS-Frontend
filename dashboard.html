@@ -8,7 +8,6 @@
   </head>
 
   <body>
-    <!-- APP LAYOUT -->
     <div class="app-shell">
       <!-- SIDEBAR -->
       <aside class="sidebar">
@@ -19,7 +18,7 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-            <span class="sidebar-name">SystemsWorks</span>
+            <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
@@ -39,16 +38,22 @@
             <span id="accountName" class="account-name">Account</span>
           </button>
 
-          <div id="accountMenu" class="account-menu">
-            <a href="index.html">🏠 Home</a>
-            <a href="profile.html">👤 Profile</a>
-            <button id="logoutBtn">🚪 Logout</button>
+          <div id="accountMenu" class="account-menu" aria-hidden="true">
+            <a href="index.html">Home</a>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
       </aside>
 
       <!-- MAIN CONTENT -->
       <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
         <header class="page-header">
           <h1>Business Calculators</h1>
           <p>
@@ -57,200 +62,93 @@
           </p>
         </header>
 
-        <!-- SUBSCRIPTION STATUS -->
+        <!-- DASHBOARD STATUS -->
+        <section class="dashboard-stats">
+          <div class="stat stat-access">
+            <div class="stat-label">Access</div>
+            <div class="stat-value" id="statAccess">—</div>
+          </div>
+
+          <div class="stat stat-billing">
+            <div class="stat-label">Trial / Billing</div>
+            <div class="stat-value" id="statBilling">—</div>
+          </div>
+
+          <div class="stat stat-login">
+            <div class="stat-label">Last login</div>
+            <div class="stat-value" id="statLogin">—</div>
+          </div>
+        </section>
+
+        <!-- PAY / RENEW -->
         <section id="payBox" class="pay-box"></section>
-<!-- SECTORS -->
-<section class="cards-grid">
-  <div class="card">
-    <h3 class="card-title">Primary Sector</h3>
-    <p>Agriculture, Mining, Oil & Gas, Renewable Energy</p>
-    <a href="sector-primary.html">Explore →</a>
-  </div>
 
-  <div class="card">
-    <h3 class="card-title">Secondary Sector</h3>
-    <p>Manufacturing, Construction, Automotive, Electronics</p>
-    <a href="sector-secondary.html">Explore →</a>
-  </div>
+        <!-- SEARCH -->
+        <div class="industry-search">
+          <input
+            id="industrySearch"
+            type="search"
+            placeholder="Search industries…"
+          />
+          <div class="industry-meta">
+            <span id="industryCount">0/0 showing</span>
+          </div>
+        </div>
 
-  <div class="card">
-    <h3 class="card-title">Tertiary Sector</h3>
-    <p>Retail, Logistics, Healthcare, Finance, Consulting</p>
-    <a href="sector-tertiary.html">Explore →</a>
-  </div>
+        <!-- SECTORS -->
+        <section class="cards-grid">
+          <div class="card">
+            <h3 class="card-title">Primary Sector</h3>
+            <p>
+              Agriculture, Mining, Oil & Gas, Forestry, Fishing, Renewable
+              Energy, Water Resources, Raw Materials
+            </p>
+            <a href="sector-primary.html">Explore</a>
+          </div>
 
-  <div class="card">
-    <h3 class="card-title">Quaternary Sector</h3>
-    <p>Software, SaaS, IT Services, Media, R&D</p>
-    <a href="sector-quaternary.html">Explore →</a>
-  </div>
+          <div class="card">
+            <h3 class="card-title">Secondary Sector</h3>
+            <p>
+              Manufacturing, Construction, Automotive, Electronics, Industrial
+              Processing, Fabrication, Packaging
+            </p>
+            <a href="sector-secondary.html">Explore</a>
+          </div>
 
-  <div class="card">
-    <h3 class="card-title">Quinary Sector</h3>
-    <p>Government, NGOs, Education, Public Services</p>
-    <a href="sector-quinary.html">Explore →</a>
-  </div>
-</section>
+          <div class="card">
+            <h3 class="card-title">Tertiary Sector</h3>
+            <p>
+              Retail, Logistics, Healthcare, Finance, Consulting, Hospitality,
+              Real Estate, Transportation
+            </p>
+            <a href="sector-tertiary.html">Explore</a>
+          </div>
 
+          <div class="card">
+            <h3 class="card-title">Quaternary Sector</h3>
+            <p>
+              Software, SaaS, IT Services, Media, Research & Development, Data,
+              Artificial Intelligence, Cybersecurity
+            </p>
+            <a href="sector-quaternary.html">Explore</a>
+          </div>
 
-    <!-- REQUIRED GLOBALS -->
+          <div class="card">
+            <h3 class="card-title">Quinary Sector</h3>
+            <p>
+              Government, NGOs, Education, Public Services, Social Care,
+              Healthcare Administration, Community & Welfare Services
+            </p>
+            <a href="sector-quinary.html">Explore</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- GLOBAL JS (ORDER MATTERS) -->
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <!-- DASHBOARD LOGIC -->
-    <script>
-      (async function initDashboard() {
-        try {
-          // ===============================
-          // 1️⃣ AUTH (single source of truth)
-          // ===============================
-          const profile = await window.auth.requireAuth();
-          if (!profile || !profile.user) return;
-
-          const user = profile.user;
-          const now = Date.now();
-
-          // ===============================
-          // 2️⃣ HEADER / ACCOUNT UI
-          // ===============================
-          const usernameEl = document.getElementById('usernameDisplay');
-          if (usernameEl) {
-            usernameEl.textContent = user.name || 'User';
-          }
-
-          const displayName =
-            user.name || (user.email ? user.email.split('@')[0] : 'Account');
-
-          const accountName = document.getElementById('accountName');
-          const accountAvatar = document.getElementById('accountAvatar');
-
-          if (accountName) accountName.textContent = displayName;
-          if (accountAvatar)
-            accountAvatar.textContent = displayName.charAt(0).toUpperCase();
-
-          // ===============================
-          // 3️⃣ SUBSCRIPTION STATE
-          // ===============================
-          const payBox = document.getElementById('payBox');
-          if (!payBox) return;
-
-          const subscriptionEnd = user.subscriptionEnd
-            ? new Date(user.subscriptionEnd).getTime()
-            : 0;
-
-          const trialEnd = user.trialEnd
-            ? new Date(user.trialEnd).getTime()
-            : 0;
-
-          const subActive = subscriptionEnd && subscriptionEnd > now;
-          const trialActive = trialEnd && trialEnd > now;
-
-          // ===============================
-          // 4️⃣ RENDER UI
-          // ===============================
-          if (subActive || trialActive) {
-            payBox.innerHTML = `
-          <p class="status active">
-            ${subActive ? '✅ Subscription active' : '🆓 Trial active'}
-          </p>
-        `;
-          } else {
-            payBox.innerHTML = `
-          <p class="status expired">🔒 Access expired</p>
-          <button id="payBtn" class="btn btn-primary">Renew</button>
-        `;
-
-            const payBtn = document.getElementById('payBtn');
-            payBtn.addEventListener('click', async () => {
-              try {
-                const token = window.auth.getToken();
-                const data = await window.api.createCheckoutRequest(token);
-
-                if (!data || !data.checkoutUrl) {
-                  throw new Error('Checkout URL missing');
-                }
-
-                window.location.href = data.checkoutUrl;
-              } catch (err) {
-                alert(err.message || 'Payment initialization failed');
-              }
-            });
-          }
-        } catch (err) {
-          console.error('Dashboard init failed:', err);
-        }
-      })();
-
-      // ===============================
-      // ACCOUNT DROPDOWN
-      // ===============================
-      const accountBtn = document.getElementById('accountBtn');
-      const accountMenu = document.getElementById('accountMenu');
-
-      if (accountBtn && accountMenu) {
-        accountBtn.addEventListener('click', () => {
-          accountMenu.classList.toggle('open');
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!accountBtn.contains(e.target)) {
-            accountMenu.classList.remove('open');
-          }
-        });
-      }
-
-      // ===============================
-      // LOGOUT
-      // ===============================
-      const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-          window.auth.logout();
-        });
-      }
-    </script>
-
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sidebar = document.querySelector('.sidebar');
-      const backdrop = document.getElementById('mobileBackdrop');
-
-      if (hamburger && sidebar && backdrop) {
-        const openMenu = () => {
-          sidebar.classList.add('open');
-          hamburger.classList.add('active');
-          backdrop.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        };
-
-        const closeMenu = () => {
-          sidebar.classList.remove('open');
-          hamburger.classList.remove('active');
-          backdrop.classList.add('hidden');
-          document.body.style.overflow = '';
-        };
-
-        // Toggle menu
-        hamburger.addEventListener('click', () => {
-          sidebar.classList.contains('open') ? closeMenu() : openMenu();
-        });
-
-        // Close when clicking backdrop
-        backdrop.addEventListener('click', closeMenu);
-
-        // Close when clicking any sidebar link
-        sidebar.querySelectorAll('a').forEach((link) => {
-          link.addEventListener('click', closeMenu);
-        });
-
-        // Safety: reset on resize to desktop
-        window.addEventListener('resize', () => {
-          if (window.innerWidth > 700) {
-            closeMenu();
-          }
-        });
-      }
-    </script>
+    <script src="js/app.js"></script>
   </body>
 </html>

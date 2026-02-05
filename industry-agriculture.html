@@ -19,7 +19,7 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-            <span class="sidebar-name">SystemsWorks</span>
+                <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
@@ -40,9 +40,8 @@
           </button>
 
           <div id="accountMenu" class="account-menu">
-            <a href="index.html">🏠 Home</a>
-            <a href="profile.html">👤 Profile</a>
-            <button id="logoutBtn">🚪 Logout</button>
+            <a href="index.html">Home</a>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
       </aside>
@@ -617,54 +616,6 @@
       /* ================= INIT ================= */
       updateFarm();
       updateLivestock();
-    </script>
-
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
-
-    <script>
-      (async function () {
-        try {
-          const token = window.auth.getToken();
-          if (!token) return;
-
-          // ✅ CHANGE THESE 3 VALUES PER PAGE
-          const meta = {
-            key: 'break-even',
-            title: 'Break-even Calculator',
-            url: 'break-even.html',
-          };
-
-          await fetch('https://YOUR_BACKEND_URL/api/users/recent-calculators', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + token,
-            },
-            body: JSON.stringify(meta),
-          });
-        } catch (e) {}
-      })();
     </script>
   </body>
 </html>

@@ -18,7 +18,7 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-            <span class="sidebar-name">SystemsWorks</span>
+           <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
@@ -39,9 +39,8 @@
           </button>
 
           <div id="accountMenu" class="account-menu">
-            <a href="index.html">🏠 Home</a>
-            <a href="profile.html">👤 Profile</a>
-            <button id="logoutBtn">🚪 Logout</button>
+            <a href="index.html">Home</a>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
       </aside>
@@ -50,7 +49,7 @@
     <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
-        <span>→</span>
+        <span></span>
         <span>Tertiary Sector</span>
       </div>
 
@@ -69,7 +68,7 @@
             operational expenses, profit, ROI, and overall real estate
             profitability.
           </p>
-          <a href="industry-real-estate.html">View Calculators →</a>
+          <a href="industry-real-estate.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -78,7 +77,7 @@
             Track all aspects of retail store operations: inventory management,
             sales, costs, profit margins, and overall store profitability.
           </p>
-          <a href="industry-retail.html">View Calculators →</a>
+          <a href="industry-retail.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -87,7 +86,7 @@
             Calculate food costs, table turnover, labor, operating expenses,
             revenue, profit, and full restaurant profitability.
           </p>
-          <a href="industry-restaurants.html">View Calculators →</a>
+          <a href="industry-restaurants.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -97,7 +96,7 @@
             operational costs, revenue, profit, and complete financial
             performance.
           </p>
-          <a href="industry-hospitality.html">View Calculators →</a>
+          <a href="industry-hospitality.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -106,7 +105,7 @@
             Manage shipping costs, fleet operations, fuel, labor, overheads,
             revenue, and overall transportation profitability.
           </p>
-          <a href="industry-logistics.html">View Calculators →</a>
+          <a href="industry-logistics.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -116,7 +115,7 @@
             operational expenses, profit, and full healthcare financial
             management.
           </p>
-          <a href="industry-healthcare.html">View Calculators →</a>
+          <a href="industry-healthcare.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -126,7 +125,7 @@
             expenses, revenue, and overall educational institution
             profitability.
           </p>
-          <a href="industry-education.html">View Calculators →</a>
+          <a href="industry-education.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -135,7 +134,7 @@
             Track financial service operations, client fees, staff costs,
             revenue, profits, and complete financial performance.
           </p>
-          <a href="industry-finance.html">View Calculators →</a>
+          <a href="industry-finance.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -144,7 +143,7 @@
             Calculate campaign budgets, client billing, operational costs, ROI,
             and total marketing profitability.
           </p>
-          <a href="industry-marketing.html">View Calculators →</a>
+          <a href="industry-marketing.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -153,7 +152,7 @@
             Analyze consulting project costs, hourly rates, staff expenses,
             revenue, profit, and full engagement profitability.
           </p>
-          <a href="industry-consulting.html">View Calculators →</a>
+          <a href="industry-consulting.html">View Calculators </a>
         </div>
       </div>
     </main>
@@ -161,30 +160,6 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-      (async function () {
-        try {
-          const token = window.auth.getToken();
-          if (!token) return;
-
-          await fetch(
-            'https://sandile-systemsworks-saas-backend-2.onrender.com/api/users/recent-calculators',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-              },
-              body: JSON.stringify({
-                key: 'sector-secondary', // change per page
-                title: 'Secondary Sector Industries', // change per page
-                url: 'sector-secondary.html', // change per page
-              }),
-            }
-          );
-        } catch (e) {}
-      })();
-    </script>
+     <script src="js/sectors.js"></script>
   </body>
 </html>

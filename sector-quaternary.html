@@ -18,7 +18,7 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-            <span class="sidebar-name">SystemsWorks</span>
+         <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
@@ -39,9 +39,8 @@
           </button>
 
           <div id="accountMenu" class="account-menu">
-            <a href="index.html">🏠 Home</a>
-            <a href="profile.html">👤 Profile</a>
-            <button id="logoutBtn">🚪 Logout</button>
+            <a href="index.html">Home</a>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
       </aside>
@@ -50,7 +49,7 @@
     <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
-        <span>→</span>
+        <span></span>
         <span>Quaternary</span>
       </div>
 
@@ -68,7 +67,7 @@
             Calculate full software project costs, licensing revenue,
             development expenses, operational costs, and product profitability.
           </p>
-          <a href="industry-software.html">View Calculators →</a>
+          <a href="industry-software.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -77,7 +76,7 @@
             Track subscription revenue, monthly recurring revenue (MRR), churn,
             operational costs, and full SaaS business profitability.
           </p>
-          <a href="industry-saas.html">View Calculators →</a>
+          <a href="industry-saas.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -86,7 +85,7 @@
             Analyze service delivery costs, hourly rates, project expenses,
             client revenue, and overall IT service profitability.
           </p>
-          <a href="industry-it-services.html">View Calculators →</a>
+          <a href="industry-it-services.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -96,7 +95,7 @@
             subscription income, operational expenses, and total media
             profitability.
           </p>
-          <a href="industry-media.html">View Calculators →</a>
+          <a href="industry-media.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -105,7 +104,7 @@
             Track research investment, development costs, innovation expenses,
             projected revenue, and ROI for full R&D profitability analysis.
           </p>
-          <a href="industry-research-development.html">View Calculators →</a>
+          <a href="industry-research-development.html">View Calculators </a>
         </div>
 
         <div class="card">
@@ -114,7 +113,7 @@
             Assess network infrastructure costs, subscriber revenue, operational
             expenses, service delivery, and overall telecom profitability.
           </p>
-          <a href="industry-telecommunications.html">View Calculators →</a>
+          <a href="industry-telecommunications.html">View Calculators </a>
         </div>
       </div>
     </main>
@@ -122,30 +121,6 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-      (async function () {
-        try {
-          const token = window.auth.getToken();
-          if (!token) return;
-
-          await fetch(
-            'https://sandile-systemsworks-saas-backend-2.onrender.com/api/users/recent-calculators',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-              },
-              body: JSON.stringify({
-                key: 'sector-secondary', // change per page
-                title: 'Secondary Sector Industries', // change per page
-                url: 'sector-secondary.html', // change per page
-              }),
-            }
-          );
-        } catch (e) {}
-      })();
-    </script>
+     <script src="js/sectors.js"></script>
   </body>
 </html>

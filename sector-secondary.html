@@ -18,7 +18,7 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-            <span class="sidebar-name">SystemsWorks</span>
+            <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
@@ -39,9 +39,8 @@
           </button>
 
           <div id="accountMenu" class="account-menu">
-            <a href="index.html">🏠 Home</a>
-            <a href="profile.html">👤 Profile</a>
-            <button id="logoutBtn">🚪 Logout</button>
+            <a href="index.html">Home</a>
+            <button id="logoutBtn">Logout</button>
           </div>
         </div>
       </aside>
@@ -50,7 +49,7 @@
     <main class="main-content">
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
-        <span>→</span>
+        <span></span>
         <span>Secondary</span>
       </div>
 
@@ -70,7 +69,7 @@
             material expenses, labor, operational overhead, total revenue,
             profit, ROI, break-even units, and overall profitability.
           </p>
-          <a href="industry-manufacturing.html">View Calculators →</a>
+          <a href="industry-manufacturing.html">View Calculators </a>
         </div>
 
         <!-- Construction -->
@@ -81,7 +80,7 @@
             labor, operational expenses, project revenue, profit, ROI,
             break-even analysis, and overall project profitability.
           </p>
-          <a href="industry-construction.html">View Calculators →</a>
+          <a href="industry-construction.html">View Calculators </a>
         </div>
 
         <!-- Automotive -->
@@ -92,7 +91,7 @@
             material costs, labor, assembly expenses, revenue, profit, ROI,
             break-even units, and overall manufacturing profitability.
           </p>
-          <a href="industry-automotive.html">View Calculators →</a>
+          <a href="industry-automotive.html">View Calculators </a>
         </div>
 
         <!-- Electronics -->
@@ -103,7 +102,7 @@
             costs, assembly labor, supply chain expenses, total revenue, profit,
             ROI, break-even, and overall production profitability.
           </p>
-          <a href="industry-electronics.html">View Calculators →</a>
+          <a href="industry-electronics.html">View Calculators </a>
         </div>
 
         <!-- Textiles -->
@@ -114,7 +113,7 @@
             garment manufacturing expenses, labor, operational costs, revenue,
             profit, ROI, break-even analysis, and overall profitability.
           </p>
-          <a href="industry-textiles.html">View Calculators →</a>
+          <a href="industry-textiles.html">View Calculators </a>
         </div>
 
         <!-- Food & Beverage -->
@@ -125,7 +124,7 @@
             production scaling, labor, operational expenses, total revenue,
             profit, ROI, break-even units, and overall product profitability.
           </p>
-          <a href="industry-food-beverage.html">View Calculators →</a>
+          <a href="industry-food-beverage.html">View Calculators </a>
         </div>
       </div>
     </main>
@@ -133,30 +132,6 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-      (async function () {
-        try {
-          const token = window.auth.getToken();
-          if (!token) return;
-
-          await fetch(
-            'https://sandile-systemsworks-saas-backend-2.onrender.com/api/users/recent-calculators',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-              },
-              body: JSON.stringify({
-                key: 'sector-secondary', // change per page
-                title: 'Secondary Sector Industries', // change per page
-                url: 'sector-secondary.html', // change per page
-              }),
-            }
-          );
-        } catch (e) {}
-      })();
-    </script>
+         <script src="js/sectors.js"></script>
   </body>
 </html>
