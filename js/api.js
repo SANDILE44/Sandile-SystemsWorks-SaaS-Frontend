@@ -34,17 +34,19 @@ const loginRequest = (email, password) =>
 
 const getProfileRequest = (token) => apiFetch('/api/auth/profile', { token });
 
-// ---- PAYMENTS ----
-const createCheckoutRequest = (token) =>
+// ---- PAYMENTS (FIXED) ----
+const createCheckoutRequest = (token, product) =>
   apiFetch('/api/payments/checkout', {
     method: 'POST',
     token,
+    body: { product }, // 👈 REQUIRED
   });
 
-const confirmPaymentRequest = (token) =>
+const confirmPaymentRequest = (token, product) =>
   apiFetch('/api/payments/confirm', {
     method: 'POST',
     token,
+    body: { product },
   });
 
 window.api = {
