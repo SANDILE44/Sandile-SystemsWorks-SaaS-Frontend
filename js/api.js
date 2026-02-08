@@ -1,5 +1,3 @@
-// js/api.js
-
 async function apiFetch(path, { method = 'GET', body, token } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -11,61 +9,57 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
   });
 
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || 'Request failed');
+
+  if (!res.ok) {
+    const error = new Error(data.error || 'Request failed');
+    error.status = res.status;
+    throw error;
+  }
+
   return data;
 }
 
 // ---- AUTH ----
-async function signupRequest(name, email, password) {
-  return apiFetch('/api/users/signup', {
+const signupRequest = (name, email, password) =>
+  apiFetch('/api/users/signup', {
     method: 'POST',
     body: { name, email, password },
   });
-}
 
-async function loginRequest(email, password) {
-  return apiFetch('/api/users/login', {
+const loginRequest = (email, password) =>
+  apiFetch('/api/users/login', {
     method: 'POST',
     body: { email, password },
   });
-}
 
-async function getProfileRequest(token) {
-  return apiFetch('/api/users/profile', { token });
-}
+const getProfileRequest = (token) => apiFetch('/api/users/profile', { token });
 
 // ---- PAYMENTS ----
-async function createCheckoutRequest(token) {
-  return apiFetch('/api/payments/checkout', {
+const createCheckoutRequest = (token) =>
+  apiFetch('/api/payments/checkout', {
     method: 'POST',
     token,
   });
-}
+
+const confirmPaymentRequest = (token) =>
+  apiFetch('/api/payments/confirm', {
+    method: 'POST',
+    token,
+  });
 
 // ---- PASSWORD RESET ----
-async function requestPasswordReset(email) {
-  return apiFetch('/api/users/forgot-password', {
+const requestPasswordReset = (email) =>
+  apiFetch('/api/users/forgot-password', {
     method: 'POST',
     body: { email },
   });
-}
 
-// Reset Password
-async function resetPassword(token, newPassword) {
-  return apiFetch('/api/users/reset-password', {
+const resetPassword = (token, newPassword) =>
+  apiFetch('/api/users/reset-password', {
     method: 'POST',
     body: { token, newPassword },
   });
-}
 
-async function confirmPaymentRequest(token) {
-  return apiFetch('/api/payments/confirm', {
-    method: 'POST',
-    token,
-  });
-}
-
-// Expose globally
 window.api = {
   apiFetch,
   signupRequest,
