@@ -20,6 +20,7 @@
 
 html,
 body {
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, var(--bg-soft), var(--bg-main));
@@ -43,6 +44,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  right: auto;
 
   width: 260px;
   height: 100vh;
@@ -53,7 +55,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 1100;
 }
 
 /* Brand */
@@ -63,6 +65,8 @@ body {
   gap: 0.6rem;
   font-weight: 800;
   margin-bottom: 2rem;
+  min-width: 0; /* 🔒 critical */
+  flex-shrink: 0;
 }
 
 .sidebar-logo {
@@ -70,15 +74,11 @@ body {
 }
 
 .sidebar-name {
-  color: var(--text-main);
-  font-size: 0.85rem; /* smaller text */
-  font-weight: 600;
-  line-height: 1; /* tight vertical spacing */
-  white-space: nowrap; /* force single line */
-  overflow: hidden; /* hide overflow */
-  text-overflow: ellipsis; /* show ... if too long */
-  max-width: 160px; /* adjust to sidebar width */
-  display: block;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Nav */
@@ -229,8 +229,10 @@ body {
 }
 /* ================= MAIN CONTENT ================= */
 .main-content {
-  margin-left: 260px; /* SAME AS SIDEBAR */
-  width: calc(100% - 260px); /* TAKE REMAINING SPACE */
+  margin-left: 260px;
+  margin-right: 0;
+  width: calc(100% - 260px);
+  width: calc(100% - 260px);
 
   min-height: 100vh;
   overflow-y: auto;
@@ -428,18 +430,6 @@ body {
 
 /* ================= MOBILE OVERRIDE (SIMPLE + FINAL) ================= */
 @media (max-width: 768px) {
-  /* Hide sidebar completely on mobile */
-  .sidebar {
-    display: none !important;
-  }
-
-  /* Full width content */
-  .main-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-    padding: 1rem !important;
-  }
-
   /* Calculator pages: stack columns */
   .calculator-grid {
     display: flex !important;
@@ -465,38 +455,6 @@ body {
   .breadcrumb {
     font-size: 0.8rem;
     flex-wrap: wrap;
-  }
-}
-
-/* ===== FORCE HIDE SIDEBAR ON MOBILE (FINAL) ===== */
-@media (max-width: 768px) {
-  aside.sidebar,
-  .sidebar {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateX(-120%) !important;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-}
-
-/* ===== MOBILE: KILL SIDEBAR (GUARANTEED) ===== */
-@media screen and (max-width: 768px) {
-  body .sidebar,
-  body aside.sidebar {
-    display: none !important;
-  }
-
-  body .main-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 1rem !important;
   }
 }
 
@@ -533,16 +491,9 @@ body {
   color: var(--text-main);
 }
 
-/* Highlight access state */
+/* Highlight access */
 .stat-access .stat-value {
   color: var(--accent);
-}
-
-@media (max-width: 768px) {
-  .dashboard-stats {
-    flex-direction: column;
-    gap: 1.2rem;
-  }
 }
 
 /* ================= INDUSTRY SEARCH ================= */
@@ -685,8 +636,8 @@ body {
 
     position: fixed;
     top: 1rem;
-    left: 1rem;
-    z-index: 1000;
+    right: 1rem;
+    z-index: 2000;
 
     background: var(--bg-main);
     border: 1px solid var(--border-soft);
@@ -703,15 +654,27 @@ body {
     border-radius: 2px;
   }
 
-  /* Sidebar hidden by default on mobile */
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
+  .main-content {
+    margin-left: 0; /* 🔥 THIS was missing */
+    margin-right: 0;
+    width: 100%;
+    padding: 1rem;
   }
 
-  /* When open */
+  .sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    padding: 1rem 0.9rem;
+    width: 260px; /* 🔒 force width, no reflow */
+    max-width: 260px;
+    pointer-events: auto;
+  }
+
   .sidebar.mobile-open {
     transform: translateX(0);
+    pointer-events: auto;
   }
 }
 
@@ -721,4 +684,129 @@ body {
   font-family: 'IBM Plex Sans', Arial, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats {
+    flex-direction: column;
+    gap: 1.25rem;
+
+    margin: 1.8rem 0 2rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .stat {
+    min-width: auto;
+    padding: 0.75rem 0;
+    width: 100%;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+  }
+
+  .stat-value {
+    font-size: 0.95rem;
+  }
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+  color: #00b4d8;
+  text-decoration: none;
+}
+
+/* ================= MOBILE BRAND FIX ================= */
+@media (max-width: 768px) {
+  .sidebar-brand {
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .sidebar-logo {
+    height: 28px; /* smaller logo */
+    flex-shrink: 0;
+  }
+
+  .sidebar-name {
+    font-size: 0.72rem; /* 🔥 smaller text */
+    font-weight: 600;
+    line-height: 1.1;
+    max-width: 140px; /* 🔒 prevent clipping */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.hamburger span {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* ================= RESET BUTTON ================= */
+button#resetBtn,
+button[id$='reset'] {
+  width: 100%;
+  margin-top: 1rem;
+
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+
+  border: 1px solid var(--border-soft);
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    border-color 0.2s ease;
+}
+
+/* Hover */
+button#resetBtn:hover,
+button[id$='reset']:hover {
+  background: rgba(255, 107, 107, 0.08);
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Active (click) */
+button#resetBtn:active,
+button[id$='reset']:active {
+  transform: translateY(0);
+  background: rgba(255, 107, 107, 0.15);
+}
+
+/* Focus (keyboard accessibility) */
+button#resetBtn:focus-visible,
+button[id$='reset']:focus-visible {
+  outline: 2px solid rgba(255, 107, 107, 0.5);
+  outline-offset: 3px;
 }

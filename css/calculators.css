@@ -7,13 +7,6 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden; /* scrolling handled by main */
-}
-
 /* =========================================================
    APP LAYOUT
 ========================================================= */
@@ -27,27 +20,11 @@ body {
    SIDEBAR (FIXED LEFT)
 ========================================================= */
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 260px;
-  height: 100vh;
   background-color: #020617;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 100;
-}
-
-/* =========================================================
-   MAIN CONTENT (SCROLLS)
-========================================================= */
-main {
-  margin-left: 260px; /* same as sidebar width */
-  height: 100vh;
-  overflow-y: auto; /* ✅ THIS ENABLES SCROLL */
-  padding: 2rem 1.2rem;
-  max-width: calc(100vw - 260px);
 }
 
 /* =========================================================
@@ -200,34 +177,15 @@ label {
   .sidebar {
     width: 220px;
   }
-
-  main {
-    margin-left: 220px;
-    max-width: calc(100vw - 220px);
-  }
 }
-
 @media (max-width: 768px) {
-  .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-
-  main {
-    margin-left: 0;
-    height: auto;
-    overflow: visible;
-  }
-
   .calculator-grid {
     grid-template-columns: 1fr;
   }
-}
 
-@media screen and (max-width: 768px) {
-  .sidebar,
-  aside.sidebar {
-    display: none !important;
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1rem;
   }
 }
