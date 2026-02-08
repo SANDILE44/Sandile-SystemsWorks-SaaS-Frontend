@@ -1,35 +1,28 @@
-// js/guard.js
-(async function guard() {
-  // Wait until api is ready
-  if (!window.api) return;
+// js/guard-calculators.js
+// PURPOSE: Prevent using calculators unless logged in AND paid/trial active
 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    window.location.replace('login.html');
-    return;
-  }
-
+(async function guardCalculators() {
   try {
-    // 1️⃣ Validate session
-    const profile = await window.api.getProfileRequest(token);
+    const token = localStorage.getItem('token');
 
-    // Optional: attach user for later use
-    window.__user = profile?.user || profile;
-
-    // 2️⃣ Check paid / trial access (ONLY on paid pages)
-    if (window.__REQUIRE_PAID__) {
-      await window.api.apiFetch('/api/users/dashboard', { token });
-    }
-
-    // ✅ All good → allow page
-  } catch (err) {
-    // IMPORTANT: only redirect on real auth failure
-    if (err?.status === 401) {
-      localStorage.removeItem('token');
+    // 1️⃣ Not logged in → go to login
+    if (!token) {
       window.location.replace('login.html');
-    } else if (window.__REQUIRE_PAID__) {
-      window.location.replace('payment.html');
+      return;
     }
-    // else: fail silently (network hiccup)
+
+    // 2️⃣ Ask backend if this user has calculator access
+    await fetch(`${window.API_BASE}/api/calculators/access`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // 3️⃣ If request succeeds → user is allowed
+    // Do NOTHING, page continues loading
+  } catch (err) {
+    // 4️⃣ If backend rejects → redirect to payment
+    window.location.replace('payment.html');
   }
 })();
