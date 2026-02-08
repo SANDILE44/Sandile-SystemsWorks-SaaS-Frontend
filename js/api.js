@@ -21,18 +21,18 @@ async function apiFetch(path, { method = 'GET', body, token } = {}) {
 
 // ---- AUTH ----
 const signupRequest = (name, email, password) =>
-  apiFetch('/api/users/signup', {
+  apiFetch('/api/auth/signup', {
     method: 'POST',
     body: { name, email, password },
   });
 
 const loginRequest = (email, password) =>
-  apiFetch('/api/users/login', {
+  apiFetch('/api/auth/login', {
     method: 'POST',
     body: { email, password },
   });
 
-const getProfileRequest = (token) => apiFetch('/api/users/profile', { token });
+const getProfileRequest = (token) => apiFetch('/api/auth/profile', { token });
 
 // ---- PAYMENTS ----
 const createCheckoutRequest = (token) =>
@@ -47,19 +47,6 @@ const confirmPaymentRequest = (token) =>
     token,
   });
 
-// ---- PASSWORD RESET ----
-const requestPasswordReset = (email) =>
-  apiFetch('/api/users/forgot-password', {
-    method: 'POST',
-    body: { email },
-  });
-
-const resetPassword = (token, newPassword) =>
-  apiFetch('/api/users/reset-password', {
-    method: 'POST',
-    body: { token, newPassword },
-  });
-
 window.api = {
   apiFetch,
   signupRequest,
@@ -67,6 +54,4 @@ window.api = {
   getProfileRequest,
   createCheckoutRequest,
   confirmPaymentRequest,
-  requestPasswordReset,
-  resetPassword,
 };
