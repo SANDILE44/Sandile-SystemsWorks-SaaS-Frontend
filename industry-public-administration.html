@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -249,102 +258,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+        <script src="js/public-administration.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
  
-
-    <script>
-      class PublicAdminCalculator {
-        calculate(budget, staff, operational, program, efficiency) {
-          budget = parseFloat(budget) || 0;
-          staff = parseFloat(staff) || 0;
-          operational = parseFloat(operational) || 0;
-          program = parseFloat(program) || 0;
-          efficiency = parseFloat(efficiency) || 0;
-
-          const totalExpenses = operational + program;
-          const netBudget = budget - totalExpenses;
-          const costPerStaff = staff > 0 ? totalExpenses / staff : 0;
-          const programEfficiency = efficiency; // just input percentage
-
-          return { totalExpenses, netBudget, costPerStaff, programEfficiency };
-        }
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      const calculator = new PublicAdminCalculator();
-      const inputIds = [
-        'dept-budget',
-        'staff-count',
-        'operational-costs',
-        'program-costs',
-        'efficiency-rate',
-      ];
-
-      inputIds.forEach((id) => {
-        document.getElementById(id).addEventListener('input', updateCalculator);
-      });
-
-      function updateCalculator() {
-        const result = calculator.calculate(
-          document.getElementById('dept-budget').value,
-          document.getElementById('staff-count').value,
-          document.getElementById('operational-costs').value,
-          document.getElementById('program-costs').value,
-          document.getElementById('efficiency-rate').value
-        );
-
-        document.getElementById('total-expenses').textContent = formatCurrency(
-          result.totalExpenses
-        );
-
-        const netEl = document.getElementById('net-budget');
-        netEl.textContent = formatCurrency(result.netBudget);
-        netEl.className =
-          'output-value ' + (result.netBudget >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('cost-per-staff').textContent = formatCurrency(
-          result.costPerStaff
-        );
-        document.getElementById('program-efficiency').textContent =
-          formatPercentage(result.programEfficiency);
-      }
-
-      // Initialize
-      updateCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

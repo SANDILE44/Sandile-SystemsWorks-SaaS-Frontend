@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+     <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -271,134 +279,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/software.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      // Helper functions
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      // Software Calculator Class
-      class SoftwareCalculator {
-        calculateFromInputs(units, price, devCost, labor, operational) {
-          units = parseFloat(units) || 0;
-          price = parseFloat(price) || 0;
-          devCost = parseFloat(devCost) || 0;
-          labor = parseFloat(labor) || 0;
-          operational = parseFloat(operational) || 0;
-
-          const totalRevenue = units * price;
-          const totalCosts = devCost + labor + operational;
-          const netProfit = totalRevenue - totalCosts;
-          const profitMargin = totalRevenue
-            ? (netProfit / totalRevenue) * 100
-            : 0;
-          const roi = totalCosts ? (netProfit / totalCosts) * 100 : 0;
-
-          return {
-            units,
-            totalRevenue,
-            devCost,
-            labor,
-            operational,
-            totalCosts,
-            netProfit,
-            profitMargin,
-            roi,
-          };
-        }
-      }
-
-      const softwareCalc = new SoftwareCalculator();
-      const softwareInputs = [
-        'software-units',
-        'software-price',
-        'software-dev-cost',
-        'software-labor',
-        'software-operational',
-      ];
-
-      softwareInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateSoftwareCalculator);
-      });
-
-      function updateSoftwareCalculator() {
-        const result = softwareCalc.calculateFromInputs(
-          document.getElementById('software-units').value,
-          document.getElementById('software-price').value,
-          document.getElementById('software-dev-cost').value,
-          document.getElementById('software-labor').value,
-          document.getElementById('software-operational').value
-        );
-
-        document.getElementById('software-units-output').textContent =
-          result.units.toFixed(0);
-        document.getElementById('software-revenue').textContent =
-          formatCurrency(result.totalRevenue);
-        document.getElementById('software-dev-cost-output').textContent =
-          formatCurrency(result.devCost);
-        document.getElementById('software-labor-output').textContent =
-          formatCurrency(result.labor);
-        document.getElementById('software-operational-output').textContent =
-          formatCurrency(result.operational);
-        document.getElementById('software-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const netEl = document.getElementById('software-net-profit');
-        netEl.textContent = formatCurrency(result.netProfit);
-        netEl.className =
-          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('software-margin').textContent =
-          formatPercentage(result.profitMargin);
-        document.getElementById('software-roi').textContent = formatPercentage(
-          result.roi
-        );
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        softwareInputs.forEach(
-          (id) => (document.getElementById(id).value = '')
-        );
-        updateSoftwareCalculator();
-      });
-
-      // Initialize calculation
-      updateSoftwareCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

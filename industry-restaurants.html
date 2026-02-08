@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a> →
         <a href="sector-tertiary.html">Tertiary</a> →
@@ -262,160 +270,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/restaurants.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      class RestaurantCalculator {
-        calculate(tables, covers, check, foodPercent, labor, fixed, days) {
-          tables = Number(tables) || 0;
-          covers = Number(covers) || 0;
-          check = Number(check) || 0;
-          foodPercent = Number(foodPercent) || 30;
-          labor = Number(labor) || 0;
-          fixed = Number(fixed) || 0;
-          days = Number(days) || 30;
-
-          const dailyCovers = tables * covers;
-          const monthlyRevenue = dailyCovers * check * days;
-          const foodCost = monthlyRevenue * (foodPercent / 100);
-          const totalCosts = foodCost + labor + fixed;
-          const netProfit = monthlyRevenue - totalCosts;
-          const margin = monthlyRevenue
-            ? (netProfit / monthlyRevenue) * 100
-            : 0;
-          const ratio = monthlyRevenue
-            ? (totalCosts / monthlyRevenue) * 100
-            : 0;
-          const profitCover = dailyCovers
-            ? netProfit / (dailyCovers * days)
-            : 0;
-          const breakeven =
-            check - (check * foodPercent) / 100 > 0
-              ? Math.ceil(
-                  (labor + fixed) /
-                    ((check - (check * foodPercent) / 100) * days)
-                )
-              : 0;
-
-          return {
-            dailyCovers,
-            monthlyRevenue,
-            foodCost,
-            totalCosts,
-            netProfit,
-            margin,
-            ratio,
-            profitCover,
-            breakeven,
-            monthlyProfit: netProfit,
-            annualProfit: netProfit * 12,
-          };
-        }
-      }
-
-      // Formatter functions
-      const f = (v) =>
-        'R' +
-        Number(v).toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-      const p = (v) => Number(v).toFixed(2) + '%';
-
-      const calc = () => {
-        const t = document.getElementById('tables').value;
-        const c = document.getElementById('covers').value;
-        const a = document.getElementById('check').value;
-        const fp = document.getElementById('foodPercent').value;
-        const l = document.getElementById('labor').value;
-        const fx = document.getElementById('fixed').value;
-        const d = document.getElementById('days').value;
-
-        const result = new RestaurantCalculator().calculate(
-          t,
-          c,
-          a,
-          fp,
-          l,
-          fx,
-          d
-        );
-
-        dailyCovers.textContent = result.dailyCovers;
-        revenue.textContent = f(result.monthlyRevenue);
-        foodCost.textContent = f(result.foodCost);
-        totalCosts.textContent = f(result.totalCosts);
-
-        profit.textContent = f(result.netProfit);
-        profit.className =
-          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
-
-        margin.textContent = p(result.margin);
-        ratio.textContent = p(result.ratio);
-        profitCover.textContent = f(result.profitCover);
-        breakeven.textContent = result.breakeven;
-        monthly.textContent = f(result.monthlyProfit);
-        annual.textContent = f(result.annualProfit);
-      };
-
-      // Add input listeners
-      [
-        'tables',
-        'covers',
-        'check',
-        'foodPercent',
-        'labor',
-        'fixed',
-        'days',
-      ].forEach((id) => {
-        document.getElementById(id).addEventListener('input', calc);
-      });
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        ['tables', 'covers', 'check', 'labor', 'fixed'].forEach(
-          (i) => (document.getElementById(i).value = '')
-        );
-        document.getElementById('foodPercent').value = 30;
-        document.getElementById('days').value = 30;
-        calc();
-      });
-
-      // Initialize
-      const dailyCovers = document.getElementById('dailyCovers');
-      const revenue = document.getElementById('revenue');
-      const foodCost = document.getElementById('foodCost');
-      const totalCosts = document.getElementById('totalCosts');
-      const profit = document.getElementById('profit');
-      const margin = document.getElementById('margin');
-      const ratio = document.getElementById('ratio');
-      const profitCover = document.getElementById('profitCover');
-      const breakeven = document.getElementById('breakeven');
-      const monthly = document.getElementById('monthly');
-      const annual = document.getElementById('annual');
-
-      calc();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

@@ -46,8 +46,15 @@
         </div>
       </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+   <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -259,96 +266,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+        <script src="js/oil-gas.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      const inputs = [
-        'production-volume',
-        'price-per-barrel',
-        'operational-expenses',
-        'capex',
-        'fixed-costs',
-      ];
-
-      inputs.forEach((id) => {
-        document.getElementById(id).addEventListener('input', updateCalculator);
-      });
-
-      function updateCalculator() {
-        const volume = Number(
-          document.getElementById('production-volume').value
-        );
-        const price = Number(document.getElementById('price-per-barrel').value);
-        const operational = Number(
-          document.getElementById('operational-expenses').value
-        );
-        const capex = Number(document.getElementById('capex').value);
-        const fixed = Number(document.getElementById('fixed-costs').value);
-
-        const totalRevenue = volume * price;
-        const totalCosts = operational + capex + fixed;
-        const profitLoss = totalRevenue - totalCosts;
-        const revenuePerBarrel = volume > 0 ? totalRevenue / volume : 0;
-        const costPerBarrel = volume > 0 ? totalCosts / volume : 0;
-        const roi = totalCosts > 0 ? (profitLoss / totalCosts) * 100 : 0;
-        const margin = totalRevenue > 0 ? (profitLoss / totalRevenue) * 100 : 0;
-
-        document.getElementById('total-revenue').textContent =
-          formatCurrency(totalRevenue);
-        document.getElementById('total-costs').textContent =
-          formatCurrency(totalCosts);
-
-        const profitEl = document.getElementById('profit-loss');
-        profitEl.textContent = formatCurrency(profitLoss);
-        profitEl.className =
-          'output-value ' + (profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('revenue-per-barrel').textContent =
-          formatCurrency(revenuePerBarrel);
-        document.getElementById('cost-per-barrel').textContent =
-          formatCurrency(costPerBarrel);
-        document.getElementById('roi').textContent = roi.toFixed(2) + '%';
-        document.getElementById('margin').textContent = margin.toFixed(2) + '%';
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          value.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function resetOilGas() {
-        inputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateCalculator();
-      }
-
-      // initialize default
-      updateCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

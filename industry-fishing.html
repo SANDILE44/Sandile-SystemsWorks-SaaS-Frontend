@@ -45,8 +45,16 @@
           </div>
         </div>
       </aside>
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -275,148 +283,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/fishing.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      // Helper functions
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      // Fishing Calculator Class
-      class FishingCalculator {
-        calculateFromInputs(
-          catchVolume,
-          pricePerKg,
-          fuel,
-          labor,
-          equipment,
-          fixed
-        ) {
-          catchVolume = parseFloat(catchVolume) || 0;
-          pricePerKg = parseFloat(pricePerKg) || 0;
-          fuel = parseFloat(fuel) || 0;
-          labor = parseFloat(labor) || 0;
-          equipment = parseFloat(equipment) || 0;
-          fixed = parseFloat(fixed) || 0;
-
-          const revenue = catchVolume * pricePerKg;
-          const totalCosts = fuel + labor + equipment + fixed;
-          const profit = revenue - totalCosts;
-          const profitPerKg = catchVolume ? profit / catchVolume : 0;
-          const margin = revenue ? (profit / revenue) * 100 : 0;
-          const breakEvenCatch = pricePerKg ? totalCosts / pricePerKg : 0;
-          const monthlyRevenue = revenue; // simple assumption: 1 catch per month
-          const annualRevenue = revenue * 12;
-
-          return {
-            catchVolume,
-            revenue,
-            fuel,
-            labor,
-            equipment,
-            fixed,
-            totalCosts,
-            profit,
-            profitPerKg,
-            margin,
-            breakEvenCatch,
-            monthlyRevenue,
-            annualRevenue,
-          };
-        }
-      }
-
-      const fishCalc = new FishingCalculator();
-      const fishInputs = [
-        'fish-catch',
-        'fish-price',
-        'fish-fuel',
-        'fish-labor',
-        'fish-equipment',
-        'fish-fixed',
-      ];
-
-      fishInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateFishCalculator);
-      });
-
-      function updateFishCalculator() {
-        const result = fishCalc.calculateFromInputs(
-          document.getElementById('fish-catch').value,
-          document.getElementById('fish-price').value,
-          document.getElementById('fish-fuel').value,
-          document.getElementById('fish-labor').value,
-          document.getElementById('fish-equipment').value,
-          document.getElementById('fish-fixed').value
-        );
-
-        document.getElementById('fish-catch-output').textContent =
-          result.catchVolume.toFixed(0);
-        document.getElementById('fish-revenue').textContent = formatCurrency(
-          result.revenue
-        );
-        document.getElementById('fish-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-        document.getElementById('fish-breakeven').textContent =
-          result.breakEvenCatch.toFixed(2);
-
-        const profitEl = document.getElementById('fish-profit');
-        profitEl.textContent = formatCurrency(result.profit);
-        profitEl.className =
-          'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('fish-profit-per-kg').textContent =
-          formatCurrency(result.profitPerKg);
-        document.getElementById('fish-margin').textContent = formatPercentage(
-          result.margin
-        );
-        document.getElementById('fish-monthly-revenue').textContent =
-          formatCurrency(result.monthlyRevenue);
-        document.getElementById('fish-annual-revenue').textContent =
-          formatCurrency(result.annualRevenue);
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        fishInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateFishCalculator();
-      });
-
-      // Initialize
-      updateFishCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

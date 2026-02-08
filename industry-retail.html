@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -277,113 +285,8 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      // Helpers
-      const formatCurrency = (v) =>
-        'R' +
-        Number(v).toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-      const formatPercentage = (v) => Number(v).toFixed(2) + '%';
-
-      // Main Calculator
-      function calcRetail() {
-        const u = +document.getElementById('retail-units').value || 0;
-        const c = +document.getElementById('retail-cost').value || 0;
-        const p = +document.getElementById('retail-price').value || 0;
-        const f = +document.getElementById('retail-fixed').value || 0;
-        const l = +document.getElementById('retail-labor').value || 0;
-        const o = +document.getElementById('retail-operational').value || 0;
-
-        const revenue = u * p;
-        const cogs = u * c;
-        const gross = revenue - cogs;
-        const total = cogs + f + l + o;
-        const profit = revenue - total;
-        const margin = revenue ? (profit / revenue) * 100 : 0;
-        const markup = c ? ((p - c) / c) * 100 : 0;
-        const roi = total ? (profit / total) * 100 : 0;
-        const ratio = revenue ? (total / revenue) * 100 : 0;
-        const breakeven = p - c > 0 ? Math.ceil((f + l + o) / (p - c)) : '-';
-
-        document.getElementById('revenue').textContent =
-          formatCurrency(revenue);
-        document.getElementById('cogs').textContent = formatCurrency(cogs);
-        document.getElementById('gross').textContent = formatCurrency(gross);
-        document.getElementById('totalCosts').textContent =
-          formatCurrency(total);
-
-        const profitEl = document.getElementById('profit');
-        profitEl.textContent = formatCurrency(profit);
-        profitEl.className =
-          'output-value ' + (profit >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('margin').textContent =
-          formatPercentage(margin);
-        document.getElementById('markup').textContent =
-          formatPercentage(markup);
-        document.getElementById('roi').textContent = formatPercentage(roi);
-        document.getElementById('ratio').textContent = formatPercentage(ratio);
-
-        document.getElementById('breakeven').textContent = breakeven;
-        document.getElementById('profitUnit').textContent = formatCurrency(
-          p - c
-        );
-        document.getElementById('monthly').textContent = formatCurrency(profit);
-        document.getElementById('annual').textContent = formatCurrency(
-          profit * 12
-        );
-      }
-
-      [
-        'retail-units',
-        'retail-cost',
-        'retail-price',
-        'retail-fixed',
-        'retail-labor',
-        'retail-operational',
-      ].forEach((id) => {
-        document.getElementById(id).addEventListener('input', calcRetail);
-      });
-
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        [
-          'retail-units',
-          'retail-cost',
-          'retail-price',
-          'retail-fixed',
-          'retail-labor',
-          'retail-operational',
-        ].forEach((i) => {
-          document.getElementById(i).value = '';
-        });
-        calcRetail();
-      });
-
-      calcRetail(); // initialize
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/retail.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
   </body>
 </html>

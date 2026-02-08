@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+     <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -274,138 +282,10 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/telecom.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
 
-    <script>
-      // Helper functions
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      // Telecom Calculator Class
-      class TelecomCalculator {
-        calculate(subscribers, price, infra, labor, operational) {
-          subscribers = parseFloat(subscribers) || 0;
-          price = parseFloat(price) || 0;
-          infra = parseFloat(infra) || 0;
-          labor = parseFloat(labor) || 0;
-          operational = parseFloat(operational) || 0;
-
-          const totalRevenue = subscribers * price;
-          const totalCosts = infra + labor + operational;
-          const netProfit = totalRevenue - totalCosts;
-          const profitMargin = totalRevenue
-            ? (netProfit / totalRevenue) * 100
-            : 0;
-          const roi = totalCosts ? (netProfit / totalCosts) * 100 : 0;
-          const monthly = netProfit / 12;
-          const annualized = netProfit;
-
-          return {
-            subscribers,
-            totalRevenue,
-            infra,
-            labor,
-            operational,
-            totalCosts,
-            netProfit,
-            profitMargin,
-            roi,
-            monthly,
-            annualized,
-          };
-        }
-      }
-
-      const telecomCalc = new TelecomCalculator();
-      const inputs = [
-        'telecom-subscribers',
-        'telecom-price',
-        'telecom-infra',
-        'telecom-labor',
-        'telecom-operational',
-      ];
-
-      inputs.forEach((id) => {
-        document.getElementById(id).addEventListener('input', updateCalculator);
-      });
-
-      function updateCalculator() {
-        const result = telecomCalc.calculate(
-          document.getElementById('telecom-subscribers').value,
-          document.getElementById('telecom-price').value,
-          document.getElementById('telecom-infra').value,
-          document.getElementById('telecom-labor').value,
-          document.getElementById('telecom-operational').value
-        );
-
-        document.getElementById('telecom-subscribers-output').textContent =
-          result.subscribers.toFixed(0);
-        document.getElementById('telecom-revenue').textContent = formatCurrency(
-          result.totalRevenue
-        );
-        document.getElementById('telecom-infra-output').textContent =
-          formatCurrency(result.infra);
-        document.getElementById('telecom-labor-output').textContent =
-          formatCurrency(result.labor);
-        document.getElementById('telecom-operational-output').textContent =
-          formatCurrency(result.operational);
-        document.getElementById('telecom-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const netEl = document.getElementById('telecom-net-profit');
-        netEl.textContent = formatCurrency(result.netProfit);
-        netEl.className =
-          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('telecom-margin').textContent =
-          formatPercentage(result.profitMargin);
-        document.getElementById('telecom-roi').textContent = formatPercentage(
-          result.roi
-        );
-
-        document.getElementById('telecom-monthly').textContent = formatCurrency(
-          result.monthly
-        );
-        document.getElementById('telecom-annualized').textContent =
-          formatCurrency(result.annualized);
-      }
-
-      // Initialize calculation
-      updateCalculator();
-    </script>
-
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

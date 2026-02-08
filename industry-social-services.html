@@ -47,7 +47,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+     <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -258,125 +266,8 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-      class SocialCalculator {
-        calculate(participants, fee, staff, supplies, operational) {
-          participants = parseFloat(participants) || 0;
-          fee = parseFloat(fee) || 0;
-          staff = parseFloat(staff) || 0;
-          supplies = parseFloat(supplies) || 0;
-          operational = parseFloat(operational) || 0;
-
-          const totalRevenue = participants * fee;
-          const totalCosts = staff + supplies + operational;
-          const netImpact = totalRevenue - totalCosts;
-          const profitMargin = totalRevenue
-            ? (netImpact / totalRevenue) * 100
-            : 0;
-          const roi = totalCosts ? (netImpact / totalCosts) * 100 : 0;
-
-          return {
-            participants,
-            totalRevenue,
-            totalCosts,
-            netImpact,
-            profitMargin,
-            roi,
-          };
-        }
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      const socialCalc = new SocialCalculator();
-      const inputs = [
-        'participants',
-        'fee',
-        'staff',
-        'supplies',
-        'operational',
-      ];
-
-      inputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateSocialCalculator);
-      });
-
-      function updateSocialCalculator() {
-        const result = socialCalc.calculate(
-          document.getElementById('participants').value,
-          document.getElementById('fee').value,
-          document.getElementById('staff').value,
-          document.getElementById('supplies').value,
-          document.getElementById('operational').value
-        );
-
-        document.getElementById('total-participants').textContent =
-          result.participants || '';
-        document.getElementById('total-revenue').textContent =
-          result.totalRevenue ? formatCurrency(result.totalRevenue) : '';
-        document.getElementById('total-costs').textContent = result.totalCosts
-          ? formatCurrency(result.totalCosts)
-          : '';
-
-        const netEl = document.getElementById('net-impact');
-        netEl.textContent = result.netImpact
-          ? formatCurrency(result.netImpact)
-          : '';
-        netEl.className =
-          'output-value ' + (result.netImpact >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('profit-margin').textContent =
-          result.profitMargin ? formatPercentage(result.profitMargin) : '';
-        document.getElementById('roi').textContent = result.roi
-          ? formatPercentage(result.roi)
-          : '';
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        inputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateSocialCalculator();
-      });
-
-      // Initialize
-      updateSocialCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/social.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
   </body>
 </html>

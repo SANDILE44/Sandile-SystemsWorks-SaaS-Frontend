@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -248,114 +256,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/ngo.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      class NGOCalculator {
-        calculate(donations, staff, programsCost, fixed, programCount) {
-          donations = parseFloat(donations) || 0;
-          staff = parseFloat(staff) || 0;
-          programsCost = parseFloat(programsCost) || 0;
-          fixed = parseFloat(fixed) || 0;
-          programCount = parseFloat(programCount) || 1;
-
-          const totalDonations = donations;
-          const totalCosts = staff + programsCost + fixed;
-          const remainingFunds = totalDonations - totalCosts;
-          const costPerProgram =
-            programCount > 0 ? totalCosts / programCount : 0;
-          const impactEfficiency =
-            totalDonations > 0 ? (totalCosts / totalDonations) * 100 : 0;
-
-          return {
-            totalDonations,
-            totalCosts,
-            remainingFunds,
-            costPerProgram,
-            impactEfficiency,
-          };
-        }
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      const ngoCalc = new NGOCalculator();
-      const ngoInputs = [
-        'ngo-donations',
-        'ngo-staff',
-        'ngo-programs-cost',
-        'ngo-fixed',
-        'ngo-program-count',
-      ];
-
-      ngoInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateNGOCalculator);
-      });
-
-      function updateNGOCalculator() {
-        const result = ngoCalc.calculate(
-          document.getElementById('ngo-donations').value,
-          document.getElementById('ngo-staff').value,
-          document.getElementById('ngo-programs-cost').value,
-          document.getElementById('ngo-fixed').value,
-          document.getElementById('ngo-program-count').value
-        );
-
-        document.getElementById('ngo-total-donations').textContent =
-          formatCurrency(result.totalDonations);
-        document.getElementById('ngo-total-costs').textContent = formatCurrency(
-          result.totalCosts
-        );
-
-        const fundsEl = document.getElementById('ngo-funds-remaining');
-        fundsEl.textContent = formatCurrency(result.remainingFunds);
-        fundsEl.className =
-          'output-value ' +
-          (result.remainingFunds >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('ngo-cost-per-program').textContent =
-          formatCurrency(result.costPerProgram);
-        document.getElementById('ngo-impact-efficiency').textContent =
-          formatPercentage(result.impactEfficiency);
-      }
-
-      // initialize calculation
-      updateNGOCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

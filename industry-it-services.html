@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+   <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -253,122 +262,8 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-
-    <script>
-      class ITServicesCalculator {
-        calculate(hours, rate, labor, software, fixed) {
-          hours = parseFloat(hours) || 0;
-          rate = parseFloat(rate) || 0;
-          labor = parseFloat(labor) || 0;
-          software = parseFloat(software) || 0;
-          fixed = parseFloat(fixed) || 0;
-
-          const revenue = hours * rate;
-          const totalCosts = labor + software + fixed;
-          const netProfit = revenue - totalCosts;
-          const profitHour = hours ? netProfit / hours : 0;
-          const margin = revenue ? (netProfit / revenue) * 100 : 0;
-          const roi = totalCosts ? (netProfit / totalCosts) * 100 : 0;
-          const breakeven = rate ? totalCosts / rate : 0;
-
-          return {
-            revenue,
-            totalCosts,
-            netProfit,
-            profitHour,
-            margin,
-            roi,
-            breakeven,
-          };
-        }
-      }
-
-      function money(v) {
-        return (
-          'R' +
-          Number(v).toLocaleString(undefined, { minimumFractionDigits: 2 })
-        );
-      }
-      function percent(v) {
-        return v.toFixed(2) + '%';
-      }
-
-      const itCalc = new ITServicesCalculator();
-      const inputs = [
-        'it-hours',
-        'it-hourly-rate',
-        'it-labor-cost',
-        'it-software-cost',
-        'it-fixed-cost',
-      ];
-
-      inputs.forEach((id) =>
-        document.getElementById(id).addEventListener('input', updateCalc)
-      );
-
-      function updateCalc() {
-        const res = itCalc.calculate(
-          document.getElementById('it-hours').value,
-          document.getElementById('it-hourly-rate').value,
-          document.getElementById('it-labor-cost').value,
-          document.getElementById('it-software-cost').value,
-          document.getElementById('it-fixed-cost').value
-        );
-
-        document.getElementById('it-revenue').textContent = money(res.revenue);
-        document.getElementById('it-total-costs').textContent = money(
-          res.totalCosts
-        );
-        const profitEl = document.getElementById('it-profit');
-        profitEl.textContent = money(res.netProfit);
-        profitEl.className =
-          'output-value ' + (res.netProfit >= 0 ? 'positive' : 'negative');
-        document.getElementById('it-profit-hour').textContent = money(
-          res.profitHour
-        );
-        document.getElementById('it-margin').textContent = percent(res.margin);
-        document.getElementById('it-roi').textContent = percent(res.roi);
-        document.getElementById('it-breakeven').textContent =
-          res.breakeven.toFixed(2);
-        document.getElementById('it-monthly').textContent = money(
-          res.netProfit
-        );
-        document.getElementById('it-annual').textContent = money(
-          res.netProfit * 12
-        );
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').onclick = () => {
-        inputs.forEach((i) => (document.getElementById(i).value = ''));
-        updateCalc();
-      };
-
-      // Initialize
-      updateCalc();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/hamburger.js"></script>
+    <script src="js/it-services.js"></script>
+      <script src="js/user-display.js"></script>
   </body>
 </html>

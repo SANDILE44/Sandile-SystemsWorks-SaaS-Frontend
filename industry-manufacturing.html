@@ -45,8 +45,16 @@
           </div>
         </div>
       </aside>
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -270,153 +278,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/hamburger.js"></script>
+    <script src="js/manufacturing.js"></script>
+      <script src="js/user-display.js"></script>
 
-
-    <script>
-      // Helper functions
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      // Manufacturing Calculator Class
-      class ManufacturingCalculator {
-        calculateFromInputs(units, price, material, labor, fixed, operational) {
-          units = Number(units) || 0;
-          price = Number(price) || 0;
-          material = Number(material) || 0;
-          labor = Number(labor) || 0;
-          fixed = Number(fixed) || 0;
-          operational = Number(operational) || 0;
-
-          const totalRevenue = units * price;
-          const totalCosts = units * material + labor + fixed + operational;
-          const profitLoss = totalRevenue - totalCosts;
-          const costPerUnit = units ? totalCosts / units : 0;
-          const revenuePerUnit = units ? totalRevenue / units : 0;
-          const profitPerUnit = units ? profitLoss / units : 0;
-          const breakEvenUnits = price ? totalCosts / price : 0;
-          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-          const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
-          const monthlyRevenue = totalRevenue;
-          const annualRevenue = totalRevenue * 12;
-
-          return {
-            totalUnits: units,
-            totalRevenue,
-            totalCosts,
-            costPerUnit,
-            revenuePerUnit,
-            profitPerUnit,
-            profitLoss,
-            breakEvenUnits,
-            roi,
-            margin,
-            monthlyRevenue,
-            annualRevenue,
-          };
-        }
-      }
-
-      // Initialize
-      const mfgCalc = new ManufacturingCalculator();
-      const mfgInputs = [
-        'mfg-units',
-        'mfg-price',
-        'mfg-material',
-        'mfg-labor',
-        'mfg-fixed',
-        'mfg-operational',
-      ];
-
-      mfgInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateMfgCalculator);
-      });
-
-      function updateMfgCalculator() {
-        const result = mfgCalc.calculateFromInputs(
-          document.getElementById('mfg-units').value,
-          document.getElementById('mfg-price').value,
-          document.getElementById('mfg-material').value,
-          document.getElementById('mfg-labor').value,
-          document.getElementById('mfg-fixed').value,
-          document.getElementById('mfg-operational').value
-        );
-
-        document.getElementById('mfg-units-output').textContent =
-          result.totalUnits.toFixed(0);
-        document.getElementById('mfg-revenue').textContent = formatCurrency(
-          result.totalRevenue
-        );
-        document.getElementById('mfg-total-costs').textContent = formatCurrency(
-          result.totalCosts
-        );
-        document.getElementById('mfg-cost-per-unit').textContent =
-          formatCurrency(result.costPerUnit);
-        document.getElementById('mfg-revenue-per-unit').textContent =
-          formatCurrency(result.revenuePerUnit);
-        document.getElementById('mfg-profit-per-unit').textContent =
-          formatCurrency(result.profitPerUnit);
-
-        const profitEl = document.getElementById('mfg-profit');
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.className =
-          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('mfg-breakeven').textContent =
-          result.breakEvenUnits.toFixed(2);
-        document.getElementById('mfg-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('mfg-margin').textContent = formatPercentage(
-          result.margin
-        );
-        document.getElementById('mfg-monthly-revenue').textContent =
-          formatCurrency(result.monthlyRevenue);
-        document.getElementById('mfg-annual-revenue').textContent =
-          formatCurrency(result.annualRevenue);
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        mfgInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateMfgCalculator();
-      });
-
-      // Initialize on page load
-      updateMfgCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

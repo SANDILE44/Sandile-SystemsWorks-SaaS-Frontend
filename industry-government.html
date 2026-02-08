@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -249,115 +258,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      // Formatter helpers
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
+     <script src="js/government.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      // Calculator logic
-      class GovernmentCalculator {
-        calculate(budget, staff, operations, infra, beneficiaries) {
-          budget = parseFloat(budget) || 0;
-          staff = parseFloat(staff) || 0;
-          operations = parseFloat(operations) || 0;
-          infra = parseFloat(infra) || 0;
-          beneficiaries = parseFloat(beneficiaries) || 0;
-
-          const totalCost = staff + operations + infra;
-          const balance = budget - totalCost;
-          const costPerBeneficiary =
-            beneficiaries > 0 ? totalCost / beneficiaries : 0;
-          const utilisation = budget > 0 ? (totalCost / budget) * 100 : 0;
-          const feasibility =
-            balance >= 0 ? 'Within Budget ✅' : 'Over Budget ⚠️';
-
-          return {
-            totalCost,
-            balance,
-            costPerBeneficiary,
-            utilisation,
-            feasibility,
-          };
-        }
-      }
-
-      const govCalc = new GovernmentCalculator();
-
-      const inputs = [
-        'gov-budget',
-        'gov-staff',
-        'gov-operations',
-        'gov-infrastructure',
-        'gov-beneficiaries',
-      ];
-
-      inputs.forEach((id) =>
-        document
-          .getElementById(id)
-          .addEventListener('input', updateGovCalculator)
-      );
-
-      function updateGovCalculator() {
-        const result = govCalc.calculate(
-          document.getElementById('gov-budget').value,
-          document.getElementById('gov-staff').value,
-          document.getElementById('gov-operations').value,
-          document.getElementById('gov-infrastructure').value,
-          document.getElementById('gov-beneficiaries').value
-        );
-
-        document.getElementById('gov-total-cost').textContent = formatCurrency(
-          result.totalCost
-        );
-
-        const balanceEl = document.getElementById('gov-balance');
-        balanceEl.textContent = formatCurrency(result.balance);
-        balanceEl.className =
-          'output-value ' + (result.balance >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('gov-per-beneficiary').textContent =
-          formatCurrency(result.costPerBeneficiary);
-        document.getElementById('gov-utilisation').textContent =
-          formatPercentage(result.utilisation);
-        document.getElementById('gov-feasibility').textContent =
-          result.feasibility;
-      }
-
-      // Initialize calculator
-      updateGovCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

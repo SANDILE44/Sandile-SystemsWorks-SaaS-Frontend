@@ -45,8 +45,16 @@
           </div>
         </div>
       </aside>
-    <!-- MAIN -->
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -269,132 +277,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      function money(v) {
-        return (
-          'R' +
-          Number(v).toLocaleString(undefined, { minimumFractionDigits: 2 })
-        );
-      }
-      function percent(v) {
-        return v.toFixed(2) + '%';
-      }
-
-      class MediaCalculator {
-        calculateFromInputs(content, ad, subs, staff, fixed, variable) {
-          content = +content || 0;
-          ad = +ad || 0;
-          subs = +subs || 0;
-          staff = +staff || 0;
-          fixed = +fixed || 0;
-          variable = +variable || 0;
-          const revenue = ad + subs;
-          const costs = staff + fixed + variable;
-          const profit = revenue - costs;
-          const revenuePerContent = content ? revenue / content : 0;
-          const costPerContent = content ? costs / content : 0;
-          const roi = costs ? (profit / costs) * 100 : 0;
-          const margin = revenue ? (profit / revenue) * 100 : 0;
-          const breakeven =
-            revenuePerContent - costPerContent > 0
-              ? Math.ceil(costs / (revenuePerContent - costPerContent))
-              : 0;
-          return {
-            revenue,
-            costs,
-            profit,
-            revenuePerContent,
-            costPerContent,
-            roi,
-            margin,
-            breakeven,
-            monthly: profit,
-            annual: profit * 12,
-          };
-        }
-      }
-
-      const mediaCalc = new MediaCalculator();
-      const inputs = [
-        'media-content',
-        'media-ad-revenue',
-        'media-subscriptions',
-        'media-staff',
-        'media-fixed',
-        'media-variable',
-      ];
-      inputs.forEach((id) =>
-        document.getElementById(id).addEventListener('input', updateMedia)
-      );
-
-      const revenueEl = document.getElementById('media-revenue');
-      const costsEl = document.getElementById('media-total-costs');
-      const profitEl = document.getElementById('media-profit');
-      const revPerContentEl = document.getElementById(
-        'media-revenue-per-content'
-      );
-      const costPerContentEl = document.getElementById(
-        'media-cost-per-content'
-      );
-      const roiEl = document.getElementById('media-roi');
-      const marginEl = document.getElementById('media-margin');
-      const breakevenEl = document.getElementById('media-breakeven');
-      const monthlyEl = document.getElementById('media-monthly');
-      const annualEl = document.getElementById('media-annual');
-
-      function updateMedia() {
-        const result = mediaCalc.calculateFromInputs(
-          document.getElementById('media-content').value,
-          document.getElementById('media-ad-revenue').value,
-          document.getElementById('media-subscriptions').value,
-          document.getElementById('media-staff').value,
-          document.getElementById('media-fixed').value,
-          document.getElementById('media-variable').value
-        );
-
-        revenueEl.textContent = money(result.revenue);
-        costsEl.textContent = money(result.costs);
-        profitEl.textContent = money(result.profit);
-        profitEl.className =
-          'output-value ' + (result.profit >= 0 ? 'positive' : 'negative');
-        revPerContentEl.textContent = money(result.revenuePerContent);
-        costPerContentEl.textContent = money(result.costPerContent);
-        roiEl.textContent = percent(result.roi);
-        marginEl.textContent = percent(result.margin);
-        breakevenEl.textContent = result.breakeven;
-        monthlyEl.textContent = money(result.monthly);
-        annualEl.textContent = money(result.annual);
-      }
-
-      document.getElementById('media-reset').onclick = () => {
-        inputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateMedia();
-      };
-
-      // Initialize default calculation
-      updateMedia();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/media.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
+   
   </body>
 </html>

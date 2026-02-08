@@ -46,7 +46,15 @@
         </div>
       </aside>
 
-    <main class="main-content">
+   <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -253,134 +261,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/real-estate.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      class RealEstateCalculator {
-        calculateFromInputs(cost, rent, expenses, vacancyRate, years) {
-          cost = Number(cost) || 0;
-          rent = Number(rent) || 0;
-          expenses = Number(expenses) || 0;
-          vacancyRate = Number(vacancyRate) || 0;
-          years = Number(years) || 1;
-
-          const annualIncome = rent * 12 * (1 - vacancyRate / 100);
-          const totalIncome = annualIncome * years;
-          const totalExpenses = expenses * 12 * years;
-          const netProfit = totalIncome - totalExpenses;
-          const roi = cost ? (netProfit / cost) * 100 : 0;
-          const margin = totalIncome ? (netProfit / totalIncome) * 100 : 0;
-          const profitPerR = cost ? netProfit / cost : 0;
-          const monthlyProfit = netProfit / (years * 12);
-          const annualProfit = netProfit / years;
-
-          return {
-            annualIncome,
-            totalIncome,
-            totalExpenses,
-            netProfit,
-            roi,
-            margin,
-            profitPerR,
-            monthlyProfit,
-            annualProfit,
-          };
-        }
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      const propertyCalc = new RealEstateCalculator();
-      const propertyInputs = [
-        'property-cost',
-        'property-rent',
-        'property-expenses',
-        'property-vacancy',
-        'property-years',
-      ];
-
-      propertyInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updatePropertyCalculator);
-      });
-
-      function updatePropertyCalculator() {
-        const result = propertyCalc.calculateFromInputs(
-          document.getElementById('property-cost').value,
-          document.getElementById('property-rent').value,
-          document.getElementById('property-expenses').value,
-          document.getElementById('property-vacancy').value,
-          document.getElementById('property-years').value
-        );
-
-        document.getElementById('property-annual-income').textContent =
-          formatCurrency(result.annualIncome);
-        document.getElementById('property-total-income').textContent =
-          formatCurrency(result.totalIncome);
-        document.getElementById('property-total-expenses').textContent =
-          formatCurrency(result.totalExpenses);
-
-        const profitEl = document.getElementById('property-profit');
-        profitEl.textContent = formatCurrency(result.netProfit);
-        profitEl.className =
-          'output-value ' + (result.netProfit >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('property-profit-per-r').textContent =
-          formatCurrency(result.profitPerR);
-        document.getElementById('property-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('property-margin').textContent =
-          formatPercentage(result.margin);
-        document.getElementById('property-monthly-profit').textContent =
-          formatCurrency(result.monthlyProfit);
-        document.getElementById('property-annual-profit').textContent =
-          formatCurrency(result.annualProfit);
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        propertyInputs.forEach(
-          (id) => (document.getElementById(id).value = '')
-        );
-        updatePropertyCalculator();
-      });
-
-      // Initialize
-      updatePropertyCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

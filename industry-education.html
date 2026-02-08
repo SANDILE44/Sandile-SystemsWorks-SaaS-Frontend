@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+     <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -273,139 +282,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/education.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      class SchoolCalculator {
-        calculateFromInputs(
-          students,
-          tuition,
-          staff,
-          facilities,
-          supplies,
-          fixed
-        ) {
-          students = parseFloat(students) || 0;
-          tuition = parseFloat(tuition) || 0;
-          staff = parseFloat(staff) || 0;
-          facilities = parseFloat(facilities) || 0;
-          supplies = parseFloat(supplies) || 0;
-          fixed = parseFloat(fixed) || 0;
-
-          const totalRevenue = students * tuition;
-          const totalCosts = staff + facilities + supplies + fixed;
-          const profitLoss = totalRevenue - totalCosts;
-          const costPerStudent = students ? totalCosts / students : 0;
-          const revenuePerStudent = students ? totalRevenue / students : 0;
-          const margin = totalRevenue ? (profitLoss / totalRevenue) * 100 : 0;
-          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-
-          return {
-            students,
-            totalRevenue,
-            totalCosts,
-            profitLoss,
-            costPerStudent,
-            revenuePerStudent,
-            margin,
-            roi,
-          };
-        }
-      }
-
-      const schoolCalc = new SchoolCalculator();
-      const schoolInputs = [
-        'school-students',
-        'school-tuition',
-        'school-staff',
-        'school-facilities',
-        'school-supplies',
-        'school-fixed',
-      ];
-
-      schoolInputs.forEach((id) =>
-        document
-          .getElementById(id)
-          .addEventListener('input', updateSchoolCalculator)
-      );
-
-      function updateSchoolCalculator() {
-        const result = schoolCalc.calculateFromInputs(
-          document.getElementById('school-students').value,
-          document.getElementById('school-tuition').value,
-          document.getElementById('school-staff').value,
-          document.getElementById('school-facilities').value,
-          document.getElementById('school-supplies').value,
-          document.getElementById('school-fixed').value
-        );
-
-        document.getElementById('school-students-output').textContent =
-          result.students.toFixed(0);
-        document.getElementById('school-revenue').textContent = formatCurrency(
-          result.totalRevenue
-        );
-        document.getElementById('school-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const profitEl = document.getElementById('school-profit');
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.className =
-          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('school-per-student').textContent =
-          formatCurrency(result.costPerStudent);
-        document.getElementById('school-revenue-per-student').textContent =
-          formatCurrency(result.revenuePerStudent);
-        document.getElementById('school-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('school-margin').textContent = formatPercentage(
-          result.margin
-        );
-      }
-
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        schoolInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateSchoolCalculator();
-      });
-
-      // Initialize blank calculation
-      updateSchoolCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

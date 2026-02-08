@@ -46,8 +46,15 @@
         </div>
       </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -234,149 +241,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      class MiningCalculator {
-        calculate(production, pricePerTon, variable, labor, fixed) {
-          production = Number(production) || 0;
-          pricePerTon = Number(pricePerTon) || 0;
-          variable = Number(variable) || 0;
-          labor = Number(labor) || 0;
-          fixed = Number(fixed) || 0;
-
-          const revenue = production * pricePerTon;
-          const totalCosts = production * variable + labor + fixed;
-          const profit = revenue - totalCosts;
-          const costPerTon = production ? totalCosts / production : 0;
-          const revenuePerTon = production ? revenue / production : 0;
-          const profitPerTon = production ? profit / production : 0;
-          const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-          const margin = revenue ? (profit / revenue) * 100 : 0;
-          const breakEven = pricePerTon ? totalCosts / pricePerTon : 0;
-          const monthlyRevenue = revenue;
-          const annualRevenue = revenue * 12;
-          const annualProfit = profit * 12;
-
-          return {
-            revenue,
-            totalCosts,
-            profit,
-            costPerTon,
-            revenuePerTon,
-            profitPerTon,
-            roi,
-            margin,
-            breakEven,
-            monthlyRevenue,
-            annualRevenue,
-            annualProfit,
-          };
-        }
-      }
-
-      const miningCalc = new MiningCalculator();
-      const miningInputs = [
-        'mining-production',
-        'mining-price',
-        'mining-variable',
-        'mining-labor',
-        'mining-fixed',
-      ];
-
-      miningInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateMiningCalculator);
-      });
-
-      function updateMiningCalculator() {
-        const result = miningCalc.calculate(
-          document.getElementById('mining-production').value,
-          document.getElementById('mining-price').value,
-          document.getElementById('mining-variable').value,
-          document.getElementById('mining-labor').value,
-          document.getElementById('mining-fixed').value
-        );
-
-        const outputSection = document.querySelector('.output-section');
-        outputSection.innerHTML = ''; // Clear previous outputs
-
-        const outputs = [
-          { label: 'Monthly Revenue', value: result.monthlyRevenue },
-          { label: 'Annual Revenue', value: result.annualRevenue },
-          { label: 'Total Costs', value: result.totalCosts },
-          { label: 'Profit / Loss', value: result.profit, dynamicColor: true },
-          { label: 'Cost Per Ton', value: result.costPerTon },
-          { label: 'Revenue Per Ton', value: result.revenuePerTon },
-          { label: 'Profit Per Ton', value: result.profitPerTon },
-          { label: 'ROI (%)', value: result.roi, isPercentage: true },
-          {
-            label: 'Profit Margin (%)',
-            value: result.margin,
-            isPercentage: true,
-          },
-          { label: 'Break-even Production (tons)', value: result.breakEven },
-          { label: 'Annual Profit', value: result.annualProfit },
-        ];
-
-        outputs.forEach((o) => {
-          const div = document.createElement('div');
-          div.className = 'output-group';
-          const valClass = o.dynamicColor
-            ? o.value >= 0
-              ? 'positive'
-              : 'negative'
-            : 'output-value';
-          div.innerHTML = `<div class="output-label">${o.label}</div>
-                         <div class="output-value ${valClass}" id="${o.label.toLowerCase().replace(/\s/g, '-')}">
-                           ${o.isPercentage ? formatPercentage(o.value) : formatCurrency(o.value)}
-                         </div>`;
-          outputSection.appendChild(div);
-        });
-      }
-
-      function resetMiningCalculator() {
-        miningInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateMiningCalculator();
-      }
-
-      // Initialize
-      updateMiningCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/mining.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
+   
   </body>
 </html>

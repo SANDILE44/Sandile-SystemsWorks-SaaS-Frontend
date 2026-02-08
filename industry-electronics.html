@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+  <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -292,159 +301,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/electronics.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-    <script>
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      class ElectronicsCalculator {
-        calculateFromInputs(units, cost, price, fixed, labor, operational) {
-          units = parseFloat(units) || 0;
-          cost = parseFloat(cost) || 0;
-          price = parseFloat(price) || 0;
-          fixed = parseFloat(fixed) || 0;
-          labor = parseFloat(labor) || 0;
-          operational = parseFloat(operational) || 0;
-
-          const totalRevenue = units * price;
-          const costOfGoods = units * cost;
-          const totalCosts = costOfGoods + fixed + labor + operational;
-          const profitLoss = totalRevenue - totalCosts;
-          const profitMargin = totalRevenue
-            ? (profitLoss / totalRevenue) * 100
-            : 0;
-          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-          const markup = cost ? ((price - cost) / cost) * 100 : 0;
-
-          const revenuePerUnit = units ? totalRevenue / units : 0;
-          const costContribution = totalCosts
-            ? (costOfGoods / totalCosts) * 100
-            : 0;
-          const monthlyRevenue = totalRevenue;
-          const annualRevenue = monthlyRevenue * 12;
-          const annualProfit = profitLoss * 12;
-
-          return {
-            units,
-            totalRevenue,
-            costOfGoods,
-            totalCosts,
-            profitLoss,
-            profitMargin,
-            roi,
-            markup,
-            revenuePerUnit,
-            costContribution,
-            monthlyRevenue,
-            annualRevenue,
-            annualProfit,
-          };
-        }
-      }
-
-      const elecCalc = new ElectronicsCalculator();
-      const elecInputs = [
-        'elec-units',
-        'elec-cost',
-        'elec-price',
-        'elec-fixed',
-        'elec-labor',
-        'elec-operational',
-      ];
-
-      elecInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateElecCalculator);
-      });
-
-      document.getElementById('elec-reset').addEventListener('click', () => {
-        elecInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateElecCalculator();
-      });
-
-      function updateElecCalculator() {
-        const result = elecCalc.calculateFromInputs(
-          document.getElementById('elec-units').value,
-          document.getElementById('elec-cost').value,
-          document.getElementById('elec-price').value,
-          document.getElementById('elec-fixed').value,
-          document.getElementById('elec-labor').value,
-          document.getElementById('elec-operational').value
-        );
-
-        document.getElementById('elec-units-output').textContent =
-          result.units.toFixed(0);
-        document.getElementById('elec-revenue').textContent = formatCurrency(
-          result.totalRevenue
-        );
-        document.getElementById('elec-cogs').textContent = formatCurrency(
-          result.costOfGoods
-        );
-        document.getElementById('elec-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const profitEl = document.getElementById('elec-profit');
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.className =
-          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('elec-margin').textContent = formatPercentage(
-          result.profitMargin
-        );
-        document.getElementById('elec-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('elec-markup').textContent = formatPercentage(
-          result.markup
-        );
-        document.getElementById('elec-revenue-unit').textContent =
-          formatCurrency(result.revenuePerUnit);
-        document.getElementById('elec-cost-contribution').textContent =
-          formatPercentage(result.costContribution);
-        document.getElementById('elec-monthly-revenue').textContent =
-          formatCurrency(result.monthlyRevenue);
-        document.getElementById('elec-annual-revenue').textContent =
-          formatCurrency(result.annualRevenue);
-        document.getElementById('elec-annual-profit').textContent =
-          formatCurrency(result.annualProfit);
-      }
-
-      // Initialize
-      updateElecCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>

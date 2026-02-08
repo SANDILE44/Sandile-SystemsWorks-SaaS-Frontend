@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+ <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a> →
         <a href="sector-tertiary.html">Tertiary</a> →
@@ -260,125 +269,8 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-      class HotelCalculator {
-        calculate(rooms, occupancy, price, variable, labor, fixed) {
-          rooms = Number(rooms) || 0;
-          occupancy = Number(occupancy) || 0;
-          price = Number(price) || 0;
-          variable = Number(variable) || 0;
-          labor = Number(labor) || 0;
-          fixed = Number(fixed) || 0;
-
-          const occupiedRoomNights = rooms * (occupancy / 100);
-          const monthlyRevenue = occupiedRoomNights * price;
-          const totalCosts = variable * occupiedRoomNights + labor + fixed;
-          const profitLoss = monthlyRevenue - totalCosts;
-          const revenuePerRoom = rooms ? monthlyRevenue / rooms : 0;
-          const costPerRoom = rooms ? totalCosts / rooms : 0;
-          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-          const margin = monthlyRevenue
-            ? (profitLoss / monthlyRevenue) * 100
-            : 0;
-
-          return {
-            occupiedRoomNights,
-            monthlyRevenue,
-            totalCosts,
-            profitLoss,
-            revenuePerRoom,
-            costPerRoom,
-            roi,
-            margin,
-          };
-        }
-      }
-
-      const formatCurrency = (v) =>
-        'R' +
-        Number(v).toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-      const formatPercentage = (v) => Number(v).toFixed(2) + '%';
-
-      const hotelCalc = new HotelCalculator();
-      const hotelInputs = [
-        'hotel-rooms',
-        'hotel-occupancy',
-        'hotel-price',
-        'hotel-variable',
-        'hotel-labor',
-        'hotel-fixed',
-      ];
-
-      hotelInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateHotelCalculator);
-      });
-
-      function updateHotelCalculator() {
-        const result = hotelCalc.calculate(
-          document.getElementById('hotel-rooms').value,
-          document.getElementById('hotel-occupancy').value,
-          document.getElementById('hotel-price').value,
-          document.getElementById('hotel-variable').value,
-          document.getElementById('hotel-labor').value,
-          document.getElementById('hotel-fixed').value
-        );
-
-        document.getElementById('hotel-occupied').textContent =
-          result.occupiedRoomNights.toFixed(0);
-        document.getElementById('hotel-revenue').textContent = formatCurrency(
-          result.monthlyRevenue
-        );
-        document.getElementById('hotel-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const profitEl = document.getElementById('hotel-profit');
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.className =
-          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('hotel-per-room').textContent = formatCurrency(
-          result.revenuePerRoom
-        );
-        document.getElementById('hotel-cost-per-room').textContent =
-          formatCurrency(result.costPerRoom);
-        document.getElementById('hotel-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('hotel-margin').textContent = formatPercentage(
-          result.margin
-        );
-      }
-
-      // Initialize default calculation
-      updateHotelCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
+    <script src="js/hamburger.js"></script>
+    <script src="js/hospitality.js"></script>
+      <script src="js/user-display.js"></script>
   </body>
 </html>

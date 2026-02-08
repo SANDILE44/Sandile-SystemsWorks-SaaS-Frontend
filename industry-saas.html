@@ -45,7 +45,16 @@
           </div>
         </div>
       </aside>
-    <main class="main-content">
+
+    <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       <div class="breadcrumb">
         <a href="dashboard.html">Sectors</a>
         <span>→</span>
@@ -269,143 +278,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/saas.js"></script>
+    <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
 
-
-    <script>
-      class SaaSCalculator {
-        calculateFromInputs(
-          mrr,
-          churn,
-          dev,
-          infrastructure,
-          support,
-          marketing
-        ) {
-          mrr = parseFloat(mrr) || 0;
-          churn = parseFloat(churn) || 0;
-          dev = parseFloat(dev) || 0;
-          infrastructure = parseFloat(infrastructure) || 0;
-          support = parseFloat(support) || 0;
-          marketing = parseFloat(marketing) || 0;
-
-          const churnImpact = (mrr * churn) / 100;
-          const netMRR = mrr - churnImpact;
-          const totalCosts = dev + infrastructure + support + marketing;
-          const profitLoss = netMRR - totalCosts;
-          const roi = totalCosts ? (profitLoss / totalCosts) * 100 : 0;
-          const margin = mrr ? (profitLoss / mrr) * 100 : 0;
-          const runwayMonths =
-            profitLoss <= 0 ? 0 : totalCosts ? netMRR / totalCosts : 0;
-
-          return {
-            mrr,
-            netMRR,
-            churnImpact,
-            totalCosts,
-            profitLoss,
-            roi,
-            margin,
-            runwayMonths,
-          };
-        }
-      }
-
-      function formatCurrency(value) {
-        return (
-          'R' +
-          Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
-      }
-
-      function formatPercentage(value) {
-        return Number(value).toFixed(2) + '%';
-      }
-
-      const saasCalc = new SaaSCalculator();
-      const saasInputs = [
-        'saas-mrr',
-        'saas-churn',
-        'saas-dev',
-        'saas-infrastructure',
-        'saas-support',
-        'saas-marketing',
-      ];
-
-      saasInputs.forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener('input', updateSaaSCalculator);
-      });
-
-      function updateSaaSCalculator() {
-        const result = saasCalc.calculateFromInputs(
-          document.getElementById('saas-mrr').value,
-          document.getElementById('saas-churn').value,
-          document.getElementById('saas-dev').value,
-          document.getElementById('saas-infrastructure').value,
-          document.getElementById('saas-support').value,
-          document.getElementById('saas-marketing').value
-        );
-
-        document.getElementById('saas-mrr-output').textContent = formatCurrency(
-          result.mrr
-        );
-        document.getElementById('saas-net-mrr').textContent = formatCurrency(
-          result.netMRR
-        );
-        document.getElementById('saas-churn-impact').textContent =
-          formatCurrency(result.churnImpact);
-        document.getElementById('saas-total-costs').textContent =
-          formatCurrency(result.totalCosts);
-
-        const profitEl = document.getElementById('saas-profit');
-        profitEl.textContent = formatCurrency(result.profitLoss);
-        profitEl.className =
-          'output-value ' + (result.profitLoss >= 0 ? 'positive' : 'negative');
-
-        document.getElementById('saas-roi').textContent = formatPercentage(
-          result.roi
-        );
-        document.getElementById('saas-margin').textContent = formatPercentage(
-          result.margin
-        );
-        document.getElementById('saas-runway').textContent =
-          result.runwayMonths.toFixed(1);
-      }
-
-      // Reset button
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        saasInputs.forEach((id) => (document.getElementById(id).value = ''));
-        updateSaaSCalculator();
-      });
-
-      // Initialize default calculation
-      updateSaaSCalculator();
-    </script>
-    <script>
-      const hamburger = document.getElementById('hamburger');
-      const sideNav = document.getElementById('sideNav');
-
-      if (hamburger && sideNav) {
-        hamburger.addEventListener('click', () => {
-          hamburger.classList.toggle('active');
-          sideNav.classList.toggle('active');
-          document.body.style.overflow = sideNav.classList.contains('active')
-            ? 'hidden'
-            : '';
-        });
-
-        document.querySelectorAll('#sideNav a').forEach((link) => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sideNav.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
-    </script>
   </body>
 </html>
