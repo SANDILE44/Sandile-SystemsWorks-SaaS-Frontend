@@ -1,45 +1,79 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const n = (v) => parseFloat(v) || 0;
-  const money = (v) => 'R' + v.toFixed(2);
-  const percent = (v) => (v || 0).toFixed(2) + '%';
+// ================================
+// Marketing Campaign Calculator
+// Sandile SystemsWorks
+// ================================
 
-  function calcMarketing() {
-    const campaigns = n(document.getElementById('marketing-campaigns').value);
-    const budget = n(document.getElementById('marketing-budget').value);
-    const revenue = n(document.getElementById('marketing-revenue').value);
-    const staff = n(document.getElementById('marketing-staff').value);
-    const fixed = n(document.getElementById('marketing-fixed').value);
-    const variable = n(document.getElementById('marketing-variable').value);
+// Auto-calc on any input change
+document.addEventListener('input', calcMarketing);
 
-    const totalCosts = budget + staff + fixed + variable;
-    const profit = revenue - totalCosts;
+// Reset
+document.getElementById('resetBtn')?.addEventListener('click', resetAll);
 
-    document.getElementById('marketing-total-revenue').textContent =
-      money(revenue);
-    document.getElementById('marketing-total-costs').textContent =
-      money(totalCosts);
-    document.getElementById('marketing-profit').textContent = money(profit);
-    document.getElementById('marketing-revenue-per-campaign').textContent =
-      money(revenue / campaigns || 0);
-    document.getElementById('marketing-cost-per-campaign').textContent = money(
-      totalCosts / campaigns || 0
-    );
-    document.getElementById('marketing-roi').textContent = percent(
-      (profit / totalCosts) * 100
-    );
-    document.getElementById('marketing-margin').textContent = percent(
-      (profit / revenue) * 100
-    );
+// ---------------- HELPERS ----------------
+function v(id) {
+  return Number(document.getElementById(id)?.value) || 0;
+}
+
+function money(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = value.toLocaleString('en-ZA', {
+    style: 'currency',
+    currency: 'ZAR',
+  });
+}
+
+function percent(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = value.toFixed(2) + '%';
+}
+
+// ---------------- MAIN CALC ----------------
+function calcMarketing() {
+  const campaigns = v('marketing-campaigns');
+  const budget = v('marketing-budget');
+  const revenue = v('marketing-revenue');
+  const staff = v('marketing-staff');
+  const fixed = v('marketing-fixed');
+  const variable = v('marketing-variable');
+
+  const totalCosts = budget + staff + fixed + variable;
+  const profit = revenue - totalCosts;
+
+  // Outputs
+  money('marketing-total-revenue', revenue);
+  money('marketing-total-costs', totalCosts);
+  money('marketing-profit', profit);
+
+  money('marketing-revenue-per-campaign', campaigns ? revenue / campaigns : 0);
+  money('marketing-cost-per-campaign', campaigns ? totalCosts / campaigns : 0);
+
+  percent('marketing-roi', totalCosts ? (profit / totalCosts) * 100 : 0);
+  percent('marketing-margin', revenue ? (profit / revenue) * 100 : 0);
+
+  // 🔴🟢 PROFIT COLOR (LOCKED)
+  const profitEl = document.getElementById('marketing-profit');
+  if (!profitEl) return;
+
+  profitEl.classList.remove('profit-positive', 'profit-negative');
+
+  if (profit > 0) {
+    profitEl.classList.add('profit-positive');
+  } else if (profit < 0) {
+    profitEl.classList.add('profit-negative');
   }
+}
 
-  document
-    .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calcMarketing));
-
-  document.getElementById('resetBtn').onclick = () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calcMarketing();
-  };
-
+// ---------------- RESET ----------------
+function resetAll() {
+  document.querySelectorAll('.input-section input').forEach((i) => {
+    i.value = '';
+  });
   calcMarketing();
-});
+}
+
+// Initial render
+calcMarketing();

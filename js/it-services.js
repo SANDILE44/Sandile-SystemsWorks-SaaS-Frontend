@@ -1,53 +1,81 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const n = (v) => parseFloat(v) || 0;
+// ================================
+// IT Services Profitability Calculator
+// Sandile SystemsWorks
+// ================================
 
-  const money = (v) =>
-    'R' +
-    Number(v).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+// Auto-calc on input
+document.addEventListener('input', calcIT);
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+// Reset
+document.getElementById('resetBtn')?.addEventListener('click', resetAll);
 
-  function calcIT() {
-    const hours = n(document.getElementById('it-hours').value);
-    const rate = n(document.getElementById('it-hourly-rate').value);
-    const labor = n(document.getElementById('it-labor-cost').value);
-    const software = n(document.getElementById('it-software-cost').value);
-    const fixed = n(document.getElementById('it-fixed-cost').value);
+// ---------------- HELPERS ----------------
+function v(id) {
+  return Number(document.getElementById(id)?.value) || 0;
+}
 
-    const revenue = hours * rate;
-    const totalCosts = labor + software + fixed;
-    const profit = revenue - totalCosts;
+function money(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
 
-    document.getElementById('it-revenue').textContent = money(revenue);
-    document.getElementById('it-total-costs').textContent = money(totalCosts);
-    document.getElementById('it-profit').textContent = money(profit);
-    document.getElementById('it-profit-hour').textContent = money(
-      profit / hours || 0
-    );
-    document.getElementById('it-margin').textContent = percent(
-      (profit / revenue) * 100 || 0
-    );
-    document.getElementById('it-roi').textContent = percent(
-      (profit / totalCosts) * 100 || 0
-    );
-    document.getElementById('it-breakeven').textContent = (
-      totalCosts / rate || 0
-    ).toFixed(1);
-    document.getElementById('it-monthly').textContent = money(profit);
-    document.getElementById('it-annual').textContent = money(profit * 12);
-  }
-
-  document
-    .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calcIT));
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calcIT();
+  el.textContent = value.toLocaleString('en-ZA', {
+    style: 'currency',
+    currency: 'ZAR',
   });
+}
 
+function percent(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = value.toFixed(2) + '%';
+}
+
+// ---------------- MAIN CALC ----------------
+function calcIT() {
+  const hours = v('it-hours');
+  const rate = v('it-hourly-rate');
+
+  const labor = v('it-labor-cost');
+  const software = v('it-software-cost');
+  const fixed = v('it-fixed-cost');
+
+  const revenue = hours * rate;
+  const totalCosts = labor + software + fixed;
+  const profit = revenue - totalCosts;
+
+  // Outputs
+  money('it-revenue', revenue);
+  money('it-total-costs', totalCosts);
+  money('it-profit', profit);
+
+  money('it-profit-hour', hours ? profit / hours : 0);
+  percent('it-margin', revenue ? (profit / revenue) * 100 : 0);
+  percent('it-roi', totalCosts ? (profit / totalCosts) * 100 : 0);
+
+  document.getElementById('it-breakeven').textContent = rate
+    ? (totalCosts / rate).toFixed(1)
+    : '0';
+
+  // Assumption: one project per month
+  money('it-monthly', profit);
+  money('it-annual', profit * 12);
+
+  // Profit color
+  const profitEl = document.getElementById('it-profit');
+  profitEl.classList.remove('profit-positive', 'profit-negative');
+
+  if (profit > 0) profitEl.classList.add('profit-positive');
+  if (profit < 0) profitEl.classList.add('profit-negative');
+}
+
+// ---------------- RESET ----------------
+function resetAll() {
+  document.querySelectorAll('.input-section input').forEach((i) => {
+    i.value = '';
+  });
   calcIT();
-});
+}
+
+// Initial render
+calcIT();

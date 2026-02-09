@@ -1,48 +1,85 @@
-document.addEventListener('input', calcSaaS);
-document.getElementById('resetBtn')?.addEventListener('click', reset);
+// ================================
+// SaaS Calculator Logic
+// Sandile SystemsWorks
+// ================================
 
+// Auto-calculate on any input change
+document.addEventListener('input', calcSaaS);
+
+// Reset button
+document.getElementById('resetBtn')?.addEventListener('click', resetAll);
+
+// ---------------- HELPERS ----------------
 function n(id) {
   return Number(document.getElementById(id)?.value) || 0;
 }
 
-function set(id, v) {
-  document.getElementById(id).textContent =
-    typeof v === 'number'
-      ? v.toLocaleString('en-ZA', { style: 'currency', currency: 'ZAR' })
-      : v;
+function setCurrency(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = value.toLocaleString('en-ZA', {
+    style: 'currency',
+    currency: 'ZAR',
+  });
 }
 
-function setP(id, v) {
-  document.getElementById(id).textContent = v.toFixed(2) + '%';
+function setPercent(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = value.toFixed(2) + '%';
 }
 
+// ---------------- MAIN CALC ----------------
 function calcSaaS() {
   const mrr = n('saas-mrr');
-  const churn = n('saas-churn') / 100;
+  const churnRate = n('saas-churn') / 100;
 
-  const costs =
-    n('saas-dev') +
-    n('saas-infrastructure') +
-    n('saas-support') +
-    n('saas-marketing');
+  const dev = n('saas-dev');
+  const infra = n('saas-infrastructure');
+  const support = n('saas-support');
+  const marketing = n('saas-marketing');
 
-  const churnLoss = mrr * churn;
-  const netMrr = mrr - churnLoss;
-  const profit = netMrr - costs;
+  const totalCosts = dev + infra + support + marketing;
+  const churnLoss = mrr * churnRate;
+  const netMRR = mrr - churnLoss;
+  const profit = netMRR - totalCosts;
 
-  set('saas-mrr-output', mrr);
-  set('saas-net-mrr', netMrr);
-  set('saas-churn-impact', churnLoss);
-  set('saas-total-costs', costs);
-  set('saas-profit', profit);
+  // ---------- OUTPUTS ----------
+  setCurrency('saas-mrr-output', mrr);
+  setCurrency('saas-net-mrr', netMRR);
+  setCurrency('saas-churn-impact', churnLoss);
+  setCurrency('saas-total-costs', totalCosts);
+  setCurrency('saas-profit', profit);
 
-  setP('saas-margin', mrr ? (profit / mrr) * 100 : 0);
-  setP('saas-roi', costs ? (profit / costs) * 100 : 0);
-  document.getElementById('saas-runway').textContent =
-    profit < 0 && costs ? Math.floor(mrr / costs) : 0;
+  setPercent('saas-margin', mrr ? (profit / mrr) * 100 : 0);
+  setPercent('saas-roi', totalCosts ? (profit / totalCosts) * 100 : 0);
+
+  // ---------- RUNWAY ----------
+  const runwayEl = document.getElementById('saas-runway');
+  if (profit < 0 && totalCosts > 0) {
+    runwayEl.textContent = Math.floor(mrr / totalCosts);
+  } else {
+    runwayEl.textContent = '∞';
+  }
+
+  // ---------- PROFIT COLOR ----------
+  const profitEl = document.getElementById('saas-profit');
+  profitEl.classList.remove('profit-positive', 'profit-negative');
+
+  if (profit > 0) profitEl.classList.add('profit-positive');
+  if (profit < 0) profitEl.classList.add('profit-negative');
 }
 
-function reset() {
-  document.querySelectorAll('input').forEach((i) => (i.value = ''));
+// ---------------- RESET ----------------
+function resetAll() {
+  document.querySelectorAll('.input-section input').forEach((i) => {
+    i.value = '';
+  });
+
   calcSaaS();
 }
+
+// Initial render
+calcSaaS();

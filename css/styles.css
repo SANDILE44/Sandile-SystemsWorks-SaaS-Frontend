@@ -810,3 +810,14 @@ button[id$='reset']:focus-visible {
   outline: 2px solid rgba(255, 107, 107, 0.5);
   outline-offset: 3px;
 }
+
+/* Profit states */
+.profit-positive {
+  color: #00ff5e; /* green */
+  font-weight: 600;
+}
+
+.profit-negative {
+  color: #ff0000; /* red */
+  font-weight: 600;
+}
