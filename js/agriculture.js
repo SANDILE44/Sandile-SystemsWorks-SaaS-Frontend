@@ -1,8 +1,7 @@
-// js/industry-agriculture.js
 (() => {
   const $ = (id) => document.getElementById(id);
 
-  // ---------------- HELPERS ----------------
+  /* ---------- HELPERS ---------- */
   function formatCurrency(value) {
     return (
       'R' +
@@ -23,84 +22,99 @@
     el.className = 'output-value ' + (value >= 0 ? 'positive' : 'negative');
   }
 
-  // ---------------- FARM CALCULATOR ----------------
+  /* ---------- FARM ---------- */
+  let farmTimer;
+
   function updateFarm() {
-    const acreage = +$('farm-acreage')?.value || 0;
-    const yieldPerAcre = +$('farm-yield')?.value || 0;
-    const price = +$('farm-price')?.value || 0;
-    const fixed = +$('farm-fixed')?.value || 0;
-    const variable = +$('farm-variable')?.value || 0;
-    const labor = +$('farm-labor')?.value || 0;
-    const months = +$('farm-months')?.value || 1;
-
-    const totalYield = acreage * yieldPerAcre * months;
-    const revenue = totalYield * price;
-    const variableCosts = variable * acreage * months;
-    const totalCosts = fixed + variableCosts + labor;
-    const profit = revenue - totalCosts;
-
-    $('farm-yield-output').textContent = totalYield.toFixed(2);
-    $('farm-revenue').textContent = formatCurrency(revenue);
-    $('farm-total-costs').textContent = formatCurrency(totalCosts);
-    setProfit($('farm-profit'), profit);
-
-    $('farm-roi').textContent = formatPercentage(
-      totalCosts ? (profit / totalCosts) * 100 : 0
-    );
-
-    $('farm-margin').textContent = formatPercentage(
-      revenue ? (profit / revenue) * 100 : 0
-    );
-
-    $('farm-breakeven').textContent = price
-      ? (totalCosts / price).toFixed(2)
-      : '0';
-
-    $('farm-cost-per-acre').textContent = formatCurrency(
-      acreage ? totalCosts / (acreage * months) : 0
-    );
+    clearTimeout(farmTimer);
+    farmTimer = setTimeout(runFarm, 300);
   }
 
-  // ---------------- LIVESTOCK CALCULATOR ----------------
+  async function runFarm() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_BASE}/api/calculators/agriculture/farm`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        acreage: +$('farm-acreage').value || 0,
+        yieldPerAcre: +$('farm-yield').value || 0,
+        price: +$('farm-price').value || 0,
+        fixed: +$('farm-fixed').value || 0,
+        variable: +$('farm-variable').value || 0,
+        labor: +$('farm-labor').value || 0,
+        months: +$('farm-months').value || 1,
+      }),
+    });
+
+    if (res.status === 403) return window.location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('farm-yield-output').textContent = d.totalYield.toFixed(2);
+    $('farm-revenue').textContent = formatCurrency(d.revenue);
+    $('farm-total-costs').textContent = formatCurrency(d.totalCosts);
+    setProfit($('farm-profit'), d.profit);
+    $('farm-roi').textContent = formatPercentage(d.roi);
+    $('farm-margin').textContent = formatPercentage(d.margin);
+    $('farm-breakeven').textContent = d.breakeven.toFixed(2);
+    $('farm-cost-per-acre').textContent = formatCurrency(d.costPerAcre);
+  }
+
+  /* ---------- LIVESTOCK ---------- */
+  let livestockTimer;
+
   function updateLivestock() {
-    const count = +$('livestock-count')?.value || 0;
-    const price = +$('livestock-price')?.value || 0;
-    const feed = +$('livestock-feed')?.value || 0;
-    const health = +$('livestock-health')?.value || 0;
-    const fixed = +$('livestock-fixed')?.value || 0;
-    const labor = +$('livestock-labor')?.value || 0;
-    const months = +$('livestock-months')?.value || 1;
-    const mortality = +$('livestock-mortality')?.value || 0;
-
-    const adjustedCount = count * (1 - mortality / 100);
-    const revenue = adjustedCount * price;
-    const variableCosts = adjustedCount * (feed + health) * months;
-    const totalCosts = variableCosts + fixed + labor;
-    const profit = revenue - totalCosts;
-
-    $('livestock-revenue').textContent = formatCurrency(revenue);
-    $('livestock-costs').textContent = formatCurrency(totalCosts);
-    setProfit($('livestock-profit'), profit);
-
-    $('livestock-per-animal').textContent = formatCurrency(
-      adjustedCount ? totalCosts / adjustedCount : 0
-    );
-
-    $('livestock-profit-per-animal').textContent = formatCurrency(
-      adjustedCount ? profit / adjustedCount : 0
-    );
-
-    $('livestock-roi').textContent = formatPercentage(
-      totalCosts ? (profit / totalCosts) * 100 : 0
-    );
-
-    $('livestock-margin').textContent = formatPercentage(
-      revenue ? (profit / revenue) * 100 : 0
-    );
+    clearTimeout(livestockTimer);
+    livestockTimer = setTimeout(runLivestock, 300);
   }
 
-  // ---------------- INPUT LISTENERS ----------------
-  const farmInputs = [
+  async function runLivestock() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(
+      `${API_BASE}/api/calculators/agriculture/livestock`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          count: +$('livestock-count').value || 0,
+          price: +$('livestock-price').value || 0,
+          feed: +$('livestock-feed').value || 0,
+          health: +$('livestock-health').value || 0,
+          fixed: +$('livestock-fixed').value || 0,
+          labor: +$('livestock-labor').value || 0,
+          months: +$('livestock-months').value || 1,
+          mortality: +$('livestock-mortality').value || 0,
+        }),
+      }
+    );
+
+    if (res.status === 403) return window.location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('livestock-revenue').textContent = formatCurrency(d.revenue);
+    $('livestock-costs').textContent = formatCurrency(d.totalCosts);
+    setProfit($('livestock-profit'), d.profit);
+    $('livestock-per-animal').textContent = formatCurrency(d.costPerAnimal);
+    $('livestock-profit-per-animal').textContent = formatCurrency(
+      d.profitPerAnimal
+    );
+    $('livestock-roi').textContent = formatPercentage(d.roi);
+    $('livestock-margin').textContent = formatPercentage(d.margin);
+  }
+
+  /* ---------- INPUT LISTENERS ---------- */
+  [
     'farm-acreage',
     'farm-yield',
     'farm-price',
@@ -108,9 +122,9 @@
     'farm-variable',
     'farm-labor',
     'farm-months',
-  ];
+  ].forEach((id) => $(id)?.addEventListener('input', updateFarm));
 
-  const livestockInputs = [
+  [
     'livestock-count',
     'livestock-price',
     'livestock-feed',
@@ -119,26 +133,5 @@
     'livestock-labor',
     'livestock-months',
     'livestock-mortality',
-  ];
-
-  farmInputs.forEach((id) => $(id)?.addEventListener('input', updateFarm));
-
-  livestockInputs.forEach((id) =>
-    $(id)?.addEventListener('input', updateLivestock)
-  );
-
-  // ---------------- RESET BUTTONS ----------------
-  document.querySelectorAll('.resetBtn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      [...farmInputs, ...livestockInputs].forEach((id) => {
-        if ($(id)) $(id).value = '';
-      });
-      updateFarm();
-      updateLivestock();
-    });
-  });
-
-  // ---------------- INIT ----------------
-  updateFarm();
-  updateLivestock();
+  ].forEach((id) => $(id)?.addEventListener('input', updateLivestock));
 })();
