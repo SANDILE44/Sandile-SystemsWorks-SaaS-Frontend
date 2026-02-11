@@ -1,37 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const donationsEl = document.getElementById('ngo-donations');
-  if (!donationsEl) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => `R${(Number(v) || 0).toFixed(2)}`;
+  const percent = (v) => `${(Number(v) || 0).toFixed(2)}%`;
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  let t;
+  function update() {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  }
 
-  function calculate() {
-    const donations = n('ngo-donations');
-    const staff = n('ngo-staff');
-    const programs = n('ngo-programs-cost');
-    const fixed = n('ngo-fixed');
-    const count = n('ngo-program-count') || 1;
-
-    const totalCosts = staff + programs + fixed;
-    const remaining = donations - totalCosts;
-
-    document.getElementById('ngo-total-donations').textContent =
-      money(donations);
-    document.getElementById('ngo-total-costs').textContent = money(totalCosts);
-    document.getElementById('ngo-funds-remaining').textContent =
-      money(remaining);
-    document.getElementById('ngo-cost-per-program').textContent = money(
-      programs / count
+  async function run() {
+    const res = await fetch(
+      `${API_BASE}/api/calculators/ngo/operations`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          donations: +$('ngo-donations').value || 0,
+          staff: +$('ngo-staff').value || 0,
+          programs: +$('ngo-programs-cost').value || 0,
+          fixed: +$('ngo-fixed').value || 0,
+          programCount: +$('ngo-program-count').value || 1,
+        }),
+      }
     );
-    document.getElementById('ngo-impact-efficiency').textContent = percent(
-      donations ? (programs / donations) * 100 : 0
-    );
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('ngo-total-donations').textContent =
+      money(d.donations);
+    $('ngo-total-costs').textContent =
+      money(d.totalCosts);
+    $('ngo-funds-remaining').textContent =
+      money(d.remaining);
+    $('ngo-cost-per-program').textContent =
+      money(d.costPerProgram);
+    $('ngo-impact-efficiency').textContent =
+      percent(d.impactEfficiency);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calculate));
-
-  calculate();
-});
+    .forEach((i) => i.addEventListener('input', update));
+})();

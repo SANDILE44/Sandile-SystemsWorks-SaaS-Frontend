@@ -1,109 +1,79 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // ---------- helpers ----------
-  const n = (v) => parseFloat(v) || 0;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
     'R' +
-    Number(v).toLocaleString(undefined, {
+    (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  // ---------- inputs ----------
-  const ids = [
+  let timer;
+
+  function updateConstruction() {
+    clearTimeout(timer);
+    timer = setTimeout(runConstruction, 300);
+  }
+
+  async function runConstruction() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(
+      `${API_BASE}/api/calculators/construction/project`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          value: +$('const-value').value || 0,
+          material: +$('const-material').value || 0,
+          laborMonthly: +$('const-labor').value || 0,
+          equipmentMonthly: +$('const-equipment').value || 0,
+          fixedMonthly: +$('const-fixed').value || 0,
+          months: +$('const-duration').value || 0,
+        }),
+      }
+    );
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('const-project-value').textContent = money(d.value);
+    $('const-material-output').textContent = money(d.material);
+    $('const-labor-output').textContent = money(d.laborTotal);
+    $('const-equipment-output').textContent = money(d.equipmentTotal);
+    $('const-fixed-output').textContent = money(d.fixedTotal);
+    $('const-total-costs').textContent = money(d.totalCosts);
+
+    const p = $('const-profit');
+    p.textContent = money(d.profit);
+    p.className = 'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+    $('const-margin').textContent = percent(d.margin);
+    $('const-roi').textContent = percent(d.roi);
+    $('const-ratio').textContent = percent(d.costRatio);
+    $('const-breakeven').textContent = money(d.breakEvenRevenue);
+
+    $('const-profit-material').textContent = money(d.profitPerMaterial);
+    $('const-profit-labor').textContent = money(d.profitPerLabor);
+    $('const-profit-equipment').textContent = money(d.profitPerEquipment);
+
+    $('const-monthly-profit').textContent = money(d.monthlyProfit);
+    $('const-annual-profit').textContent = money(d.annualProfit);
+  }
+
+  [
     'const-value',
     'const-material',
     'const-labor',
     'const-equipment',
     'const-fixed',
     'const-duration',
-  ];
-
-  // ---------- calculation ----------
-  function updateConstruction() {
-    const value = n(document.getElementById('const-value').value);
-    const material = n(document.getElementById('const-material').value);
-    const laborMonthly = n(document.getElementById('const-labor').value);
-    const equipmentMonthly = n(
-      document.getElementById('const-equipment').value
-    );
-    const fixedMonthly = n(document.getElementById('const-fixed').value);
-    const months = n(document.getElementById('const-duration').value);
-
-    const laborTotal = laborMonthly * months;
-    const equipmentTotal = equipmentMonthly * months;
-    const fixedTotal = fixedMonthly * months;
-
-    const totalCosts = material + laborTotal + equipmentTotal + fixedTotal;
-
-    const profit = value - totalCosts;
-
-    const margin = value ? (profit / value) * 100 : 0;
-    const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-    const costRatio = value ? (totalCosts / value) * 100 : 0;
-
-    const breakEvenRevenue = totalCosts;
-
-    const profitPerMaterial = material ? profit / material : 0;
-    const profitPerLabor = laborTotal ? profit / laborTotal : 0;
-    const profitPerEquipment = equipmentTotal ? profit / equipmentTotal : 0;
-
-    const monthlyProfit = months > 0 ? profit / months : 0;
-    const annualProfit = months > 0 ? monthlyProfit * 12 : 0;
-
-    // ---------- outputs ----------
-    document.getElementById('const-project-value').textContent = money(value);
-    document.getElementById('const-material-output').textContent =
-      money(material);
-    document.getElementById('const-labor-output').textContent =
-      money(laborTotal);
-    document.getElementById('const-equipment-output').textContent =
-      money(equipmentTotal);
-    document.getElementById('const-fixed-output').textContent =
-      money(fixedTotal);
-    document.getElementById('const-total-costs').textContent =
-      money(totalCosts);
-
-    const profitEl = document.getElementById('const-profit');
-    profitEl.textContent = money(profit);
-    profitEl.className =
-      'output-value ' + (profit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('const-margin').textContent = percent(margin);
-    document.getElementById('const-roi').textContent = percent(roi);
-    document.getElementById('const-ratio').textContent = percent(costRatio);
-
-    document.getElementById('const-breakeven').textContent =
-      money(breakEvenRevenue);
-
-    document.getElementById('const-profit-material').textContent =
-      money(profitPerMaterial);
-    document.getElementById('const-profit-labor').textContent =
-      money(profitPerLabor);
-    document.getElementById('const-profit-equipment').textContent =
-      money(profitPerEquipment);
-
-    document.getElementById('const-monthly-profit').textContent =
-      money(monthlyProfit);
-    document.getElementById('const-annual-profit').textContent =
-      money(annualProfit);
-  }
-
-  // ---------- events ----------
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateConstruction);
-  });
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    updateConstruction();
-  });
-
-  updateConstruction();
-});
+  ].forEach((id) => $(id)?.addEventListener('input', updateConstruction));
+})();

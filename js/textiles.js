@@ -1,47 +1,83 @@
+// ================================
+// Textiles Profitability Calculator (BACKEND AUTHORITY)
+// Sandile SystemsWorks
+// ================================
+
 document.addEventListener('input', calcTextiles);
 document.getElementById('textiles-reset')?.addEventListener('click', reset);
 
+// ---------------- HELPERS ----------------
 function x(id) {
   return Number(document.getElementById(id)?.value) || 0;
 }
 
 function z(id, n) {
-  document.getElementById(id).textContent = n.toLocaleString('en-ZA', {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.textContent = (Number(n) || 0).toLocaleString('en-ZA', {
     style: 'currency',
     currency: 'ZAR',
   });
 }
 
-function calcTextiles() {
-  const units = x('textiles-units');
-  const price = x('textiles-price');
-  const material = x('textiles-material') * units;
+// ✅ Shared helper (INSIDE this file so nothing is missing)
+async function callCalculator(endpoint, payload) {
+  const token = localStorage.getItem('token');
 
-  const costs =
-    material +
-    x('textiles-labor') +
-    x('textiles-fixed') +
-    x('textiles-operational');
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 
-  const revenue = units * price;
-  const profit = revenue - costs;
+  if (res.status === 403) {
+    window.location.replace('payment.html');
+    return null;
+  }
 
-  document.getElementById('textiles-units-output').textContent = units;
-  z('textiles-revenue', revenue);
-  z('textiles-material-total', material);
-  z('textiles-total-costs', costs);
-  z('textiles-net-profit', profit);
+  if (!res.ok) return null;
 
-  document.getElementById('textiles-margin').textContent = revenue
-    ? ((profit / revenue) * 100).toFixed(2) + '%'
-    : '0%';
+  return res.json();
+}
 
-  document.getElementById('textiles-roi').textContent = costs
-    ? ((profit / costs) * 100).toFixed(2) + '%'
-    : '0%';
+// ---------------- MAIN CALC ----------------
+async function calcTextiles() {
+  const data = await callCalculator(
+    `${API_BASE}/api/calculators/textiles/business`,
+    {
+      units: x('textiles-units'),
+      price: x('textiles-price'),
+      material: x('textiles-material'),
+      labor: x('textiles-labor'),
+      fixed: x('textiles-fixed'),
+      operational: x('textiles-operational'),
+    }
+  );
+
+  if (!data) return;
+
+  document.getElementById('textiles-units-output').textContent = data.units;
+
+  z('textiles-revenue', data.revenue);
+  z('textiles-material-total', data.materialTotal);
+  z('textiles-total-costs', data.totalCosts);
+  z('textiles-net-profit', data.profit);
+
+  document.getElementById('textiles-margin').textContent =
+    (Number(data.margin) || 0).toFixed(2) + '%';
+
+  document.getElementById('textiles-roi').textContent =
+    (Number(data.roi) || 0).toFixed(2) + '%';
 }
 
 function reset() {
   document.querySelectorAll('input').forEach((i) => (i.value = ''));
   calcTextiles();
 }
+
+// Initial render
+calcTextiles();

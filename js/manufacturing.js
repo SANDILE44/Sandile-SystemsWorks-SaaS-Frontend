@@ -1,54 +1,54 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const n = (v) => parseFloat(v) || 0;
-  const money = (v) => 'R' + v.toFixed(2);
-  const percent = (v) => (v || 0).toFixed(2) + '%';
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => 'R' + (Number(v) || 0).toFixed(2);
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  function calcMfg() {
-    const units = n(document.getElementById('mfg-units').value);
-    const price = n(document.getElementById('mfg-price').value);
-    const material = n(document.getElementById('mfg-material').value);
-    const labor = n(document.getElementById('mfg-labor').value);
-    const fixed = n(document.getElementById('mfg-fixed').value);
-    const operational = n(document.getElementById('mfg-operational').value);
+  let t;
+  function update() {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  }
 
-    const revenue = units * price;
-    const totalCosts = units * material + labor + fixed + operational;
-    const profit = revenue - totalCosts;
+  async function run() {
+    const res = await fetch(
+      `${API_BASE}/api/calculators/manufacturing/business`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          units: +$('mfg-units').value || 0,
+          price: +$('mfg-price').value || 0,
+          material: +$('mfg-material').value || 0,
+          labor: +$('mfg-labor').value || 0,
+          fixed: +$('mfg-fixed').value || 0,
+          operational: +$('mfg-operational').value || 0,
+        }),
+      }
+    );
 
-    document.getElementById('mfg-units-output').textContent = units;
-    document.getElementById('mfg-revenue').textContent = money(revenue);
-    document.getElementById('mfg-total-costs').textContent = money(totalCosts);
-    document.getElementById('mfg-cost-per-unit').textContent = money(
-      totalCosts / units || 0
-    );
-    document.getElementById('mfg-revenue-per-unit').textContent = money(price);
-    document.getElementById('mfg-profit-per-unit').textContent = money(
-      profit / units || 0
-    );
-    document.getElementById('mfg-profit').textContent = money(profit);
-    document.getElementById('mfg-breakeven').textContent = Math.ceil(
-      fixed / (price - material) || 0
-    );
-    document.getElementById('mfg-roi').textContent = percent(
-      (profit / totalCosts) * 100
-    );
-    document.getElementById('mfg-margin').textContent = percent(
-      (profit / revenue) * 100
-    );
-    document.getElementById('mfg-monthly-revenue').textContent = money(revenue);
-    document.getElementById('mfg-annual-revenue').textContent = money(
-      revenue * 12
-    );
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('mfg-units-output').textContent = d.units;
+    $('mfg-revenue').textContent = money(d.revenue);
+    $('mfg-total-costs').textContent = money(d.totalCosts);
+    $('mfg-cost-per-unit').textContent = money(d.costPerUnit);
+    $('mfg-revenue-per-unit').textContent = money(d.revenue / d.units || 0);
+    $('mfg-profit-per-unit').textContent = money(d.profitPerUnit);
+    $('mfg-profit').textContent = money(d.profit);
+    $('mfg-breakeven').textContent = d.breakeven;
+    $('mfg-roi').textContent = percent(d.roi);
+    $('mfg-margin').textContent = percent(d.margin);
+    $('mfg-monthly-revenue').textContent = money(d.monthlyRevenue);
+    $('mfg-annual-revenue').textContent = money(d.annualRevenue);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calcMfg));
-
-  document.getElementById('resetBtn').onclick = () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calcMfg();
-  };
-
-  calcMfg();
-});
+    .forEach((i) => i.addEventListener('input', update));
+})();

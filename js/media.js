@@ -1,50 +1,53 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const n = (v) => parseFloat(v) || 0;
-  const money = (v) => 'R' + v.toFixed(2);
-  const percent = (v) => (v || 0).toFixed(2) + '%';
+(() => {
+  const $ = (id) => document.getElementById(id);
 
-  function calcMedia() {
-    const content = n(document.getElementById('media-content').value);
-    const ad = n(document.getElementById('media-ad-revenue').value);
-    const subs = n(document.getElementById('media-subscriptions').value);
-    const staff = n(document.getElementById('media-staff').value);
-    const fixed = n(document.getElementById('media-fixed').value);
-    const variable = n(document.getElementById('media-variable').value);
+  const money = (v) => 'R' + (Number(v) || 0).toFixed(2);
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-    const revenue = ad + subs;
-    const costs = staff + fixed + variable;
-    const profit = revenue - costs;
+  let t;
+  function updateMedia() {
+    clearTimeout(t);
+    t = setTimeout(runMedia, 300);
+  }
 
-    document.getElementById('media-revenue').textContent = money(revenue);
-    document.getElementById('media-total-costs').textContent = money(costs);
-    document.getElementById('media-profit').textContent = money(profit);
-    document.getElementById('media-revenue-per-content').textContent = money(
-      revenue / content || 0
-    );
-    document.getElementById('media-cost-per-content').textContent = money(
-      costs / content || 0
-    );
-    document.getElementById('media-roi').textContent = percent(
-      (profit / costs) * 100
-    );
-    document.getElementById('media-margin').textContent = percent(
-      (profit / revenue) * 100
-    );
-    document.getElementById('media-breakeven').textContent = Math.ceil(
-      costs / (revenue / content) || 0
-    );
-    document.getElementById('media-monthly').textContent = money(profit);
-    document.getElementById('media-annual').textContent = money(profit * 12);
+  async function runMedia() {
+    const res = await fetch(`${API_BASE}/api/calculators/media/business`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        content: +$('media-content').value || 0,
+        adRevenue: +$('media-ad-revenue').value || 0,
+        subscriptions: +$('media-subscriptions').value || 0,
+        staff: +$('media-staff').value || 0,
+        fixed: +$('media-fixed').value || 0,
+        variable: +$('media-variable').value || 0,
+      }),
+    });
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('media-revenue').textContent = money(d.revenue);
+    $('media-total-costs').textContent = money(d.totalCosts);
+    $('media-profit').textContent = money(d.profit);
+
+    $('media-revenue-per-content').textContent = money(d.revenuePerContent);
+    $('media-cost-per-content').textContent = money(d.costPerContent);
+
+    $('media-roi').textContent = percent(d.roi);
+    $('media-margin').textContent = percent(d.margin);
+
+    $('media-breakeven').textContent = d.breakeven;
+    $('media-monthly').textContent = money(d.monthlyProfit);
+    $('media-annual').textContent = money(d.annualProfit);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calcMedia));
-
-  document.getElementById('media-reset').onclick = () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calcMedia();
-  };
-
-  calcMedia();
-});
+    .forEach((i) => i.addEventListener('input', updateMedia));
+})();

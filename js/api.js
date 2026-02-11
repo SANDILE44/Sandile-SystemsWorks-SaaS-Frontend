@@ -1,4 +1,8 @@
 async function apiFetch(path, { method = 'GET', body, token } = {}) {
+  if (!window.API_BASE) {
+    throw new Error('API_BASE is not defined. Check config.js load order.');
+  }
+
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
 
@@ -34,12 +38,12 @@ const loginRequest = (email, password) =>
 
 const getProfileRequest = (token) => apiFetch('/api/auth/profile', { token });
 
-// ---- PAYMENTS (FIXED) ----
+// ---- PAYMENTS ----
 const createCheckoutRequest = (token, product) =>
   apiFetch('/api/payments/checkout', {
     method: 'POST',
     token,
-    body: { product }, // 👈 REQUIRED
+    body: { product },
   });
 
 const confirmPaymentRequest = (token, product) =>
@@ -50,7 +54,6 @@ const confirmPaymentRequest = (token, product) =>
   });
 
 window.api = {
-  apiFetch,
   signupRequest,
   loginRequest,
   getProfileRequest,

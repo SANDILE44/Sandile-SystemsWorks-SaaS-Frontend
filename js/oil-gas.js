@@ -1,41 +1,45 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (!document.getElementById('production-volume')) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => `R${(Number(v) || 0).toFixed(2)}`;
+  const percent = (v) => `${(Number(v) || 0).toFixed(2)}%`;
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  let t;
+  function update() {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  }
 
-  function calculate() {
-    const volume = n('production-volume');
-    const price = n('price-per-barrel');
-    const opex = n('operational-expenses');
-    const capex = n('capex');
-    const fixed = n('fixed-costs');
+  async function run() {
+    const res = await fetch(`${API_BASE}/api/calculators/energy/production`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        volume: +$('production-volume').value || 0,
+        price: +$('price-per-barrel').value || 0,
+        opex: +$('operational-expenses').value || 0,
+        capex: +$('capex').value || 0,
+        fixed: +$('fixed-costs').value || 0,
+      }),
+    });
 
-    const revenue = volume * price;
-    const costs = opex + capex + fixed;
-    const profit = revenue - costs;
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
 
-    document.getElementById('total-revenue').textContent = money(revenue);
-    document.getElementById('total-costs').textContent = money(costs);
-    document.getElementById('profit-loss').textContent = money(profit);
-    document.getElementById('revenue-per-barrel').textContent = money(
-      volume ? revenue / volume : 0
-    );
-    document.getElementById('cost-per-barrel').textContent = money(
-      volume ? costs / volume : 0
-    );
-    document.getElementById('roi').textContent = percent(
-      costs ? (profit / costs) * 100 : 0
-    );
-    document.getElementById('margin').textContent = percent(
-      revenue ? (profit / revenue) * 100 : 0
-    );
+    const d = await res.json();
+
+    $('total-revenue').textContent = money(d.revenue);
+    $('total-costs').textContent = money(d.totalCosts);
+    $('profit-loss').textContent = money(d.profit);
+    $('revenue-per-barrel').textContent = money(d.revenuePerUnit);
+    $('cost-per-barrel').textContent = money(d.costPerUnit);
+    $('roi').textContent = percent(d.roi);
+    $('margin').textContent = percent(d.margin);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calculate));
-
-  calculate();
-});
+    .forEach((i) => i.addEventListener('input', update));
+})();

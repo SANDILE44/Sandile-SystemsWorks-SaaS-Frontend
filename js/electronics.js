@@ -1,109 +1,80 @@
-document.addEventListener('DOMContentLoaded', () => {
-  /* ================= HELPERS ================= */
-  const n = (v) => parseFloat(v) || 0;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
     'R' +
-    Number(v).toLocaleString(undefined, {
+    (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  /* ================= INPUT IDS ================= */
-  const ids = [
+  let t;
+
+  function updateElectronics() {
+    clearTimeout(t);
+    t = setTimeout(runElectronics, 300);
+  }
+
+  async function runElectronics() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(
+      `${API_BASE}/api/calculators/electronics/business`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          units: +$('elec-units').value || 0,
+          costPerUnit: +$('elec-cost').value || 0,
+          pricePerUnit: +$('elec-price').value || 0,
+          fixed: +$('elec-fixed').value || 0,
+          labor: +$('elec-labor').value || 0,
+          operational: +$('elec-operational').value || 0,
+        }),
+      }
+    );
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('elec-units-output').textContent = d.units.toLocaleString();
+
+    $('elec-revenue').textContent = money(d.revenue);
+    $('elec-cogs').textContent = money(d.cogs);
+    $('elec-total-costs').textContent = money(d.totalCosts);
+
+    const p = $('elec-profit');
+    p.textContent = money(d.profit);
+    p.className = 'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+    $('elec-margin').textContent = percent(d.margin);
+    $('elec-roi').textContent = percent(d.roi);
+    $('elec-markup').textContent = percent(d.markup);
+
+    $('elec-revenue-unit').textContent = money(d.revenuePerUnit);
+
+    $('elec-cost-contribution').textContent = percent(d.costContribution);
+
+    $('elec-monthly-revenue').textContent = money(d.monthlyRevenue);
+
+    $('elec-annual-revenue').textContent = money(d.annualRevenue);
+
+    $('elec-annual-profit').textContent = money(d.annualProfit);
+  }
+
+  [
     'elec-units',
     'elec-cost',
     'elec-price',
     'elec-fixed',
     'elec-labor',
     'elec-operational',
-  ];
-
-  /* ================= CALCULATION ================= */
-  function updateElectronics() {
-    const units = n(document.getElementById('elec-units').value);
-    const costPerUnit = n(document.getElementById('elec-cost').value);
-    const pricePerUnit = n(document.getElementById('elec-price').value);
-
-    const fixed = n(document.getElementById('elec-fixed').value);
-    const labor = n(document.getElementById('elec-labor').value);
-    const operational = n(document.getElementById('elec-operational').value);
-
-    /* ---------- revenue ---------- */
-    const revenue = units * pricePerUnit;
-
-    /* ---------- costs ---------- */
-    const cogs = units * costPerUnit;
-    const totalCosts = cogs + fixed + labor + operational;
-
-    /* ---------- profit ---------- */
-    const profit = revenue - totalCosts;
-
-    const margin = revenue ? (profit / revenue) * 100 : 0;
-    const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-    const markup = cogs ? ((revenue - cogs) / cogs) * 100 : 0;
-
-    const revenuePerUnit = units ? revenue / units : 0;
-    const costContribution = revenue ? (totalCosts / revenue) * 100 : 0;
-
-    /* projections (simple scale assumption) */
-    const monthlyRevenue = revenue;
-    const annualRevenue = revenue * 12;
-    const annualProfit = profit * 12;
-
-    /* ================= OUTPUTS ================= */
-    document.getElementById('elec-units-output').textContent =
-      units.toLocaleString();
-
-    document.getElementById('elec-revenue').textContent = money(revenue);
-
-    document.getElementById('elec-cogs').textContent = money(cogs);
-
-    document.getElementById('elec-total-costs').textContent = money(totalCosts);
-
-    const profitEl = document.getElementById('elec-profit');
-    profitEl.textContent = money(profit);
-    profitEl.className =
-      'output-value ' + (profit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('elec-margin').textContent = percent(margin);
-
-    document.getElementById('elec-roi').textContent = percent(roi);
-
-    document.getElementById('elec-markup').textContent = percent(markup);
-
-    document.getElementById('elec-revenue-unit').textContent =
-      money(revenuePerUnit);
-
-    document.getElementById('elec-cost-contribution').textContent =
-      percent(costContribution);
-
-    document.getElementById('elec-monthly-revenue').textContent =
-      money(monthlyRevenue);
-
-    document.getElementById('elec-annual-revenue').textContent =
-      money(annualRevenue);
-
-    document.getElementById('elec-annual-profit').textContent =
-      money(annualProfit);
-  }
-
-  /* ================= EVENTS ================= */
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateElectronics);
-  });
-
-  document.getElementById('elec-reset')?.addEventListener('click', () => {
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    updateElectronics();
-  });
-
-  /* ================= INIT ================= */
-  updateElectronics();
-});
+  ].forEach((id) => $(id)?.addEventListener('input', updateElectronics));
+})();

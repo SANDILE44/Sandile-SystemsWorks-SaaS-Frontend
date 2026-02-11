@@ -1,33 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (!document.getElementById('dept-budget')) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  const money = (v) => 'R' + (Number(v) || 0).toFixed(2);
 
-  function calculate() {
-    const budget = n('dept-budget');
-    const staff = n('staff-count');
-    const ops = n('operational-costs');
-    const programs = n('program-costs');
-    const efficiency = n('efficiency-rate');
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-    const totalExpenses = ops + programs;
-    const remaining = budget - totalExpenses;
+  let t;
+  function update() {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  }
 
-    document.getElementById('total-expenses').textContent =
-      money(totalExpenses);
-    document.getElementById('net-budget').textContent = money(remaining);
-    document.getElementById('cost-per-staff').textContent = money(
-      staff ? totalExpenses / staff : 0
+  async function run() {
+    const res = await fetch(
+      `${API_BASE}/api/calculators/public-administration/operations`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          budget: +$('dept-budget').value || 0,
+          staffCount: +$('staff-count').value || 0,
+          operationalCosts: +$('operational-costs').value || 0,
+          programCosts: +$('program-costs').value || 0,
+          efficiencyRate: +$('efficiency-rate').value || 0,
+        }),
+      }
     );
-    document.getElementById('program-efficiency').textContent =
-      percent(efficiency);
+
+    if (res.status === 403) {
+      location.replace('payment.html');
+      return;
+    }
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('total-expenses').textContent = money(d.totalExpenses);
+
+    $('net-budget').textContent = money(d.remainingBudget);
+
+    $('cost-per-staff').textContent = money(d.costPerStaff);
+
+    $('program-efficiency').textContent = percent(d.efficiencyRate);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calculate));
+    .forEach((i) => i.addEventListener('input', update));
 
-  calculate();
-});
+  update();
+})();

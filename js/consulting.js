@@ -1,18 +1,77 @@
-document.addEventListener('DOMContentLoaded', () => {
-  /* ================= HELPERS ================= */
-  const n = (v) => parseFloat(v) || 0;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
     'R' +
-    Number(v).toLocaleString(undefined, {
+    (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  /* ================= INPUT IDS ================= */
-  const ids = [
+  let timer;
+
+  function updateConsulting() {
+    clearTimeout(timer);
+    timer = setTimeout(runConsulting, 300);
+  }
+
+  async function runConsulting() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_BASE}/api/calculators/consulting/project`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        hours: +$('consult-hours').value || 0,
+        rate: +$('consult-rate').value || 0,
+        expenses: +$('consult-expenses').value || 0,
+        labor: +$('consult-labor').value || 0,
+        fixed: +$('consult-fixed').value || 0,
+        discountPct: +$('consult-discount').value || 0,
+        otHours: +$('consult-overtime-hours').value || 0,
+        otRate: +$('consult-overtime-rate').value || 0,
+        variableCosts: +$('consult-variable-costs').value || 0,
+        contingencyPct: +$('consult-contingency').value || 0,
+      }),
+    });
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('consult-revenue').textContent = money(d.totalRevenue);
+    $('consult-discount-output').textContent = money(d.discountAmount);
+    $('consult-revenue-after-discount').textContent = money(
+      d.revenueAfterDiscount
+    );
+
+    $('consult-expenses-output').textContent = money(d.expenses || 0);
+    $('consult-labor-output').textContent = money(d.labor || 0);
+    $('consult-fixed-output').textContent = money(d.fixed || 0);
+
+    $('consult-overtime-output').textContent = money(d.overtimeRevenue);
+    $('consult-variable-output').textContent = money(d.variableCosts || 0);
+    $('consult-contingency-output').textContent = money(d.contingencyAmount);
+
+    $('consult-costs').textContent = money(d.totalCosts);
+
+    const p = $('consult-profit');
+    p.textContent = money(d.profit);
+    p.className = 'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+    $('consult-profit-hour').textContent = money(d.profitPerHour);
+    $('consult-margin').textContent = percent(d.margin);
+    $('consult-roi').textContent = percent(d.roi);
+    $('consult-breakeven').textContent = d.breakevenHours.toFixed(2);
+  }
+
+  [
     'consult-hours',
     'consult-rate',
     'consult-expenses',
@@ -23,110 +82,5 @@ document.addEventListener('DOMContentLoaded', () => {
     'consult-overtime-rate',
     'consult-variable-costs',
     'consult-contingency',
-  ];
-
-  /* ================= CALCULATION ================= */
-  function updateConsulting() {
-    const hours = n(document.getElementById('consult-hours').value);
-    const rate = n(document.getElementById('consult-rate').value);
-    const expenses = n(document.getElementById('consult-expenses').value);
-    const labor = n(document.getElementById('consult-labor').value);
-    const fixed = n(document.getElementById('consult-fixed').value);
-    const discountPct = n(document.getElementById('consult-discount').value);
-    const otHours = n(document.getElementById('consult-overtime-hours').value);
-    const otRate = n(document.getElementById('consult-overtime-rate').value);
-    const variableCosts = n(
-      document.getElementById('consult-variable-costs').value
-    );
-    const contingencyPct = n(
-      document.getElementById('consult-contingency').value
-    );
-
-    /* ---------- revenue ---------- */
-    const baseRevenue = hours * rate;
-    const overtimeRevenue = otHours * otRate;
-    const totalRevenue = baseRevenue + overtimeRevenue;
-
-    const discountAmount = totalRevenue * (discountPct / 100);
-    const revenueAfterDiscount = totalRevenue - discountAmount;
-
-    /* ---------- costs ---------- */
-    const contingencyAmount =
-      (expenses + labor + fixed + variableCosts) * (contingencyPct / 100);
-
-    const totalCosts =
-      expenses + labor + fixed + variableCosts + contingencyAmount;
-
-    /* ---------- profit ---------- */
-    const profit = revenueAfterDiscount - totalCosts;
-    const profitPerHour = hours > 0 ? profit / hours : 0;
-
-    const margin = revenueAfterDiscount
-      ? (profit / revenueAfterDiscount) * 100
-      : 0;
-
-    const roi = totalCosts ? (profit / totalCosts) * 100 : 0;
-
-    const breakevenHours = rate > 0 ? totalCosts / rate : 0;
-
-    /* ================= OUTPUTS ================= */
-    document.getElementById('consult-revenue').textContent =
-      money(totalRevenue);
-
-    document.getElementById('consult-discount-output').textContent =
-      money(discountAmount);
-
-    document.getElementById('consult-revenue-after-discount').textContent =
-      money(revenueAfterDiscount);
-
-    document.getElementById('consult-expenses-output').textContent =
-      money(expenses);
-
-    document.getElementById('consult-labor-output').textContent = money(labor);
-
-    document.getElementById('consult-fixed-output').textContent = money(fixed);
-
-    document.getElementById('consult-overtime-output').textContent =
-      money(overtimeRevenue);
-
-    document.getElementById('consult-variable-output').textContent =
-      money(variableCosts);
-
-    document.getElementById('consult-contingency-output').textContent =
-      money(contingencyAmount);
-
-    document.getElementById('consult-costs').textContent = money(totalCosts);
-
-    const profitEl = document.getElementById('consult-profit');
-    profitEl.textContent = money(profit);
-    profitEl.className =
-      'output-value ' + (profit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('consult-profit-hour').textContent =
-      money(profitPerHour);
-
-    document.getElementById('consult-margin').textContent = percent(margin);
-
-    document.getElementById('consult-roi').textContent = percent(roi);
-
-    document.getElementById('consult-breakeven').textContent =
-      breakevenHours.toFixed(2);
-  }
-
-  /* ================= EVENTS ================= */
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateConsulting);
-  });
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    updateConsulting();
-  });
-
-  /* ================= INIT ================= */
-  updateConsulting();
-});
+  ].forEach((id) => $(id)?.addEventListener('input', updateConsulting));
+})();

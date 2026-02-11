@@ -1,37 +1,46 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (!document.getElementById('rd-cost')) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => `R${(Number(v) || 0).toFixed(2)}`;
+  const percent = (v) => `${(Number(v) || 0).toFixed(2)}%`;
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  let t;
+  function update() {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  }
 
-  function calc() {
-    const cost = n('rd-cost');
-    const years = n('rd-years');
-    const revenue = n('rd-revenue');
-    const operating = n('rd-operating');
+  async function run() {
+    const res = await fetch(`${API_BASE}/api/calculators/rnd/investment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        cost: +$('rd-cost').value || 0,
+        years: +$('rd-years').value || 0,
+        revenue: +$('rd-revenue').value || 0,
+        operating: +$('rd-operating').value || 0,
+      }),
+    });
 
-    const annualProfit = revenue - operating;
-    const netGain = annualProfit * years - cost;
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
 
-    document.getElementById('rd-profit').textContent = money(annualProfit);
-    document.getElementById('rd-monthly').textContent = money(
-      annualProfit / 12
-    );
-    document.getElementById('rd-net').textContent = money(netGain);
-    document.getElementById('rd-annualized').textContent = money(
-      netGain / (years || 1)
-    );
-    document.getElementById('rd-roi').textContent = percent(
-      cost ? (netGain / cost) * 100 : 0
-    );
-    document.getElementById('rd-payback').textContent =
-      annualProfit > 0 ? (cost / annualProfit).toFixed(1) : '—';
+    const d = await res.json();
+
+    $('rd-profit').textContent = money(d.annualProfit);
+    $('rd-monthly').textContent = money(d.monthlyProfit);
+    $('rd-net').textContent = money(d.netGain);
+    $('rd-annualized').textContent = money(d.annualizedGain);
+    $('rd-roi').textContent = percent(d.roi);
+    $('rd-payback').textContent =
+      d.payback !== null ? d.payback.toFixed(1) : '—';
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calc));
+    .forEach((i) => i.addEventListener('input', update));
 
-  calc();
-});
+  update();
+})();

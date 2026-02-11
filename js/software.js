@@ -1,12 +1,9 @@
 // ================================
-// Software Profitability Calculator
+// Software Profitability Calculator (BACKEND AUTHORITY)
 // Sandile SystemsWorks
 // ================================
 
-// Auto-calculate on input
 document.addEventListener('input', calcSoftware);
-
-// Reset button
 document.getElementById('resetBtn')?.addEventListener('click', resetAll);
 
 // ---------------- HELPERS ----------------
@@ -18,7 +15,7 @@ function money(id, value) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  el.textContent = value.toLocaleString('en-ZA', {
+  el.textContent = (Number(value) || 0).toLocaleString('en-ZA', {
     style: 'currency',
     currency: 'ZAR',
   });
@@ -28,40 +25,63 @@ function percent(id, value) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  el.textContent = value.toFixed(2) + '%';
+  el.textContent = (Number(value) || 0).toFixed(2) + '%';
+}
+
+// ✅ Shared helper (INSIDE this file so nothing is missing)
+async function callCalculator(endpoint, payload) {
+  const token = localStorage.getItem('token');
+
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (res.status === 403) {
+    window.location.replace('payment.html');
+    return null;
+  }
+
+  if (!res.ok) return null;
+
+  return res.json();
 }
 
 // ---------------- MAIN CALC ----------------
-function calcSoftware() {
-  const units = v('software-units');
-  const price = v('software-price');
+async function calcSoftware() {
+  const data = await callCalculator(
+    `${API_BASE}/api/calculators/software/business`,
+    {
+      units: v('software-units'),
+      price: v('software-price'),
+      dev: v('software-dev-cost'),
+      labor: v('software-labor'),
+      ops: v('software-operational'),
+    }
+  );
 
-  const dev = v('software-dev-cost');
-  const labor = v('software-labor');
-  const ops = v('software-operational');
+  if (!data) return;
 
-  const revenue = units * price;
-  const totalCosts = dev + labor + ops;
-  const profit = revenue - totalCosts;
+  document.getElementById('software-units-output').textContent = data.units;
 
-  // Outputs
-  document.getElementById('software-units-output').textContent = units;
-  money('software-revenue', revenue);
-  money('software-dev-cost-output', dev);
-  money('software-labor-output', labor);
-  money('software-operational-output', ops);
-  money('software-total-costs', totalCosts);
-  money('software-net-profit', profit);
+  money('software-revenue', data.revenue);
+  money('software-dev-cost-output', v('software-dev-cost'));
+  money('software-labor-output', v('software-labor'));
+  money('software-operational-output', v('software-operational'));
+  money('software-total-costs', data.totalCosts);
+  money('software-net-profit', data.profit);
 
-  percent('software-margin', revenue ? (profit / revenue) * 100 : 0);
-  percent('software-roi', totalCosts ? (profit / totalCosts) * 100 : 0);
+  percent('software-margin', data.margin);
+  percent('software-roi', data.roi);
 
-  // Profit color
   const profitEl = document.getElementById('software-net-profit');
-  profitEl.classList.remove('profit-positive', 'profit-negative');
-
-  if (profit > 0) profitEl.classList.add('profit-positive');
-  if (profit < 0) profitEl.classList.add('profit-negative');
+  profitEl?.classList.remove('profit-positive', 'profit-negative');
+  if (data.profit > 0) profitEl?.classList.add('profit-positive');
+  if (data.profit < 0) profitEl?.classList.add('profit-negative');
 }
 
 // ---------------- RESET ----------------
@@ -69,7 +89,6 @@ function resetAll() {
   document.querySelectorAll('.input-section input').forEach((i) => {
     i.value = '';
   });
-
   calcSoftware();
 }
 

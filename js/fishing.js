@@ -1,96 +1,72 @@
-document.addEventListener('DOMContentLoaded', () => {
-  /* ================= HELPERS ================= */
-  const n = (v) => parseFloat(v) || 0;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
     'R' +
-    Number(v).toLocaleString(undefined, {
+    (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  /* ================= INPUT IDS ================= */
-  const ids = [
+  let t;
+
+  function updateFishing() {
+    clearTimeout(t);
+    t = setTimeout(runFishing, 300);
+  }
+
+  async function runFishing() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_BASE}/api/calculators/fishing/business`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        catchKg: +$('fish-catch').value || 0,
+        priceKg: +$('fish-price').value || 0,
+        fuel: +$('fish-fuel').value || 0,
+        labor: +$('fish-labor').value || 0,
+        equipment: +$('fish-equipment').value || 0,
+        fixed: +$('fish-fixed').value || 0,
+      }),
+    });
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('fish-catch-output').textContent = d.catchKg.toLocaleString();
+
+    $('fish-revenue').textContent = money(d.revenue);
+    $('fish-total-costs').textContent = money(d.totalCosts);
+
+    $('fish-breakeven').textContent = d.breakevenCatch.toFixed(2);
+
+    const p = $('fish-profit');
+    p.textContent = money(d.profit);
+    p.className = 'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+    $('fish-profit-per-kg').textContent = money(d.profitPerKg);
+
+    $('fish-margin').textContent = percent(d.margin);
+
+    $('fish-monthly-revenue').textContent = money(d.monthlyRevenue);
+
+    $('fish-annual-revenue').textContent = money(d.annualRevenue);
+  }
+
+  [
     'fish-catch',
     'fish-price',
     'fish-fuel',
     'fish-labor',
     'fish-equipment',
     'fish-fixed',
-  ];
-
-  /* ================= CALCULATION ================= */
-  function updateFishing() {
-    const catchKg = n(document.getElementById('fish-catch').value);
-    const priceKg = n(document.getElementById('fish-price').value);
-
-    const fuel = n(document.getElementById('fish-fuel').value);
-    const labor = n(document.getElementById('fish-labor').value);
-    const equipment = n(document.getElementById('fish-equipment').value);
-    const fixed = n(document.getElementById('fish-fixed').value);
-
-    /* ---------- revenue ---------- */
-    const revenue = catchKg * priceKg;
-
-    /* ---------- costs ---------- */
-    const totalCosts = fuel + labor + equipment + fixed;
-
-    /* ---------- profit ---------- */
-    const profit = revenue - totalCosts;
-
-    const profitPerKg = catchKg ? profit / catchKg : 0;
-    const margin = revenue ? (profit / revenue) * 100 : 0;
-
-    const breakevenCatch = priceKg ? totalCosts / priceKg : 0;
-
-    /* projections (simple scaling assumption) */
-    const monthlyRevenue = revenue;
-    const annualRevenue = revenue * 12;
-
-    /* ================= OUTPUTS ================= */
-    document.getElementById('fish-catch-output').textContent =
-      catchKg.toLocaleString();
-
-    document.getElementById('fish-revenue').textContent = money(revenue);
-
-    document.getElementById('fish-total-costs').textContent = money(totalCosts);
-
-    document.getElementById('fish-breakeven').textContent =
-      breakevenCatch.toFixed(2);
-
-    const profitEl = document.getElementById('fish-profit');
-    profitEl.textContent = money(profit);
-    profitEl.className =
-      'output-value ' + (profit >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('fish-profit-per-kg').textContent =
-      money(profitPerKg);
-
-    document.getElementById('fish-margin').textContent = percent(margin);
-
-    document.getElementById('fish-monthly-revenue').textContent =
-      money(monthlyRevenue);
-
-    document.getElementById('fish-annual-revenue').textContent =
-      money(annualRevenue);
-  }
-
-  /* ================= EVENTS ================= */
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateFishing);
-  });
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    updateFishing();
-  });
-
-  /* ================= INIT ================= */
-  updateFishing();
-});
+  ].forEach((id) => $(id)?.addEventListener('input', updateFishing));
+})();

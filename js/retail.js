@@ -1,56 +1,59 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (!document.getElementById('retail-units')) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => `R${(Number(v) || 0).toFixed(2)}`;
+  const percent = (v) => `${(Number(v) || 0).toFixed(2)}%`;
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  let t;
+  const update = () => {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  };
 
-  function calc() {
-    const units = n('retail-units');
-    const cost = n('retail-cost');
-    const price = n('retail-price');
-    const fixed = n('retail-fixed');
-    const labor = n('retail-labor');
-    const ops = n('retail-operational');
+  async function run() {
+    const res = await fetch(
+      `${API_BASE}/api/calculators/retail/business`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          units: +$('retail-units').value || 0,
+          cost: +$('retail-cost').value || 0,
+          price: +$('retail-price').value || 0,
+          fixed: +$('retail-fixed').value || 0,
+          labor: +$('retail-labor').value || 0,
+          operational: +$('retail-operational').value || 0,
+        }),
+      }
+    );
 
-    const revenue = units * price;
-    const cogs = units * cost;
-    const gross = revenue - cogs;
-    const totalCosts = cogs + fixed + labor + ops;
-    const profit = revenue - totalCosts;
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
 
-    document.getElementById('revenue').textContent = money(revenue);
-    document.getElementById('cogs').textContent = money(cogs);
-    document.getElementById('gross').textContent = money(gross);
-    document.getElementById('totalCosts').textContent = money(totalCosts);
-    document.getElementById('profit').textContent = money(profit);
-    document.getElementById('margin').textContent = percent(
-      revenue ? (profit / revenue) * 100 : 0
-    );
-    document.getElementById('markup').textContent = percent(
-      cost ? ((price - cost) / cost) * 100 : 0
-    );
-    document.getElementById('roi').textContent = percent(
-      totalCosts ? (profit / totalCosts) * 100 : 0
-    );
-    document.getElementById('ratio').textContent = percent(
-      revenue ? (totalCosts / revenue) * 100 : 0
-    );
-    document.getElementById('breakeven').textContent =
-      price > cost ? Math.ceil((fixed + labor + ops) / (price - cost)) : '—';
-    document.getElementById('profitUnit').textContent = money(price - cost);
-    document.getElementById('monthly').textContent = money(profit);
-    document.getElementById('annual').textContent = money(profit * 12);
+    const d = await res.json();
+
+    $('revenue').textContent = money(d.revenue);
+    $('cogs').textContent = money(d.cogs);
+    $('gross').textContent = money(d.gross);
+    $('totalCosts').textContent = money(d.totalCosts);
+    $('profit').textContent = money(d.profit);
+    $('margin').textContent = percent(d.margin);
+    $('markup').textContent = percent(d.markup);
+    $('roi').textContent = percent(d.roi);
+    $('ratio').textContent = percent(d.ratio);
+    $('breakeven').textContent =
+      d.breakeven ?? '—';
+    $('profitUnit').textContent =
+      money(d.profitPerUnit);
+    $('monthly').textContent =
+      money(d.monthlyProfit);
+    $('annual').textContent =
+      money(d.annualProfit);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calc));
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calc();
-  });
-
-  calc();
-});
+    .forEach((i) => i.addEventListener('input', update));
+})();

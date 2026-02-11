@@ -1,53 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (!document.getElementById('tables')) return;
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const money = (v) => `R${(Number(v) || 0).toFixed(2)}`;
+  const percent = (v) => `${(Number(v) || 0).toFixed(2)}%`;
 
-  const n = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-  const money = (v) => `R${v.toFixed(2)}`;
-  const percent = (v) => `${v.toFixed(2)}%`;
+  let t;
+  const update = () => {
+    clearTimeout(t);
+    t = setTimeout(run, 300);
+  };
 
-  function calc() {
-    const tables = n('tables');
-    const covers = n('covers');
-    const check = n('check');
-    const foodPct = n('foodPercent') / 100;
-    const labor = n('labor');
-    const fixed = n('fixed');
-    const days = n('days');
-
-    const dailyCovers = tables * covers;
-    const monthlyRevenue = dailyCovers * check * days;
-    const foodCost = monthlyRevenue * foodPct;
-    const totalCosts = foodCost + labor + fixed;
-    const profit = monthlyRevenue - totalCosts;
-
-    document.getElementById('dailyCovers').textContent = dailyCovers;
-    document.getElementById('revenue').textContent = money(monthlyRevenue);
-    document.getElementById('foodCost').textContent = money(foodCost);
-    document.getElementById('totalCosts').textContent = money(totalCosts);
-    document.getElementById('profit').textContent = money(profit);
-    document.getElementById('margin').textContent = percent(
-      monthlyRevenue ? (profit / monthlyRevenue) * 100 : 0
+  async function run() {
+    const res = await fetch(
+      `${API_BASE}/api/calculators/restaurant/operations`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          tables: +$('tables').value || 0,
+          coversPerTable: +$('covers').value || 0,
+          avgCheck: +$('check').value || 0,
+          foodPct: +$('foodPercent').value || 0,
+          labor: +$('labor').value || 0,
+          fixed: +$('fixed').value || 0,
+          days: +$('days').value || 0,
+        }),
+      }
     );
-    document.getElementById('ratio').textContent = percent(
-      monthlyRevenue ? (totalCosts / monthlyRevenue) * 100 : 0
-    );
-    document.getElementById('profitCover').textContent = money(
-      dailyCovers ? profit / (dailyCovers * days) : 0
-    );
-    document.getElementById('breakeven').textContent =
-      check > 0 ? Math.ceil(totalCosts / (check * days)) : '—';
-    document.getElementById('monthly').textContent = money(profit);
-    document.getElementById('annual').textContent = money(profit * 12);
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('dailyCovers').textContent = d.dailyCovers;
+    $('revenue').textContent = money(d.monthlyRevenue);
+    $('foodCost').textContent = money(d.foodCost);
+    $('totalCosts').textContent = money(d.totalCosts);
+    $('profit').textContent = money(d.profit);
+    $('margin').textContent = percent(d.margin);
+    $('ratio').textContent = percent(d.costRatio);
+    $('profitCover').textContent = money(d.profitPerCover);
+    $('breakeven').textContent =
+      d.breakevenCovers ?? '—';
+    $('monthly').textContent = money(d.monthlyProfit);
+    $('annual').textContent = money(d.annualProfit);
   }
 
   document
     .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', calc));
-
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    document.querySelectorAll('input').forEach((i) => (i.value = ''));
-    calc();
-  });
-
-  calc();
-});
+    .forEach((i) => i.addEventListener('input', update));
+})();

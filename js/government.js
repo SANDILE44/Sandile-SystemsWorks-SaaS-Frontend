@@ -1,80 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-  /* ================= HELPERS ================= */
-  const n = (v) => parseFloat(v) || 0;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
     'R' +
-    Number(v).toLocaleString(undefined, {
+    (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => Number(v).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  /* ================= INPUT IDS ================= */
-  const ids = [
+  let t;
+
+  function updateGov() {
+    clearTimeout(t);
+    t = setTimeout(runGov, 300);
+  }
+
+  async function runGov() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_BASE}/api/calculators/government/budget`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        budget: +$('gov-budget').value || 0,
+        staff: +$('gov-staff').value || 0,
+        ops: +$('gov-operations').value || 0,
+        infra: +$('gov-infrastructure').value || 0,
+        beneficiaries: +$('gov-beneficiaries').value || 0,
+      }),
+    });
+
+    if (res.status === 403) return location.replace('payment.html');
+    if (!res.ok) return;
+
+    const d = await res.json();
+
+    $('gov-total-cost').textContent = money(d.totalCost);
+
+    const b = $('gov-balance');
+    b.textContent = money(d.balance);
+    b.className = 'output-value ' + (d.balance >= 0 ? 'positive' : 'negative');
+
+    $('gov-per-beneficiary').textContent = money(d.costPerBeneficiary);
+    $('gov-utilisation').textContent = percent(d.utilisation);
+    $('gov-feasibility').textContent = d.feasibility;
+  }
+
+  [
     'gov-budget',
     'gov-staff',
     'gov-operations',
     'gov-infrastructure',
     'gov-beneficiaries',
-  ];
-
-  /* ================= CALCULATION ================= */
-  function updateGovernment() {
-    const budget = n(document.getElementById('gov-budget').value);
-    const staff = n(document.getElementById('gov-staff').value);
-    const ops = n(document.getElementById('gov-operations').value);
-    const infra = n(document.getElementById('gov-infrastructure').value);
-    const beneficiaries = n(document.getElementById('gov-beneficiaries').value);
-
-    /* ---------- costs ---------- */
-    const totalCost = staff + ops + infra;
-
-    /* ---------- budget balance ---------- */
-    const balance = budget - totalCost;
-
-    /* ---------- utilisation ---------- */
-    const utilisation = budget ? (totalCost / budget) * 100 : 0;
-
-    /* ---------- per beneficiary ---------- */
-    const costPerBeneficiary = beneficiaries ? totalCost / beneficiaries : 0;
-
-    /* ---------- feasibility ---------- */
-    let feasibility = '—';
-    if (budget > 0) {
-      if (balance >= 0 && utilisation <= 100) {
-        feasibility = 'Feasible';
-      } else if (utilisation > 100) {
-        feasibility = 'Over Budget';
-      } else {
-        feasibility = 'Needs Review';
-      }
-    }
-
-    /* ================= OUTPUTS ================= */
-    document.getElementById('gov-total-cost').textContent = money(totalCost);
-
-    const balanceEl = document.getElementById('gov-balance');
-    balanceEl.textContent = money(balance);
-    balanceEl.className =
-      'output-value ' + (balance >= 0 ? 'positive' : 'negative');
-
-    document.getElementById('gov-per-beneficiary').textContent =
-      money(costPerBeneficiary);
-
-    document.getElementById('gov-utilisation').textContent =
-      percent(utilisation);
-
-    document.getElementById('gov-feasibility').textContent = feasibility;
-  }
-
-  /* ================= EVENTS ================= */
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateGovernment);
-  });
-
-  /* ================= INIT ================= */
-  updateGovernment();
-});
+  ].forEach((id) => $(id)?.addEventListener('input', updateGov));
+})();
