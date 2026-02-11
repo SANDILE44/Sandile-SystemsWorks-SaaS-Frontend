@@ -96,9 +96,14 @@ async function requireAccess() {
   }
 
   try {
-    await window.api.apiFetch('/api/users/dashboard', { token });
+    await window.api.accessCheckRequest(token);
     return true;
-  } catch {
+  } catch (err) {
+    if (err.status === 401) {
+      clearToken();
+      window.location.href = 'login.html';
+      return null;
+    }
     window.location.href = 'payment.html';
     return null;
   }
