@@ -69,19 +69,30 @@
   }
 
   /* =========================
-     Access resolution
+     Access resolution (FIXED)
   ========================= */
   function resolveAccess(user) {
     const now = Date.now();
-    const subscriptionEnd = toMs(user.subscriptionEnd);
-    const trialEnd = toMs(user.trialEnd);
+
+    const calcSub = user?.subscriptions?.calculators || {};
+
+    const subscriptionEnd = toMs(calcSub.subscriptionEnd);
+    const trialEnd = toMs(calcSub.trialEnd);
+
+    const subActive =
+      calcSub.status === 'active' &&
+      (!subscriptionEnd || subscriptionEnd > now);
+
+    const trialActive =
+      calcSub.status === 'trial' &&
+      trialEnd > now;
 
     return {
       now,
       subscriptionEnd,
       trialEnd,
-      subActive: subscriptionEnd > now,
-      trialActive: trialEnd > now,
+      subActive,
+      trialActive,
     };
   }
 
@@ -115,7 +126,6 @@
     const statBilling = $('statBilling');
     const statLogin = $('statLogin');
 
-    // Access state
     if (statAccess) {
       statAccess.textContent = access.subActive
         ? 'Active'
@@ -124,7 +134,6 @@
           : 'Inactive';
     }
 
-    // Billing / trial info
     if (statBilling) {
       if (access.subActive) {
         statBilling.textContent = `Next billing: ${formatDate(
@@ -137,7 +146,6 @@
       }
     }
 
-    // Last login (clear, non-ambiguous date)
     if (statLogin) {
       statLogin.textContent = new Date().toLocaleDateString(undefined, {
         day: '2-digit',
@@ -246,4 +254,3 @@
     }
   });
 })();
-
