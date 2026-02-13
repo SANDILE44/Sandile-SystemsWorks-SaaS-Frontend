@@ -69,7 +69,7 @@
   }
 
   /* =========================
-     Access resolution (FIXED)
+     Access resolution
   ========================= */
   function resolveAccess(user) {
     const now = Date.now();
@@ -156,23 +156,35 @@
   }
 
   /* =========================
-     Pay / renew box
+     Pay / renew box (UPDATED)
   ========================= */
   function renderPayBox(access) {
     const payBox = $('payBox');
     if (!payBox) return;
 
-    if (access.subActive || access.trialActive) {
+    // PAID USER → hide box
+    if (access.subActive) {
       payBox.innerHTML = '';
       return;
     }
 
-    payBox.innerHTML = `
-      <p class="status expired">
-        Your access has expired. Renew to continue using business calculators.
-      </p>
-      <button id="payBtn" class="btn btn-primary">Renew subscription</button>
-    `;
+    // TRIAL USER → show upgrade button
+    if (access.trialActive) {
+      payBox.innerHTML = `
+        <p class="status free">
+          You are currently on a free trial. Upgrade anytime for uninterrupted access.
+        </p>
+        <button id="payBtn" class="btn btn-primary">Upgrade Now</button>
+      `;
+    } else {
+      // EXPIRED USER → renew
+      payBox.innerHTML = `
+        <p class="status expired">
+          Your access has expired. Renew to continue using business calculators.
+        </p>
+        <button id="payBtn" class="btn btn-primary">Renew subscription</button>
+      `;
+    }
 
     $('payBtn').addEventListener('click', async () => {
       try {
