@@ -9,9 +9,11 @@
 
   <body>
     <div class="app-shell">
+
       <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="sidebar-top">
+
           <div class="sidebar-brand">
             <img
               src="images/Untitled design.png"
@@ -29,6 +31,11 @@
             <a href="sector-quaternary.html">Quaternary Sector</a>
             <a href="sector-quinary.html">Quinary Sector</a>
           </nav>
+
+          <!-- ACCESS BADGE (required by JS) -->
+          <div id="accessStatus" class="access-badge">
+            <span id="accessText">Checking access…</span>
+          </div>
         </div>
 
         <!-- ACCOUNT -->
@@ -47,22 +54,24 @@
 
       <!-- MAIN CONTENT -->
       <main class="main-content">
-        <!-- MOBILE HAMBURGER -->
+
+        <!-- MOBILE MENU -->
         <button id="hamburger" class="hamburger" aria-label="Open menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
 
+        <!-- HEADER -->
         <header class="page-header">
           <h1>Business Calculators</h1>
           <p>
-            Welcome, <span id="usernameDisplay">User</span>. Choose a sector to
-            begin.
+            Welcome, <span id="usernameDisplay">User</span>.
+            Choose a sector to begin.
           </p>
         </header>
 
-        <!-- DASHBOARD STATUS -->
+        <!-- DASHBOARD STATS -->
         <section class="dashboard-stats">
           <div class="stat stat-access">
             <div class="stat-label">Access</div>
@@ -80,10 +89,10 @@
           </div>
         </section>
 
-        <!-- PAY / RENEW -->
+        <!-- PAY / RENEW BOX (JS controls this) -->
         <section id="payBox" class="pay-box"></section>
 
-        <!-- SEARCH -->
+        <!-- INDUSTRY SEARCH -->
         <div class="industry-search">
           <input
             id="industrySearch"
@@ -95,13 +104,14 @@
           </div>
         </div>
 
-        <!-- SECTORS -->
+        <!-- SECTOR CARDS -->
         <section class="cards-grid">
+
           <div class="card">
             <h3 class="card-title">Primary Sector</h3>
             <p>
-              Agriculture, Mining, Oil & Gas, Forestry, Fishing, Renewable
-              Energy, Water Resources, Raw Materials
+              Agriculture, Mining, Oil & Gas, Forestry, Fishing,
+              Renewable Energy, Water Resources, Raw Materials
             </p>
             <a href="sector-primary.html">Explore</a>
           </div>
@@ -109,8 +119,8 @@
           <div class="card">
             <h3 class="card-title">Secondary Sector</h3>
             <p>
-              Manufacturing, Construction, Automotive, Electronics, Industrial
-              Processing, Fabrication, Packaging
+              Manufacturing, Construction, Automotive, Electronics,
+              Industrial Processing, Fabrication, Packaging
             </p>
             <a href="sector-secondary.html">Explore</a>
           </div>
@@ -118,8 +128,8 @@
           <div class="card">
             <h3 class="card-title">Tertiary Sector</h3>
             <p>
-              Retail, Logistics, Healthcare, Finance, Consulting, Hospitality,
-              Real Estate, Transportation
+              Retail, Logistics, Healthcare, Finance, Consulting,
+              Hospitality, Real Estate, Transportation
             </p>
             <a href="sector-tertiary.html">Explore</a>
           </div>
@@ -127,8 +137,8 @@
           <div class="card">
             <h3 class="card-title">Quaternary Sector</h3>
             <p>
-              Software, SaaS, IT Services, Media, Research & Development, Data,
-              Artificial Intelligence, Cybersecurity
+              Software, SaaS, IT Services, Media, Research & Development,
+              Data, Artificial Intelligence, Cybersecurity
             </p>
             <a href="sector-quaternary.html">Explore</a>
           </div>
@@ -136,20 +146,22 @@
           <div class="card">
             <h3 class="card-title">Quinary Sector</h3>
             <p>
-              Government, NGOs, Education, Public Services, Social Care,
-              Healthcare Administration, Community & Welfare Services
+              Government, NGOs, Education, Public Services,
+              Social Care, Healthcare Administration,
+              Community & Welfare Services
             </p>
             <a href="sector-quinary.html">Explore</a>
           </div>
+
         </section>
       </main>
     </div>
 
-    <!-- GLOBAL JS (ORDER MATTERS) -->
+    <!-- SCRIPT ORDER (VERY IMPORTANT) -->
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="js/hamburger.js"></script>
   </body>
-</html>
+  </html>
