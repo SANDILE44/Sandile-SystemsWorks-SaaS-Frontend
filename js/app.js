@@ -22,30 +22,20 @@
   };
 
   /* =========================
-     Account dropdown
+     Account Dropdown
   ========================= */
   function initAccountDropdown() {
     const btn = $('accountBtn');
     const menu = $('accountMenu');
     if (!btn || !menu) return;
 
-    const close = () => {
-      menu.classList.remove('open');
-      menu.setAttribute('aria-hidden', 'true');
-    };
-
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       menu.classList.toggle('open');
-      menu.setAttribute(
-        'aria-hidden',
-        menu.classList.contains('open') ? 'false' : 'true'
-      );
     });
 
-    document.addEventListener('click', close);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
+    document.addEventListener('click', () => {
+      menu.classList.remove('open');
     });
   }
 
@@ -69,11 +59,10 @@
   }
 
   /* =========================
-     Access resolution
+     Access Resolution
   ========================= */
   function resolveAccess(user) {
     const now = Date.now();
-
     const calcSub = user?.subscriptions?.calculators || {};
 
     const subscriptionEnd = toMs(calcSub.subscriptionEnd);
@@ -87,119 +76,111 @@
       calcSub.status === 'trial' &&
       trialEnd > now;
 
+    const expired = !subActive && !trialActive;
+
     return {
-      now,
-      subscriptionEnd,
-      trialEnd,
       subActive,
       trialActive,
+      expired,
+      subscriptionEnd,
+      trialEnd,
     };
   }
 
   /* =========================
-     Sidebar access badge
+     Sidebar Access Badge
   ========================= */
   function renderAccessBadge(access) {
-    const badge = $('accessStatus');
-    const text = $('accessText');
-    if (!badge || !text) return;
+    const statAccess = $('statAccess');
+    if (!statAccess) return;
 
-    badge.classList.remove('free', 'paid', 'expired');
+    if (access.subActive) statAccess.textContent = 'Active';
+    else if (access.trialActive) statAccess.textContent = 'Trial';
+    else statAccess.textContent = 'Inactive';
+  }
+
+  /* =========================
+     Billing Display
+  ========================= */
+  function renderBilling(access) {
+    const statBilling = $('statBilling');
+    if (!statBilling) return;
 
     if (access.subActive) {
-      badge.classList.add('paid');
-      text.textContent = 'Subscription active';
+      statBilling.textContent = access.subscriptionEnd
+        ? `Next billing: ${formatDate(access.subscriptionEnd)}`
+        : 'Unlimited Access';
     } else if (access.trialActive) {
-      badge.classList.add('free');
-      text.textContent = 'Free access';
+      statBilling.textContent = `Ends: ${formatDate(access.trialEnd)}`;
     } else {
-      badge.classList.add('expired');
-      text.textContent = 'Access expired';
+      statBilling.textContent = 'Expired';
     }
   }
 
   /* =========================
-     Dashboard stats
+     Last Login
   ========================= */
-  function renderDashboardStats(access) {
-    const statAccess = $('statAccess');
-    const statBilling = $('statBilling');
+  function renderLastLogin() {
     const statLogin = $('statLogin');
+    if (!statLogin) return;
 
-    if (statAccess) {
-      statAccess.textContent = access.subActive
-        ? 'Active'
-        : access.trialActive
-          ? 'Trial'
-          : 'Inactive';
-    }
-
-    if (statBilling) {
-      if (access.subActive) {
-        statBilling.textContent = `Next billing: ${formatDate(
-          access.subscriptionEnd
-        )}`;
-      } else if (access.trialActive) {
-        statBilling.textContent = `Ends: ${formatDate(access.trialEnd)}`;
-      } else {
-        statBilling.textContent = 'Expired';
-      }
-    }
-
-    if (statLogin) {
-      statLogin.textContent = new Date().toLocaleDateString(undefined, {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
-    }
+    statLogin.textContent = new Date().toLocaleDateString(undefined, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
   }
 
   /* =========================
-     Pay / renew box (UPDATED)
+     Pay / Upgrade Box
   ========================= */
   function renderPayBox(access) {
     const payBox = $('payBox');
     if (!payBox) return;
 
-    // PAID USER → hide box
-    if (access.subActive) {
+    // ACTIVE with no end = admin / unlimited
+    if (access.subActive && !access.subscriptionEnd) {
       payBox.innerHTML = '';
       return;
     }
 
-    // TRIAL USER → show upgrade button
+    // Trial user → show upgrade
     if (access.trialActive) {
       payBox.innerHTML = `
-        <p class="status free">
-          You are currently on a free trial. Upgrade anytime for uninterrupted access.
-        </p>
-        <button id="payBtn" class="btn btn-primary">Upgrade Now</button>
-      `;
-    } else {
-      // EXPIRED USER → renew
-      payBox.innerHTML = `
-        <p class="status expired">
-          Your access has expired. Renew to continue using business calculators.
-        </p>
-        <button id="payBtn" class="btn btn-primary">Renew subscription</button>
+        <div class="upgrade-box">
+          <p>Your trial ends on ${formatDate(access.trialEnd)}.</p>
+          <button id="payBtn" class="btn btn-primary">Upgrade Now</button>
+        </div>
       `;
     }
 
-    $('payBtn').addEventListener('click', async () => {
-      try {
-        const token = window.auth.getToken();
-        const data = await window.api.createCheckoutRequest(token);
-        if (!data?.checkoutUrl) throw new Error('Checkout failed');
-        window.location.href = data.checkoutUrl;
-      } catch (err) {
-        alert(err.message || 'Payment failed');
-      }
-    });
+    // Expired → show renew
+    if (access.expired) {
+      payBox.innerHTML = `
+        <div class="upgrade-box">
+          <p>Your access has expired.</p>
+          <button id="payBtn" class="btn btn-primary">Renew Subscription</button>
+        </div>
+      `;
+    }
+
+    const payBtn = $('payBtn');
+    if (payBtn) {
+      payBtn.addEventListener('click', async () => {
+        try {
+          const token = window.auth.getToken();
+          const data = await window.api.createCheckoutRequest(token);
+          if (!data?.checkoutUrl) throw new Error('Checkout failed');
+          window.location.href = data.checkoutUrl;
+        } catch (err) {
+          alert(err.message || 'Payment failed');
+        }
+      });
+    }
   }
 
   /* =========================
-     Industry search
+     Industry Search
   ========================= */
   function initIndustrySearch() {
     const input = $('industrySearch');
@@ -225,23 +206,6 @@
   }
 
   /* =========================
-     Guard sector links
-  ========================= */
-  function guardLinks(access) {
-    if (access.subActive || access.trialActive) return;
-
-    document.querySelectorAll('a[href$=".html"]').forEach((a) => {
-      const href = a.getAttribute('href') || '';
-      if (href.startsWith('sector-')) {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-    });
-  }
-
-  /* =========================
      Boot
   ========================= */
   document.addEventListener('DOMContentLoaded', async () => {
@@ -253,13 +217,16 @@
       if (!profile?.user) return;
 
       const user = profile.user;
+
       setUserUI(user);
 
       const access = resolveAccess(user);
+
       renderAccessBadge(access);
-      renderDashboardStats(access);
+      renderBilling(access);
+      renderLastLogin();
       renderPayBox(access);
-      guardLinks(access);
+
       initIndustrySearch();
     } catch (err) {
       console.error('Dashboard init failed:', err);
