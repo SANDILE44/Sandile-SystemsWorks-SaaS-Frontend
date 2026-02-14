@@ -189,3 +189,7 @@ label {
     padding: 1rem;
   }
 }
+
+#log-status.profit { color: #16a34a; font-weight: 700; }
+#log-status.loss { color: #dc2626; font-weight: 700; }
+#log-status.neutral { color: #f59e0b; font-weight: 700; }
