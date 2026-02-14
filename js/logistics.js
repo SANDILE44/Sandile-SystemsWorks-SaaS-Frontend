@@ -61,7 +61,7 @@
       $('log-margin').textContent = percent(d.margin);
       $('log-roi').textContent = percent(d.roi);
 
-      /* ===== NEW DECISION OUTPUTS ===== */
+      /* ===== DECISION OUTPUTS ===== */
       $('log-profit-per-shipment').textContent = money(
         d.profitPerShipment
       );
@@ -77,7 +77,7 @@
         d.maintenancePercent
       );
 
-      // fixed % safe calculation
+      // safe fixed %
       const fixedPct =
         d.totalCosts > 0
           ? 100 -
@@ -88,17 +88,24 @@
 
       $('log-fixed-pct').textContent = percent(fixedPct);
 
-      /* ===== PROFIT / LOSS STATUS ===== */
+      /* ===== PROFIT / LOSS STATUS (FIXED) ===== */
       const statusEl = $('log-status');
-      statusEl.textContent = d.status || 'Break-even';
+
+      const status = (d.status || 'Break-even')
+        .toString()
+        .trim()
+        .toLowerCase();
 
       statusEl.classList.remove('profit', 'loss', 'neutral');
 
-      if (d.status === 'Profitable') {
+      if (status === 'profitable') {
+        statusEl.textContent = 'Profitable';
         statusEl.classList.add('profit');
-      } else if (d.status === 'Loss') {
+      } else if (status === 'loss') {
+        statusEl.textContent = 'Loss';
         statusEl.classList.add('loss');
       } else {
+        statusEl.textContent = 'Break-even';
         statusEl.classList.add('neutral');
       }
     } catch (err) {
@@ -114,7 +121,6 @@
       i.value = '';
     });
 
-    // instant UI reset
     $('log-shipments-output').textContent = '0';
     $('log-total-revenue').textContent = 'R0.00';
     $('log-total-costs').textContent = 'R0.00';
