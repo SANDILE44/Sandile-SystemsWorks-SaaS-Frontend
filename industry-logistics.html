@@ -19,11 +19,11 @@
               alt="Sandile SystemsWorks"
               class="sidebar-logo"
             />
-          <span class="sidebar-name">Sandile SystemsWorks</span>
+            <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
           <nav class="sidebar-nav">
-            <a href="dashboard.html" >Dashboard</a>
+            <a href="dashboard.html">Dashboard</a>
             <a href="sector-primary.html">Primary Sector</a>
             <a href="sector-secondary.html">Secondary Sector</a>
             <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
@@ -46,7 +46,7 @@
         </div>
       </aside>
 
-   <!-- MAIN CONTENT -->
+      <!-- MAIN CONTENT -->
       <main class="main-content">
         <!-- MOBILE HAMBURGER -->
         <button id="hamburger" class="hamburger" aria-label="Open menu">
@@ -54,230 +54,273 @@
           <span></span>
           <span></span>
         </button>
-        
-      <div class="breadcrumb">
-        <a href="dashboard.html">Sectors</a>
-        <span>→</span>
-        <a href="sector-tertiary.html">Tertiary</a>
-        <span>→</span>
-        <span>Logistics</span>
-      </div>
 
-      <h1>Logistics Calculators</h1>
-      <p>Optimize shipping operations and transportation profitability.</p>
+        <div class="breadcrumb">
+          <a href="dashboard.html">Sectors</a>
+          <span>→</span>
+          <a href="sector-tertiary.html">Tertiary</a>
+          <span>→</span>
+          <span>Logistics</span>
+        </div>
 
-      <div class="calculator-container">
-        <h2>Logistics Operations Calculator</h2>
-        <p>
-          Analyze shipment profitability, cost per shipment, and operational
-          efficiency.
-        </p>
+        <h1>Logistics Calculators</h1>
+        <p>Optimize shipping operations and transportation profitability.</p>
 
-        <div class="calculator-grid">
-          <!-- INPUTS -->
-          <div class="input-section">
-            <h3>Inputs</h3>
+        <div class="calculator-container">
+          <h2>Logistics Operations Calculator</h2>
+          <p>
+            Analyze shipment profitability, cost per shipment, and operational
+            efficiency.
+          </p>
 
-            <div class="input-group">
-              <label for="log-shipments">Shipments Per Month</label>
-              <input
-                type="number"
-                id="log-shipments"
-                placeholder="Enter number of shipments"
-              />
+          <div class="calculator-grid">
+            <!-- INPUTS -->
+            <div class="input-section">
+              <h3>Inputs</h3>
+
+              <div class="input-group">
+                <label for="log-shipments">Shipments Per Month</label>
+                <input
+                  type="number"
+                  id="log-shipments"
+                  placeholder="Enter number of shipments"
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="log-revenue">Revenue Per Shipment (R)</label>
+                <input
+                  type="number"
+                  id="log-revenue"
+                  placeholder="Average charge per shipment"
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="log-fuel">Fuel Costs (R)</label>
+                <input
+                  type="number"
+                  id="log-fuel"
+                  placeholder="Monthly fuel expenses"
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="log-labor">Labor Costs (R)</label>
+                <input
+                  type="number"
+                  id="log-labor"
+                  placeholder="Driver and staff wages"
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="log-maintenance">Vehicle Maintenance (R)</label>
+                <input
+                  type="number"
+                  id="log-maintenance"
+                  placeholder="Monthly vehicle upkeep"
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="log-fixed">Fixed Costs (R)</label>
+                <input
+                  type="number"
+                  id="log-fixed"
+                  placeholder="Facility, insurance, permits"
+                />
+              </div>
+
+              <button type="button" id="resetBtn">Reset All</button>
             </div>
 
-            <div class="input-group">
-              <label for="log-revenue">Revenue Per Shipment (R)</label>
-              <input
-                type="number"
-                id="log-revenue"
-                placeholder="Average charge per shipment"
-              />
-            </div>
+            <!-- OUTPUTS -->
+            <div class="output-section">
+              <h3>Results</h3>
 
-            <div class="input-group">
-              <label for="log-fuel">Fuel Costs (R)</label>
-              <input
-                type="number"
-                id="log-fuel"
-                placeholder="Monthly fuel expenses"
-              />
-            </div>
+              <div class="output-group">
+                <div class="output-label">Monthly Shipments</div>
+                <div class="output-value" id="log-shipments-output">0</div>
+              </div>
 
-            <div class="input-group">
-              <label for="log-labor">Labor Costs (R)</label>
-              <input
-                type="number"
-                id="log-labor"
-                placeholder="Driver and staff wages"
-              />
-            </div>
+              <div class="output-group">
+                <div class="output-label">Total Revenue</div>
+                <div class="output-value" id="log-total-revenue">R0.00</div>
+              </div>
 
-            <div class="input-group">
-              <label for="log-maintenance">Vehicle Maintenance (R)</label>
-              <input
-                type="number"
-                id="log-maintenance"
-                placeholder="Monthly vehicle upkeep"
-              />
-            </div>
+              <div class="output-group">
+                <div class="output-label">Total Costs</div>
+                <div class="output-value" id="log-total-costs">R0.00</div>
+              </div>
 
-            <div class="input-group">
-              <label for="log-fixed">Fixed Costs (R)</label>
-              <input
-                type="number"
-                id="log-fixed"
-                placeholder="Facility, insurance, permits"
-              />
-            </div>
+              <div class="output-group">
+                <div class="output-label">Net Profit</div>
+                <div class="output-value" id="log-profit">R0.00</div>
+              </div>
 
-            <button type="button" id="resetBtn">Reset All</button>
-          </div>
+              <div class="output-group">
+                <div class="output-label">Cost Per Shipment</div>
+                <div class="output-value" id="log-per-shipment">R0.00</div>
+              </div>
 
-          <!-- OUTPUTS -->
-          <div class="output-section">
-            <h3>Results</h3>
+              <div class="output-group">
+                <div class="output-label">Revenue Per Shipment</div>
+                <div class="output-value" id="log-revenue-per-shipment">
+                  R0.00
+                </div>
+              </div>
 
-            <div class="output-group">
-              <div class="output-label">Monthly Shipments</div>
-              <div class="output-value" id="log-shipments-output">0</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Total Revenue</div>
-              <div class="output-value" id="log-total-revenue">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Total Costs</div>
-              <div class="output-value" id="log-total-costs">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Net Profit</div>
-              <div class="output-value" id="log-profit">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Cost Per Shipment</div>
-              <div class="output-value" id="log-per-shipment">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Revenue Per Shipment</div>
-              <div class="output-value" id="log-revenue-per-shipment">
-                R0.00
+              <div class="output-group">
+                <div class="output-label">ROI (%)</div>
+                <div class="output-value" id="log-roi">0.00%</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Profit Margin (%)</div>
+                <div class="output-value" id="log-margin">0.00%</div>
+              </div>
+
+              <!-- ✅ IMPROVEMENTS (added without removing anything) -->
+              <div class="output-group">
+                <div class="output-label">Profit / Loss Status</div>
+                <div class="output-value" id="log-status">—</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Profit Per Shipment</div>
+                <div class="output-value" id="log-profit-per-shipment">R0.00</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Break-even Shipments</div>
+                <div class="output-value" id="log-breakeven-shipments">0</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Annual Profit Projection</div>
+                <div class="output-value" id="log-annual-profit">R0.00</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Fuel Cost % of Revenue</div>
+                <div class="output-value" id="log-fuel-pct">0.00%</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Labor Cost % of Revenue</div>
+                <div class="output-value" id="log-labor-pct">0.00%</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Maintenance % of Revenue</div>
+                <div class="output-value" id="log-maintenance-pct">0.00%</div>
+              </div>
+
+              <div class="output-group">
+                <div class="output-label">Fixed Cost % of Revenue</div>
+                <div class="output-value" id="log-fixed-pct">0.00%</div>
               </div>
             </div>
-            <div class="output-group">
-              <div class="output-label">ROI (%)</div>
-              <div class="output-value" id="log-roi">0.00%</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Profit Margin (%)</div>
-              <div class="output-value" id="log-margin">0.00%</div>
-            </div>
           </div>
         </div>
-      </div>
-      <!-- ================================
-   SECTORS & INDUSTRIES NAVIGATION
+
+        <!-- ================================
+     SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
-      <div class="sectors-navigation">
-        <h2>Explore All Sectors & Industries</h2>
-        <p>
-          Jump to any sector or industry calculators to quickly compare and
-          analyze multiple business areas.
-        </p>
+        <div class="sectors-navigation">
+          <h2>Explore All Sectors & Industries</h2>
+          <p>
+            Jump to any sector or industry calculators to quickly compare and
+            analyze multiple business areas.
+          </p>
 
-        <div class="sectors-grid">
-          <!-- Primary Sector -->
-          <div class="sector-group">
-            <h3>Primary Sector</h3>
-            <ul>
-              <li><a href="industry-agriculture.html">Agriculture</a></li>
-              <li><a href="industry-forestry.html">Forestry</a></li>
-              <li><a href="industry-fishing.html">Fishing</a></li>
-              <li><a href="industry-mining.html">Mining</a></li>
-              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-              <li>
-                <a href="industry-renewable-energy.html">Renewable Energy</a>
-              </li>
-            </ul>
-          </div>
+          <div class="sectors-grid">
+            <!-- Primary Sector -->
+            <div class="sector-group">
+              <h3>Primary Sector</h3>
+              <ul>
+                <li><a href="industry-agriculture.html">Agriculture</a></li>
+                <li><a href="industry-forestry.html">Forestry</a></li>
+                <li><a href="industry-fishing.html">Fishing</a></li>
+                <li><a href="industry-mining.html">Mining</a></li>
+                <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+                <li>
+                  <a href="industry-renewable-energy.html">Renewable Energy</a>
+                </li>
+              </ul>
+            </div>
 
-          <!-- Secondary Sector -->
-          <div class="sector-group">
-            <h3>Secondary Sector</h3>
-            <ul>
-              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-              <li><a href="industry-construction.html">Construction</a></li>
-              <li><a href="industry-automotive.html">Automotive</a></li>
-              <li><a href="industry-electronics.html">Electronics</a></li>
-              <li><a href="industry-textiles.html">Textiles</a></li>
-              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-            </ul>
-          </div>
+            <!-- Secondary Sector -->
+            <div class="sector-group">
+              <h3>Secondary Sector</h3>
+              <ul>
+                <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+                <li><a href="industry-construction.html">Construction</a></li>
+                <li><a href="industry-automotive.html">Automotive</a></li>
+                <li><a href="industry-electronics.html">Electronics</a></li>
+                <li><a href="industry-textiles.html">Textiles</a></li>
+                <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+              </ul>
+            </div>
 
-          <!-- Tertiary Sector -->
-          <div class="sector-group">
-            <h3>Tertiary Sector</h3>
-            <ul>
-              <li><a href="industry-real-estate.html">Real Estate</a></li>
-              <li><a href="industry-retail.html">Retail</a></li>
-              <li><a href="industry-restaurants.html">Restaurants</a></li>
-              <li><a href="industry-hospitality.html">Hospitality</a></li>
-              <li><a href="industry-logistics.html">Logistics</a></li>
-              <li><a href="industry-healthcare.html">Healthcare</a></li>
-              <li><a href="industry-education.html">Education</a></li>
-              <li><a href="industry-finance.html">Finance</a></li>
-              <li><a href="industry-marketing.html">Marketing</a></li>
-              <li><a href="industry-consulting.html">Consulting</a></li>
-            </ul>
-          </div>
+            <!-- Tertiary Sector -->
+            <div class="sector-group">
+              <h3>Tertiary Sector</h3>
+              <ul>
+                <li><a href="industry-real-estate.html">Real Estate</a></li>
+                <li><a href="industry-retail.html">Retail</a></li>
+                <li><a href="industry-restaurants.html">Restaurants</a></li>
+                <li><a href="industry-hospitality.html">Hospitality</a></li>
+                <li><a href="industry-logistics.html">Logistics</a></li>
+                <li><a href="industry-healthcare.html">Healthcare</a></li>
+                <li><a href="industry-education.html">Education</a></li>
+                <li><a href="industry-finance.html">Finance</a></li>
+                <li><a href="industry-marketing.html">Marketing</a></li>
+                <li><a href="industry-consulting.html">Consulting</a></li>
+              </ul>
+            </div>
 
-          <!-- Quaternary Sector -->
-          <div class="sector-group">
-            <h3>Quaternary Sector</h3>
-            <ul>
-              <li><a href="industry-software.html">Software</a></li>
-              <li><a href="industry-saas.html">SaaS</a></li>
-              <li><a href="industry-it-services.html">IT Services</a></li>
-              <li><a href="industry-media.html">Media</a></li>
-              <li><a href="industry-research-development.html">R&D</a></li>
-              <li>
-                <a href="industry-telecommunications.html"
-                  >Telecommunications</a
-                >
-              </li>
-            </ul>
-          </div>
+            <!-- Quaternary Sector -->
+            <div class="sector-group">
+              <h3>Quaternary Sector</h3>
+              <ul>
+                <li><a href="industry-software.html">Software</a></li>
+                <li><a href="industry-saas.html">SaaS</a></li>
+                <li><a href="industry-it-services.html">IT Services</a></li>
+                <li><a href="industry-media.html">Media</a></li>
+                <li><a href="industry-research-development.html">R&D</a></li>
+                <li>
+                  <a href="industry-telecommunications.html">Telecommunications</a>
+                </li>
+              </ul>
+            </div>
 
-          <!-- Quinary Sector -->
-          <div class="sector-group">
-            <h3>Quinary Sector</h3>
-            <ul>
-              <li><a href="industry-government.html">Government</a></li>
-              <li><a href="industry-ngos.html">NGOs</a></li>
-              <li>
-                <a href="industry-social-services.html"
-                  >Social & Community Services</a
-                >
-              </li>
-              <li>
-                <a href="industry-public-administration.html"
-                  >Public Administration</a
-                >
-              </li>
-            </ul>
+            <!-- Quinary Sector -->
+            <div class="sector-group">
+              <h3>Quinary Sector</h3>
+              <ul>
+                <li><a href="industry-government.html">Government</a></li>
+                <li><a href="industry-ngos.html">NGOs</a></li>
+                <li>
+                  <a href="industry-social-services.html">Social & Community Services</a>
+                </li>
+                <li>
+                  <a href="industry-public-administration.html">Public Administration</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/logistics.js"></script>
-    <script src="js/hamburger.js"></script>
+      <script src="js/config.js"></script>
+      <script src="js/api.js"></script>
+      <script src="js/guard.js"></script>
+      <script src="js/auth.js"></script>
+      <script src="js/logistics.js"></script>
+      <script src="js/hamburger.js"></script>
       <script src="js/user-display.js"></script>
-
+    </div>
   </body>
-</html>
+  </html>
