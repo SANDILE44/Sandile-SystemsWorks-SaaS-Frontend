@@ -12,11 +12,17 @@
 
   let t;
 
+  /* =========================
+     LIVE UPDATE (debounce)
+  ========================= */
   function updateLogistics() {
     clearTimeout(t);
     t = setTimeout(runLogistics, 300);
   }
 
+  /* =========================
+     MAIN CALCULATION
+  ========================= */
   async function runLogistics() {
     const token = localStorage.getItem('token');
     if (!token) return location.replace('login.html');
@@ -42,29 +48,100 @@
 
     const d = await res.json();
 
-    $('log-shipments-output').textContent = d.shipments;
+    /* ===== CORE RESULTS ===== */
+    $('log-shipments-output').textContent = d.shipments || 0;
     $('log-total-revenue').textContent = money(d.totalRevenue);
     $('log-total-costs').textContent = money(d.totalCosts);
     $('log-profit').textContent = money(d.profit);
     $('log-per-shipment').textContent = money(d.costPerShipment);
-    $('log-revenue-per-shipment').textContent = money(d.revenuePer || 0);
+    $('log-revenue-per-shipment').textContent = money(
+      d.revenuePerShipment
+    );
     $('log-margin').textContent = percent(d.margin);
     $('log-roi').textContent = percent(d.roi);
+
+    /* ===== NEW DECISION OUTPUTS ===== */
+    $('log-profit-per-shipment').textContent = money(
+      d.profitPerShipment
+    );
+
+    $('log-breakeven-shipments').textContent =
+      d.breakEvenShipments || 0;
+
+    $('log-annual-profit').textContent = money(d.annualProfit);
+
+    // cost percentages
+    $('log-fuel-pct').textContent = percent(d.fuelPercent);
+    $('log-labor-pct').textContent = percent(d.laborPercent);
+    $('log-maintenance-pct').textContent = percent(
+      d.maintenancePercent
+    );
+
+    // fixed is not sent — calculate safely
+    const fixedPct =
+      d.totalCosts > 0
+        ? (100 -
+            (d.fuelPercent || 0) -
+            (d.laborPercent || 0) -
+            (d.maintenancePercent || 0))
+        : 0;
+
+    $('log-fixed-pct').textContent = percent(fixedPct);
+
+    /* ===== PROFIT / LOSS STATUS ===== */
+    const statusEl = $('log-status');
+    statusEl.textContent = d.status || 'Break-even';
+
+    statusEl.classList.remove('profit', 'loss', 'neutral');
+
+    if (d.status === 'Profitable') {
+      statusEl.classList.add('profit');
+    } else if (d.status === 'Loss') {
+      statusEl.classList.add('loss');
+    } else {
+      statusEl.classList.add('neutral');
+    }
   }
 
-  /* ===== RESET BUTTON ===== */
+  /* =========================
+     RESET BUTTON
+  ========================= */
   $('resetBtn')?.addEventListener('click', () => {
     document.querySelectorAll('.input-section input').forEach((i) => {
       i.value = '';
     });
+
+    // reset UI instantly
+    $('log-shipments-output').textContent = '0';
+    $('log-total-revenue').textContent = 'R0.00';
+    $('log-total-costs').textContent = 'R0.00';
+    $('log-profit').textContent = 'R0.00';
+    $('log-per-shipment').textContent = 'R0.00';
+    $('log-revenue-per-shipment').textContent = 'R0.00';
+    $('log-roi').textContent = '0.00%';
+    $('log-margin').textContent = '0.00%';
+
+    $('log-status').textContent = '—';
+    $('log-profit-per-shipment').textContent = 'R0.00';
+    $('log-breakeven-shipments').textContent = '0';
+    $('log-annual-profit').textContent = 'R0.00';
+    $('log-fuel-pct').textContent = '0.00%';
+    $('log-labor-pct').textContent = '0.00%';
+    $('log-maintenance-pct').textContent = '0.00%';
+    $('log-fixed-pct').textContent = '0.00%';
+
     runLogistics();
   });
 
-  /* ===== INPUT LISTENERS ===== */
+  /* =========================
+     INPUT LISTENERS
+  ========================= */
   document
     .querySelectorAll('.input-section input')
     .forEach((i) => i.addEventListener('input', updateLogistics));
 
-  /* ===== INITIAL LOAD ===== */
+  /* =========================
+     INITIAL LOAD
+  ========================= */
   runLogistics();
 })();
