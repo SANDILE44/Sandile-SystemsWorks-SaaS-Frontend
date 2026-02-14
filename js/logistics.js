@@ -19,6 +19,7 @@
 
   async function runLogistics() {
     const token = localStorage.getItem('token');
+    if (!token) return location.replace('login.html');
 
     const res = await fetch(`${API_BASE}/api/calculators/logistics/business`, {
       method: 'POST',
@@ -46,11 +47,24 @@
     $('log-total-costs').textContent = money(d.totalCosts);
     $('log-profit').textContent = money(d.profit);
     $('log-per-shipment').textContent = money(d.costPerShipment);
+    $('log-revenue-per-shipment').textContent = money(d.revenuePer || 0);
     $('log-margin').textContent = percent(d.margin);
     $('log-roi').textContent = percent(d.roi);
   }
 
+  /* ===== RESET BUTTON ===== */
+  $('resetBtn')?.addEventListener('click', () => {
+    document.querySelectorAll('.input-section input').forEach((i) => {
+      i.value = '';
+    });
+    runLogistics();
+  });
+
+  /* ===== INPUT LISTENERS ===== */
   document
-    .querySelectorAll('input')
+    .querySelectorAll('.input-section input')
     .forEach((i) => i.addEventListener('input', updateLogistics));
+
+  /* ===== INITIAL LOAD ===== */
+  runLogistics();
 })();
