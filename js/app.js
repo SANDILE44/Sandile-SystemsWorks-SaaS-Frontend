@@ -88,7 +88,7 @@
   }
 
   /* =========================
-     Sidebar Access Badge
+     Access Display
   ========================= */
   function renderAccessBadge(access) {
     const statAccess = $('statAccess');
@@ -99,9 +99,6 @@
     else statAccess.textContent = 'Inactive';
   }
 
-  /* =========================
-     Billing Display
-  ========================= */
   function renderBilling(access) {
     const statBilling = $('statBilling');
     if (!statBilling) return;
@@ -117,9 +114,6 @@
     }
   }
 
-  /* =========================
-     Last Login
-  ========================= */
   function renderLastLogin() {
     const statLogin = $('statLogin');
     if (!statLogin) return;
@@ -138,13 +132,12 @@
     const payBox = $('payBox');
     if (!payBox) return;
 
-    // ACTIVE with no end = admin / unlimited
-    if (access.subActive && !access.subscriptionEnd) {
-      payBox.innerHTML = '';
-      return;
-    }
+    payBox.innerHTML = '';
 
-    // Trial user → show upgrade
+    // PAID USERS → hide pay box
+    if (access.subActive) return;
+
+    // TRIAL USERS
     if (access.trialActive) {
       payBox.innerHTML = `
         <div class="upgrade-box">
@@ -154,7 +147,7 @@
       `;
     }
 
-    // Expired → show renew
+    // EXPIRED USERS
     if (access.expired) {
       payBox.innerHTML = `
         <div class="upgrade-box">
