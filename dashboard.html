@@ -1,154 +1,165 @@
 <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sandile SystemsWorks – Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-<html lang="en">  
-  <head>  
-    <meta charset="UTF-8" />  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
-    <title>Sandile SystemsWorks – Dashboard</title>  
-    <link rel="stylesheet" href="css/styles.css" />  
-  </head>    <body>  
-    <div class="app-shell">  
-      <!-- SIDEBAR -->  
-      <aside class="sidebar">  
-        <div class="sidebar-top">  
-          <div class="sidebar-brand">  
-            <img  
-              src="images/Untitled design.png"  
-              alt="Sandile SystemsWorks"  
-              class="sidebar-logo"  
-            />  
-            <span class="sidebar-name">Sandile SystemsWorks</span>  
-          </div>  <nav class="sidebar-nav">  
-        <a href="dashboard.html" class="active">Dashboard</a>  
-        <a href="sector-primary.html">Primary Sector</a>  
-        <a href="sector-secondary.html">Secondary Sector</a>  
-        <a href="sector-tertiary.html">Tertiary Sector</a>  
-        <a href="sector-quaternary.html">Quaternary Sector</a>  
-        <a href="sector-quinary.html">Quinary Sector</a>  
-      </nav>  
-    </div>  
+<body>
+  <div class="app-shell">
 
-    <!-- ACCOUNT -->  
-    <div class="sidebar-account">  
-      <button id="accountBtn" class="account-btn">  
-        <span id="accountAvatar" class="account-avatar">U</span>  
-        <span id="accountName" class="account-name">Account</span>  
-      </button>  
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
 
-      <div id="accountMenu" class="account-menu" aria-hidden="true">  
-        <a href="index.html">Home</a>  
-        <button id="logoutBtn">Logout</button>  
-      </div>  
-    </div>  
-  </aside>  
+        <div class="sidebar-brand">
+          <img
+            src="images/Untitled design.png"
+            alt="Sandile SystemsWorks"
+            class="sidebar-logo"
+          />
+          <span class="sidebar-name">Sandile SystemsWorks</span>
+        </div>
 
-  <!-- MAIN CONTENT -->  
-  <main class="main-content">  
-    <!-- MOBILE HAMBURGER -->  
-    <button id="hamburger" class="hamburger" aria-label="Open menu">  
-      <span></span>  
-      <span></span>  
-      <span></span>  
-    </button>  
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="sector-primary.html">Primary Sector</a>
+          <a href="sector-secondary.html">Secondary Sector</a>
+          <a href="sector-tertiary.html">Tertiary Sector</a>
+          <a href="sector-quaternary.html">Quaternary Sector</a>
+          <a href="sector-quinary.html">Quinary Sector</a>
+        </nav>
+      </div>
 
-    <header class="page-header">  
-      <h1>Business Calculators</h1>  
-      <p>  
-        Welcome, <span id="usernameDisplay">User</span>. Choose a sector to  
-        begin.  
-      </p>  
-    </header>  
+      <!-- ACCOUNT -->
+      <div class="sidebar-account">
+        <button id="accountBtn" class="account-btn">
+          <span id="accountAvatar" class="account-avatar">U</span>
+          <span id="accountName" class="account-name">Account</span>
+        </button>
 
-    <!-- DASHBOARD STATUS -->  
-    <section class="dashboard-stats">  
-      <div class="stat stat-access">  
-        <div class="stat-label">Access</div>  
-        <div class="stat-value" id="statAccess">—</div>  
-      </div>  
+        <div id="accountMenu" class="account-menu" aria-hidden="true">
+          <a href="index.html">Home</a>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </aside>
 
-      <div class="stat stat-billing">  
-        <div class="stat-label">Trial / Billing</div>  
-        <div class="stat-value" id="statBilling">—</div>  
-      </div>  
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
-      <div class="stat stat-login">  
-        <div class="stat-label">Last login</div>  
-        <div class="stat-value" id="statLogin">—</div>  
-      </div>  
-    </section>  
+      <!-- MOBILE HAMBURGER -->
+      <button id="hamburger" class="hamburger" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-    <!-- PAY / RENEW -->  
-    <section id="payBox" class="pay-box"></section>  
+      <header class="page-header">
+        <h1>Business Calculators</h1>
+        <p>
+          Welcome, <span id="usernameDisplay">User</span>. Choose a sector to begin.
+        </p>
+      </header>
 
-    <!-- SEARCH -->  
-    <div class="industry-search">  
-      <input  
-        id="industrySearch"  
-        type="search"  
-        placeholder="Search industries…"  
-      />  
-      <div class="industry-meta">  
-        <span id="industryCount">0/0 showing</span>  
-      </div>  
-    </div>  
+      <!-- DASHBOARD STATUS -->
+      <section class="dashboard-stats">
+        <div class="stat stat-access">
+          <div class="stat-label">Access</div>
+          <div class="stat-value" id="statAccess">—</div>
+        </div>
 
-    <!-- SECTORS -->  
-    <section class="cards-grid">  
-      <div class="card">  
-        <h3 class="card-title">Primary Sector</h3>  
-        <p>  
-          Agriculture, Mining, Oil & Gas, Forestry, Fishing, Renewable  
-          Energy, Water Resources, Raw Materials  
-        </p>  
-        <a href="sector-primary.html">Explore</a>  
-      </div>  
+        <div class="stat stat-billing">
+          <div class="stat-label">Trial / Billing</div>
+          <div class="stat-value" id="statBilling">—</div>
+        </div>
 
-      <div class="card">  
-        <h3 class="card-title">Secondary Sector</h3>  
-        <p>  
-          Manufacturing, Construction, Automotive, Electronics, Industrial  
-          Processing, Fabrication, Packaging  
-        </p>  
-        <a href="sector-secondary.html">Explore</a>  
-      </div>  
+        <div class="stat stat-login">
+          <div class="stat-label">Last login</div>
+          <div class="stat-value" id="statLogin">—</div>
+        </div>
+      </section>
 
-      <div class="card">  
-        <h3 class="card-title">Tertiary Sector</h3>  
-        <p>  
-          Retail, Logistics, Healthcare, Finance, Consulting, Hospitality,  
-          Real Estate, Transportation  
-        </p>  
-        <a href="sector-tertiary.html">Explore</a>  
-      </div>  
+      <!-- PAY / RENEW -->
+      <section id="payBox" class="pay-box"></section>
 
-      <div class="card">  
-        <h3 class="card-title">Quaternary Sector</h3>  
-        <p>  
-          Software, SaaS, IT Services, Media, Research & Development, Data,  
-          Artificial Intelligence, Cybersecurity  
-        </p>  
-        <a href="sector-quaternary.html">Explore</a>  
-      </div>  
+      <!-- SEARCH -->
+      <div class="industry-search">
+        <input
+          id="industrySearch"
+          type="search"
+          placeholder="Search industries…"
+        />
+        <div class="industry-meta">
+          <span id="industryCount">0/0 showing</span>
+        </div>
+      </div>
 
-      <div class="card">  
-        <h3 class="card-title">Quinary Sector</h3>  
-        <p>  
-          Government, NGOs, Education, Public Services, Social Care,  
-          Healthcare Administration, Community & Welfare Services  
-        </p>  
-        <a href="sector-quinary.html">Explore</a>  
-      </div>  
-    </section>  
-  </main>  
-</div>  
+      <!-- SECTORS -->
+      <section class="cards-grid">
 
-<!-- GLOBAL JS (ORDER MATTERS) -->  
-<script src="js/config.js"></script>  
-<script src="js/api.js"></script>  
-<script src="js/auth.js"></script>  
-<script src="js/app.js"></script>  
-<script src="js/hamburger.js"></script>
+        <!-- PRIMARY -->
+        <div class="card">
+          <h3 class="card-title">Primary Sector</h3>
+          <p>
+            Agriculture, Mining, Forestry, Fishing, Oil & Gas, Renewable Energy,
+            Water Resources, Raw Materials.
+          </p>
+          <a href="sector-primary.html">Explore</a>
+        </div>
 
-  </body>  
+        <!-- SECONDARY -->
+        <div class="card">
+          <h3 class="card-title">Secondary Sector</h3>
+          <p>
+            Manufacturing, Construction, Automotive, Electronics,
+            Food & Beverage Production, Textiles, Industrial Processing.
+          </p>
+          <a href="sector-secondary.html">Explore</a>
+        </div>
+
+        <!-- TERTIARY -->
+        <div class="card">
+          <h3 class="card-title">Tertiary Sector</h3>
+          <p>
+            Logistics, Retail, Hospitality, Restaurants, Healthcare,
+            Education, Finance, Consulting, Real Estate, Transportation.
+          </p>
+          <a href="sector-tertiary.html">Explore</a>
+        </div>
+
+        <!-- QUATERNARY -->
+        <div class="card">
+          <h3 class="card-title">Quaternary Sector</h3>
+          <p>
+            Software, SaaS, IT Services, Media, Research & Development,
+            Telecommunications, Data Services.
+          </p>
+          <a href="sector-quaternary.html">Explore</a>
+        </div>
+
+        <!-- QUINARY -->
+        <div class="card">
+          <h3 class="card-title">Quinary Sector</h3>
+          <p>
+            Government, NGOs, Public Administration, Social Services,
+            Education Management, Community & Welfare Services.
+          </p>
+          <a href="sector-quinary.html">Explore</a>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- GLOBAL JS (ORDER MATTERS) -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/hamburger.js"></script>
+
+</body>
 </html>
-
