@@ -74,19 +74,23 @@
             <!-- LEFT -->
             <div>
               <p class="eyebrow">SMARTER DECISIONS</p>
-              <h1>
-                Make faster decisions with accurate, instant calculations.
-              </h1>
+
+              <h1>Make faster decisions with accurate, instant calculations.</h1>
+
               <p class="subhead">
                 A complete suite of calculators and dashboards built for
                 entrepreneurs and managers—no spreadsheets, no guesswork.
               </p>
 
+              <!-- ✅ PRICE + TRIAL EARLY (conversion boost) -->
+              <p class="subhead" style="margin-top: 10px">
+                <strong>R12,499/month</strong> • <strong>3-day free trial</strong> • No setup required
+              </p>
+
               <div class="hero-ctas">
-                <a href="signup.html" class="btn btn-primary"
-                  >Start free trial</a
-                >
-                <a href="product.html" class="btn btn-ghost">View features</a>
+                <!-- ✅ clearer CTA -->
+                <a href="signup.html" class="btn btn-primary">Start 3-day free trial</a>
+                <a href="pricing.html" class="btn btn-ghost">View pricing</a>
               </div>
 
               <div class="trustline">
@@ -94,8 +98,9 @@
                 Works across all sectors • Standardized results • Updated weekly
               </div>
 
+              <!-- ✅ simple outcome promise -->
               <p class="stat-context">
-                Used by founders to make faster decisions
+                Reduce decision time from hours to minutes — prevent costly pricing mistakes.
               </p>
 
               <div class="stat-row">
@@ -313,7 +318,7 @@
                 <span class="price-period">/month</span>
               </div>
               <a href="signup.html" class="btn btn-primary btn-block"
-                >Start free trial</a
+                >Start 3-day free trial</a
               >
               <p class="tiny">3 days free trial. Cancel anytime.</p>
               <ul class="list">
@@ -337,9 +342,7 @@
           <div class="cta-band">
             <div>
               <h3>Ready to make smarter decisions?</h3>
-              <p>
-                Start your 3 days free trial today and explore the full suite.
-              </p>
+              <p>Start your 3 days free trial today and explore the full suite.</p>
             </div>
             <div class="cta-band-actions">
               <a href="signup.html" class="btn btn-primary">Start free trial</a>
@@ -371,7 +374,6 @@
               </div>
             </div>
 
-            <!-- Small secondary offer (keep short) -->
             <p class="footer-note">
               Need a premium website too? We build high-converting sites.
               <a href="company.html" class="footer-link">See our work</a>
@@ -401,9 +403,7 @@
           <!-- CONTACT -->
           <div class="footer-col">
             <h4>Contact</h4>
-            <a href="mailto:thabethesandile44@gmail.com"
-              >thabethesandile44@gmail.com</a
-            >
+            <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a>
             <a href="tel:0717378540">0717378540</a>
             <a href="contact.html">Send a message</a>
           </div>
@@ -430,11 +430,7 @@
         <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous">
           ‹
         </button>
-        <img
-          class="lightbox-img"
-          id="lbImg"
-          alt="Dashboard screenshot fullscreen"
-        />
+        <img class="lightbox-img" id="lbImg" alt="Dashboard screenshot fullscreen" />
         <button class="lightbox-nav next" id="lbNext" aria-label="Next">
           ›
         </button>
@@ -475,12 +471,10 @@
 
         navOverlay.addEventListener('click', closeNav);
 
-        // close on Esc
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') closeNav();
         });
 
-        // close when clicking a link
         mainNav.querySelectorAll('a').forEach((link) => {
           link.addEventListener('click', closeNav);
         });
@@ -489,20 +483,10 @@
 
     <!-- HERO SLIDESHOW + FULLSCREEN (works) -->
     <script>
-      // Use EXACT names you told me (with spaces)
       const shots = [
-        {
-          src: 'images/Screenshot 2026-01-26 114942.png',
-          caption: 'Real Estate',
-        },
-        {
-          src: 'images/Screenshot 2026-01-26 115311.png',
-          caption: 'Consulting',
-        },
-        {
-          src: 'images/Screenshot 2026-01-26 115413.png',
-          caption: 'Industries',
-        },
+        { src: 'images/Screenshot 2026-01-26 114942.png', caption: 'Real Estate' },
+        { src: 'images/Screenshot 2026-01-26 115311.png', caption: 'Consulting' },
+        { src: 'images/Screenshot 2026-01-26 115413.png', caption: 'Industries' },
       ];
 
       let shotIndex = 0;
@@ -521,7 +505,6 @@
       const lbNext = document.getElementById('lbNext');
 
       function safeSrc(path) {
-        // Encodes spaces and special chars -> prevents “not loading” when JS swaps src
         return encodeURI(path);
       }
 
@@ -577,7 +560,6 @@
         document.body.style.overflow = '';
       }
 
-      // bind if all elements exist
       if (
         mockupImg &&
         prevShot &&
