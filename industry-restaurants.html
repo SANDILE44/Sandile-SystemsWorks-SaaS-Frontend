@@ -9,14 +9,17 @@
   </head>
 
   <body>
+    <!-- APP LAYOUT -->
     <div class="app-shell">
       <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="sidebar-top">
           <div class="sidebar-brand">
-            <img src="images/Untitled design.png"
-                 alt="Sandile SystemsWorks"
-                 class="sidebar-logo" />
+            <img
+              src="images/Untitled design.png"
+              alt="Sandile SystemsWorks"
+              class="sidebar-logo"
+            />
             <span class="sidebar-name">Sandile SystemsWorks</span>
           </div>
 
@@ -30,6 +33,7 @@
           </nav>
         </div>
 
+        <!-- ACCOUNT -->
         <div class="sidebar-account">
           <button id="accountBtn" class="account-btn">
             <span id="accountAvatar" class="account-avatar">U</span>
@@ -43,10 +47,13 @@
         </div>
       </aside>
 
-      <!-- MAIN -->
+      <!-- MAIN CONTENT -->
       <main class="main-content">
+        <!-- MOBILE HAMBURGER -->
         <button id="hamburger" class="hamburger" aria-label="Open menu">
-          <span></span><span></span><span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
 
         <div class="breadcrumb">
@@ -63,51 +70,71 @@
           <p>Estimate revenue, costs, profits, and operational metrics.</p>
 
           <div class="calculator-grid">
-
             <!-- INPUTS -->
             <div class="input-section">
               <h3>Inputs</h3>
 
               <div class="input-group">
                 <label for="tables">Number of Tables</label>
-                <input type="number" id="tables"
-                       placeholder="e.g. 15 tables" />
+                <input
+                  type="number"
+                  id="tables"
+                  placeholder="Enter how many tables your restaurant has"
+                />
               </div>
 
               <div class="input-group">
                 <label for="covers">Covers per Table (Daily)</label>
-                <input type="number" id="covers"
-                       placeholder="e.g. 4 customers" />
+                <input
+                  type="number"
+                  id="covers"
+                  placeholder="Enter average customers served per table per day"
+                />
               </div>
 
               <div class="input-group">
                 <label for="check">Average Check per Customer (R)</label>
-                <input type="number" id="check"
-                       placeholder="e.g. 120" />
+                <input
+                  type="number"
+                  id="check"
+                  placeholder="Enter average spend per customer"
+                />
               </div>
 
               <div class="input-group">
                 <label for="foodPercent">Food Cost (%)</label>
-                <input type="number" id="foodPercent"
-                       placeholder="e.g. 30%" />
+                <input
+                  type="number"
+                  id="foodPercent"
+                  placeholder="Enter percentage of revenue spent on food"
+                />
               </div>
 
               <div class="input-group">
                 <label for="labor">Labor Costs (Monthly R)</label>
-                <input type="number" id="labor"
-                       placeholder="e.g. 25000" />
+                <input
+                  type="number"
+                  id="labor"
+                  placeholder="Enter total monthly staff wages and salaries"
+                />
               </div>
 
               <div class="input-group">
                 <label for="fixed">Fixed Costs (Monthly R)</label>
-                <input type="number" id="fixed"
-                       placeholder="e.g. 15000" />
+                <input
+                  type="number"
+                  id="fixed"
+                  placeholder="Enter rent, utilities, and fixed monthly costs"
+                />
               </div>
 
               <div class="input-group">
                 <label for="days">Operating Days per Month</label>
-                <input type="number" id="days"
-                       placeholder="e.g. 30 days" />
+                <input
+                  type="number"
+                  id="days"
+                  placeholder="Enter how many days you operate per month"
+                />
               </div>
 
               <button type="button" id="resetBtn">Reset All</button>
@@ -172,30 +199,112 @@
                 <div class="output-value" id="annual">R0.00</div>
               </div>
             </div>
-
           </div>
         </div>
 
-        <!-- INDUSTRIES NAVIGATION -->
+        <!-- ================================
+             SECTORS & INDUSTRIES NAVIGATION
+        ================================ -->
         <div class="sectors-navigation">
           <h2>Explore All Sectors & Industries</h2>
           <p>
-            Jump to any sector or industry calculators to compare business areas.
+            Jump to any sector or industry calculators to quickly compare and
+            analyze multiple business areas.
           </p>
+
           <div class="sectors-grid">
-            <!-- (unchanged links — kept exactly like yours) -->
+            <!-- Primary Sector -->
+            <div class="sector-group">
+              <h3>Primary Sector</h3>
+              <ul>
+                <li><a href="industry-agriculture.html">Agriculture</a></li>
+                <li><a href="industry-forestry.html">Forestry</a></li>
+                <li><a href="industry-fishing.html">Fishing</a></li>
+                <li><a href="industry-mining.html">Mining</a></li>
+                <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+                <li>
+                  <a href="industry-renewable-energy.html">Renewable Energy</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Secondary Sector -->
+            <div class="sector-group">
+              <h3>Secondary Sector</h3>
+              <ul>
+                <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+                <li><a href="industry-construction.html">Construction</a></li>
+                <li><a href="industry-automotive.html">Automotive</a></li>
+                <li><a href="industry-electronics.html">Electronics</a></li>
+                <li><a href="industry-textiles.html">Textiles</a></li>
+                <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+              </ul>
+            </div>
+
+            <!-- Tertiary Sector -->
+            <div class="sector-group">
+              <h3>Tertiary Sector</h3>
+              <ul>
+                <li><a href="industry-real-estate.html">Real Estate</a></li>
+                <li><a href="industry-retail.html">Retail</a></li>
+                <li><a href="industry-restaurants.html">Restaurants</a></li>
+                <li><a href="industry-hospitality.html">Hospitality</a></li>
+                <li><a href="industry-logistics.html">Logistics</a></li>
+                <li><a href="industry-healthcare.html">Healthcare</a></li>
+                <li><a href="industry-education.html">Education</a></li>
+                <li><a href="industry-finance.html">Finance</a></li>
+                <li><a href="industry-marketing.html">Marketing</a></li>
+                <li><a href="industry-consulting.html">Consulting</a></li>
+              </ul>
+            </div>
+
+            <!-- Quaternary Sector -->
+            <div class="sector-group">
+              <h3>Quaternary Sector</h3>
+              <ul>
+                <li><a href="industry-software.html">Software</a></li>
+                <li><a href="industry-saas.html">SaaS</a></li>
+                <li><a href="industry-it-services.html">IT Services</a></li>
+                <li><a href="industry-media.html">Media</a></li>
+                <li><a href="industry-research-development.html">R&D</a></li>
+                <li>
+                  <a href="industry-telecommunications.html"
+                    >Telecommunications</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- Quinary Sector -->
+            <div class="sector-group">
+              <h3>Quinary Sector</h3>
+              <ul>
+                <li><a href="industry-government.html">Government</a></li>
+                <li><a href="industry-ngos.html">NGOs</a></li>
+                <li>
+                  <a href="industry-social-services.html"
+                    >Social & Community Services</a
+                  >
+                </li>
+                <li>
+                  <a href="industry-public-administration.html"
+                    >Public Administration</a
+                  >
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-
       </main>
-    </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/restaurants.js"></script>
-    <script src="js/hamburger.js"></script>
-    <script src="js/user-display.js"></script>
+      <!-- SCRIPTS -->
+      <script src="js/config.js"></script>
+      <script src="js/api.js"></script>
+      <script src="js/guard.js"></script>
+      <script src="js/auth.js"></script>
+      <script src="js/restaurants.js"></script>
+      <script src="js/hamburger.js"></script>
+      <script src="js/user-display.js"></script>
+    </div>
   </body>
-          </html>
+                                                                            </html>
