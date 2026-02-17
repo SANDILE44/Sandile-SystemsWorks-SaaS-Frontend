@@ -175,7 +175,7 @@
         const password = document.getElementById('password').value;
 
         showMsg('');
-        window.loader.show('Loading…');
+        window.loader.show('this might take a while…');
 
         try {
           const data = await window.api.loginRequest(email, password);
