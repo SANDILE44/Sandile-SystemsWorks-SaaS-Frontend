@@ -193,3 +193,101 @@ label {
 #log-status.profit { color: #16a34a; font-weight: 700; }
 #log-status.loss { color: #dc2626; font-weight: 700; }
 #log-status.neutral { color: #f59e0b; font-weight: 700; }
+
+/* =========================
+   Decision Status + Insight
+   ========================= */
+
+/* Base style for status pill */
+#status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Optional: add a small dot before status text */
+#status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+/* PROFIT */
+#status.profit {
+  color: #9BFFC8; /* premium mint */
+  border-color: rgba(0, 255, 163, 0.22);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 163, 0.12),
+    rgba(0, 255, 163, 0.04)
+  );
+}
+#status.profit::before {
+  background: #00FFA3;
+  box-shadow: 0 0 0 4px rgba(0, 255, 163, 0.14);
+}
+
+/* LOSS */
+#status.loss {
+  color: #FFB3B3; /* soft premium red */
+  border-color: rgba(255, 77, 77, 0.22);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 77, 77, 0.14),
+    rgba(255, 77, 77, 0.04)
+  );
+}
+#status.loss::before {
+  background: #FF4D4D;
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.14);
+}
+
+/* BREAK-EVEN / NEUTRAL */
+#status.neutral {
+  color: #FFD38D; /* warm premium amber */
+  border-color: rgba(255, 180, 80, 0.22);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 180, 80, 0.14),
+    rgba(255, 180, 80, 0.04)
+  );
+}
+#status.neutral::before {
+  background: #FFB450;
+  box-shadow: 0 0 0 4px rgba(255, 180, 80, 0.14);
+}
+
+/* Insight text (premium card note) */
+#decisionAdvice {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Optional: make advice change tone depending on status (no JS change needed) */
+.output-section:has(#status.profit) #decisionAdvice {
+  border-color: rgba(0, 255, 163, 0.18);
+  background: rgba(0, 255, 163, 0.06);
+}
+.output-section:has(#status.loss) #decisionAdvice {
+  border-color: rgba(255, 77, 77, 0.18);
+  background: rgba(255, 77, 77, 0.06);
+}
+.output-section:has(#status.neutral) #decisionAdvice {
+  border-color: rgba(255, 180, 80, 0.18);
+  background: rgba(255, 180, 80, 0.06);
+}
