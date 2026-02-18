@@ -9,26 +9,15 @@
     <link rel="stylesheet" href="css/auth.css" />
     <link rel="stylesheet" href="css/loader.css" />
   </head>
+
   <body>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
         <div class="header-inner">
           <div class="brand">
-            <a
-              href="index.html"
-              style="
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                min-width: 220px;
-              "
-            >
-              <img
-                src="images/Untitled design.png"
-                alt="Logo"
-                class="brand-logo"
-              />
+            <a href="index.html" style="display:flex;align-items:center;gap:.65rem;min-width:220px;">
+              <img src="images/Untitled design.png" alt="Logo" class="brand-logo" />
               <span class="brand-name">Sandile SystemsWorks</span>
             </a>
           </div>
@@ -54,22 +43,12 @@
         <form id="loginForm">
           <div class="form-group">
             <label for="email">Email address</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="your@email.com"
-              required
-            />
+            <input type="email" id="email" placeholder="your@email.com" required />
           </div>
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Your password"
-              required
-            />
+            <input type="password" id="password" placeholder="Your password" required />
           </div>
 
           <button type="submit" class="auth-submit">Sign in</button>
@@ -89,11 +68,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <div class="footer-logo-row">
-              <img
-                src="images/Untitled design.png"
-                alt="Sandile SystemsWorks"
-                class="brand-logo"
-              />
+              <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="brand-logo" />
               <div>
                 <div class="brand-name">Sandile SystemsWorks</div>
                 <p class="footer-desc">
@@ -102,14 +77,6 @@
                 </p>
               </div>
             </div>
-
-            <p class="footer-note">
-              Need a premium website too? We deliver fast, high-converting
-              sites.
-              <a href="#website-service" class="footer-link"
-                >See website service</a
-              >
-            </p>
           </div>
 
           <div class="footer-col">
@@ -119,24 +86,12 @@
             <a href="features.html">Features</a>
             <a href="solutions.html">Solutions</a>
             <a href="pricing.html">Pricing</a>
-            <a href="company.html">Company</a>
-            <a href="contact.html">Contact</a>
-          </div>
-
-          <div class="footer-col">
-            <h4>Product</h4>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html">Pricing</a>
           </div>
 
           <div class="footer-col">
             <h4>Contact</h4>
-            <a href="mailto:thabethesandile44@gmail.com"
-              >thabethesandile44@gmail.com</a
-            >
+            <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a>
             <a href="tel:0717378540">0717378540</a>
-            <a href="contact.html">Send a message</a>
           </div>
         </div>
 
@@ -168,26 +123,40 @@
         msg.style.display = text ? 'block' : 'none';
       }
 
+      /* =========================
+         SPEED BOOST #1 — WAKE SERVER
+      ========================= */
+      window.addEventListener('load', () => {
+        if (window.API_BASE) {
+          fetch(`${window.API_BASE}/health`).catch(() => {});
+        }
+      });
+
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
+        const btn = loginForm.querySelector('button[type="submit"]');
 
         showMsg('');
-        window.loader.show('this might take a while…');
+        btn.disabled = true;
+
+        window.loader.show('Signing you in…');
 
         try {
           const data = await window.api.loginRequest(email, password);
+
           if (!data?.token) throw new Error('Login failed');
 
           window.auth.setToken(data.token);
           window.location.href = 'dashboard.html';
         } catch (err) {
           window.loader.hide();
+          btn.disabled = false;
           showMsg(err.message || 'Login failed', 'error');
         }
       });
     </script>
   </body>
-</html>
+  </html>
