@@ -1,279 +1,4 @@
-<p>Project costing and construction profitability analysis.</p>
 
-      <!-- CONSTRUCTION CALCULATOR -->
-      <div class="calculator-container">
-        <h2>Construction Project Cost Calculator</h2>
-        <p>
-          Calculate project profitability and cost management for construction
-          contracts.
-        </p>
-
-        <div class="calculator-grid">
-          <!-- INPUTS -->
-          <div class="input-section">
-            <h3>Inputs</h3>
-
-            <div class="input-group">
-              <label for="const-value">Project Contract Value (R)</label>
-              <input
-                type="number"
-                id="const-value"
-                placeholder="Enter total project value"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="const-material">Material Costs (R)</label>
-              <input
-                type="number"
-                id="const-material"
-                placeholder="Enter total material costs"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="const-labor">Labor Costs (R)</label>
-              <input
-                type="number"
-                id="const-labor"
-                placeholder="Enter monthly labor costs"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="const-equipment"
-                >Equipment & Machinery Costs (R)</label
-              >
-              <input
-                type="number"
-                id="const-equipment"
-                placeholder="Enter monthly equipment costs"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="const-fixed">Fixed Costs (R)</label>
-              <input
-                type="number"
-                id="const-fixed"
-                placeholder="Enter monthly fixed costs"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="const-duration">Project Duration (Months)</label>
-              <input
-                type="number"
-                id="const-duration"
-                placeholder="Enter project duration in months"
-                min="1"
-              />
-            </div>
-
-            <p class="calculator-note">
-              Note: Material costs are once-off. Labor, equipment, and fixed
-              costs are monthly. Duration is in months.
-            </p>
-
-            <button type="button" id="resetBtn">Reset All</button>
-          </div>
-
-          <!-- OUTPUTS -->
-          <div class="output-section">
-            <h3>Results</h3>
-
-            <div class="output-group">
-              <div class="output-label">Project Value</div>
-              <div class="output-value" id="const-project-value">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Material Costs</div>
-              <div class="output-value" id="const-material-output">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Labor Costs</div>
-              <div class="output-value" id="const-labor-output">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Equipment Costs</div>
-              <div class="output-value" id="const-equipment-output">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Fixed Costs</div>
-              <div class="output-value" id="const-fixed-output">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Total Costs</div>
-              <div class="output-value" id="const-total-costs">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Profit / Loss</div>
-              <div class="output-value" id="const-profit">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Profit Margin (%)</div>
-              <div class="output-value" id="const-margin">0.00%</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">ROI (%)</div>
-              <div class="output-value" id="const-roi">0.00%</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Cost Ratio (% of Revenue)</div>
-              <div class="output-value" id="const-ratio">0.00%</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Break-even Revenue</div>
-              <div class="output-value" id="const-breakeven">R0.00</div>
-            </div>
-
-            <!-- Advanced metrics -->
-            <div class="output-group">
-              <div class="output-label">Profit per R1 Material</div>
-              <div class="output-value" id="const-profit-material">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Profit per R1 Labor</div>
-              <div class="output-value" id="const-profit-labor">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Profit per R1 Equipment</div>
-              <div class="output-value" id="const-profit-equipment">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Monthly Profit Projection</div>
-              <div class="output-value" id="const-monthly-profit">R0.00</div>
-            </div>
-
-            <div class="output-group">
-              <div class="output-label">Annual Profit Projection</div>
-              <div class="output-value" id="const-annual-profit">R0.00</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ================================
-   SECTORS & INDUSTRIES NAVIGATION
-================================ -->
-      <div class="sectors-navigation">
-        <h2>Explore All Sectors & Industries</h2>
-        <p>
-          Jump to any sector or industry calculators to quickly compare and
-          analyze multiple business areas.
-        </p>
-
-        <div class="sectors-grid">
-          <!-- Primary Sector -->
-          <div class="sector-group">
-            <h3>Primary Sector</h3>
-            <ul>
-              <li><a href="industry-agriculture.html">Agriculture</a></li>
-              <li><a href="industry-forestry.html">Forestry</a></li>
-              <li><a href="industry-fishing.html">Fishing</a></li>
-              <li><a href="industry-mining.html">Mining</a></li>
-              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-              <li>
-                <a href="industry-renewable-energy.html">Renewable Energy</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Secondary Sector -->
-          <div class="sector-group">
-            <h3>Secondary Sector</h3>
-            <ul>
-              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-              <li><a href="industry-construction.html">Construction</a></li>
-              <li><a href="industry-automotive.html">Automotive</a></li>
-              <li><a href="industry-electronics.html">Electronics</a></li>
-              <li><a href="industry-textiles.html">Textiles</a></li>
-              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-            </ul>
-          </div>
-
-          <!-- Tertiary Sector -->
-          <div class="sector-group">
-            <h3>Tertiary Sector</h3>
-            <ul>
-              <li><a href="industry-real-estate.html">Real Estate</a></li>
-              <li><a href="industry-retail.html">Retail</a></li>
-              <li><a href="industry-restaurants.html">Restaurants</a></li>
-              <li><a href="industry-hospitality.html">Hospitality</a></li>
-              <li><a href="industry-logistics.html">Logistics</a></li>
-              <li><a href="industry-healthcare.html">Healthcare</a></li>
-              <li><a href="industry-education.html">Education</a></li>
-              <li><a href="industry-finance.html">Finance</a></li>
-              <li><a href="industry-marketing.html">Marketing</a></li>
-              <li><a href="industry-consulting.html">Consulting</a></li>
-            </ul>
-          </div>
-
-          <!-- Quaternary Sector -->
-          <div class="sector-group">
-            <h3>Quaternary Sector</h3>
-            <ul>
-              <li><a href="industry-software.html">Software</a></li>
-              <li><a href="industry-saas.html">SaaS</a></li>
-              <li><a href="industry-it-services.html">IT Services</a></li>
-              <li><a href="industry-media.html">Media</a></li>
-              <li><a href="industry-research-development.html">R&D</a></li>
-              <li>
-                <a href="industry-telecommunications.html"
-                  >Telecommunications</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Quinary Sector -->
-          <div class="sector-group">
-            <h3>Quinary Sector</h3>
-            <ul>
-              <li><a href="industry-government.html">Government</a></li>
-              <li><a href="industry-ngos.html">NGOs</a></li>
-              <li>
-                <a href="industry-social-services.html"
-                  >Social & Community Services</a
-                >
-              </li>
-              <li>
-                <a href="industry-public-administration.html"
-                  >Public Administration</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/construction.js"></script>
-    <script src="js/hamburger.js"></script>
-      <script src="js/user-display.js"></script>
-    </body>
-</html>
 <!doctype html>
 <html lang="en">
 <head>
@@ -540,3 +265,268 @@
 
 </body>
           </html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction Calculators - Sandile SystemsWorks</title>
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/calculators.css" />
+</head>
+
+<body>
+
+<div class="app-shell">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+
+      <div class="sidebar-brand">
+        <img src="images/Untitled design.png"
+             alt="Sandile SystemsWorks"
+             class="sidebar-logo" />
+        <span class="sidebar-name">Sandile SystemsWorks</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="sector-primary.html">Primary Sector</a>
+        <a href="sector-secondary.html" class="active">Secondary Sector</a>
+        <a href="sector-tertiary.html">Tertiary Sector</a>
+        <a href="sector-quaternary.html">Quaternary Sector</a>
+        <a href="sector-quinary.html">Quinary Sector</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-account">
+      <button id="accountBtn" class="account-btn">
+        <span id="accountAvatar" class="account-avatar">U</span>
+        <span id="accountName" class="account-name">Account</span>
+      </button>
+
+      <div id="accountMenu" class="account-menu">
+        <a href="index.html">Home</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="main-content">
+
+    <button id="hamburger" class="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="breadcrumb">
+      <a href="dashboard.html">Sectors</a> →
+      <a href="sector-secondary.html">Secondary</a> →
+      <span>Construction</span>
+    </div>
+
+    <h1>Construction Calculators</h1>
+    <p>Advanced project profitability and cost intelligence for construction businesses.</p>
+
+    <!-- ================= CALCULATOR ================= -->
+    <div class="calculator-container">
+      <h2>Construction Project Profitability</h2>
+      <p>Test whether your construction contract is profitable before you start the project.</p>
+
+      <div class="calculator-grid">
+
+        <!-- INPUTS -->
+        <div class="input-section">
+          <h3>Inputs</h3>
+
+          <div class="input-group">
+            <label>Project Contract Value (R)</label>
+            <input type="number" id="const-value"
+                   placeholder="Enter total contract value agreed with client" />
+          </div>
+
+          <div class="input-group">
+            <label>Material Costs (R)</label>
+            <input type="number" id="const-material"
+                   placeholder="Enter total once-off material cost" />
+          </div>
+
+          <div class="input-group">
+            <label>Labor Costs (Monthly R)</label>
+            <input type="number" id="const-labor"
+                   placeholder="Enter monthly site labor wages" />
+          </div>
+
+          <div class="input-group">
+            <label>Equipment Costs (Monthly R)</label>
+            <input type="number" id="const-equipment"
+                   placeholder="Enter monthly machinery & equipment costs" />
+          </div>
+
+          <div class="input-group">
+            <label>Fixed Costs (Monthly R)</label>
+            <input type="number" id="const-fixed"
+                   placeholder="Enter monthly overhead & site expenses" />
+          </div>
+
+          <div class="input-group">
+            <label>Project Duration (Months)</label>
+            <input type="number" id="const-duration"
+                   placeholder="Enter total project duration in months" />
+          </div>
+
+          <button id="resetBtn">Reset All</button>
+        </div>
+
+        <!-- OUTPUTS -->
+        <div class="output-section">
+          <h3>Results</h3>
+
+          <div class="output-group">
+            <div class="output-label">Total Costs</div>
+            <div id="const-total-costs" class="output-value">R0.00</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Profit / Loss</div>
+            <div id="const-profit" class="output-value">R0.00</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Profit Margin (%)</div>
+            <div id="const-margin" class="output-value">0.00%</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">ROI (%)</div>
+            <div id="const-roi" class="output-value">0.00%</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Break-even Revenue</div>
+            <div id="const-breakeven" class="output-value">R0.00</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Monthly Profit</div>
+            <div id="const-monthly-profit" class="output-value">R0.00</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Annual Profit</div>
+            <div id="const-annual-profit" class="output-value">R0.00</div>
+          </div>
+
+          <!-- DECISION -->
+          <div class="output-group">
+            <div class="output-label">Decision Status</div>
+            <div id="decision-status" class="output-value">—</div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Risk Warning</div>
+            <div id="risk-warning" class="output-value"></div>
+          </div>
+
+          <div class="output-group">
+            <div class="output-label">Take / Don’t Take Advice</div>
+            <div id="decision-advice" class="output-value"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FULL INDUSTRIES LIST ================= -->
+    <div class="sectors-navigation">
+      <h2>Explore All Sectors & Industries</h2>
+      <p>Jump to any sector or industry calculators.</p>
+
+      <div class="sectors-grid">
+
+        <!-- Primary -->
+        <div class="sector-group">
+          <h3>Primary Sector</h3>
+          <ul>
+            <li><a href="industry-agriculture.html">Agriculture</a></li>
+            <li><a href="industry-forestry.html">Forestry</a></li>
+            <li><a href="industry-fishing.html">Fishing</a></li>
+            <li><a href="industry-mining.html">Mining</a></li>
+            <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
+            <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
+          </ul>
+        </div>
+
+        <!-- Secondary -->
+        <div class="sector-group">
+          <h3>Secondary Sector</h3>
+          <ul>
+            <li><a href="industry-manufacturing.html">Manufacturing</a></li>
+            <li><a href="industry-construction.html">Construction</a></li>
+            <li><a href="industry-automotive.html">Automotive</a></li>
+            <li><a href="industry-electronics.html">Electronics</a></li>
+            <li><a href="industry-textiles.html">Textiles</a></li>
+            <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
+          </ul>
+        </div>
+
+        <!-- Tertiary -->
+        <div class="sector-group">
+          <h3>Tertiary Sector</h3>
+          <ul>
+            <li><a href="industry-real-estate.html">Real Estate</a></li>
+            <li><a href="industry-retail.html">Retail</a></li>
+            <li><a href="industry-restaurants.html">Restaurants</a></li>
+            <li><a href="industry-hospitality.html">Hospitality</a></li>
+            <li><a href="industry-logistics.html">Logistics</a></li>
+            <li><a href="industry-healthcare.html">Healthcare</a></li>
+            <li><a href="industry-education.html">Education</a></li>
+            <li><a href="industry-finance.html">Finance</a></li>
+            <li><a href="industry-marketing.html">Marketing</a></li>
+            <li><a href="industry-consulting.html">Consulting</a></li>
+          </ul>
+        </div>
+
+        <!-- Quaternary -->
+        <div class="sector-group">
+          <h3>Quaternary Sector</h3>
+          <ul>
+            <li><a href="industry-software.html">Software</a></li>
+            <li><a href="industry-saas.html">SaaS</a></li>
+            <li><a href="industry-it-services.html">IT Services</a></li>
+            <li><a href="industry-media.html">Media</a></li>
+            <li><a href="industry-research-development.html">R&D</a></li>
+            <li><a href="industry-telecommunications.html">Telecommunications</a></li>
+          </ul>
+        </div>
+
+        <!-- Quinary -->
+        <div class="sector-group">
+          <h3>Quinary Sector</h3>
+          <ul>
+            <li><a href="industry-government.html">Government</a></li>
+            <li><a href="industry-ngos.html">NGOs</a></li>
+            <li><a href="industry-social-services.html">Social & Community Services</a></li>
+            <li><a href="industry-public-administration.html">Public Administration</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/guard.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/construction.js"></script>
+<script src="js/hamburger.js"></script>
+<script src="js/user-display.js"></script>
+
+</body>
+      </html>
