@@ -1,35 +1,38 @@
 /* =========================================================
-   calculators.css (FIX SCROLL + FIXED SIDEBAR)
+   calculators.css – FULL WORKING VERSION
 ========================================================= */
 
-/* GLOBAL SAFETY */
+/* ================= GLOBAL RESET ================= */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* =========================================================
-   APP LAYOUT
-========================================================= */
+/* ================= LAYOUT ================= */
 .app-shell {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
+  background: #0b1120;
 }
 
-/* =========================================================
-   SIDEBAR (FIXED LEFT)
-========================================================= */
 .sidebar {
-  background-color: #020617;
+  width: 260px;
+  background: #020617;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  z-index: 100;
 }
 
-/* =========================================================
-   HEADINGS
-========================================================= */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: #0b1120;
+}
+
+/* ================= TYPOGRAPHY ================= */
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -45,22 +48,20 @@ h2 {
 h3 {
   font-size: 1.3rem;
   margin-bottom: 0.8rem;
-  color: #fff;
+  color: #ffffff;
 }
 
 p,
 li {
   font-size: 1rem;
   margin-bottom: 0.8rem;
-  color: #ccc;
+  color: #cbd5e1;
 }
 
-/* =========================================================
-   BREADCRUMB
-========================================================= */
+/* ================= BREADCRUMB ================= */
 .breadcrumb {
   font-size: 0.9rem;
-  color: #888;
+  color: #94a3b8;
   margin-bottom: 1rem;
 }
 
@@ -69,397 +70,207 @@ li {
   text-decoration: none;
 }
 
-/* =========================================================
-   CALCULATORS
-========================================================= */
+/* ================= CALCULATOR CARD ================= */
 .calculator-container {
-  background-color: #020617;
-  padding: 1.5rem;
-  border-radius: 10px;
+  background: #020617;
+  padding: 2rem;
+  border-radius: 16px;
   margin-top: 1.5rem;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
 }
 
 .calculator-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 1.2rem;
+  gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .input-section,
 .output-section {
-  background-color: #030922;
-  padding: 1.25rem;
-  border-radius: 10px;
-  min-width: 0;
+  background: #030922;
+  padding: 1.5rem;
+  border-radius: 16px;
 }
 
-/* =========================================================
-   INPUTS (NO OVERFLOW)
-========================================================= */
+/* ================= INPUTS ================= */
 .input-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 label {
   display: block;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ccc;
+  color: #94a3b8;
 }
 
 .input-section input {
   width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background-color: #111;
-  color: #fff;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  background: #111827;
+  color: #ffffff;
+  transition: 0.2s ease;
 }
 
 .input-section input:focus {
   outline: none;
   border-color: #00b4d8;
+  box-shadow: 0 0 10px rgba(0,180,216,0.3);
 }
 
-/* =========================================================
-   OUTPUTS
-========================================================= */
+/* Reset Button */
+#resetBtn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  border: none;
+  background: #00b4d8;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#resetBtn:hover {
+  background: #0096c7;
+}
+
+/* ================= OUTPUTS ================= */
 .output-group {
   display: flex;
   justify-content: space-between;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #333;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #1e293b;
 }
 
 .output-label {
-  color: #aaa;
+  color: #94a3b8;
   font-weight: 600;
 }
 
 .output-value {
   font-weight: 700;
+  text-align: right;
+  color: #e2e8f0;
 }
 
-.output-value.positive {
-  color: #00ff7f;
+/* ================= STATUS COLORS ================= */
+#log-status.profit {
+  color: #22c55e;
+  font-weight: 800;
 }
 
-.output-value.negative {
-  color: #ff4d4d;
+#log-status.loss {
+  color: #ef4444;
+  font-weight: 800;
 }
 
-/* =========================================================
-   SECTORS NAVIGATION (UNCHANGED STYLE)
-========================================================= */
+#log-status.neutral {
+  color: #f59e0b;
+  font-weight: 800;
+}
+
+/* ================= DECISION ENGINE ================= */
+
+/* Risk Level */
+#log-risk-level {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Recommended Price */
+#log-recommended-price {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.4);
+  color: #60a5fa;
+  font-weight: 800;
+}
+
+/* Safety */
+#log-safety {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Advice */
+#log-advice {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+/* ================= SECTOR NAV ================= */
 .sectors-navigation {
-  margin: 60px 0;
-  padding: 20px;
+  margin-top: 4rem;
 }
 
 .sectors-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 2rem;
 }
 
 .sector-group {
   flex: 1 1 200px;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+.sector-group ul {
+  list-style: none;
+}
+
+.sector-group a {
+  color: #94a3b8;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.4rem;
+  transition: 0.2s;
+}
+
+.sector-group a:hover {
+  color: #00b4d8;
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
   .sidebar {
     width: 220px;
   }
 }
+
 @media (max-width: 768px) {
   .calculator-grid {
     grid-template-columns: 1fr;
   }
 
+  .sidebar {
+    display: none;
+  }
+
   .main-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-    padding: 1rem;
+    padding: 1.2rem;
   }
 }
-
-#log-status.profit { color: #16a34a; font-weight: 700; }
-#log-status.loss { color: #dc2626; font-weight: 700; }
-#log-status.neutral { color: #f59e0b; font-weight: 700; }
-
-/* =========================
-   Decision Status + Insight
-   ========================= */
-
-/* Base style for status pill */
-#status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-/* Optional: add a small dot before status text */
-#status::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
-}
-
-/* PROFIT */
-#status.profit {
-  color: #9BFFC8; /* premium mint */
-  border-color: rgba(0, 255, 163, 0.22);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 255, 163, 0.12),
-    rgba(0, 255, 163, 0.04)
-  );
-}
-#status.profit::before {
-  background: #00FFA3;
-  box-shadow: 0 0 0 4px rgba(0, 255, 163, 0.14);
-}
-
-/* LOSS */
-#status.loss {
-  color: #FFB3B3; /* soft premium red */
-  border-color: rgba(255, 77, 77, 0.22);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 77, 77, 0.14),
-    rgba(255, 77, 77, 0.04)
-  );
-}
-#status.loss::before {
-  background: #FF4D4D;
-  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.14);
-}
-
-/* BREAK-EVEN / NEUTRAL */
-#status.neutral {
-  color: #FFD38D; /* warm premium amber */
-  border-color: rgba(255, 180, 80, 0.22);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 180, 80, 0.14),
-    rgba(255, 180, 80, 0.04)
-  );
-}
-#status.neutral::before {
-  background: #FFB450;
-  box-shadow: 0 0 0 4px rgba(255, 180, 80, 0.14);
-}
-
-/* Insight text (premium card note) */
-#decisionAdvice {
-  margin-top: 8px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Optional: make advice change tone depending on status (no JS change needed) */
-.output-section:has(#status.profit) #decisionAdvice {
-  border-color: rgba(0, 255, 163, 0.18);
-  background: rgba(0, 255, 163, 0.06);
-}
-.output-section:has(#status.loss) #decisionAdvice {
-  border-color: rgba(255, 77, 77, 0.18);
-  background: rgba(255, 77, 77, 0.06);
-}
-.output-section:has(#status.neutral) #decisionAdvice {
-  border-color: rgba(255, 180, 80, 0.18);
-  background: rgba(255, 180, 80, 0.06);
-}
-
-/* ===============================
-   NEW CONSTRUCTION DECISION UI
-   (Risk • Markup • Simulation • Decision)
-================================= */
-
-/* Decision Panel */
-.decision-panel {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 15px;
-  text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(6px);
-}
-
-.decision-take {
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.6);
-  color: #22c55e;
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
-}
-
-.decision-caution {
-  background: rgba(250, 204, 21, 0.12);
-  border: 1px solid rgba(250, 204, 21, 0.6);
-  color: #facc15;
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
-}
-
-.decision-avoid {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.6);
-  color: #ef4444;
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
-}
-
-/* Risk Warning */
-.risk-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(239, 68, 68, 0.08);
-  border-left: 4px solid #ef4444;
-  color: #f87171;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Markup Recommendation */
-.markup-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(59, 130, 246, 0.08);
-  border-left: 4px solid #3b82f6;
-  color: #60a5fa;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Cost Overrun Simulation */
-.simulation-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(168, 85, 247, 0.08);
-  border-left: 4px solid #a855f7;
-  color: #c084fc;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Subtle premium animation */
-.decision-panel,
-.risk-box,
-.markup-box,
-.simulation-box {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.decision-panel:hover,
-.risk-box:hover,
-.markup-box:hover,
-.simulation-box:hover {
-  transform: translateY(-3px);
-     }
-
-/* ===============================
-   LOGISTICS DECISION ENGINE UI
-================================= */
-
-/* Risk Level */
-#log-risk-level {
-  display: inline-flex;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
-}
-
-#log-risk-level.low {
-  color: #22c55e;
-  background: rgba(34,197,94,0.12);
-  border-color: rgba(34,197,94,0.4);
-}
-
-#log-risk-level.medium {
-  color: #f59e0b;
-  background: rgba(245,158,11,0.12);
-  border-color: rgba(245,158,11,0.4);
-}
-
-#log-risk-level.high {
-  color: #ef4444;
-  background: rgba(239,68,68,0.12);
-  border-color: rgba(239,68,68,0.4);
-}
-
-/* Recommended Price Highlight */
-#log-recommended-price {
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-weight: 800;
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.4);
-  color: #60a5fa;
-  box-shadow: 0 0 18px rgba(59,130,246,0.15);
-}
-
-/* Safety Status */
-#log-safety {
-  display: inline-flex;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
-}
-
-#log-safety.healthy {
-  color: #22c55e;
-  background: rgba(34,197,94,0.12);
-  border-color: rgba(34,197,94,0.4);
-}
-
-#log-safety.risk {
-  color: #f59e0b;
-  background: rgba(245,158,11,0.12);
-  border-color: rgba(245,158,11,0.4);
-}
-
-#log-safety.critical {
-  color: #ef4444;
-  background: rgba(239,68,68,0.12);
-  border-color: rgba(239,68,68,0.4);
-}
-
-/* Advice Card */
-#log-advice {
-  margin-top: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.9);
-   }
