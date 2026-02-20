@@ -1,38 +1,40 @@
 /* =========================================================
-   calculators.css – FULL WORKING VERSION
+   calculators.css (FIX SCROLL + FIXED SIDEBAR)
 ========================================================= */
 
-/* ================= GLOBAL RESET ================= */
+/* ================= GLOBAL SAFETY ================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ================= LAYOUT ================= */
+/* ================= APP LAYOUT ================= */
 .app-shell {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background: #0b1120;
 }
 
+/* ================= SIDEBAR ================= */
 .sidebar {
-  width: 260px;
-  background: #020617;
+  background-color: #020617;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 260px;
+  z-index: 100;
 }
 
+/* ================= MAIN CONTENT ================= */
 .main-content {
   flex: 1;
   padding: 2rem;
-  overflow-y: auto;
   background: #0b1120;
+  overflow-y: auto;
 }
 
-/* ================= TYPOGRAPHY ================= */
+/* ================= HEADINGS ================= */
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -48,20 +50,20 @@ h2 {
 h3 {
   font-size: 1.3rem;
   margin-bottom: 0.8rem;
-  color: #ffffff;
+  color: #fff;
 }
 
 p,
 li {
   font-size: 1rem;
   margin-bottom: 0.8rem;
-  color: #cbd5e1;
+  color: #ccc;
 }
 
 /* ================= BREADCRUMB ================= */
 .breadcrumb {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: #888;
   margin-bottom: 1rem;
 }
 
@@ -70,13 +72,13 @@ li {
   text-decoration: none;
 }
 
-/* ================= CALCULATOR CARD ================= */
+/* ================= CALCULATOR ================= */
 .calculator-container {
-  background: #020617;
-  padding: 2rem;
-  border-radius: 16px;
+  background-color: #020617;
+  padding: 1.8rem;
+  border-radius: 14px;
   margin-top: 1.5rem;
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
 }
 
 .calculator-grid {
@@ -88,9 +90,9 @@ li {
 
 .input-section,
 .output-section {
-  background: #030922;
+  background-color: #030922;
   padding: 1.5rem;
-  border-radius: 16px;
+  border-radius: 14px;
 }
 
 /* ================= INPUTS ================= */
@@ -103,31 +105,31 @@ label {
   margin-bottom: 0.4rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #94a3b8;
+  color: #aaa;
 }
 
 .input-section input {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
   border: 1px solid #1e293b;
-  background: #111827;
-  color: #ffffff;
+  background-color: #111827;
+  color: #fff;
   transition: 0.2s ease;
 }
 
 .input-section input:focus {
   outline: none;
   border-color: #00b4d8;
-  box-shadow: 0 0 10px rgba(0,180,216,0.3);
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
 /* Reset Button */
 #resetBtn {
   width: 100%;
   margin-top: 1rem;
-  padding: 0.9rem;
-  border-radius: 10px;
+  padding: 0.8rem;
+  border-radius: 8px;
   border: none;
   background: #00b4d8;
   color: #000;
@@ -145,7 +147,7 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 0;
+  padding: 0.7rem 0;
   border-bottom: 1px solid #1e293b;
 }
 
@@ -157,7 +159,6 @@ label {
 .output-value {
   font-weight: 700;
   text-align: right;
-  color: #e2e8f0;
 }
 
 /* ================= STATUS COLORS ================= */
@@ -176,54 +177,170 @@ label {
   font-weight: 800;
 }
 
-/* ================= DECISION ENGINE ================= */
+/* ===============================
+   NEW CONSTRUCTION DECISION UI
+   (Risk • Markup • Simulation • Decision)
+================================= */
 
-/* Risk Level */
-#log-risk-level {
-  display: inline-block;
+/* Decision Panel */
+.decision-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.decision-take {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  color: #22c55e;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
+}
+
+.decision-caution {
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
+}
+
+.decision-avoid {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+}
+
+/* Risk Warning */
+.risk-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  color: #f87171;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Markup Recommendation */
+.markup-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  color: #60a5fa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cost Overrun Simulation */
+.simulation-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.08);
+  border-left: 4px solid #a855f7;
+  color: #c084fc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Subtle premium animation */
+.decision-panel,
+.risk-box,
+.markup-box,
+.simulation-box {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.decision-panel:hover,
+.risk-box:hover,
+.markup-box:hover,
+.simulation-box:hover {
+  transform: translateY(-3px);
+}
+
+/* ================= LOGISTICS DECISION ENGINE ================= */
+
+/* Make decision engine rows feel special */
+#log-risk-level,
+#log-safety {
+  display: inline-flex;
   padding: 6px 12px;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Risk Level classes */
+#log-risk-level.low {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+#log-risk-level.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-risk-level.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* Recommended Price */
 #log-recommended-price {
-  display: inline-block;
   padding: 8px 14px;
   border-radius: 10px;
-  background: rgba(59,130,246,0.15);
-  border: 1px solid rgba(59,130,246,0.4);
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
   color: #60a5fa;
-  font-weight: 800;
+  font-weight: 900;
 }
 
-/* Safety */
-#log-safety {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
+/* Safety Status classes */
+#log-safety.healthy {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
 }
 
-/* Advice */
+#log-safety.risk {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-safety.critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Advice Box */
 #log-advice {
   margin-top: 1rem;
   padding: 1rem;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.9rem;
-  line-height: 1.5;
-  color: #e2e8f0;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* ================= SECTOR NAV ================= */
+/* ================= SECTOR GRID ================= */
 .sectors-navigation {
   margin-top: 4rem;
 }
@@ -236,6 +353,10 @@ label {
 
 .sector-group {
   flex: 1 1 200px;
+}
+
+.sector-group h3 {
+  margin-bottom: 0.8rem;
 }
 
 .sector-group ul {
@@ -273,4 +394,4 @@ label {
   .main-content {
     padding: 1.2rem;
   }
-}
+   }
