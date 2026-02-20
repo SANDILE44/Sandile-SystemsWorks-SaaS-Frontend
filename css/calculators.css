@@ -383,28 +383,11 @@ label {
 }
 
 @media (max-width: 768px) {
-
-  .hamburger {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: -260px; /* hidden */
-    height: 100vh;
-    width: 260px;
-    transition: left 0.3s ease;
-    z-index: 200;
-  }
-
-  .sidebar.sidebar-open {
-    left: 0; /* show */
+  .calculator-grid {
+    grid-template-columns: 1fr;
   }
 
   .main-content {
     padding: 1.2rem;
   }
-}
-
+              }
