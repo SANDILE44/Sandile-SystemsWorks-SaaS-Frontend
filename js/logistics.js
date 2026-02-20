@@ -12,24 +12,15 @@
 
   let debounceTimer;
 
-  /* =========================
-     LIVE UPDATE (DEBOUNCE)
-  ========================= */
   function updateLogistics() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(runLogistics, 300);
   }
 
-  /* =========================
-     MAIN CALCULATION
-  ========================= */
   async function runLogistics() {
     try {
       const token = localStorage.getItem('token');
-
-      if (!token) {
-        return location.replace('login.html');
-      }
+      if (!token) return location.replace('login.html');
 
       const res = await fetch(
         `${API_BASE}/api/calculators/logistics/business`,
@@ -50,13 +41,11 @@
         }
       );
 
-      /* SESSION EXPIRED */
       if (res.status === 401) {
         localStorage.removeItem('token');
         return location.replace('login.html');
       }
 
-      /* NO ACCESS */
       if (res.status === 403) {
         return location.replace('payment.html');
       }
@@ -65,9 +54,7 @@
 
       const d = await res.json();
 
-      /* =========================
-         CORE OUTPUTS
-      ========================= */
+      /* ================= CORE ================= */
       $('log-shipments-output').textContent = d.shipments ?? 0;
       $('log-total-revenue').textContent = money(d.totalRevenue);
       $('log-total-costs').textContent = money(d.totalCosts);
@@ -78,9 +65,7 @@
       $('log-margin').textContent = percent(d.margin);
       $('log-roi').textContent = percent(d.roi);
 
-      /* =========================
-         DECISION DATA
-      ========================= */
+      /* ================= DECISION ================= */
       $('log-profit-per-shipment').textContent =
         money(d.profitPerShipment);
       $('log-breakeven-shipments').textContent =
@@ -106,13 +91,11 @@
 
       $('log-fixed-pct').textContent = percent(fixedPct);
 
-      /* =========================
-         STATUS COLOR LOGIC
-      ========================= */
+      /* ================= STATUS ================= */
       const statusEl = $('log-status');
-      const status = (d.status || '').toLowerCase().trim();
-
       statusEl.classList.remove('profit', 'loss', 'neutral');
+
+      const status = (d.status || '').toLowerCase();
 
       if (status === 'profitable') {
         statusEl.textContent = 'Profitable';
@@ -125,54 +108,70 @@
         statusEl.classList.add('neutral');
       }
 
-      /* =========================
-         ADVANCED DECISION ENGINE
-      ========================= */
-      $('log-risk-level').textContent =
-        d.riskLevel || '—';
+      /* ================= RISK LEVEL ================= */
+      const riskEl = $('log-risk-level');
+      riskEl.classList.remove('low', 'medium', 'high');
 
+      const risk = (d.riskLevel || '').toLowerCase();
+
+      if (risk === 'low') {
+        riskEl.classList.add('low');
+      } else if (risk === 'medium') {
+        riskEl.classList.add('medium');
+      } else if (risk === 'high') {
+        riskEl.classList.add('high');
+      }
+
+      riskEl.textContent = d.riskLevel || '—';
+
+      /* ================= RECOMMENDED PRICE ================= */
       $('log-recommended-price').textContent =
         money(d.recommendedPricePerShipment);
 
-      $('log-safety').textContent =
-        d.safetyStatus || '—';
+      /* ================= SAFETY ================= */
+      const safetyEl = $('log-safety');
+      safetyEl.classList.remove('healthy', 'risk', 'critical');
 
-      $('log-advice').textContent =
-        d.advice || '';
+      const safety = (d.safetyStatus || '').toLowerCase();
+
+      if (safety === 'healthy') {
+        safetyEl.classList.add('healthy');
+      } else if (safety === 'at risk') {
+        safetyEl.classList.add('risk');
+      } else if (safety === 'critical') {
+        safetyEl.classList.add('critical');
+      }
+
+      safetyEl.textContent = d.safetyStatus || '—';
+
+      /* ================= ADVICE ================= */
+      $('log-advice').textContent = d.advice || '';
 
     } catch (err) {
       console.error('Logistics calculator error:', err);
     }
   }
 
-  /* =========================
-     RESET BUTTON
-  ========================= */
+  /* ================= RESET ================= */
   $('resetBtn')?.addEventListener('click', () => {
     document
       .querySelectorAll('.input-section input')
       .forEach((i) => (i.value = ''));
-
     runLogistics();
   });
 
-  /* =========================
-     LOGOUT BUTTON
-  ========================= */
+  /* ================= LOGOUT ================= */
   $('logoutBtn')?.addEventListener('click', () => {
     localStorage.removeItem('token');
     location.replace('login.html');
   });
 
-  /* =========================
-     INPUT LISTENERS
-  ========================= */
+  /* ================= INPUT LISTENERS ================= */
   document
     .querySelectorAll('.input-section input')
     .forEach((i) =>
       i.addEventListener('input', updateLogistics)
     );
 
-  /* INITIAL LOAD */
   runLogistics();
 })();
