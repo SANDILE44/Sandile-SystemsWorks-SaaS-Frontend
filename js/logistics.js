@@ -10,14 +10,14 @@
 
   const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
-  let t;
+  let debounceTimer;
 
   /* =========================
-     LIVE UPDATE
+     LIVE UPDATE (DEBOUNCE)
   ========================= */
   function updateLogistics() {
-    clearTimeout(t);
-    t = setTimeout(runLogistics, 300);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runLogistics, 300);
   }
 
   /* =========================
@@ -26,7 +26,10 @@
   async function runLogistics() {
     try {
       const token = localStorage.getItem('token');
-      if (!token) return location.replace('login.html');
+
+      if (!token) {
+        return location.replace('login.html');
+      }
 
       const res = await fetch(
         `${API_BASE}/api/calculators/logistics/business`,
@@ -47,32 +50,48 @@
         }
       );
 
-      if (res.status === 403) return location.replace('payment.html');
+      /* SESSION EXPIRED */
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        return location.replace('login.html');
+      }
+
+      /* NO ACCESS */
+      if (res.status === 403) {
+        return location.replace('payment.html');
+      }
+
       if (!res.ok) return;
 
       const d = await res.json();
 
-      /* CORE */
+      /* =========================
+         CORE OUTPUTS
+      ========================= */
       $('log-shipments-output').textContent = d.shipments ?? 0;
       $('log-total-revenue').textContent = money(d.totalRevenue);
       $('log-total-costs').textContent = money(d.totalCosts);
       $('log-profit').textContent = money(d.profit);
       $('log-per-shipment').textContent = money(d.costPerShipment);
-      $('log-revenue-per-shipment').textContent = money(d.revenuePerShipment);
+      $('log-revenue-per-shipment').textContent =
+        money(d.revenuePerShipment);
       $('log-margin').textContent = percent(d.margin);
       $('log-roi').textContent = percent(d.roi);
 
-      /* DECISION */
-      $('log-profit-per-shipment').textContent = money(d.profitPerShipment);
+      /* =========================
+         DECISION DATA
+      ========================= */
+      $('log-profit-per-shipment').textContent =
+        money(d.profitPerShipment);
       $('log-breakeven-shipments').textContent =
         d.breakEvenShipments ?? 0;
-      $('log-annual-profit').textContent = money(d.annualProfit);
+      $('log-annual-profit').textContent =
+        money(d.annualProfit);
 
       $('log-fuel-pct').textContent = percent(d.fuelPercent);
       $('log-labor-pct').textContent = percent(d.laborPercent);
-      $('log-maintenance-pct').textContent = percent(
-        d.maintenancePercent
-      );
+      $('log-maintenance-pct').textContent =
+        percent(d.maintenancePercent);
 
       const fixedPct =
         d.totalCosts > 0
@@ -87,7 +106,9 @@
 
       $('log-fixed-pct').textContent = percent(fixedPct);
 
-      /* STATUS (NO FALLBACK BUG) */
+      /* =========================
+         STATUS COLOR LOGIC
+      ========================= */
       const statusEl = $('log-status');
       const status = (d.status || '').toLowerCase().trim();
 
@@ -103,20 +124,44 @@
         statusEl.textContent = 'Break-even';
         statusEl.classList.add('neutral');
       }
+
+      /* =========================
+         ADVANCED DECISION ENGINE
+      ========================= */
+      $('log-risk-level').textContent =
+        d.riskLevel || '—';
+
+      $('log-recommended-price').textContent =
+        money(d.recommendedPricePerShipment);
+
+      $('log-safety').textContent =
+        d.safetyStatus || '—';
+
+      $('log-advice').textContent =
+        d.advice || '';
+
     } catch (err) {
       console.error('Logistics calculator error:', err);
     }
   }
 
   /* =========================
-     RESET
+     RESET BUTTON
   ========================= */
   $('resetBtn')?.addEventListener('click', () => {
-    document.querySelectorAll('.input-section input').forEach((i) => {
-      i.value = '';
-    });
+    document
+      .querySelectorAll('.input-section input')
+      .forEach((i) => (i.value = ''));
 
     runLogistics();
+  });
+
+  /* =========================
+     LOGOUT BUTTON
+  ========================= */
+  $('logoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem('token');
+    location.replace('login.html');
   });
 
   /* =========================
@@ -124,7 +169,10 @@
   ========================= */
   document
     .querySelectorAll('.input-section input')
-    .forEach((i) => i.addEventListener('input', updateLogistics));
+    .forEach((i) =>
+      i.addEventListener('input', updateLogistics)
+    );
 
+  /* INITIAL LOAD */
   runLogistics();
 })();
