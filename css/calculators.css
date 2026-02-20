@@ -16,16 +16,6 @@
   width: 100%;
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-  background-color: #020617;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 260px;
-  z-index: 100;
-}
-
 /* ================= MAIN CONTENT ================= */
 .main-content {
   flex: 1;
@@ -382,12 +372,10 @@ label {
   }
 }
 
+/* DO NOT OVERRIDE MAIN SIDEBAR MOBILE BEHAVIOR */
 @media (max-width: 768px) {
-  .calculator-grid {
-    grid-template-columns: 1fr;
+  .sidebar {
+    all: unset;
   }
+}
 
-  .main-content {
-    padding: 1.2rem;
-  }
-              }
