@@ -383,15 +383,28 @@ label {
 }
 
 @media (max-width: 768px) {
-  .calculator-grid {
-    grid-template-columns: 1fr;
+
+  .hamburger {
+    display: flex;
+    margin-bottom: 1rem;
   }
 
   .sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: -260px; /* hidden */
+    height: 100vh;
+    width: 260px;
+    transition: left 0.3s ease;
+    z-index: 200;
+  }
+
+  .sidebar.sidebar-open {
+    left: 0; /* show */
   }
 
   .main-content {
     padding: 1.2rem;
   }
-   }
+}
+
