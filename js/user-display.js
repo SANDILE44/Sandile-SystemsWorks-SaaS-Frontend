@@ -45,6 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
     accountMenu.classList.toggle('open');
   });
 
+    // logout.js
+(() => {
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (!logoutBtn) return;
+
+  logoutBtn.addEventListener("click", () => {
+    // Clear auth/session data
+    localStorage.removeItem("token");
+    localStorage.removeItem("authMessage");
+    localStorage.removeItem("afterLogin");
+
+    // Optional: close account dropdown if you use it
+    const menu = document.getElementById("accountMenu");
+    if (menu) menu.classList.remove("open");
+
+    // Redirect to login (or home if you prefer)
+    window.location.href = "login.html";
+  });
+})();
+
   // Close when clicking outside
   document.addEventListener('click', () => {
     accountMenu.classList.remove('open');
@@ -55,3 +75,4 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
   });
 });
+
