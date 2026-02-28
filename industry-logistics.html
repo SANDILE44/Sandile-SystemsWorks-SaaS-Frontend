@@ -676,8 +676,19 @@
       </main>
     </div>
 
-    <!-- ✅ TOOL TOGGLE JS (INLINE, WORKS IMMEDIATELY) -->
-<script>
+    <script>
+  (function () {
+    const resetBtn = document.getElementById("resetBtn");
+    const resetOperationsBtn = document.getElementById("resetOperationsBtn");
+    const resetShipmentBtn = document.getElementById("resetShipmentBtn");
+
+    if (!resetBtn) return;
+
+    resetOperationsBtn?.addEventListener("click", () => resetBtn.click());
+    resetShipmentBtn?.addEventListener("click", () => resetBtn.click());
+  })();
+
+
 (function () {
   const btnOperations = document.getElementById("btn-operations");
   const btnShipment = document.getElementById("btn-shipment");
@@ -725,4 +736,5 @@
     <script src="js/hamburger.js"></script>
     <script src="js/user-display.js"></script>
   </body>
+</html>
                                                                                </html>
