@@ -249,6 +249,159 @@
         </div>
 
         <!-- ================================
+   SHIPMENT-LEVEL DECISION ENGINE
+================================ -->
+<div class="calculator-container advanced-module">
+  <h2>Shipment Risk & Pricing Simulator</h2>
+  <p>Evaluate shipment profitability before approving the contract.</p>
+
+  <div class="calculator-grid">
+
+    <!-- INPUTS -->
+    <div class="input-section">
+      <h3>Shipment Inputs</h3>
+
+      <div class="input-group">
+        <label>Client Quote Price (R)</label>
+        <input type="number" id="ship-quote" placeholder="Total amount the client will pay for this shipment">
+      </div>
+
+      <div class="input-group">
+        <label>Required Minimum Margin (%)</label>
+        <input type="number" id="ship-min-margin" placeholder="Minimum profit margin your business requires to accept shipments">
+      </div>
+
+      <div class="input-group">
+        <label>Safety Buffer (%)</label>
+        <input type="number" id="ship-buffer" placeholder="Additional margin cushion to protect against unexpected cost increases">
+      </div>
+
+      <hr>
+
+      <div class="input-group">
+        <label>Distance (km)</label>
+        <input type="number" id="ship-distance" placeholder="Total route distance for this shipment">
+      </div>
+
+      <div class="input-group">
+        <label>Fuel Cost Per KM (R)</label>
+        <input type="number" id="ship-fuel-km" placeholder="Estimated fuel expense per kilometre">
+      </div>
+
+      <div class="input-group">
+        <label>Vehicle Wear Cost Per KM (R)</label>
+        <input type="number" id="ship-vehicle-km" placeholder="Maintenance and depreciation cost per kilometre">
+      </div>
+
+      <div class="input-group">
+        <label>Load Factor (%)</label>
+        <input type="number" id="ship-load-factor" placeholder="Percentage of truck capacity utilized for this shipment">
+      </div>
+
+      <hr>
+
+      <div class="input-group">
+        <label>Driving Time (Hours)</label>
+        <input type="number" id="ship-driving-hours" placeholder="Total estimated driving time">
+      </div>
+
+      <div class="input-group">
+        <label>Loading / Waiting Time (Hours)</label>
+        <input type="number" id="ship-wait-hours" placeholder="Time spent loading, unloading or waiting">
+      </div>
+
+      <div class="input-group">
+        <label>Driver Cost Per Hour (R)</label>
+        <input type="number" id="ship-driver-rate" placeholder="Hourly wage or cost of assigned driver">
+      </div>
+
+      <hr>
+
+      <div class="input-group">
+        <label>Toll Costs (R)</label>
+        <input type="number" id="ship-tolls" placeholder="Total toll expenses for this route">
+      </div>
+
+      <div class="input-group">
+        <label>Permits / Border Fees (R)</label>
+        <input type="number" id="ship-permits" placeholder="Permit fees, border charges or administrative costs">
+      </div>
+
+      <div class="input-group">
+        <label>Other Route Expenses (R)</label>
+        <input type="number" id="ship-other-fees" placeholder="Additional route-related expenses">
+      </div>
+
+      <hr>
+
+      <div class="input-group">
+        <label>Cargo Value (R)</label>
+        <input type="number" id="ship-cargo-value" placeholder="Declared value of goods being transported">
+      </div>
+
+      <div class="input-group">
+        <label>Insurance Rate (%)</label>
+        <input type="number" id="ship-insurance" placeholder="Insurance percentage applied to cargo value">
+      </div>
+
+      <hr>
+
+      <div class="input-group">
+        <label>Customs Duties (R)</label>
+        <input type="number" id="ship-duties" placeholder="Import or export duty applicable to this shipment">
+      </div>
+
+      <div class="input-group">
+        <label>Handling Fees (R)</label>
+        <input type="number" id="ship-handling" placeholder="Warehouse, loading or unloading service fees">
+      </div>
+
+      <div class="input-group">
+        <label>Pass-through Costs (R)</label>
+        <input type="number" id="ship-pass-through" placeholder="Third-party charges passed directly to your company">
+      </div>
+
+    </div>
+
+    <!-- OUTPUTS -->
+    <div class="output-section">
+      <h3>Shipment Results</h3>
+
+      <div class="output-group">
+        <div class="output-label">Total Shipment Cost</div>
+        <div class="output-value" id="ship-total-cost">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Estimated Profit</div>
+        <div class="output-value" id="ship-profit">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Profit Margin</div>
+        <div class="output-value" id="ship-margin">0.00%</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Recommended Minimum Quote</div>
+        <div class="output-value" id="ship-min-quote">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision</div>
+        <div class="output-value" id="ship-decision">—</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision Explanation</div>
+        <div class="output-value" id="ship-reason">—</div>
+      </div>
+
+    </div>
+  </div>
+          </div>
+
+        <!-- ================================
      SECTORS & INDUSTRIES NAVIGATION
 ================================ -->
         <div class="sectors-navigation">
