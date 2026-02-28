@@ -763,7 +763,10 @@ body {
 }
 
 /* ================= RESET BUTTON ================= */
+
 button#resetBtn,
+#resetOperationsBtn,
+#resetShipmentBtn,
 button[id$='reset'] {
   width: 100%;
   margin-top: 1rem;
@@ -789,7 +792,9 @@ button[id$='reset'] {
 }
 
 /* Hover */
-button#resetBtn :hover,
+button#resetBtn:hover,
+#resetOperationsBtn:hover,
+#resetShipmentBtn:hover,
 button[id$='reset']:hover {
   background: rgba(255, 107, 107, 0.08);
   color: #ff6b6b;
@@ -797,29 +802,20 @@ button[id$='reset']:hover {
   transform: translateY(-1px);
 }
 
-/* Active (click) */
+/* Active */
 button#resetBtn:active,
+#resetOperationsBtn:active,
+#resetShipmentBtn:active,
 button[id$='reset']:active {
   transform: translateY(0);
   background: rgba(255, 107, 107, 0.15);
 }
 
-/* Focus (keyboard accessibility) */
+/* Focus */
 button#resetBtn:focus-visible,
+#resetOperationsBtn:focus-visible,
+#resetShipmentBtn:focus-visible,
 button[id$='reset']:focus-visible {
   outline: 2px solid rgba(255, 107, 107, 0.5);
   outline-offset: 3px;
 }
-
-/* Profit states */
-.profit-positive {
-  color: #00ff5e; /* green */
-  font-weight: 600;
-}
-
-.profit-negative {
-  color: #ff0000; /* red */
-  font-weight: 600;
-}
-
-
