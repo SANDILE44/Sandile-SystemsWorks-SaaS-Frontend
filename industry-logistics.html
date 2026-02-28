@@ -10,6 +10,42 @@
   <body>
     <style>
 
+      /* ===============================
+   TOOL SELECTOR
+=================================*/
+
+.tool-selector {
+  margin-bottom: 30px;
+}
+
+.tool-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.tool-btn {
+  padding: 12px 20px;
+  border: none;
+  background: #1f2937;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.tool-btn:hover {
+  background: #374151;
+}
+
+.tool-btn.active {
+  background: #2563eb;
+}
+
+.hidden {
+  display: none;
+}
+
 /* ===============================
    RESULT VALUE BASE STYLE
 =================================*/
@@ -137,13 +173,25 @@
 
         <h1>Logistics Calculators</h1>
         <p>Optimize shipping operations and transportation profitability.</p>
-
-        <div class="calculator-container">
+<div class="calculator-container tool-panel" id="operations-panel">
           <h2>Logistics Operations Calculator</h2>
           <p>
             Analyze shipment profitability, cost per shipment, and operational
             efficiency.
           </p>
+
+          <div class="tool-selector">
+  <h2>What are you trying to decide today?</h2>
+  <div class="tool-buttons">
+    <button id="btn-operations" class="tool-btn active">
+      Monthly Operations Analysis
+    </button>
+
+    <button id="btn-shipment" class="tool-btn">
+      Per-Shipment Risk Analysis
+    </button>
+  </div>
+          </div>
 
           <div class="calculator-grid">
             <!-- INPUTS -->
@@ -322,8 +370,7 @@
 
         <!-- ================================
    SHIPMENT-LEVEL DECISION ENGINE
-================================ -->
-<div class="calculator-container advanced-module">
+================================ --><div class="calculator-container advanced-module tool-panel hidden" id="shipment-panel">
   <h2>Shipment Risk & Pricing Simulator</h2>
   <p>Evaluate shipment profitability before approving the contract.</p>
 
