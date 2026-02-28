@@ -233,20 +233,23 @@
         })
       );
 
-    // Reset
-    $('resetBtn')?.addEventListener(
-      'click',
-      () => {
-        document
-          .querySelectorAll(
-            '.calculator-container input'
-          )
-          .forEach((i) => (i.value = ''));
+// Reset - Operations
+$('resetOperationsBtn')?.addEventListener('click', () => {
+  document
+    .querySelectorAll('#operations-panel input')
+    .forEach((i) => (i.value = ''));
 
-        runMonthly();
-        runShipment();
-      }
-    );
+  runMonthly();
+});
+
+// Reset - Shipment
+$('resetShipmentBtn')?.addEventListener('click', () => {
+  document
+    .querySelectorAll('#shipment-panel input')
+    .forEach((i) => (i.value = ''));
+
+  runShipment();
+});
 
     // Logout
     $('logoutBtn')?.addEventListener(
@@ -265,3 +268,4 @@
   bindEvents();
   runMonthly();
 })();
+
