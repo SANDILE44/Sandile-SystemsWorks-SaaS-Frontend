@@ -12,12 +12,16 @@
 
   let debounceTimer;
 
-  function updateLogistics() {
+  /* =========================================================
+     MONTHLY LOGISTICS CALCULATOR (API BASED)
+  ========================================================== */
+
+  function updateMonthly() {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(runLogistics, 300);
+    debounceTimer = setTimeout(runMonthly, 300);
   }
 
-  async function runLogistics() {
+  async function runMonthly() {
     try {
       const token = localStorage.getItem('token');
       if (!token) return location.replace('login.html');
@@ -54,124 +58,185 @@
 
       const d = await res.json();
 
-      /* ================= CORE ================= */
-      $('log-shipments-output').textContent = d.shipments ?? 0;
       $('log-total-revenue').textContent = money(d.totalRevenue);
       $('log-total-costs').textContent = money(d.totalCosts);
       $('log-profit').textContent = money(d.profit);
-      $('log-per-shipment').textContent = money(d.costPerShipment);
-      $('log-revenue-per-shipment').textContent =
-        money(d.revenuePerShipment);
       $('log-margin').textContent = percent(d.margin);
-      $('log-roi').textContent = percent(d.roi);
-
-      /* ================= DECISION ================= */
-      $('log-profit-per-shipment').textContent =
-        money(d.profitPerShipment);
       $('log-breakeven-shipments').textContent =
         d.breakEvenShipments ?? 0;
-      $('log-annual-profit').textContent =
-        money(d.annualProfit);
-
-      $('log-fuel-pct').textContent = percent(d.fuelPercent);
-      $('log-labor-pct').textContent = percent(d.laborPercent);
-      $('log-maintenance-pct').textContent =
-        percent(d.maintenancePercent);
-
-      const fixedPct =
-        d.totalCosts > 0
-          ? Math.max(
-              0,
-              100 -
-                (d.fuelPercent || 0) -
-                (d.laborPercent || 0) -
-                (d.maintenancePercent || 0)
-            )
-          : 0;
-
-      $('log-fixed-pct').textContent = percent(fixedPct);
-
-      /* ================= STATUS ================= */
-      const statusEl = $('log-status');
-      statusEl.classList.remove('profit', 'loss', 'neutral');
-
-      const status = (d.status || '').toLowerCase();
-
-      if (status === 'profitable') {
-        statusEl.textContent = 'Profitable';
-        statusEl.classList.add('profit');
-      } else if (status === 'loss') {
-        statusEl.textContent = 'Loss';
-        statusEl.classList.add('loss');
-      } else {
-        statusEl.textContent = 'Break-even';
-        statusEl.classList.add('neutral');
-      }
-
-      /* ================= RISK LEVEL ================= */
-      const riskEl = $('log-risk-level');
-      riskEl.classList.remove('low', 'medium', 'high');
-
-      const risk = (d.riskLevel || '').toLowerCase();
-
-      if (risk === 'low') {
-        riskEl.classList.add('low');
-      } else if (risk === 'medium') {
-        riskEl.classList.add('medium');
-      } else if (risk === 'high') {
-        riskEl.classList.add('high');
-      }
-
-      riskEl.textContent = d.riskLevel || '—';
-
-      /* ================= RECOMMENDED PRICE ================= */
+      $('log-risk-level').textContent = d.riskLevel || '—';
       $('log-recommended-price').textContent =
         money(d.recommendedPricePerShipment);
-
-      /* ================= SAFETY ================= */
-      const safetyEl = $('log-safety');
-      safetyEl.classList.remove('healthy', 'risk', 'critical');
-
-      const safety = (d.safetyStatus || '').toLowerCase();
-
-      if (safety === 'healthy') {
-        safetyEl.classList.add('healthy');
-      } else if (safety === 'at risk') {
-        safetyEl.classList.add('risk');
-      } else if (safety === 'critical') {
-        safetyEl.classList.add('critical');
-      }
-
-      safetyEl.textContent = d.safetyStatus || '—';
-
-      /* ================= ADVICE ================= */
-      $('log-advice').textContent = d.advice || '';
+      $('log-advice').textContent = d.advice || '—';
 
     } catch (err) {
-      console.error('Logistics calculator error:', err);
+      console.error('Monthly logistics error:', err);
     }
   }
 
-  /* ================= RESET ================= */
-  $('resetBtn')?.addEventListener('click', () => {
+  /* =========================================================
+     SHIPMENT RISK ENGINE (LOCAL DECISION ENGINE)
+  ========================================================== */
+
+  function calculateShipment() {
+    const get = (id) => +($(id)?.value) || 0;
+
+    const quote = get('ship-quote');
+    const minMargin = get('ship-min-margin');
+    const buffer = get('ship-buffer');
+
+    const distance = get('ship-distance');
+    const fuelPerKm = get('ship-fuel-km');
+    const vehiclePerKm = get('ship-vehicle-km');
+    const loadFactor = get('ship-load-factor') || 100;
+
+    const drivingHours = get('ship-driving-hours');
+    const waitHours = get('ship-wait-hours');
+    const driverRate = get('ship-driver-rate');
+
+    const tolls = get('ship-tolls');
+    const permits = get('ship-permits');
+    const otherFees = get('ship-other-fees');
+
+    const cargoValue = get('ship-cargo-value');
+    const insuranceRate = get('ship-insurance');
+
+    const duties = get('ship-duties');
+    const handling = get('ship-handling');
+    const passThrough = get('ship-pass-through');
+
+    /* ---------- COST CALCULATION ---------- */
+
+    const fuelCost = distance * fuelPerKm;
+    const vehicleCost = distance * vehiclePerKm;
+    const timeCost = (drivingHours + waitHours) * driverRate;
+    const insuranceCost = (insuranceRate / 100) * cargoValue;
+
+    const baseCost =
+      fuelCost +
+      vehicleCost +
+      timeCost +
+      tolls +
+      permits +
+      otherFees +
+      insuranceCost +
+      duties +
+      handling +
+      passThrough;
+
+    /* ---------- LOAD FACTOR ---------- */
+
+    const loadMultiplier =
+      loadFactor > 0 ? 100 / loadFactor : 1;
+
+    const totalCost = baseCost * loadMultiplier;
+
+    const profit = quote - totalCost;
+    const margin =
+      quote > 0 ? (profit / quote) * 100 : 0;
+
+    const requiredMargin = minMargin + buffer;
+
+    /* ---------- SAFE RECOMMENDED QUOTE ---------- */
+
+    let recommendedQuote = totalCost;
+
+    if (
+      requiredMargin > 0 &&
+      requiredMargin < 100
+    ) {
+      recommendedQuote =
+        totalCost /
+        (1 - requiredMargin / 100);
+    }
+
+    /* ---------- DECISION ---------- */
+
+    let decision = 'REVIEW';
+    let explanation =
+      'Shipment requires review before approval.';
+
+    if (margin >= requiredMargin) {
+      decision = 'APPROVE';
+      explanation =
+        'Shipment meets required margin and safety buffer.';
+    } else if (margin < minMargin) {
+      decision = 'REJECT';
+      explanation =
+        'Shipment does not meet minimum margin requirement.';
+    }
+
+    /* ---------- OUTPUT ---------- */
+
+    $('ship-total-cost').textContent =
+      money(totalCost);
+
+    $('ship-profit').textContent =
+      money(profit);
+
+    $('ship-margin').textContent =
+      percent(margin);
+
+    $('ship-min-quote').textContent =
+      money(recommendedQuote);
+
+    $('ship-decision').textContent =
+      decision;
+
+    $('ship-reason').textContent =
+      explanation;
+  }
+
+  /* =========================================================
+     EVENT BINDING
+  ========================================================== */
+
+  function bindEvents() {
+    // Monthly inputs
     document
-      .querySelectorAll('.input-section input')
-      .forEach((i) => (i.value = ''));
-    runLogistics();
-  });
+      .querySelectorAll(
+        '.calculator-container:not(.advanced-module) input'
+      )
+      .forEach((i) =>
+        i.addEventListener('input', updateMonthly)
+      );
 
-  /* ================= LOGOUT ================= */
-  $('logoutBtn')?.addEventListener('click', () => {
-    localStorage.removeItem('token');
-    location.replace('login.html');
-  });
+    // Shipment inputs
+    document
+      .querySelectorAll('.advanced-module input')
+      .forEach((i) =>
+        i.addEventListener('input', calculateShipment)
+      );
 
-  /* ================= INPUT LISTENERS ================= */
-  document
-    .querySelectorAll('.input-section input')
-    .forEach((i) =>
-      i.addEventListener('input', updateLogistics)
+    // Reset
+    $('resetBtn')?.addEventListener(
+      'click',
+      () => {
+        document
+          .querySelectorAll(
+            '.calculator-container input'
+          )
+          .forEach((i) => (i.value = ''));
+
+        runMonthly();
+        calculateShipment();
+      }
     );
 
-  runLogistics();
+    // Logout
+    $('logoutBtn')?.addEventListener(
+      'click',
+      () => {
+        localStorage.removeItem('token');
+        location.replace('login.html');
+      }
+    );
+  }
+
+  /* =========================================================
+     INITIALIZE
+  ========================================================== */
+
+  bindEvents();
+  runMonthly();
 })();
