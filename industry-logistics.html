@@ -7,115 +7,110 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
+
   <body>
     <style>
+      /* ===============================
+         TOOL SELECTOR
+      =================================*/
+      .tool-selector {
+        margin-bottom: 30px;
+      }
+
+      .tool-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .tool-btn {
+        padding: 12px 20px;
+        border: none;
+        background: #1f2937;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .tool-btn:hover {
+        background: #374151;
+      }
+
+      .tool-btn.active {
+        background: #2563eb;
+      }
+
+      .hidden {
+        display: none;
+      }
 
       /* ===============================
-   TOOL SELECTOR
-=================================*/
+         RESULT VALUE BASE STYLE
+      =================================*/
+      .output-value {
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
 
-.tool-selector {
-  margin-bottom: 30px;
-}
+      /* ===============================
+         MONTHLY RISK LEVEL
+      =================================*/
+      .risk-low {
+        color: #22c55e;
+      }
 
-.tool-buttons {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
+      .risk-medium {
+        color: #f59e0b;
+      }
 
-.tool-btn {
-  padding: 12px 20px;
-  border: none;
-  background: #1f2937;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
+      .risk-high {
+        color: #ef4444;
+      }
 
-.tool-btn:hover {
-  background: #374151;
-}
+      /* ===============================
+         SHIPMENT DECISION
+      =================================*/
+      .decision-approve {
+        color: #22c55e;
+      }
 
-.tool-btn.active {
-  background: #2563eb;
-}
+      .decision-review {
+        color: #f59e0b;
+      }
 
-.hidden {
-  display: none;
-}
+      .decision-reject {
+        color: #ef4444;
+      }
 
-/* ===============================
-   RESULT VALUE BASE STYLE
-=================================*/
+      /* ===============================
+         PROFIT / LOSS COLORS
+      =================================*/
+      .profit-positive {
+        color: #22c55e;
+      }
 
-.output-value {
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
+      .profit-negative {
+        color: #ef4444;
+      }
 
-/* ===============================
-   MONTHLY RISK LEVEL
-=================================*/
+      /* ===============================
+         SAFETY STATUS
+      =================================*/
+      .safety-healthy {
+        color: #22c55e;
+      }
 
-.risk-low {
-  color: #22c55e; /* green */
-}
+      .safety-risk {
+        color: #f59e0b;
+      }
 
-.risk-medium {
-  color: #f59e0b; /* orange */
-}
+      .safety-critical {
+        color: #ef4444;
+      }
+    </style>
 
-.risk-high {
-  color: #ef4444; /* red */
-}
-
-/* ===============================
-   SHIPMENT DECISION
-=================================*/
-
-.decision-approve {
-  color: #22c55e;
-}
-
-.decision-review {
-  color: #f59e0b;
-}
-
-.decision-reject {
-  color: #ef4444;
-}
-
-/* ===============================
-   PROFIT / LOSS COLORS
-=================================*/
-
-.profit-positive {
-  color: #22c55e;
-}
-
-.profit-negative {
-  color: #ef4444;
-}
-
-/* ===============================
-   SAFETY STATUS
-=================================*/
-
-.safety-healthy {
-  color: #22c55e;
-}
-
-.safety-risk {
-  color: #f59e0b;
-}
-
-.safety-critical {
-  color: #ef4444;
-}
-
-  </style>
     <!-- APP LAYOUT -->
     <div class="app-shell">
       <!-- SIDEBAR -->
@@ -173,20 +168,30 @@
 
         <h1>Logistics Calculators</h1>
         <p>Optimize shipping operations and transportation profitability.</p>
-<div class="tool-selector">
-  <h2>What are you trying to decide today?</h2>
-  <div class="tool-buttons">
-    <button id="btn-operations" class="tool-btn active">
-      Monthly Operations Analysis
-    </button>
 
-    <button id="btn-shipment" class="tool-btn">
-      Per-Shipment Risk Analysis
-    </button>
-  </div>
-</div>
+        <!-- TOOL SELECTOR (TOP) -->
+        <div class="tool-selector">
+          <h2>What are you trying to decide today?</h2>
+          <div class="tool-buttons">
+            <button id="btn-operations" class="tool-btn active">
+              Monthly Operations Analysis
+            </button>
 
+            <button id="btn-shipment" class="tool-btn">
+              Per-Shipment Risk Analysis
+            </button>
           </div>
+        </div>
+
+        <!-- ==========================
+             PANEL 1: OPERATIONS
+        =========================== -->
+        <div class="calculator-container tool-panel" id="operations-panel">
+          <h2>Logistics Operations Calculator</h2>
+          <p>
+            Analyze shipment profitability, cost per shipment, and operational
+            efficiency.
+          </p>
 
           <div class="calculator-grid">
             <!-- INPUTS -->
@@ -247,7 +252,8 @@
                 />
               </div>
 
-              <button type="button" id="resetBtn">Reset All</button>
+              <!-- ✅ UNIQUE RESET ID -->
+              <button type="button" id="resetOperationsBtn">Reset All</button>
             </div>
 
             <!-- OUTPUTS -->
@@ -296,7 +302,6 @@
                 <div class="output-value" id="log-margin">0.00%</div>
               </div>
 
-              <!-- ✅ IMPROVEMENTS (added without removing anything) -->
               <div class="output-group">
                 <div class="output-label">Profit / Loss Status</div>
                 <div class="output-value" id="log-status">—</div>
@@ -304,7 +309,9 @@
 
               <div class="output-group">
                 <div class="output-label">Profit Per Shipment</div>
-                <div class="output-value" id="log-profit-per-shipment">R0.00</div>
+                <div class="output-value" id="log-profit-per-shipment">
+                  R0.00
+                </div>
               </div>
 
               <div class="output-group">
@@ -337,190 +344,252 @@
                 <div class="output-value" id="log-fixed-pct">0.00%</div>
               </div>
 
-  <!-- DECISION ENGINE -->
+              <div class="output-group">
+                <div class="output-label">Operational Risk Level</div>
+                <div class="output-value" id="log-risk-level">—</div>
+              </div>
 
-<div class="output-group">
-  <div class="output-label">Operational Risk Level</div>
-  <div class="output-value" id="log-risk-level">—</div>
-</div>
+              <div class="output-group">
+                <div class="output-label">Recommended Minimum Price Per Shipment</div>
+                <div class="output-value" id="log-recommended-price">R0.00</div>
+              </div>
 
-<div class="output-group">
-  <div class="output-label">Recommended Minimum Price Per Shipment</div>
-  <div class="output-value" id="log-recommended-price">R0.00</div>
-</div>
+              <div class="output-group">
+                <div class="output-label">Safety Margin Status</div>
+                <div class="output-value" id="log-safety">—</div>
+              </div>
 
-<div class="output-group">
-  <div class="output-label">Safety Margin Status</div>
-  <div class="output-value" id="log-safety">—</div>
-</div>
-
-<div class="output-group">
-  <div class="output-label">Take / Don’t Take Advice</div>
-  <div class="output-value" id="log-advice"></div>
-</div>
-              
+              <div class="output-group">
+                <div class="output-label">Take / Don’t Take Advice</div>
+                <div class="output-value" id="log-advice">—</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- ================================
-   SHIPMENT-LEVEL DECISION ENGINE
-================================ --><div class="calculator-container advanced-module tool-panel hidden" id="shipment-panel">
-  <h2>Shipment Risk & Pricing Simulator</h2>
-  <p>Evaluate shipment profitability before approving the contract.</p>
+        <!-- ==========================
+             PANEL 2: SHIPMENT
+        =========================== -->
+        <div
+          class="calculator-container advanced-module tool-panel hidden"
+          id="shipment-panel"
+        >
+          <h2>Shipment Risk & Pricing Simulator</h2>
+          <p>Evaluate shipment profitability before approving the contract.</p>
 
-  <div class="calculator-grid">
+          <div class="calculator-grid">
+            <!-- INPUTS -->
+            <div class="input-section">
+              <h3>Shipment Inputs</h3>
 
-    <!-- INPUTS -->
-    <div class="input-section">
-      <h3>Shipment Inputs</h3>
+              <div class="input-group">
+                <label for="ship-quote">Client Quote Price (R)</label>
+                <input
+                  type="number"
+                  id="ship-quote"
+                  placeholder="Total amount the client will pay for this shipment"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Client Quote Price (R)</label>
-        <input type="number" id="ship-quote" placeholder="Total amount the client will pay for this shipment">
-      </div>
+              <div class="input-group">
+                <label for="ship-min-margin">Required Minimum Margin (%)</label>
+                <input
+                  type="number"
+                  id="ship-min-margin"
+                  placeholder="Minimum profit margin your business requires"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Required Minimum Margin (%)</label>
-        <input type="number" id="ship-min-margin" placeholder="Minimum profit margin your business requires to accept shipments">
-      </div>
+              <div class="input-group">
+                <label for="ship-buffer">Safety Buffer (%)</label>
+                <input
+                  type="number"
+                  id="ship-buffer"
+                  placeholder="Extra margin cushion for unexpected costs"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Safety Buffer (%)</label>
-        <input type="number" id="ship-buffer" placeholder="Additional margin cushion to protect against unexpected cost increases">
-      </div>
+              <hr />
 
-      <hr>
+              <div class="input-group">
+                <label for="ship-distance">Distance (km)</label>
+                <input
+                  type="number"
+                  id="ship-distance"
+                  placeholder="Total route distance"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Distance (km)</label>
-        <input type="number" id="ship-distance" placeholder="Total route distance for this shipment">
-      </div>
+              <div class="input-group">
+                <label for="ship-fuel-km">Fuel Cost Per KM (R)</label>
+                <input
+                  type="number"
+                  id="ship-fuel-km"
+                  placeholder="Estimated fuel expense per kilometre"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Fuel Cost Per KM (R)</label>
-        <input type="number" id="ship-fuel-km" placeholder="Estimated fuel expense per kilometre">
-      </div>
+              <div class="input-group">
+                <label for="ship-vehicle-km">Vehicle Wear Cost Per KM (R)</label>
+                <input
+                  type="number"
+                  id="ship-vehicle-km"
+                  placeholder="Maintenance & depreciation per kilometre"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Vehicle Wear Cost Per KM (R)</label>
-        <input type="number" id="ship-vehicle-km" placeholder="Maintenance and depreciation cost per kilometre">
-      </div>
+              <div class="input-group">
+                <label for="ship-load-factor">Load Factor (%)</label>
+                <input
+                  type="number"
+                  id="ship-load-factor"
+                  placeholder="Percentage of truck capacity used"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Load Factor (%)</label>
-        <input type="number" id="ship-load-factor" placeholder="Percentage of truck capacity utilized for this shipment">
-      </div>
+              <hr />
 
-      <hr>
+              <div class="input-group">
+                <label for="ship-driving-hours">Driving Time (Hours)</label>
+                <input
+                  type="number"
+                  id="ship-driving-hours"
+                  placeholder="Total estimated driving time"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Driving Time (Hours)</label>
-        <input type="number" id="ship-driving-hours" placeholder="Total estimated driving time">
-      </div>
+              <div class="input-group">
+                <label for="ship-wait-hours">Loading / Waiting Time (Hours)</label>
+                <input
+                  type="number"
+                  id="ship-wait-hours"
+                  placeholder="Time spent loading/unloading/waiting"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Loading / Waiting Time (Hours)</label>
-        <input type="number" id="ship-wait-hours" placeholder="Time spent loading, unloading or waiting">
-      </div>
+              <div class="input-group">
+                <label for="ship-driver-rate">Driver Cost Per Hour (R)</label>
+                <input
+                  type="number"
+                  id="ship-driver-rate"
+                  placeholder="Hourly wage or assigned driver cost"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Driver Cost Per Hour (R)</label>
-        <input type="number" id="ship-driver-rate" placeholder="Hourly wage or cost of assigned driver">
-      </div>
+              <hr />
 
-      <hr>
+              <div class="input-group">
+                <label for="ship-tolls">Toll Costs (R)</label>
+                <input type="number" id="ship-tolls" placeholder="Total toll costs" />
+              </div>
 
-      <div class="input-group">
-        <label>Toll Costs (R)</label>
-        <input type="number" id="ship-tolls" placeholder="Total toll expenses for this route">
-      </div>
+              <div class="input-group">
+                <label for="ship-permits">Permits / Border Fees (R)</label>
+                <input
+                  type="number"
+                  id="ship-permits"
+                  placeholder="Permits, border charges, admin costs"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Permits / Border Fees (R)</label>
-        <input type="number" id="ship-permits" placeholder="Permit fees, border charges or administrative costs">
-      </div>
+              <div class="input-group">
+                <label for="ship-other-fees">Other Route Expenses (R)</label>
+                <input
+                  type="number"
+                  id="ship-other-fees"
+                  placeholder="Additional route-related expenses"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Other Route Expenses (R)</label>
-        <input type="number" id="ship-other-fees" placeholder="Additional route-related expenses">
-      </div>
+              <hr />
 
-      <hr>
+              <div class="input-group">
+                <label for="ship-cargo-value">Cargo Value (R)</label>
+                <input
+                  type="number"
+                  id="ship-cargo-value"
+                  placeholder="Declared value of goods"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Cargo Value (R)</label>
-        <input type="number" id="ship-cargo-value" placeholder="Declared value of goods being transported">
-      </div>
+              <div class="input-group">
+                <label for="ship-insurance">Insurance Rate (%)</label>
+                <input
+                  type="number"
+                  id="ship-insurance"
+                  placeholder="Insurance % applied to cargo value"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Insurance Rate (%)</label>
-        <input type="number" id="ship-insurance" placeholder="Insurance percentage applied to cargo value">
-      </div>
+              <hr />
 
-      <hr>
+              <div class="input-group">
+                <label for="ship-duties">Customs Duties (R)</label>
+                <input type="number" id="ship-duties" placeholder="Customs duties" />
+              </div>
 
-      <div class="input-group">
-        <label>Customs Duties (R)</label>
-        <input type="number" id="ship-duties" placeholder="Import or export duty applicable to this shipment">
-      </div>
+              <div class="input-group">
+                <label for="ship-handling">Handling Fees (R)</label>
+                <input
+                  type="number"
+                  id="ship-handling"
+                  placeholder="Warehouse / loading / unloading fees"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Handling Fees (R)</label>
-        <input type="number" id="ship-handling" placeholder="Warehouse, loading or unloading service fees">
-      </div>
+              <div class="input-group">
+                <label for="ship-pass-through">Pass-through Costs (R)</label>
+                <input
+                  type="number"
+                  id="ship-pass-through"
+                  placeholder="Third-party charges passed to you"
+                />
+              </div>
 
-      <div class="input-group">
-        <label>Pass-through Costs (R)</label>
-        <input type="number" id="ship-pass-through" placeholder="Third-party charges passed directly to your company">
-      </div>
+              <!-- ✅ UNIQUE RESET ID -->
+              <button type="button" id="resetShipmentBtn">Reset All</button>
+            </div>
 
-        
-              <button type="button" id="resetBtn">Reset All</button>
+            <!-- OUTPUTS -->
+            <div class="output-section">
+              <h3>Shipment Results</h3>
 
-    </div>
+              <div class="output-group">
+                <div class="output-label">Total Shipment Cost</div>
+                <div class="output-value" id="ship-total-cost">R0.00</div>
+              </div>
 
-    <!-- OUTPUTS -->
-    <div class="output-section">
-      <h3>Shipment Results</h3>
+              <div class="output-group">
+                <div class="output-label">Estimated Profit</div>
+                <div class="output-value" id="ship-profit">R0.00</div>
+              </div>
 
-      <div class="output-group">
-        <div class="output-label">Total Shipment Cost</div>
-        <div class="output-value" id="ship-total-cost">R0.00</div>
-      </div>
+              <div class="output-group">
+                <div class="output-label">Profit Margin</div>
+                <div class="output-value" id="ship-margin">0.00%</div>
+              </div>
 
-      <div class="output-group">
-        <div class="output-label">Estimated Profit</div>
-        <div class="output-value" id="ship-profit">R0.00</div>
-      </div>
+              <div class="output-group">
+                <div class="output-label">Recommended Minimum Quote</div>
+                <div class="output-value" id="ship-min-quote">R0.00</div>
+              </div>
 
-      <div class="output-group">
-        <div class="output-label">Profit Margin</div>
-        <div class="output-value" id="ship-margin">0.00%</div>
-      </div>
+              <div class="output-group">
+                <div class="output-label">Decision</div>
+                <div class="output-value" id="ship-decision">—</div>
+              </div>
 
-      <div class="output-group">
-        <div class="output-label">Recommended Minimum Quote</div>
-        <div class="output-value" id="ship-min-quote">R0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision</div>
-        <div class="output-value" id="ship-decision">—</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision Explanation</div>
-        <div class="output-value" id="ship-reason">—</div>
-      </div>
-
-    </div>
-  </div>
+              <div class="output-group">
+                <div class="output-label">Decision Explanation</div>
+                <div class="output-value" id="ship-reason">—</div>
+              </div>
+            </div>
           </div>
+        </div>
 
-        <!-- ================================
-     SECTORS & INDUSTRIES NAVIGATION
-================================ -->
+           <!-- ================================
+             SECTORS & INDUSTRIES NAVIGATION
+        ================================ -->
         <div class="sectors-navigation">
           <h2>Explore All Sectors & Industries</h2>
           <p>
@@ -529,7 +598,6 @@
           </p>
 
           <div class="sectors-grid">
-            <!-- Primary Sector -->
             <div class="sector-group">
               <h3>Primary Sector</h3>
               <ul>
@@ -538,13 +606,10 @@
                 <li><a href="industry-fishing.html">Fishing</a></li>
                 <li><a href="industry-mining.html">Mining</a></li>
                 <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-                <li>
-                  <a href="industry-renewable-energy.html">Renewable Energy</a>
-                </li>
+                <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
               </ul>
             </div>
 
-            <!-- Secondary Sector -->
             <div class="sector-group">
               <h3>Secondary Sector</h3>
               <ul>
@@ -557,7 +622,6 @@
               </ul>
             </div>
 
-            <!-- Tertiary Sector -->
             <div class="sector-group">
               <h3>Tertiary Sector</h3>
               <ul>
@@ -574,7 +638,6 @@
               </ul>
             </div>
 
-            <!-- Quaternary Sector -->
             <div class="sector-group">
               <h3>Quaternary Sector</h3>
               <ul>
@@ -583,37 +646,65 @@
                 <li><a href="industry-it-services.html">IT Services</a></li>
                 <li><a href="industry-media.html">Media</a></li>
                 <li><a href="industry-research-development.html">R&D</a></li>
-                <li>
-                  <a href="industry-telecommunications.html">Telecommunications</a>
-                </li>
+                <li><a href="industry-telecommunications.html">Telecommunications</a></li>
               </ul>
             </div>
 
-            <!-- Quinary Sector -->
             <div class="sector-group">
               <h3>Quinary Sector</h3>
               <ul>
                 <li><a href="industry-government.html">Government</a></li>
                 <li><a href="industry-ngos.html">NGOs</a></li>
                 <li>
-                  <a href="industry-social-services.html">Social & Community Services</a>
+                  <a href="industry-social-services.html"
+                    >Social & Community Services</a
+                  >
                 </li>
                 <li>
-                  <a href="industry-public-administration.html">Public Administration</a>
+                  <a href="industry-public-administration.html"
+                    >Public Administration</a
+                  >
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </main>
-
-      <script src="js/config.js"></script>
-      <script src="js/api.js"></script>
-      <script src="js/guard.js"></script>
-      <script src="js/auth.js"></script>
-      <script src="js/logistics.js"></script>
-      <script src="js/hamburger.js"></script>
-      <script src="js/user-display.js"></script>
     </div>
+
+    <!-- ✅ TOOL TOGGLE JS (INLINE, WORKS IMMEDIATELY) -->
+    <script>
+      (function () {
+        const btnOperations = document.getElementById("btn-operations");
+        const btnShipment = document.getElementById("btn-shipment");
+        const operationsPanel = document.getElementById("operations-panel");
+        const shipmentPanel = document.getElementById("shipment-panel");
+
+        if (!btnOperations || !btnShipment || !operationsPanel || !shipmentPanel) return;
+
+        btnOperations.addEventListener("click", () => {
+          btnOperations.classList.add("active");
+          btnShipment.classList.remove("active");
+          operationsPanel.classList.remove("hidden");
+          shipmentPanel.classList.add("hidden");
+        });
+
+        btnShipment.addEventListener("click", () => {
+          btnShipment.classList.add("active");
+          btnOperations.classList.remove("active");
+          shipmentPanel.classList.remove("hidden");
+          operationsPanel.classList.add("hidden");
+        });
+      })();
+    </script>
+
+    <!-- YOUR EXISTING SCRIPTS -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/logistics.js"></script>
+    <script src="js/hamburger.js"></script>
+    <script src="js/user-display.js"></script>
   </body>
-  </html>
+                                                                               </html>
