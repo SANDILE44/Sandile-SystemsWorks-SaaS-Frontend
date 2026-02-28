@@ -173,7 +173,7 @@
         <div class="tool-selector">
           <h2>What are you trying to decide today?</h2>
           <div class="tool-buttons">
-            <button id="btn-operations" class="tool-btn active">
+            <button id="btn-operations" class="tool-btn">
               Monthly Operations Analysis
             </button>
 
@@ -183,10 +183,14 @@
           </div>
         </div>
 
+  <div id="tool-placeholder" class="tool-placeholder">
+  <p>Please select an analysis type above to begin.</p>
+  </div>
+
         <!-- ==========================
              PANEL 1: OPERATIONS
         =========================== -->
-        <div class="calculator-container tool-panel" id="operations-panel">
+        <div class="calculator-container tool-panel hidden" id="operations-panel">
           <h2>Logistics Operations Calculator</h2>
           <p>
             Analyze shipment profitability, cost per shipment, and operational
@@ -673,30 +677,44 @@
     </div>
 
     <!-- ✅ TOOL TOGGLE JS (INLINE, WORKS IMMEDIATELY) -->
-    <script>
-      (function () {
-        const btnOperations = document.getElementById("btn-operations");
-        const btnShipment = document.getElementById("btn-shipment");
-        const operationsPanel = document.getElementById("operations-panel");
-        const shipmentPanel = document.getElementById("shipment-panel");
+<script>
+(function () {
+  const btnOperations = document.getElementById("btn-operations");
+  const btnShipment = document.getElementById("btn-shipment");
+  const operationsPanel = document.getElementById("operations-panel");
+  const shipmentPanel = document.getElementById("shipment-panel");
+  const placeholder = document.getElementById("tool-placeholder");
 
-        if (!btnOperations || !btnShipment || !operationsPanel || !shipmentPanel) return;
+  if (!btnOperations || !btnShipment || !operationsPanel || !shipmentPanel || !placeholder) return;
 
-        btnOperations.addEventListener("click", () => {
-          btnOperations.classList.add("active");
-          btnShipment.classList.remove("active");
-          operationsPanel.classList.remove("hidden");
-          shipmentPanel.classList.add("hidden");
-        });
+  // INITIAL STATE
+  btnOperations.classList.remove("active");
+  btnShipment.classList.remove("active");
+  operationsPanel.classList.add("hidden");
+  shipmentPanel.classList.add("hidden");
+  placeholder.classList.remove("hidden");
 
-        btnShipment.addEventListener("click", () => {
-          btnShipment.classList.add("active");
-          btnOperations.classList.remove("active");
-          shipmentPanel.classList.remove("hidden");
-          operationsPanel.classList.add("hidden");
-        });
-      })();
-    </script>
+  btnOperations.addEventListener("click", () => {
+    btnOperations.classList.add("active");
+    btnShipment.classList.remove("active");
+
+    operationsPanel.classList.remove("hidden");
+    shipmentPanel.classList.add("hidden");
+
+    placeholder.classList.add("hidden");
+  });
+
+  btnShipment.addEventListener("click", () => {
+    btnShipment.classList.add("active");
+    btnOperations.classList.remove("active");
+
+    shipmentPanel.classList.remove("hidden");
+    operationsPanel.classList.add("hidden");
+
+    placeholder.classList.add("hidden");
+  });
+})();
+</script>
 
     <!-- YOUR EXISTING SCRIPTS -->
     <script src="js/config.js"></script>
