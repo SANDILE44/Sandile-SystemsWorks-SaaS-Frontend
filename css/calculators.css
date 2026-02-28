@@ -100,24 +100,74 @@ label {
   box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
-/* Reset Button */
-#resetBtn,#resetOperationsBtn,
+/* ================= SUPER RESET BUTTON ================= */
+
+#resetBtn,
+#resetOperationsBtn,
 #resetShipmentBtn {
   width: 100%;
   margin-top: 1rem;
-  padding: 0.8rem;
-  border-radius: 8px;
-  border: none;
-  background: #00b4d8;
+  padding: 0.85rem 1.2rem;
+
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
   color: #000;
-  font-weight: 700;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
   cursor: pointer;
-  transition: 0.2s ease;
+
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
-#resetBtn,#resetOperationsBtn,
-#resetShipmentBtn :hover {
-  background: #0096c7;
+/* Hover */
+#resetBtn:hover,
+#resetOperationsBtn:hover,
+#resetShipmentBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 10px 22px rgba(0, 180, 216, 0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+/* Active (Pressed) */
+#resetBtn:active,
+#resetOperationsBtn:active,
+#resetShipmentBtn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0, 180, 216, 0.2),
+    inset 0 2px 4px rgba(0,0,0,0.25);
+}
+
+/* Focus (keyboard users) */
+#resetBtn:focus-visible,
+#resetOperationsBtn:focus-visible,
+#resetShipmentBtn:focus-visible {
+  outline: 2px solid rgba(0, 180, 216, 0.6);
+  outline-offset: 3px;
+}
+
+/* Disabled state (future-proof) */
+#resetBtn:disabled,
+#resetOperationsBtn:disabled,
+#resetShipmentBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* ================= OUTPUTS ================= */
@@ -358,5 +408,6 @@ label {
     grid-template-columns: 1fr;
   }
                      }
+
 
 
