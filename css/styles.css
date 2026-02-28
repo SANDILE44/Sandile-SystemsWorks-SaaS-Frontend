@@ -789,8 +789,7 @@ button[id$='reset'] {
 }
 
 /* Hover */
-button#resetBtn,#resetOperationsBtn,
-#resetShipmentBtn :hover,
+button#resetBtn :hover,
 button[id$='reset']:hover {
   background: rgba(255, 107, 107, 0.08);
   color: #ff6b6b;
