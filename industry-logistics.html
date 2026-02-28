@@ -8,6 +8,78 @@
     <link rel="stylesheet" href="css/calculators.css" />
   </head>
   <body>
+    <style>
+
+/* ===============================
+   RESULT VALUE BASE STYLE
+=================================*/
+
+.output-value {
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* ===============================
+   MONTHLY RISK LEVEL
+=================================*/
+
+.risk-low {
+  color: #22c55e; /* green */
+}
+
+.risk-medium {
+  color: #f59e0b; /* orange */
+}
+
+.risk-high {
+  color: #ef4444; /* red */
+}
+
+/* ===============================
+   SHIPMENT DECISION
+=================================*/
+
+.decision-approve {
+  color: #22c55e;
+}
+
+.decision-review {
+  color: #f59e0b;
+}
+
+.decision-reject {
+  color: #ef4444;
+}
+
+/* ===============================
+   PROFIT / LOSS COLORS
+=================================*/
+
+.profit-positive {
+  color: #22c55e;
+}
+
+.profit-negative {
+  color: #ef4444;
+}
+
+/* ===============================
+   SAFETY STATUS
+=================================*/
+
+.safety-healthy {
+  color: #22c55e;
+}
+
+.safety-risk {
+  color: #f59e0b;
+}
+
+.safety-critical {
+  color: #ef4444;
+}
+
+  </style>
     <!-- APP LAYOUT -->
     <div class="app-shell">
       <!-- SIDEBAR -->
@@ -360,6 +432,9 @@
         <label>Pass-through Costs (R)</label>
         <input type="number" id="ship-pass-through" placeholder="Third-party charges passed directly to your company">
       </div>
+
+        
+              <button type="button" id="resetBtn">Reset All</button>
 
     </div>
 
