@@ -109,6 +109,13 @@
       .safety-critical {
         color: #ef4444;
       }
+
+      .tool-hint {
+  margin: 8px 0 15px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
     </style>
 
     <!-- APP LAYOUT -->
@@ -174,6 +181,12 @@ clear margin visibility and operational risk detection.
         <!-- TOOL SELECTOR (TOP) -->
         <div class="tool-selector">
           <h2>What are you trying to decide today?</h2>
+
+            <p class="tool-hint">
+    📊 Analyze your entire month<br>
+    🚛 Evaluate a single shipment before approval
+            </p>
+          
           <div class="tool-buttons">
             <button id="btn-operations" class="tool-btn">
               Monthly Operations Analysis
