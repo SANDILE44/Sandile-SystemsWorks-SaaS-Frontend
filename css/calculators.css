@@ -101,7 +101,8 @@ label {
 }
 
 /* Reset Button */
-#resetBtn {
+#resetBtn,#resetOperationsBtn,
+#resetShipmentBtn {
   width: 100%;
   margin-top: 1rem;
   padding: 0.8rem;
@@ -114,7 +115,8 @@ label {
   transition: 0.2s ease;
 }
 
-#resetBtn:hover {
+#resetBtn,#resetOperationsBtn,
+#resetShipmentBtn :hover {
   background: #0096c7;
 }
 
@@ -356,4 +358,5 @@ label {
     grid-template-columns: 1fr;
   }
                      }
+
 
