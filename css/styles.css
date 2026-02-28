@@ -789,7 +789,8 @@ button[id$='reset'] {
 }
 
 /* Hover */
-button#resetBtn:hover,
+button#resetBtn,#resetOperationsBtn,
+#resetShipmentBtn :hover,
 button[id$='reset']:hover {
   background: rgba(255, 107, 107, 0.08);
   color: #ff6b6b;
@@ -823,53 +824,3 @@ button[id$='reset']:focus-visible {
 }
 
 
-/* ================= LOGISTICS RESET BUTTONS ================= */
-
-#resetOperationsBtn,
-#resetShipmentBtn {
-  width: 100%;
-  margin-top: 1rem;
-
-  padding: 0.7rem 1.2rem;
-  border-radius: 12px;
-
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-muted);
-
-  border: 1px solid var(--border-soft);
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.15s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-/* Hover */
-#resetOperationsBtn:hover,
-#resetShipmentBtn:hover {
-  background: rgba(255, 107, 107, 0.08);
-  color: #ff6b6b;
-  border-color: rgba(255, 107, 107, 0.4);
-  transform: translateY(-1px);
-}
-
-/* Active */
-#resetOperationsBtn:active,
-#resetShipmentBtn:active {
-  transform: translateY(0);
-  background: rgba(255, 107, 107, 0.15);
-}
-
-/* Focus */
-#resetOperationsBtn:focus-visible,
-#resetShipmentBtn:focus-visible {
-  outline: 2px solid rgba(255, 107, 107, 0.5);
-  outline-offset: 3px;
-}
