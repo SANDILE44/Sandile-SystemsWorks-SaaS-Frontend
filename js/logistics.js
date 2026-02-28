@@ -175,12 +175,15 @@
         i.addEventListener('input', updateMonthly)
       );
 
-    // Shipment inputs
-    document
-      .querySelectorAll('.advanced-module input')
-      .forEach((i) =>
-        i.addEventListener('input', runShipment)
-      );
+    // Shipment inputs (debounced)
+document
+  .querySelectorAll('.advanced-module input')
+  .forEach((i) =>
+    i.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runShipment, 300);
+    })
+  );
 
     // Reset
     $('resetBtn')?.addEventListener(
@@ -214,3 +217,4 @@
   bindEvents();
   runMonthly();
 })();
+
