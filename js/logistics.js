@@ -14,7 +14,7 @@
   let debounceTimer;
 
   /* =========================================================
-     AUTH + API HELPER
+     API HELPER
   ========================================================== */
 
   async function apiPost(url, body) {
@@ -50,6 +50,48 @@
     if (!res.ok) return null;
 
     return res.json();
+  }
+
+  /* =========================================================
+     COLOR HELPERS
+  ========================================================== */
+
+  function applyRiskColor(value) {
+    const el = $('log-risk-level');
+    if (!el) return;
+
+    el.className = 'output-value';
+
+    const v = (value || '').toLowerCase();
+
+    if (v === 'low') el.classList.add('risk-low');
+    else if (v === 'medium') el.classList.add('risk-medium');
+    else if (v === 'high') el.classList.add('risk-high');
+  }
+
+  function applyDecisionColor(value) {
+    const el = $('ship-decision');
+    if (!el) return;
+
+    el.className = 'output-value';
+
+    const v = (value || '').toUpperCase();
+
+    if (v === 'APPROVE') el.classList.add('decision-approve');
+    else if (v === 'REJECT') el.classList.add('decision-reject');
+    else el.classList.add('decision-review');
+  }
+
+  function applyProfitColor(value) {
+    const el = $('ship-profit');
+    if (!el) return;
+
+    el.className = 'output-value';
+
+    if (Number(value) >= 0)
+      el.classList.add('profit-positive');
+    else
+      el.classList.add('profit-negative');
   }
 
   /* =========================================================
@@ -93,6 +135,8 @@
 
     $('log-risk-level').textContent =
       data.riskLevel || '—';
+
+    applyRiskColor(data.riskLevel);
 
     $('log-recommended-price').textContent =
       money(data.recommendedPricePerShipment);
@@ -148,6 +192,8 @@
     $('ship-profit').textContent =
       money(data.profit);
 
+    applyProfitColor(data.profit);
+
     $('ship-margin').textContent =
       percent(data.margin);
 
@@ -156,6 +202,8 @@
 
     $('ship-decision').textContent =
       data.decision;
+
+    applyDecisionColor(data.decision);
 
     $('ship-reason').textContent =
       data.reason;
@@ -176,14 +224,14 @@
       );
 
     // Shipment inputs (debounced)
-document
-  .querySelectorAll('.advanced-module input')
-  .forEach((i) =>
-    i.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(runShipment, 300);
-    })
-  );
+    document
+      .querySelectorAll('.advanced-module input')
+      .forEach((i) =>
+        i.addEventListener('input', () => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(runShipment, 300);
+        })
+      );
 
     // Reset
     $('resetBtn')?.addEventListener(
@@ -217,4 +265,3 @@ document
   bindEvents();
   runMonthly();
 })();
-
