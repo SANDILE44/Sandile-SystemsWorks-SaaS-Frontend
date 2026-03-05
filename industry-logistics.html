@@ -195,6 +195,10 @@ clear margin visibility and operational risk detection.
             <button id="btn-shipment" class="tool-btn">
               Per-Shipment Risk Analysis
             </button>
+
+            <button id="btn-freight" class="tool-btn">
+  Freight Import / Export Analysis
+            </button>
           </div>
         </div>
 
@@ -605,6 +609,141 @@ clear margin visibility and operational risk detection.
             </div>
           </div>
         </div>
+
+        <!-- ==========================
+     PANEL 3: FREIGHT
+========================== -->
+<div
+  class="calculator-container advanced-module tool-panel hidden"
+  id="freight-panel"
+>
+  <h2>Freight Import / Export Profit Simulator</h2>
+  <p>
+    Evaluate international shipments including freight, duties,
+    insurance, and logistics costs before quoting a client.
+  </p>
+
+  <div class="calculator-grid">
+
+    <!-- INPUTS -->
+    <div class="input-section">
+      <h3>Freight Inputs</h3>
+
+      <div class="input-group">
+        <label for="freight-quote">Client Quote Price (R)</label>
+        <input type="number" id="freight-quote" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-cargo-value">Cargo Value (R)</label>
+        <input type="number" id="freight-cargo-value" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-insurance-rate">Insurance Rate (%)</label>
+        <input type="number" id="freight-insurance-rate" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-cost">Freight Cost (R)</label>
+        <input type="number" id="freight-cost" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-fuel-surcharge">Fuel Surcharge (R)</label>
+        <input type="number" id="freight-fuel-surcharge" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-duty-rate">Import Duty Rate (%)</label>
+        <input type="number" id="freight-duty-rate" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-customs-fees">Customs Clearance Fees (R)</label>
+        <input type="number" id="freight-customs-fees" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-port-fees">Port / Terminal Fees (R)</label>
+        <input type="number" id="freight-port-fees" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-handling-fees">Handling Charges (R)</label>
+        <input type="number" id="freight-handling-fees" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-inland-transport">Inland Transport (R)</label>
+        <input type="number" id="freight-inland-transport" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-tolls">Toll Costs (R)</label>
+        <input type="number" id="freight-tolls" />
+      </div>
+
+      <div class="input-group">
+        <label for="freight-other-costs">Other Logistics Costs (R)</label>
+        <input type="number" id="freight-other-costs" />
+      </div>
+
+      <button type="button" id="resetFreightBtn">Reset All</button>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div class="output-section">
+      <h3>Freight Results</h3>
+
+      <div class="output-group">
+        <div class="output-label">Insurance Cost</div>
+        <div class="output-value" id="freight-insurance-cost">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Duty Cost</div>
+        <div class="output-value" id="freight-duties">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Total Logistics Cost</div>
+        <div class="output-value" id="freight-total-cost">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Estimated Profit</div>
+        <div class="output-value" id="freight-profit">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Profit Margin</div>
+        <div class="output-value" id="freight-margin">0.00%</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Break-even Quote</div>
+        <div class="output-value" id="freight-breakeven">R0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision</div>
+        <div class="output-value" id="freight-decision">—</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision Explanation</div>
+        <div class="output-value" id="freight-reason">—</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Risk Level</div>
+        <div class="output-value" id="freight-risk">—</div>
+      </div>
+    </div>
+
+  </div>
+          </div>
 
            <!-- ================================
              SECTORS & INDUSTRIES NAVIGATION
