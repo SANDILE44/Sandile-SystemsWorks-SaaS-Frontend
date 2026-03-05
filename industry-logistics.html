@@ -830,54 +830,108 @@ clear margin visibility and operational risk detection.
       </main>
     </div>
 
-    <script>
-  (function () {
-    const resetBtn = document.getElementById("resetBtn");
-    const resetOperationsBtn = document.getElementById("resetOperationsBtn");
-    const resetShipmentBtn = document.getElementById("resetShipmentBtn");
-
-    if (!resetBtn) return;
-
-    resetOperationsBtn?.addEventListener("click", () => resetBtn.click());
-    resetShipmentBtn?.addEventListener("click", () => resetBtn.click());
-  })();
-
-
+<script>
+/* ===============================
+   RESET BUTTON HANDLING
+================================*/
 (function () {
+
+  const resetBtn = document.getElementById("resetBtn");
+
+  const resetOperationsBtn = document.getElementById("resetOperationsBtn");
+  const resetShipmentBtn = document.getElementById("resetShipmentBtn");
+  const resetFreightBtn = document.getElementById("resetFreightBtn");
+
+  if (!resetBtn) return;
+
+  resetOperationsBtn?.addEventListener("click", () => resetBtn.click());
+  resetShipmentBtn?.addEventListener("click", () => resetBtn.click());
+  resetFreightBtn?.addEventListener("click", () => resetBtn.click());
+
+})();
+
+
+/* ===============================
+   TOOL PANEL SWITCHING
+================================*/
+(function () {
+
   const btnOperations = document.getElementById("btn-operations");
   const btnShipment = document.getElementById("btn-shipment");
+  const btnFreight = document.getElementById("btn-freight");
+
   const operationsPanel = document.getElementById("operations-panel");
   const shipmentPanel = document.getElementById("shipment-panel");
+  const freightPanel = document.getElementById("freight-panel");
+
   const placeholder = document.getElementById("tool-placeholder");
 
-  if (!btnOperations || !btnShipment || !operationsPanel || !shipmentPanel || !placeholder) return;
+  if (
+    !btnOperations ||
+    !btnShipment ||
+    !btnFreight ||
+    !operationsPanel ||
+    !shipmentPanel ||
+    !freightPanel ||
+    !placeholder
+  ) return;
 
-  // INITIAL STATE
+  /* INITIAL STATE */
   btnOperations.classList.remove("active");
   btnShipment.classList.remove("active");
+  btnFreight.classList.remove("active");
+
   operationsPanel.classList.add("hidden");
   shipmentPanel.classList.add("hidden");
+  freightPanel.classList.add("hidden");
+
   placeholder.classList.remove("hidden");
 
+  /* OPERATIONS */
   btnOperations.addEventListener("click", () => {
+
     btnOperations.classList.add("active");
     btnShipment.classList.remove("active");
+    btnFreight.classList.remove("active");
 
     operationsPanel.classList.remove("hidden");
     shipmentPanel.classList.add("hidden");
+    freightPanel.classList.add("hidden");
 
     placeholder.classList.add("hidden");
+
   });
 
+  /* SHIPMENT */
   btnShipment.addEventListener("click", () => {
+
     btnShipment.classList.add("active");
     btnOperations.classList.remove("active");
+    btnFreight.classList.remove("active");
 
     shipmentPanel.classList.remove("hidden");
     operationsPanel.classList.add("hidden");
+    freightPanel.classList.add("hidden");
 
     placeholder.classList.add("hidden");
+
   });
+
+  /* FREIGHT */
+  btnFreight.addEventListener("click", () => {
+
+    btnFreight.classList.add("active");
+    btnOperations.classList.remove("active");
+    btnShipment.classList.remove("active");
+
+    freightPanel.classList.remove("hidden");
+    operationsPanel.classList.add("hidden");
+    shipmentPanel.classList.add("hidden");
+
+    placeholder.classList.add("hidden");
+
+  });
+
 })();
 </script>
 
