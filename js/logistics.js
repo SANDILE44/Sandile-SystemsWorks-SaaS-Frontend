@@ -176,6 +176,59 @@
       setClass($('ship-profit'), 'output-value', 'profit-negative');
   }
 
+ /* =====================================================
+   FREIGHT CALCULATOR
+===================================================== */
+
+async function runFreight() {
+  const data = await apiPost(
+    '/api/calculators/logistics/freight',
+    {
+      quote: +$('freight-quote')?.value || 0,
+      cargoValue: +$('freight-cargo-value')?.value || 0,
+      insuranceRate: +$('freight-insurance-rate')?.value || 0,
+      freightCost: +$('freight-cost')?.value || 0,
+      fuelSurcharge: +$('freight-fuel-surcharge')?.value || 0,
+      dutyRate: +$('freight-duty-rate')?.value || 0,
+      customsFees: +$('freight-customs-fees')?.value || 0,
+      portFees: +$('freight-port-fees')?.value || 0,
+      handlingFees: +$('freight-handling-fees')?.value || 0,
+      inlandTransport: +$('freight-inland-transport')?.value || 0,
+      tollCosts: +$('freight-tolls')?.value || 0,
+      otherCosts: +$('freight-other-costs')?.value || 0
+    }
+  );
+
+  if (!data) return;
+
+  $('freight-insurance-cost').textContent = money(data.insuranceCost);
+  $('freight-duties').textContent = money(data.duties);
+  $('freight-total-cost').textContent = money(data.totalCost);
+  $('freight-profit').textContent = money(data.profit);
+  $('freight-margin').textContent = percent(data.margin);
+  $('freight-breakeven').textContent = money(data.breakEvenQuote);
+
+  $('freight-decision').textContent = data.decision;
+  $('freight-reason').textContent = data.reason;
+  $('freight-risk').textContent = data.riskLevel;
+
+  // Decision color
+  const decision = (data.decision || '').toUpperCase();
+
+  if (decision === 'APPROVE')
+    setClass($('freight-decision'), 'output-value', 'decision-approve');
+  else if (decision === 'REJECT')
+    setClass($('freight-decision'), 'output-value', 'decision-reject');
+  else
+    setClass($('freight-decision'), 'output-value', 'decision-review');
+
+  // Profit color
+  if (data.profit >= 0)
+    setClass($('freight-profit'), 'output-value', 'profit-positive');
+  else
+    setClass($('freight-profit'), 'output-value', 'profit-negative');
+}
+
   /* =====================================================
      EVENT BINDING
   ===================================================== */
@@ -198,6 +251,16 @@
         })
       );
 
+    // Freight inputs
+document
+  .querySelectorAll('#freight-panel input')
+  .forEach((i) =>
+    i.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runFreight, 300);
+    })
+  );
+
     // Reset operations
     $('resetOperationsBtn')?.addEventListener('click', () => {
       document
@@ -217,3 +280,4 @@
 
   bindEvents();
 })();
+
