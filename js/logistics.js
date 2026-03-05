@@ -228,7 +228,23 @@ async function runFreight() {
   else
     setClass($('freight-profit'), 'output-value', 'profit-negative');
 }
+// ===== freight margin color =====
+const marginEl = document.getElementById('freight-margin');
+const marginVal = Number(String(data.margin ?? 0).replace('%', '')) || 0;
 
+marginEl.classList.remove('margin-strong','margin-medium','margin-low');
+if (marginVal >= 20) marginEl.classList.add('margin-strong');
+else if (marginVal >= 10) marginEl.classList.add('margin-medium');
+else marginEl.classList.add('margin-low');
+
+// ===== freight risk color =====
+const riskEl = document.getElementById('freight-risk');
+const risk = String(data.riskLevel || data.freightRisk || data.risk || '').toLowerCase();
+
+riskEl.classList.remove('freight-risk-low','freight-risk-medium','freight-risk-high');
+if (risk === 'low') riskEl.classList.add('freight-risk-low');
+else if (risk === 'medium') riskEl.classList.add('freight-risk-medium');
+else if (risk === 'high') riskEl.classList.add('freight-risk-high');
   /* =====================================================
      EVENT BINDING
   ===================================================== */
@@ -280,4 +296,5 @@ document
 
   bindEvents();
 })();
+
 
