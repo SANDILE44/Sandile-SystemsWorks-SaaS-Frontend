@@ -1,4 +1,5 @@
 (() => {
+
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
@@ -18,7 +19,9 @@
   ===================================================== */
 
   async function apiPost(url, body) {
+
     const token = localStorage.getItem('token');
+
     if (!token) {
       location.replace('login.html');
       return null;
@@ -50,7 +53,7 @@
   }
 
   /* =====================================================
-     COLOR HELPERS
+     COLOR HELPER
   ===================================================== */
 
   function setClass(el, base, extra) {
@@ -68,17 +71,15 @@
   }
 
   async function runMonthly() {
-    const data = await apiPost(
-      '/api/calculators/logistics/business',
-      {
-        shipments: +$('log-shipments')?.value || 0,
-        revenuePer: +$('log-revenue')?.value || 0,
-        fuel: +$('log-fuel')?.value || 0,
-        labor: +$('log-labor')?.value || 0,
-        maintenance: +$('log-maintenance')?.value || 0,
-        fixed: +$('log-fixed')?.value || 0,
-      }
-    );
+
+    const data = await apiPost('/api/calculators/logistics/business', {
+      shipments: +$('log-shipments')?.value || 0,
+      revenuePer: +$('log-revenue')?.value || 0,
+      fuel: +$('log-fuel')?.value || 0,
+      labor: +$('log-labor')?.value || 0,
+      maintenance: +$('log-maintenance')?.value || 0,
+      fixed: +$('log-fixed')?.value || 0,
+    });
 
     if (!data) return;
 
@@ -101,13 +102,12 @@
 
     $('log-status').textContent = data.status || '—';
     $('log-risk-level').textContent = data.riskLevel || '—';
-    $('log-recommended-price').textContent =
-      money(data.recommendedPricePerShipment);
+    $('log-recommended-price').textContent = money(data.recommendedPricePerShipment);
     $('log-safety').textContent = data.safetyStatus || '—';
     $('log-advice').textContent = data.advice || '—';
 
-    // Risk color
     const risk = (data.riskLevel || '').toLowerCase();
+
     if (risk === 'low')
       setClass($('log-risk-level'), 'output-value', 'risk-low');
     else if (risk === 'medium')
@@ -115,7 +115,6 @@
     else if (risk === 'high')
       setClass($('log-risk-level'), 'output-value', 'risk-high');
 
-    // Profit color
     if (data.profit >= 0)
       setClass($('log-profit'), 'output-value', 'profit-positive');
     else
@@ -127,29 +126,27 @@
   ===================================================== */
 
   async function runShipment() {
-    const data = await apiPost(
-      '/api/calculators/logistics/shipment',
-      {
-        quote: +$('ship-quote')?.value || 0,
-        minMargin: +$('ship-min-margin')?.value || 0,
-        buffer: +$('ship-buffer')?.value || 0,
-        distance: +$('ship-distance')?.value || 0,
-        fuelPerKm: +$('ship-fuel-km')?.value || 0,
-        vehiclePerKm: +$('ship-vehicle-km')?.value || 0,
-        loadFactor: +$('ship-load-factor')?.value || 100,
-        drivingHours: +$('ship-driving-hours')?.value || 0,
-        waitHours: +$('ship-wait-hours')?.value || 0,
-        driverRate: +$('ship-driver-rate')?.value || 0,
-        tolls: +$('ship-tolls')?.value || 0,
-        permits: +$('ship-permits')?.value || 0,
-        otherFees: +$('ship-other-fees')?.value || 0,
-        cargoValue: +$('ship-cargo-value')?.value || 0,
-        insuranceRate: +$('ship-insurance')?.value || 0,
-        duties: +$('ship-duties')?.value || 0,
-        handling: +$('ship-handling')?.value || 0,
-        passThrough: +$('ship-pass-through')?.value || 0,
-      }
-    );
+
+    const data = await apiPost('/api/calculators/logistics/shipment', {
+      quote: +$('ship-quote')?.value || 0,
+      minMargin: +$('ship-min-margin')?.value || 0,
+      buffer: +$('ship-buffer')?.value || 0,
+      distance: +$('ship-distance')?.value || 0,
+      fuelPerKm: +$('ship-fuel-km')?.value || 0,
+      vehiclePerKm: +$('ship-vehicle-km')?.value || 0,
+      loadFactor: +$('ship-load-factor')?.value || 100,
+      drivingHours: +$('ship-driving-hours')?.value || 0,
+      waitHours: +$('ship-wait-hours')?.value || 0,
+      driverRate: +$('ship-driver-rate')?.value || 0,
+      tolls: +$('ship-tolls')?.value || 0,
+      permits: +$('ship-permits')?.value || 0,
+      otherFees: +$('ship-other-fees')?.value || 0,
+      cargoValue: +$('ship-cargo-value')?.value || 0,
+      insuranceRate: +$('ship-insurance')?.value || 0,
+      duties: +$('ship-duties')?.value || 0,
+      handling: +$('ship-handling')?.value || 0,
+      passThrough: +$('ship-pass-through')?.value || 0,
+    });
 
     if (!data) return;
 
@@ -157,11 +154,12 @@
     $('ship-profit').textContent = money(data.profit);
     $('ship-margin').textContent = percent(data.margin);
     $('ship-min-quote').textContent = money(data.recommendedMinQuote);
+
     $('ship-decision').textContent = data.decision;
     $('ship-reason').textContent = data.reason;
 
-    // Decision color
     const decision = (data.decision || '').toUpperCase();
+
     if (decision === 'APPROVE')
       setClass($('ship-decision'), 'output-value', 'decision-approve');
     else if (decision === 'REJECT')
@@ -169,21 +167,19 @@
     else
       setClass($('ship-decision'), 'output-value', 'decision-review');
 
-    // Profit color
     if (data.profit >= 0)
       setClass($('ship-profit'), 'output-value', 'profit-positive');
     else
       setClass($('ship-profit'), 'output-value', 'profit-negative');
   }
 
- /* =====================================================
-   FREIGHT CALCULATOR
-===================================================== */
+  /* =====================================================
+     FREIGHT CALCULATOR
+  ===================================================== */
 
-async function runFreight() {
-  const data = await apiPost(
-    '/api/calculators/logistics/freight',
-    {
+  async function runFreight() {
+
+    const data = await apiPost('/api/calculators/logistics/freight', {
       quote: +$('freight-quote')?.value || 0,
       cargoValue: +$('freight-cargo-value')?.value || 0,
       insuranceRate: +$('freight-insurance-rate')?.value || 0,
@@ -196,72 +192,64 @@ async function runFreight() {
       inlandTransport: +$('freight-inland-transport')?.value || 0,
       tollCosts: +$('freight-tolls')?.value || 0,
       otherCosts: +$('freight-other-costs')?.value || 0
-    }
-  );
+    });
 
-  if (!data) return;
+    if (!data) return;
 
-  $('freight-insurance-cost').textContent = money(data.insuranceCost);
-  $('freight-duties').textContent = money(data.duties);
-  $('freight-total-cost').textContent = money(data.totalCost);
-  $('freight-profit').textContent = money(data.profit);
-  $('freight-margin').textContent = percent(data.margin);
-  $('freight-breakeven').textContent = money(data.breakEvenQuote);
+    $('freight-insurance-cost').textContent = money(data.insuranceCost);
+    $('freight-duties').textContent = money(data.duties);
+    $('freight-total-cost').textContent = money(data.totalCost);
+    $('freight-profit').textContent = money(data.profit);
+    $('freight-margin').textContent = percent(data.margin);
+    $('freight-breakeven').textContent = money(data.breakEvenQuote);
 
-  $('freight-decision').textContent = data.decision;
-  $('freight-reason').textContent = data.reason;
-  $('freight-risk').textContent = data.riskLevel;
+    $('freight-decision').textContent = data.decision;
+    $('freight-reason').textContent = data.reason;
+    $('freight-risk').textContent = data.riskLevel;
 
-  // Decision color
-  const decision = (data.decision || '').toUpperCase();
+    const decision = (data.decision || '').toUpperCase();
 
-  if (decision === 'APPROVE')
-    setClass($('freight-decision'), 'output-value', 'decision-approve');
-  else if (decision === 'REJECT')
-    setClass($('freight-decision'), 'output-value', 'decision-reject');
-  else
-    setClass($('freight-decision'), 'output-value', 'decision-review');
+    if (decision === 'APPROVE')
+      setClass($('freight-decision'), 'output-value', 'decision-approve');
+    else if (decision === 'REJECT')
+      setClass($('freight-decision'), 'output-value', 'decision-reject');
+    else
+      setClass($('freight-decision'), 'output-value', 'decision-review');
 
-  // Profit color
-  if (data.profit >= 0)
-    setClass($('freight-profit'), 'output-value', 'profit-positive');
-  else
-    setClass($('freight-profit'), 'output-value', 'profit-negative');
-}
-// ===== freight margin color =====
-const marginEl = document.getElementById('freight-margin');
-const marginVal = Number(data.margin) || 0;
+    if (data.profit >= 0)
+      setClass($('freight-profit'), 'output-value', 'profit-positive');
+    else
+      setClass($('freight-profit'), 'output-value', 'profit-negative');
 
-if (marginVal >= 20)
-  setClass(marginEl, 'output-value', 'margin-strong');
-else if (marginVal >= 10)
-  setClass(marginEl, 'output-value', 'margin-medium');
-else
-  setClass(marginEl, 'output-value', 'margin-low');
+    const margin = Number(data.margin) || 0;
 
+    if (margin >= 20)
+      setClass($('freight-margin'), 'output-value', 'margin-strong');
+    else if (margin >= 10)
+      setClass($('freight-margin'), 'output-value', 'margin-medium');
+    else
+      setClass($('freight-margin'), 'output-value', 'margin-low');
 
-// ===== freight risk color =====
-const riskEl = document.getElementById('freight-risk');
-const risk = String(data.riskLevel || '').toLowerCase();
+    const risk = (data.riskLevel || '').toLowerCase();
 
-if (risk === 'low')
-  setClass(riskEl, 'output-value', 'freight-risk-low');
-else if (risk === 'medium')
-  setClass(riskEl, 'output-value', 'freight-risk-medium');
-else if (risk === 'high')
-  setClass(riskEl, 'output-value', 'freight-risk-high');  /* =====================================================
+    if (risk === 'low')
+      setClass($('freight-risk'), 'output-value', 'freight-risk-low');
+    else if (risk === 'medium')
+      setClass($('freight-risk'), 'output-value', 'freight-risk-medium');
+    else if (risk === 'high')
+      setClass($('freight-risk'), 'output-value', 'freight-risk-high');
+  }
+
+  /* =====================================================
      EVENT BINDING
   ===================================================== */
 
   function bindEvents() {
-    // Monthly inputs
+
     document
       .querySelectorAll('#operations-panel input')
-      .forEach((i) =>
-        i.addEventListener('input', updateMonthly)
-      );
+      .forEach((i) => i.addEventListener('input', updateMonthly));
 
-    // Shipment inputs
     document
       .querySelectorAll('#shipment-panel input')
       .forEach((i) =>
@@ -271,35 +259,16 @@ else if (risk === 'high')
         })
       );
 
-    // Freight inputs
-document
-  .querySelectorAll('#freight-panel input')
-  .forEach((i) =>
-    i.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(runFreight, 300);
-    })
-  );
-
-    // Reset operations
-    $('resetOperationsBtn')?.addEventListener('click', () => {
-      document
-        .querySelectorAll('#operations-panel input')
-        .forEach((i) => (i.value = ''));
-      runMonthly();
-    });
-
-    // Reset shipment
-    $('resetShipmentBtn')?.addEventListener('click', () => {
-      document
-        .querySelectorAll('#shipment-panel input')
-        .forEach((i) => (i.value = ''));
-      runShipment();
-    });
+    document
+      .querySelectorAll('#freight-panel input')
+      .forEach((i) =>
+        i.addEventListener('input', () => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(runFreight, 300);
+        })
+      );
   }
 
   bindEvents();
+
 })();
-
-
-
