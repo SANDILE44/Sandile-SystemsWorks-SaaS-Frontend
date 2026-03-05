@@ -627,68 +627,113 @@ clear margin visibility and operational risk detection.
   <div class="calculator-grid">
 
     <!-- INPUTS -->
-    <div class="input-section">
-      <h3>Freight Inputs</h3>
+<div class="input-group">
+  <label for="freight-quote">Client Quote Price (R)</label>
+  <input
+    type="number"
+    id="freight-quote"
+    placeholder="Total price you are charging the client"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-quote">Client Quote Price (R)</label>
-        <input type="number" id="freight-quote" />
-      </div>
+<div class="input-group">
+  <label for="freight-cargo-value">Cargo Value (R)</label>
+  <input
+    type="number"
+    id="freight-cargo-value"
+    placeholder="Declared value of goods being shipped"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-cargo-value">Cargo Value (R)</label>
-        <input type="number" id="freight-cargo-value" />
-      </div>
+<div class="input-group">
+  <label for="freight-insurance-rate">Insurance Rate (%)</label>
+  <input
+    type="number"
+    id="freight-insurance-rate"
+    placeholder="Insurance percentage applied to cargo value"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-insurance-rate">Insurance Rate (%)</label>
-        <input type="number" id="freight-insurance-rate" />
-      </div>
+<div class="input-group">
+  <label for="freight-cost">Freight Cost (R)</label>
+  <input
+    type="number"
+    id="freight-cost"
+    placeholder="Ocean, air, or rail freight cost"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-cost">Freight Cost (R)</label>
-        <input type="number" id="freight-cost" />
-      </div>
+<div class="input-group">
+  <label for="freight-fuel-surcharge">Fuel Surcharge (R)</label>
+  <input
+    type="number"
+    id="freight-fuel-surcharge"
+    placeholder="Carrier fuel surcharge"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-fuel-surcharge">Fuel Surcharge (R)</label>
-        <input type="number" id="freight-fuel-surcharge" />
-      </div>
+<div class="input-group">
+  <label for="freight-duty-rate">Import Duty Rate (%)</label>
+  <input
+    type="number"
+    id="freight-duty-rate"
+    placeholder="Import duty percentage on cargo value"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-duty-rate">Import Duty Rate (%)</label>
-        <input type="number" id="freight-duty-rate" />
-      </div>
+<div class="input-group">
+  <label for="freight-customs-fees">Customs Clearance Fees (R)</label>
+  <input
+    type="number"
+    id="freight-customs-fees"
+    placeholder="Customs broker and documentation fees"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-customs-fees">Customs Clearance Fees (R)</label>
-        <input type="number" id="freight-customs-fees" />
-      </div>
+<div class="input-group">
+  <label for="freight-port-fees">Port / Terminal Fees (R)</label>
+  <input
+    type="number"
+    id="freight-port-fees"
+    placeholder="Port handling or terminal charges"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-port-fees">Port / Terminal Fees (R)</label>
-        <input type="number" id="freight-port-fees" />
-      </div>
+<div class="input-group">
+  <label for="freight-handling-fees">Handling Charges (R)</label>
+  <input
+    type="number"
+    id="freight-handling-fees"
+    placeholder="Warehouse or cargo handling costs"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-handling-fees">Handling Charges (R)</label>
-        <input type="number" id="freight-handling-fees" />
-      </div>
+<div class="input-group">
+  <label for="freight-inland-transport">Inland Transport (R)</label>
+  <input
+    type="number"
+    id="freight-inland-transport"
+    placeholder="Truck or rail transport after arrival"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-inland-transport">Inland Transport (R)</label>
-        <input type="number" id="freight-inland-transport" />
-      </div>
+<div class="input-group">
+  <label for="freight-tolls">Toll Costs (R)</label>
+  <input
+    type="number"
+    id="freight-tolls"
+    placeholder="Highway tolls or route fees"
+  />
+</div>
 
-      <div class="input-group">
-        <label for="freight-tolls">Toll Costs (R)</label>
-        <input type="number" id="freight-tolls" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-other-costs">Other Logistics Costs (R)</label>
-        <input type="number" id="freight-other-costs" />
-      </div>
+<div class="input-group">
+  <label for="freight-other-costs">Other Logistics Costs (R)</label>
+  <input
+    type="number"
+    id="freight-other-costs"
+    placeholder="Inspection, storage, or additional logistics fees"
+  />
+    </div>
 
       <button type="button" id="resetFreightBtn">Reset All</button>
     </div>
