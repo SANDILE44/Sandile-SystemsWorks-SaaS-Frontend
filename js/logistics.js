@@ -230,22 +230,26 @@ async function runFreight() {
 }
 // ===== freight margin color =====
 const marginEl = document.getElementById('freight-margin');
-const marginVal = Number(String(data.margin ?? 0).replace('%', '')) || 0;
+const marginVal = Number(data.margin) || 0;
 
-marginEl.classList.remove('margin-strong','margin-medium','margin-low');
-if (marginVal >= 20) marginEl.classList.add('margin-strong');
-else if (marginVal >= 10) marginEl.classList.add('margin-medium');
-else marginEl.classList.add('margin-low');
+if (marginVal >= 20)
+  setClass(marginEl, 'output-value', 'margin-strong');
+else if (marginVal >= 10)
+  setClass(marginEl, 'output-value', 'margin-medium');
+else
+  setClass(marginEl, 'output-value', 'margin-low');
+
 
 // ===== freight risk color =====
 const riskEl = document.getElementById('freight-risk');
-const risk = String(data.riskLevel || data.freightRisk || data.risk || '').toLowerCase();
+const risk = String(data.riskLevel || '').toLowerCase();
 
-riskEl.classList.remove('freight-risk-low','freight-risk-medium','freight-risk-high');
-if (risk === 'low') riskEl.classList.add('freight-risk-low');
-else if (risk === 'medium') riskEl.classList.add('freight-risk-medium');
-else if (risk === 'high') riskEl.classList.add('freight-risk-high');
-  /* =====================================================
+if (risk === 'low')
+  setClass(riskEl, 'output-value', 'freight-risk-low');
+else if (risk === 'medium')
+  setClass(riskEl, 'output-value', 'freight-risk-medium');
+else if (risk === 'high')
+  setClass(riskEl, 'output-value', 'freight-risk-high');  /* =====================================================
      EVENT BINDING
   ===================================================== */
 
@@ -296,5 +300,6 @@ document
 
   bindEvents();
 })();
+
 
 
