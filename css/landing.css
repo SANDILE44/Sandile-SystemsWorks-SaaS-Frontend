@@ -1902,55 +1902,51 @@ details p {
 }
 
 
-/* ===============================
-   MOBILE FOOTER IMPROVEMENTS
+
+  /* ===============================
+   FOOTER GRID STRUCTURE
 ================================ */
 
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Tablet + Mobile (keep 2 columns) */
 @media (max-width: 860px) {
 
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
   }
 
-  /* brand block centered */
+  /* Order the sections properly */
+
   .footer-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    order: 1;
   }
 
-  .footer-logo-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
+  .footer-col:nth-child(2) { /* Pages */
+    order: 2;
   }
 
-  .footer-desc {
-    max-width: 90%;
-    text-align: center;
+  .footer-col:nth-child(3) { /* Product */
+    order: 3;
   }
 
-  /* columns spacing */
-  .footer-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .footer-col:nth-child(4) { /* Contact */
+    order: 4;
   }
 
-  .footer-col h4 {
-    margin-bottom: 0.6rem;
-  }
+}
 
-  .footer-col a {
-    margin-bottom: 0.4rem;
-  }
+/* Small phones still keep 2 columns */
+@media (max-width: 520px) {
 
-  /* bottom copyright spacing */
-  .footer-bottom {
-    margin-top: 2.2rem;
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
   }
 
 }
