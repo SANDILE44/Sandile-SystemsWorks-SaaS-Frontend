@@ -7,6 +7,93 @@
 
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/calculators.css" />
+
+<style>
+
+/* ===============================
+   DECISION TOOL COLOR SYSTEM
+   =============================== */
+
+/* Base output style */
+.output-value {
+  transition: color 0.25s ease;
+  font-weight: 600;
+}
+
+/* ===============================
+   PROFIT / LOSS
+   =============================== */
+
+/* Profit */
+.output-value.positive {
+  color: #22c55e; /* green */
+}
+
+/* Loss */
+.output-value.negative {
+  color: #ef4444; /* red */
+}
+
+/* ===============================
+   PROFIT MARGIN
+   =============================== */
+
+/* Healthy margin */
+#const-margin.positive {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+/* Thin margin */
+#const-margin.caution {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+/* Dangerous margin */
+#const-margin.negative {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* ===============================
+   ROI
+   =============================== */
+
+#const-roi.positive {
+  color: #22c55e;
+}
+
+#const-roi.caution {
+  color: #f59e0b;
+}
+
+#const-roi.negative {
+  color: #ef4444;
+}
+
+/* ===============================
+   DECISION STATUS
+   =============================== */
+
+#decision-status {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+#decision-status.positive {
+  color: #22c55e;
+}
+
+#decision-status.caution {
+  color: #f59e0b;
+}
+
+#decision-status.negative {
+  color: #ef4444;
+}
+
+</style>
 </head>
 
 <body>
