@@ -787,11 +787,14 @@ body {
 
   /* Account always visible */
   .sidebar-account {
-    margin-top: auto;
-    flex-shrink: 0;
-    border-top: 1px solid var(--border-soft);
-    padding-top: 0.65rem;
-  }
+  margin-top: auto;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 0.65rem;
+
+  /* move it above phone navigation buttons */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 14px);
+}
 
   .account-btn {
     padding: 0.5rem 0.7rem;
