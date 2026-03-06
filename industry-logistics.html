@@ -880,21 +880,31 @@ clear margin visibility and operational risk detection.
    RESET BUTTON HANDLING
 ================================*/
 (function () {
-
-  const resetBtn = document.getElementById("resetBtn");
-
   const resetOperationsBtn = document.getElementById("resetOperationsBtn");
   const resetShipmentBtn = document.getElementById("resetShipmentBtn");
   const resetFreightBtn = document.getElementById("resetFreightBtn");
 
-  if (!resetBtn) return;
+  resetOperationsBtn?.addEventListener("click", () => {
+    document
+      .querySelectorAll("#operations-panel input")
+      .forEach((input) => (input.value = ""));
+    if (typeof runMonthly === "function") runMonthly();
+  });
 
-  resetOperationsBtn?.addEventListener("click", () => resetBtn.click());
-  resetShipmentBtn?.addEventListener("click", () => resetBtn.click());
-  resetFreightBtn?.addEventListener("click", () => resetBtn.click());
+  resetShipmentBtn?.addEventListener("click", () => {
+    document
+      .querySelectorAll("#shipment-panel input")
+      .forEach((input) => (input.value = ""));
+    if (typeof runShipment === "function") runShipment();
+  });
 
+  resetFreightBtn?.addEventListener("click", () => {
+    document
+      .querySelectorAll("#freight-panel input")
+      .forEach((input) => (input.value = ""));
+    if (typeof runFreight === "function") runFreight();
+  });
 })();
-
 
 /* ===============================
    TOOL PANEL SWITCHING
