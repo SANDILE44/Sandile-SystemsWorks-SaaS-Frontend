@@ -1,184 +1,268 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manufacturing Calculators - Sandile SystemsWorks</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/calculators.css" />
-  </head>
-  <body>
-    <!-- APP LAYOUT -->
-    <div class="app-shell">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-top">
-          <div class="sidebar-brand">
-            <img
-              src="images/Untitled design.png"
-              alt="Sandile SystemsWorks"
-              class="sidebar-logo"
-            />
-              <span class="sidebar-name">Sandile SystemsWorks</span>
-          </div>
 
-          <nav class="sidebar-nav">
-            <a href="dashboard.html" >Dashboard</a>
-            <a href="sector-primary.html">Primary Sector</a>
-            <a href="sector-secondary.html">Secondary Sector</a>
-            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
-            <a href="sector-quaternary.html">Quaternary Sector</a>
-            <a href="sector-quinary.html">Quinary Sector</a>
-          </nav>
-        </div>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- ACCOUNT -->
-        <div class="sidebar-account">
-          <button id="accountBtn" class="account-btn">
-            <span id="accountAvatar" class="account-avatar">U</span>
-            <span id="accountName" class="account-name">Account</span>
-          </button>
+<title>Manufacturing Calculators - Sandile SystemsWorks</title>
 
-          <div id="accountMenu" class="account-menu">
-            <a href="index.html">Home</a>
-            <button id="logoutBtn">Logout</button>
-          </div>
-        </div>
-      </aside>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/calculators.css" />
+</head>
 
- <!-- MAIN CONTENT -->
-      <main class="main-content">
-        <!-- MOBILE HAMBURGER -->
-        <button id="hamburger" class="hamburger" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
 
-      <div class="breadcrumb">
-        <a href="dashboard.html">Sectors</a>
-        <span>→</span>
-        <a href="sector-secondary.html">Secondary</a>
-        <span>→</span>
-        <span>Manufacturing</span>
-      </div>
+<body>
 
-      <h1>Manufacturing Calculators</h1>
-      <p>Optimize production economics and manufacturing profitability.</p>
+<div class="app-shell">
 
-      <!-- MANUFACTURING PROFITABILITY CALCULATOR -->
-      <div class="calculator-container">
-        <h2>Manufacturing Profitability Calculator</h2>
-        <p>Analyze unit costs, production volume, margins, and ROI.</p>
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
-        <div class="calculator-grid">
-          <!-- INPUTS -->
-          <div class="input-section">
-            <h3>Inputs</h3>
-            <div class="input-group">
-              <label for="mfg-units">Units Produced</label>
-              <input
-                type="number"
-                id="mfg-units"
-                placeholder="Enter production volume"
-              />
-            </div>
-            <div class="input-group">
-              <label for="mfg-price">Selling Price Per Unit (R)</label>
-              <input
-                type="number"
-                id="mfg-price"
-                placeholder="Revenue per unit"
-              />
-            </div>
-            <div class="input-group">
-              <label for="mfg-material">Material Cost Per Unit (R)</label>
-              <input
-                type="number"
-                id="mfg-material"
-                placeholder="Raw materials cost"
-              />
-            </div>
-            <div class="input-group">
-              <label for="mfg-labor">Labor Costs (R)</label>
-              <input
-                type="number"
-                id="mfg-labor"
-                placeholder="Wages for workforce"
-              />
-            </div>
-            <div class="input-group">
-              <label for="mfg-fixed">Fixed Costs (R)</label>
-              <input
-                type="number"
-                id="mfg-fixed"
-                placeholder="Rent, utilities, insurance"
-              />
-            </div>
-            <div class="input-group">
-              <label for="mfg-operational">Operational Costs (R)</label>
-              <input
-                type="number"
-                id="mfg-operational"
-                placeholder="Maintenance, overhead"
-              />
-            </div>
-            <button type="button" id="resetBtn">Reset All</button>
-          </div>
+<div class="sidebar-top">
 
-          <!-- OUTPUTS -->
-          <div class="output-section">
-            <h3>Results</h3>
-            <div class="output-group">
-              <div class="output-label">Total Units</div>
-              <div class="output-value" id="mfg-units-output">0</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Total Revenue</div>
-              <div class="output-value" id="mfg-revenue">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Total Costs</div>
-              <div class="output-value" id="mfg-total-costs">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Cost Per Unit</div>
-              <div class="output-value" id="mfg-cost-per-unit">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Revenue Per Unit</div>
-              <div class="output-value" id="mfg-revenue-per-unit">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Profit Per Unit</div>
-              <div class="output-value" id="mfg-profit-per-unit">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Profit / Loss</div>
-              <div class="output-value" id="mfg-profit">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Break-even Units</div>
-              <div class="output-value" id="mfg-breakeven">0</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">ROI (%)</div>
-              <div class="output-value" id="mfg-roi">0.00%</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Profit Margin (%)</div>
-              <div class="output-value" id="mfg-margin">0.00%</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Monthly Revenue Projection</div>
-              <div class="output-value" id="mfg-monthly-revenue">R0.00</div>
-            </div>
-            <div class="output-group">
-              <div class="output-label">Annual Revenue Projection</div>
-              <div class="output-value" id="mfg-annual-revenue">R0.00</div>
-            </div>
-          </div>
-        </div>
+<div class="sidebar-brand">
+<img src="images/Untitled design.png"
+alt="Sandile SystemsWorks"
+class="sidebar-logo" />
+
+<span class="sidebar-name">
+Sandile SystemsWorks
+</span>
+</div>
+
+<nav class="sidebar-nav">
+<a href="dashboard.html">Dashboard</a>
+<a href="sector-primary.html">Primary Sector</a>
+<a href="sector-secondary.html" class="active">Secondary Sector</a>
+<a href="sector-tertiary.html">Tertiary Sector</a>
+<a href="sector-quaternary.html">Quaternary Sector</a>
+<a href="sector-quinary.html">Quinary Sector</a>
+</nav>
+
+</div>
+
+
+<div class="sidebar-account">
+
+<button id="accountBtn" class="account-btn">
+
+<span id="accountAvatar" class="account-avatar">U</span>
+<span id="accountName" class="account-name">Account</span>
+
+</button>
+
+<div id="accountMenu" class="account-menu">
+<a href="index.html">Home</a>
+<button id="logoutBtn">Logout</button>
+</div>
+
+</div>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+
+<button id="hamburger" class="hamburger" aria-label="Open menu">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+
+<div class="breadcrumb">
+
+<a href="dashboard.html">Sectors</a>
+<span>→</span>
+
+<a href="sector-secondary.html">Secondary</a>
+<span>→</span>
+
+<span>Manufacturing</span>
+
+</div>
+
+
+<h1>Manufacturing Calculators</h1>
+
+<p>
+Optimize production economics and manufacturing profitability.
+</p>
+
+
+
+<div class="calculator-container">
+
+<h2>Manufacturing Profitability Calculator</h2>
+
+<p>
+Analyze unit costs, production volume, margins, and ROI.
+</p>
+
+
+<div class="calculator-grid">
+
+
+<!-- INPUTS -->
+<div class="input-section">
+
+<h3>Inputs</h3>
+
+<div class="input-group">
+<label for="mfg-units">Units Produced</label>
+<input type="number"
+id="mfg-units"
+placeholder="Enter production volume" />
+</div>
+
+<div class="input-group">
+<label for="mfg-price">Selling Price Per Unit (R)</label>
+<input type="number"
+id="mfg-price"
+placeholder="Revenue per unit" />
+</div>
+
+<div class="input-group">
+<label for="mfg-material">Material Cost Per Unit (R)</label>
+<input type="number"
+id="mfg-material"
+placeholder="Raw materials cost" />
+</div>
+
+<div class="input-group">
+<label for="mfg-labor">Labor Costs (R)</label>
+<input type="number"
+id="mfg-labor"
+placeholder="Wages for workforce" />
+</div>
+
+<div class="input-group">
+<label for="mfg-fixed">Fixed Costs (R)</label>
+<input type="number"
+id="mfg-fixed"
+placeholder="Rent, utilities, insurance" />
+</div>
+
+<div class="input-group">
+<label for="mfg-operational">Operational Costs (R)</label>
+<input type="number"
+id="mfg-operational"
+placeholder="Maintenance, overhead" />
+</div>
+
+<button type="button" id="resetBtn">Reset All</button>
+
+</div>
+
+
+
+<!-- RESULTS -->
+<div class="output-section">
+
+<h3>Production Summary</h3>
+
+<div class="output-group">
+<div class="output-label">Total Units</div>
+<div class="output-value" id="mfg-units-output">0</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Total Revenue</div>
+<div class="output-value" id="mfg-revenue">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Total Costs</div>
+<div class="output-value" id="mfg-total-costs">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit / Loss</div>
+<div class="output-value" id="mfg-profit">R0.00</div>
+</div>
+
+
+
+<h3>Unit Economics</h3>
+
+<div class="output-group">
+<div class="output-label">Cost Per Unit</div>
+<div class="output-value" id="mfg-cost-per-unit">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Revenue Per Unit</div>
+<div class="output-value" id="mfg-revenue-per-unit">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit Per Unit</div>
+<div class="output-value" id="mfg-profit-per-unit">R0.00</div>
+</div>
+
+
+
+<h3>Break-Even Analysis</h3>
+
+<div class="output-group">
+<div class="output-label">Break-even Units</div>
+<div class="output-value" id="mfg-breakeven">0</div>
+</div>
+
+
+
+<h3>Performance Metrics</h3>
+
+<div class="output-group">
+<div class="output-label">ROI (%)</div>
+<div class="output-value" id="mfg-roi">0.00%</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit Margin (%)</div>
+<div class="output-value" id="mfg-margin">0.00%</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Monthly Revenue Projection</div>
+<div class="output-value" id="mfg-monthly-revenue">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Annual Revenue Projection</div>
+<div class="output-value" id="mfg-annual-revenue">R0.00</div>
+</div>
+
+
+
+<!-- DECISION ENGINE -->
+
+<h3>Production Decision</h3>
+
+<div class="output-group">
+<div class="output-label">Decision Status</div>
+<div class="output-value" id="decision-status">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Risk Warning</div>
+<div class="output-value" id="risk-warning"></div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Production Advice</div>
+<div class="output-value" id="decision-advice"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
       </div>
       <!-- ================================
    SECTORS & INDUSTRIES NAVIGATION
