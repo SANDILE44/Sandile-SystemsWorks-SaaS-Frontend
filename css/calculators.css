@@ -104,7 +104,8 @@ label {
 
 #resetBtn,
 #resetOperationsBtn,
-#resetShipmentBtn {
+#resetShipmentBtn,
+#resetFreightBtn {
   width: 100%;
   margin-top: 1rem;
   padding: 0.85rem 1.2rem;
@@ -134,7 +135,8 @@ label {
 /* Hover */
 #resetBtn:hover,
 #resetOperationsBtn:hover,
-#resetShipmentBtn:hover {
+#resetShipmentBtn:hover,
+#resetFreightBtn:hover {
   transform: translateY(-2px);
   filter: brightness(1.05);
 
@@ -146,7 +148,8 @@ label {
 /* Active (Pressed) */
 #resetBtn:active,
 #resetOperationsBtn:active,
-#resetShipmentBtn:active {
+#resetShipmentBtn:active,
+#resetFreightBtn:active {
   transform: translateY(0);
   box-shadow:
     0 4px 10px rgba(0, 180, 216, 0.2),
@@ -156,7 +159,8 @@ label {
 /* Focus (keyboard users) */
 #resetBtn:focus-visible,
 #resetOperationsBtn:focus-visible,
-#resetShipmentBtn:focus-visible {
+#resetShipmentBtn:focus-visible,
+#resetFreightBtn:focus-visible {
   outline: 2px solid rgba(0, 180, 216, 0.6);
   outline-offset: 3px;
 }
@@ -164,12 +168,12 @@ label {
 /* Disabled state (future-proof) */
 #resetBtn:disabled,
 #resetOperationsBtn:disabled,
-#resetShipmentBtn:disabled {
+#resetShipmentBtn:disabled,
+#resetFreightBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   box-shadow: none;
 }
-
 /* ================= OUTPUTS ================= */
 .output-group {
   display: flex;
