@@ -670,7 +670,25 @@ body {
     width: 260px; /* 🔒 force width, no reflow */
     max-width: 260px;
     pointer-events: auto;
+display: flex;
+flex-direction: column;
+height: 100vh;
   }
+
+/* Navigation scroll area */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+padding-bottom: 0.5rem;
+}
+
+/* Account always visible */
+.sidebar-account {
+  margin-top: auto;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 0.8rem;
+}
 
   .sidebar.mobile-open {
     transform: translateX(0);
