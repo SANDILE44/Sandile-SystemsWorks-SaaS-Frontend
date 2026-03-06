@@ -29,6 +29,19 @@
 
 
   /* ===============================
+     COLOR HELPER
+  ================================ */
+
+  function applyColor(el, type) {
+    if (!el) return;
+
+    el.classList.remove('positive', 'negative', 'caution');
+
+    if (type) el.classList.add(type);
+  }
+
+
+  /* ===============================
      MAIN CALCULATION
   ================================ */
 
@@ -79,12 +92,28 @@
       const profitEl = $('const-profit');
       profitEl.textContent = money(d.profit);
 
-      profitEl.classList.remove('positive', 'negative');
-      profitEl.classList.add(d.profit >= 0 ? 'positive' : 'negative');
+      applyColor(
+        profitEl,
+        d.profit >= 0 ? 'positive' : 'negative'
+      );
 
 
-      $('const-margin').textContent = percent(d.margin);
-      $('const-roi').textContent = percent(d.roi);
+      const marginEl = $('const-margin');
+      marginEl.textContent = percent(d.margin);
+
+      if (d.margin < 10) applyColor(marginEl, 'negative');
+      else if (d.margin < 20) applyColor(marginEl, 'caution');
+      else applyColor(marginEl, 'positive');
+
+
+      const roiEl = $('const-roi');
+      roiEl.textContent = percent(d.roi);
+
+      if (d.roi < 0) applyColor(roiEl, 'negative');
+      else if (d.roi < 10) applyColor(roiEl, 'caution');
+      else applyColor(roiEl, 'positive');
+
+
       $('const-breakeven').textContent = money(d.breakEvenRevenue);
       $('const-monthly-profit').textContent = money(d.monthlyProfit);
       $('const-annual-profit').textContent = money(d.annualProfit);
@@ -98,12 +127,12 @@
       const riskEl = $('risk-warning');
       const adviceEl = $('decision-advice');
 
-      statusEl.classList.remove('positive', 'negative', 'caution');
+      applyColor(statusEl, null);
 
       if (d.profit <= 0) {
 
         statusEl.textContent = '❌ High Risk';
-        statusEl.classList.add('negative');
+        applyColor(statusEl, 'negative');
 
         riskEl.textContent =
           'This contract results in a loss. Costs exceed contract value.';
@@ -116,7 +145,7 @@
       else if (d.margin < 10) {
 
         statusEl.textContent = '⚠ Low Margin';
-        statusEl.classList.add('caution');
+        applyColor(statusEl, 'caution');
 
         riskEl.textContent =
           'Very thin margin. Small overruns can eliminate profit.';
@@ -129,6 +158,7 @@
       else if (d.margin < 20) {
 
         statusEl.textContent = '🟡 Moderate Margin';
+        applyColor(statusEl, 'caution');
 
         riskEl.textContent =
           'Acceptable margin but limited safety buffer.';
@@ -141,7 +171,7 @@
       else {
 
         statusEl.textContent = '✅ Strong Project';
-        statusEl.classList.add('positive');
+        applyColor(statusEl, 'positive');
 
         riskEl.textContent =
           'Healthy margin with buffer against overruns.';
@@ -210,7 +240,10 @@
 
     Object.entries(defaults).forEach(([id, value]) => {
       const el = $(id);
-      if (el) el.textContent = value;
+      if (!el) return;
+
+      el.textContent = value;
+      el.classList.remove('positive', 'negative', 'caution');
     });
 
   });
@@ -223,7 +256,6 @@
   $('logoutBtn')?.addEventListener('click', () => {
 
     localStorage.removeItem('token');
-
     window.location.replace('login.html');
 
   });
