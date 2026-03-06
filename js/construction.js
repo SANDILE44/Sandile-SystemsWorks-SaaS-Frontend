@@ -1,5 +1,9 @@
 (() => {
 
+  /* ===============================
+     HELPERS
+  ================================ */
+
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
@@ -11,6 +15,11 @@
   const percent = (v) =>
     (Number(v) || 0).toFixed(2) + '%';
 
+
+  /* ===============================
+     DEBOUNCE SYSTEM
+  ================================ */
+
   let timer;
 
   function debounceRun() {
@@ -18,11 +27,18 @@
     timer = setTimeout(runCalculation, 300);
   }
 
+
+  /* ===============================
+     MAIN CALCULATION
+  ================================ */
+
   async function runCalculation() {
+
     const token = localStorage.getItem('token');
     if (!token) return;
 
     try {
+
       const res = await fetch(
         `${API_BASE}/api/calculators/construction/project`,
         {
@@ -42,6 +58,9 @@
         }
       );
 
+
+      /* ===== PAYMENT GUARD ===== */
+
       if (res.status === 403) {
         return location.replace('payment.html');
       }
@@ -50,12 +69,19 @@
 
       const d = await res.json();
 
+
+      /* ===============================
+         UPDATE OUTPUT VALUES
+      ================================ */
+
       $('const-total-costs').textContent = money(d.totalCosts);
 
       const profitEl = $('const-profit');
       profitEl.textContent = money(d.profit);
-      profitEl.className =
-        'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+      profitEl.classList.remove('positive', 'negative');
+      profitEl.classList.add(d.profit >= 0 ? 'positive' : 'negative');
+
 
       $('const-margin').textContent = percent(d.margin);
       $('const-roi').textContent = percent(d.roi);
@@ -63,51 +89,80 @@
       $('const-monthly-profit').textContent = money(d.monthlyProfit);
       $('const-annual-profit').textContent = money(d.annualProfit);
 
-      /* ===== DECISION LOGIC ===== */
+
+      /* ===============================
+         DECISION ENGINE
+      ================================ */
 
       const statusEl = $('decision-status');
       const riskEl = $('risk-warning');
       const adviceEl = $('decision-advice');
 
+      statusEl.classList.remove('positive', 'negative', 'caution');
+
       if (d.profit <= 0) {
+
         statusEl.textContent = '❌ High Risk';
-        statusEl.className = 'output-value negative';
+        statusEl.classList.add('negative');
+
         riskEl.textContent =
           'This contract results in a loss. Costs exceed contract value.';
+
         adviceEl.textContent =
           'DO NOT TAKE unless pricing is renegotiated.';
+
       }
+
       else if (d.margin < 10) {
+
         statusEl.textContent = '⚠ Low Margin';
-        statusEl.className = 'output-value caution';
+        statusEl.classList.add('caution');
+
         riskEl.textContent =
           'Very thin margin. Small overruns can eliminate profit.';
+
         adviceEl.textContent =
           'Proceed only with strict cost control and risk buffer.';
+
       }
+
       else if (d.margin < 20) {
+
         statusEl.textContent = '🟡 Moderate Margin';
-        statusEl.className = 'output-value';
+
         riskEl.textContent =
           'Acceptable margin but limited safety buffer.';
+
         adviceEl.textContent =
           'Monitor material and labor closely.';
+
       }
+
       else {
+
         statusEl.textContent = '✅ Strong Project';
-        statusEl.className = 'output-value positive';
+        statusEl.classList.add('positive');
+
         riskEl.textContent =
           'Healthy margin with buffer against overruns.';
+
         adviceEl.textContent =
           'Project is financially sound.';
+
       }
 
-    } catch (err) {
-      console.error(err);
     }
+
+    catch (err) {
+      console.error('Construction calculator error:', err);
+    }
+
   }
 
-  /* ===== INPUT LISTENERS ===== */
+
+  /* ===============================
+     INPUT LISTENERS
+  ================================ */
 
   [
     'const-value',
@@ -120,7 +175,10 @@
     $(id)?.addEventListener('input', debounceRun)
   );
 
-  /* ===== RESET BUTTON ===== */
+
+  /* ===============================
+     RESET BUTTON
+  ================================ */
 
   $('resetBtn')?.addEventListener('click', () => {
 
@@ -132,32 +190,42 @@
       'const-fixed',
       'const-duration',
     ].forEach((id) => {
-      if ($(id)) $(id).value = '';
+      const el = $(id);
+      if (el) el.value = '';
     });
 
-    [
-      'const-total-costs',
-      'const-profit',
-      'const-margin',
-      'const-roi',
-      'const-breakeven',
-      'const-monthly-profit',
-      'const-annual-profit',
-      'decision-status',
-      'risk-warning',
-      'decision-advice'
-    ].forEach((id) => {
-      if ($(id)) $(id).textContent = id.includes('status') ? '—' : '';
+
+    const defaults = {
+      'const-total-costs': 'R0.00',
+      'const-profit': 'R0.00',
+      'const-margin': '0.00%',
+      'const-roi': '0.00%',
+      'const-breakeven': 'R0.00',
+      'const-monthly-profit': 'R0.00',
+      'const-annual-profit': 'R0.00',
+      'decision-status': '—',
+      'risk-warning': '',
+      'decision-advice': '',
+    };
+
+    Object.entries(defaults).forEach(([id, value]) => {
+      const el = $(id);
+      if (el) el.textContent = value;
     });
 
   });
 
-  /* ===== LOGOUT BUTTON ===== */
+
+  /* ===============================
+     LOGOUT BUTTON
+  ================================ */
 
   $('logoutBtn')?.addEventListener('click', () => {
+
     localStorage.removeItem('token');
+
     window.location.replace('login.html');
+
   });
 
 })();
-
