@@ -1902,3 +1902,55 @@ details p {
 }
 
 
+/* ===============================
+   MOBILE FOOTER IMPROVEMENTS
+================================ */
+
+@media (max-width: 860px) {
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  /* brand block centered */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-logo-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .footer-desc {
+    max-width: 90%;
+    text-align: center;
+  }
+
+  /* columns spacing */
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-col h4 {
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-col a {
+    margin-bottom: 0.4rem;
+  }
+
+  /* bottom copyright spacing */
+  .footer-bottom {
+    margin-top: 2.2rem;
+  }
+
+}
