@@ -1,117 +1,138 @@
 (() => {
 
-  const $ = (id) => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 
-  const money = (v) =>
-    (Number(v) || 0).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+const money = (v) =>
+(Number(v) || 0).toLocaleString(undefined,{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 
-  const percent = (v) =>
-    (Number(v) || 0).toFixed(2) + '%';
+const percent = (v) =>
+(Number(v) || 0).toFixed(2) + "%";
 
-  let t;
+let debounce;
 
-  function setClass(el, extra) {
-    if (!el) return;
-    el.className = `output-value ${extra || ''}`;
-  }
+/* ===============================
+CLASS HELPER
+================================*/
 
-  function update() {
-    clearTimeout(t);
-    t = setTimeout(run, 300);
-  }
+function setClass(el,cls){
+if(!el) return;
+el.className = `output-value ${cls}`;
+}
 
-  async function run() {
+/* ===============================
+UPDATE HANDLER
+================================*/
 
-    const res = await fetch(`${API_BASE}/api/calculators/property/investment`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({
-        cost: +$('property-cost').value || 0,
-        rent: +$('property-rent').value || 0,
-        expenses: +$('property-expenses').value || 0,
-        vacancyPct: +$('property-vacancy').value || 0,
-        years: +$('property-years').value || 0,
-      }),
-    });
+function update(){
+clearTimeout(debounce);
+debounce = setTimeout(run,300);
+}
 
-    if (res.status === 403) return location.replace('payment.html');
-    if (!res.ok) return;
+/* ===============================
+MAIN CALCULATION CALL
+================================*/
 
-    const d = await res.json();
+async function run(){
 
-    $('property-annual-income').textContent = money(d.annualIncome);
-    $('property-total-income').textContent = money(d.totalIncome);
-    $('property-total-expenses').textContent = money(d.totalExpenses);
-    $('property-profit').textContent = money(d.profit);
-    $('property-roi').textContent = percent(d.roi);
-    $('property-margin').textContent = percent(d.margin);
-    $('property-monthly-profit').textContent = money(d.monthlyProfit);
-    $('property-annual-profit').textContent = money(d.annualProfit);
+const res = await fetch(`${API_BASE}/api/calculators/property/investment`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+Authorization:`Bearer ${localStorage.getItem("token")}`
+},
+body:JSON.stringify({
+cost:+$("property-cost")?.value||0,
+rent:+$("property-rent")?.value||0,
+expenses:+$("property-expenses")?.value||0,
+vacancyPct:+$("property-vacancy")?.value||0,
+years:+$("property-years")?.value||0
+})
+});
 
-    $('property-breakeven-rent').textContent = money(d.breakEvenRent);
-    $('property-risk').textContent = d.riskLevel;
-    $('property-decision').textContent = d.decision;
-    $('property-reason').textContent = d.reason;
+if(res.status===403) return location.replace("payment.html");
+if(!res.ok) return;
 
-    /* ===============================
-       PROFIT COLOR
-    =============================== */
+const d = await res.json();
 
-    if (d.profit >= 0)
-      setClass($('property-profit'), 'profit-positive');
-    else
-      setClass($('property-profit'), 'profit-negative');
+/* ===============================
+VALUES
+================================*/
 
-    /* ===============================
-       ROI COLOR
-    =============================== */
+$("property-annual-income").textContent = money(d.annualIncome);
+$("property-total-income").textContent = money(d.totalIncome);
+$("property-total-expenses").textContent = money(d.totalExpenses);
+$("property-profit").textContent = money(d.profit);
+$("property-roi").textContent = percent(d.roi);
+$("property-margin").textContent = percent(d.margin);
+$("property-monthly-profit").textContent = money(d.monthlyProfit);
+$("property-annual-profit").textContent = money(d.annualProfit);
 
-    const roi = Number(d.roi) || 0;
+$("property-breakeven-rent").textContent = money(d.breakEvenRent);
+$("property-risk").textContent = d.riskLevel;
+$("property-decision").textContent = d.decision;
+$("property-reason").textContent = d.reason;
 
-    if (roi >= 20)
-      setClass($('property-roi'), 'roi-strong');
-    else if (roi >= 10)
-      setClass($('property-roi'), 'roi-medium');
-    else
-      setClass($('property-roi'), 'roi-low');
+/* ===============================
+PROFIT COLOR
+================================*/
 
-    /* ===============================
-       RISK LEVEL COLOR
-    =============================== */
+if(d.profit >= 0)
+setClass($("property-profit"),"profit-positive");
+else
+setClass($("property-profit"),"profit-negative");
 
-    const risk = (d.riskLevel || '').toLowerCase();
+/* ===============================
+ROI COLOR
+================================*/
 
-    if (risk === 'low')
-      setClass($('property-risk'), 'risk-low');
-    else if (risk === 'medium')
-      setClass($('property-risk'), 'risk-medium');
-    else if (risk === 'high')
-      setClass($('property-risk'), 'risk-high');
+const roi = Number(d.roi)||0;
 
-    /* ===============================
-       DECISION COLOR
-    =============================== */
+if(roi >= 20)
+setClass($("property-roi"),"roi-strong");
+else if(roi >= 10)
+setClass($("property-roi"),"roi-medium");
+else
+setClass($("property-roi"),"roi-low");
 
-    const decision = (d.decision || '').toUpperCase();
+/* ===============================
+RISK COLOR
+================================*/
 
-    if (decision === 'BUY')
-      setClass($('property-decision'), 'decision-buy');
-    else if (decision === 'REVIEW')
-      setClass($('property-decision'), 'decision-review');
-    else if (decision === 'AVOID')
-      setClass($('property-decision'), 'decision-avoid');
-  }
+const risk = (d.riskLevel||"").toLowerCase();
 
-  document
-    .querySelectorAll('input')
-    .forEach((i) => i.addEventListener('input', update));
+if(risk==="low")
+setClass($("property-risk"),"risk-low");
+else if(risk==="medium")
+setClass($("property-risk"),"risk-medium");
+else
+setClass($("property-risk"),"risk-high");
 
-  update();
+/* ===============================
+DECISION COLOR
+================================*/
+
+const decision = (d.decision||"").toUpperCase();
+
+if(decision==="BUY")
+setClass($("property-decision"),"decision-buy");
+else if(decision==="REVIEW")
+setClass($("property-decision"),"decision-review");
+else
+setClass($("property-decision"),"decision-avoid");
+
+}
+
+/* ===============================
+EVENT LISTENERS
+================================*/
+
+document
+.querySelectorAll(".input-section input")
+.forEach(i => i.addEventListener("input",update));
+
+update();
 
 })();
