@@ -10,141 +10,219 @@
 
   <body>
     <style>
-      /* ===============================
-         TOOL SELECTOR
-      =================================*/
-      .tool-selector {
-        margin-bottom: 30px;
-      }
-
-      .tool-buttons {
-        display: flex;
-        gap: 15px;
-        margin-top: 10px;
-        flex-wrap: wrap;
-      }
-
-      .tool-btn {
-        padding: 12px 20px;
-        border: none;
-        background: #1f2937;
-        color: white;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-      }
-
-      .tool-btn:hover {
-        background: #374151;
-      }
-
-      .tool-btn.active {
-        background: #2563eb;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      /* ===============================
-         RESULT VALUE BASE STYLE
-      =================================*/
-      .output-value {
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      /* ===============================
-         MONTHLY RISK LEVEL
-      =================================*/
-      .risk-low {
-        color: #22c55e;
-      }
-
-      .risk-medium {
-        color: #f59e0b;
-      }
-
-      .risk-high {
-        color: #ef4444;
-      }
-
-      /* ===============================
-         SHIPMENT DECISION
-      =================================*/
-      .decision-approve {
-        color: #22c55e;
-      }
-
-      .decision-review {
-        color: #f59e0b;
-      }
-
-      .decision-reject {
-        color: #ef4444;
-      }
-
-      /* ===============================
-         PROFIT / LOSS COLORS
-      =================================*/
-      .profit-positive {
-        color: #22c55e;
-      }
-
-      .profit-negative {
-        color: #ef4444;
-      }
-
-      /* ===============================
-         SAFETY STATUS
-      =================================*/
-      .safety-healthy {
-        color: #22c55e;
-      }
-
-      .safety-risk {
-        color: #f59e0b;
-      }
-
-      .safety-critical {
-        color: #ef4444;
-      }
-
-      /* ===============================
-   PROFIT MARGIN COLORS
+/* ===============================
+TOOL SELECTOR
 ================================*/
 
-.margin-strong {
-  color: #22c55e; /* green */
+.tool-selector{
+margin-bottom:30px;
 }
 
-.margin-medium {
-  color: #f59e0b; /* orange */
+.tool-buttons{
+display:flex;
+gap:15px;
+margin-top:10px;
+flex-wrap:wrap;
 }
 
-.margin-low {
-  color: #ef4444; /* red */
-        }
-      /* ===============================
-   FREIGHT RISK LEVEL
+.tool-btn{
+padding:12px 20px;
+border:none;
+background:#1f2937;
+color:white;
+cursor:pointer;
+border-radius:8px;
+transition:all .25s ease;
+font-weight:600;
+}
+
+.tool-btn:hover{
+background:#374151;
+}
+
+.tool-btn.active{
+background:#2563eb;
+}
+
+
+/* ===============================
+PLACEHOLDER
 ================================*/
 
-.freight-risk-low {
-  color: #22c55e;
+.tool-placeholder{
+padding:30px;
+border:1px solid rgba(255,255,255,0.08);
+border-radius:10px;
+margin-bottom:25px;
+text-align:center;
+color:var(--text-muted);
 }
 
-.freight-risk-medium {
-  color: #f59e0b;
+
+/* ===============================
+RESULT VALUES
+================================*/
+
+.output-value{
+font-weight:600;
+font-size:0.95rem;
+transition:color .25s ease;
 }
 
-.freight-risk-high {
-  color: #ef4444;
-      }
-      .tool-hint {
-  margin: 8px 0 15px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+
+/* ===============================
+PROFIT COLORS
+================================*/
+
+.profit-positive{
+color:#22c55e;
+}
+
+.profit-negative{
+color:#ef4444;
+}
+
+
+/* ===============================
+MARGIN LEVEL
+================================*/
+
+.margin-strong{
+color:#22c55e;
+}
+
+.margin-medium{
+color:#f59e0b;
+}
+
+.margin-low{
+color:#ef4444;
+}
+
+
+/* ===============================
+DECISION STATUS
+================================*/
+
+.decision-approve{
+color:#22c55e;
+font-weight:700;
+}
+
+.decision-review{
+color:#f59e0b;
+font-weight:700;
+}
+
+.decision-reject{
+color:#ef4444;
+font-weight:700;
+}
+
+
+/* ===============================
+RISK LEVEL
+================================*/
+
+.risk-low{
+color:#22c55e;
+}
+
+.risk-medium{
+color:#f59e0b;
+}
+
+.risk-high{
+color:#ef4444;
+}
+
+
+/* ===============================
+FREIGHT RISK
+================================*/
+
+.freight-risk-low{
+color:#22c55e;
+}
+
+.freight-risk-medium{
+color:#f59e0b;
+}
+
+.freight-risk-high{
+color:#ef4444;
+}
+
+
+/* ===============================
+SAFETY STATUS
+================================*/
+
+.safety-healthy{
+color:#22c55e;
+}
+
+.safety-risk{
+color:#f59e0b;
+}
+
+.safety-critical{
+color:#ef4444;
+}
+
+
+/* ===============================
+TOOL HINT
+================================*/
+
+.tool-hint{
+margin:8px 0 15px;
+font-size:.85rem;
+color:var(--text-muted);
+line-height:1.4;
+}
+
+
+/* ===============================
+INPUT SECTIONS
+================================*/
+
+.input-group{
+margin-bottom:12px;
+}
+
+.input-group label{
+display:block;
+font-size:.8rem;
+margin-bottom:4px;
+color:var(--text-muted);
+}
+
+.input-group input{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:1px solid rgba(255,255,255,0.08);
+background:#0f172a;
+color:white;
+}
+
+
+/* ===============================
+OUTPUT GROUP
+================================*/
+
+.output-group{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:8px 0;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.output-label{
+font-size:.8rem;
+color:var(--text-muted);
 }
     </style>
 
@@ -604,39 +682,56 @@ clear margin visibility and operational risk detection.
               <button type="button" id="resetShipmentBtn">Reset All</button>
             </div>
 
-            <!-- OUTPUTS -->
-            <div class="output-section">
-              <h3>Shipment Results</h3>
+         <!-- OUTPUTS -->
+<div class="output-section">
+<h3>Operational Results</h3>
 
-              <div class="output-group">
-                <div class="output-label">Total Shipment Cost</div>
-                <div class="output-value" id="ship-total-cost">0.00</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Monthly Revenue</div>
+<div class="output-value" id="log-total-revenue">0.00</div>
+</div>
 
-              <div class="output-group">
-                <div class="output-label">Estimated Profit</div>
-                <div class="output-value" id="ship-profit">0.00</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Total Operational Cost</div>
+<div class="output-value" id="log-total-costs">0.00</div>
+</div>
 
-              <div class="output-group">
-                <div class="output-label">Profit Margin</div>
-                <div class="output-value" id="ship-margin">0.00%</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Net Profit</div>
+<div class="output-value" id="log-profit">0.00</div>
+</div>
 
-              <div class="output-group">
-                <div class="output-label">Recommended Minimum Quote</div>
-                <div class="output-value" id="ship-min-quote">0.00</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Profit Margin</div>
+<div class="output-value" id="log-margin">0.00%</div>
+</div>
 
-              <div class="output-group">
-                <div class="output-label">Decision</div>
-                <div class="output-value" id="ship-decision">—</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Cost Per Shipment</div>
+<div class="output-value" id="log-per-shipment">0.00</div>
+</div>
 
-              <div class="output-group">
-                <div class="output-label">Decision Explanation</div>
-                <div class="output-value" id="ship-reason">—</div>
-              </div>
+<div class="output-group">
+<div class="output-label">Break-even Shipments</div>
+<div class="output-value" id="log-breakeven-shipments">0</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Recommended Minimum Price</div>
+<div class="output-value" id="log-recommended-price">0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Operational Risk Level</div>
+<div class="output-value" id="log-risk-level">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Decision Advice</div>
+<div class="output-value" id="log-advice">—</div>
+</div>
+
+</div>
             </div>
           </div>
         </div>
