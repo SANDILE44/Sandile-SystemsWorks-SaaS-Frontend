@@ -2,12 +2,11 @@
 
   const $ = (id) => document.getElementById(id);
 
-  const money = (v) =>
-    'R' +
-    (Number(v) || 0).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+const money = (v) =>
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   const percent = (v) =>
     (Number(v) || 0).toFixed(2) + '%';
