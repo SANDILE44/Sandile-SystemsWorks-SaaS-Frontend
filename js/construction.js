@@ -226,13 +226,13 @@
 
 
     const defaults = {
-      'const-total-costs': 'R0.00',
-      'const-profit': 'R0.00',
+      'const-total-costs': '0.00',
+      'const-profit': '0.00',
       'const-margin': '0.00%',
       'const-roi': '0.00%',
-      'const-breakeven': 'R0.00',
-      'const-monthly-profit': 'R0.00',
-      'const-annual-profit': 'R0.00',
+      'const-breakeven': '0.00',
+      'const-monthly-profit': '0.00',
+      'const-annual-profit': '0.00',
       'decision-status': '—',
       'risk-warning': '',
       'decision-advice': '',
