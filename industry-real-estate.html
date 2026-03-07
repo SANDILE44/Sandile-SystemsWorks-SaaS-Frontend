@@ -3,9 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Real Estate Calculators - Sandile SystemsWorks</title>
+<title>Real Estate Investment Decision Tools - Sandile SystemsWorks</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/calculators.css" />
+
+<style>
+
+/* ===============================
+   PROFIT / LOSS
+================================*/
+
+.profit-positive {
+  color: #22c55e; /* green */
+}
+
+.profit-negative {
+  color: #ef4444; /* red */
+}
+
+/* ===============================
+   ROI STRENGTH
+================================*/
+
+.roi-strong {
+  color: #22c55e; /* strong investment */
+}
+
+.roi-medium {
+  color: #f59e0b; /* acceptable */
+}
+
+.roi-low {
+  color: #ef4444; /* weak investment */
+}
+
+/* ===============================
+   INVESTMENT RISK LEVEL
+================================*/
+
+.risk-low {
+  color: #22c55e; /* safe */
+}
+
+.risk-medium {
+  color: #f59e0b; /* moderate risk */
+}
+
+.risk-high {
+  color: #ef4444; /* high risk */
+}
+
+/* ===============================
+   INVESTMENT DECISION
+================================*/
+
+.decision-buy {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.decision-review {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.decision-avoid {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+</style>
   </head>
   <body>
     <!-- APP LAYOUT -->
@@ -63,18 +130,18 @@
         <span>Real Estate</span>
       </div>
 
-      <h1>Real Estate Calculators</h1>
+  <h1>Real Estate Investment Decision Tools</h1>
       <p>
-        Analyze property investments, rental income, and development
-        profitability.
+   Evaluate whether a property investment is financially safe before buying.
       </p>
 
       <div class="calculator-container">
-        <h2>Property Investment Calculator</h2>
-        <p>
-          Calculate rental income, expenses, net profit, ROI, and profit margin
-          with advanced metrics.
-        </p>
+  <h2>Property Investment Decision Tool</h2>
+  <p>
+    Evaluate whether a property investment is financially viable before buying.
+    Analyze rental income, operating costs, expected profit, ROI, and investment risk
+    to determine if the property is worth purchasing.
+  </p>
 
         <div class="calculator-grid">
           <div class="input-section">
@@ -160,6 +227,27 @@
               <div class="output-label">Annual Profit</div>
               <div class="output-value" id="property-annual-profit">R0.00</div>
             </div>
+
+<div class="output-group">
+<div class="output-label">Break-even Rent Required</div>
+<div class="output-value" id="property-breakeven-rent">R0.00</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Investment Risk Level</div>
+<div class="output-value" id="property-risk">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Investment Decision</div>
+<div class="output-value" id="property-decision">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Decision Explanation</div>
+<div class="output-value" id="property-reason">—</div>
+</div>
+
           </div>
         </div>
       </div>
