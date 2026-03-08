@@ -1,4 +1,4 @@
-(() => {
+document.addEventListener("DOMContentLoaded", () => {
 
 const $ = (id) => document.getElementById(id);
 
@@ -50,11 +50,11 @@ Authorization:`Bearer ${token}`
 },
 body:JSON.stringify({
 
-cost:+$("property-cost").value || 0,
-rent:+$("property-rent").value || 0,
-expenses:+$("property-expenses").value || 0,
-vacancyPct:+$("property-vacancy").value || 0,
-years:+$("property-years").value || 0
+cost:+$("property-cost")?.value || 0,
+rent:+$("property-rent")?.value || 0,
+expenses:+$("property-expenses")?.value || 0,
+vacancyPct:+$("property-vacancy")?.value || 0,
+years:+$("property-years")?.value || 0
 
 })
 });
@@ -69,7 +69,7 @@ if(!res.ok) return;
 const d = await res.json();
 
 /* =========================
-VALUES
+UPDATE VALUES
 ========================= */
 
 $("property-annual-income").textContent = money(d.annualIncome);
@@ -94,7 +94,7 @@ $("property-reason").textContent = d.reason;
 PROFIT PER R1
 ========================= */
 
-const cost = +$("property-cost").value || 0;
+const cost = +$("property-cost")?.value || 0;
 
 $("property-profit-per-r").textContent =
 cost > 0 ? (d.profit / cost).toFixed(2) : "0.00";
@@ -149,7 +149,7 @@ setClass($("property-decision"),"decision-avoid");
 
 }
 catch(err){
-console.error(err);
+console.error("Real estate calculator error:",err);
 }
 
 }
@@ -193,4 +193,4 @@ INITIAL RUN
 
 update();
 
-})();
+});
