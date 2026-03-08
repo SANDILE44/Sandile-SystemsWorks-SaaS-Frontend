@@ -16,6 +16,74 @@
   --container: 1200px;
 }
 
+/* ===============================
+   HERO USERS (Industries line)
+================================ */
+
+.hero-users{
+margin-top:12px;
+font-size:0.95rem;
+color:var(--text-muted);
+font-weight:650;
+max-width:55ch;
+line-height:1.5;
+}
+
+/* ===============================
+   HERO TRUST (Use case proof)
+================================ */
+
+.hero-trust{
+margin-top:10px;
+font-size:0.9rem;
+color:var(--text-muted);
+font-weight:600;
+letter-spacing:0.2px;
+opacity:0.9;
+}
+
+/* ===============================
+   PRICING TRIGGER (Psychological)
+================================ */
+
+.pricing-trigger{
+margin:0.9rem 0 1.1rem;
+padding:0.75rem 0.9rem;
+border-radius:12px;
+background:rgba(255,255,255,0.03);
+border:1px solid var(--border-soft);
+color:var(--text-muted);
+font-size:0.92rem;
+font-weight:650;
+line-height:1.45;
+}
+
+/* subtle highlight on important message */
+.pricing-trigger strong{
+color:#ffffff;
+font-weight:800;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width:860px){
+
+.hero-users{
+font-size:0.9rem;
+}
+
+.hero-trust{
+font-size:0.85rem;
+}
+
+.pricing-trigger{
+font-size:0.88rem;
+}
+
+}
+
 /* ================= RESET ================= */
 * {
   margin: 0;
