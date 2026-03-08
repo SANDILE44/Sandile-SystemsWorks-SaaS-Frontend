@@ -14,7 +14,7 @@ const percent = (v) =>
 let timer;
 
 /* =========================
-CLASS HELPER
+SET CLASS
 ========================= */
 
 function setClass(el, cls){
@@ -28,10 +28,10 @@ if(cls) el.classList.add(cls);
 }
 
 /* =========================
-API CALL
+MAIN CALCULATION
 ========================= */
 
-async function calculate(){
+async function run(){
 
 const token = localStorage.getItem("token");
 
@@ -40,7 +40,9 @@ location.replace("login.html");
 return;
 }
 
-const res = await fetch(`${API_BASE}/api/property/investment`,{
+try{
+
+const res = await fetch(`${API_BASE}/api/calculators/property/investment`,{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
@@ -48,11 +50,11 @@ Authorization:`Bearer ${token}`
 },
 body:JSON.stringify({
 
-cost:+$("property-cost")?.value || 0,
-rent:+$("property-rent")?.value || 0,
-expenses:+$("property-expenses")?.value || 0,
-vacancyPct:+$("property-vacancy")?.value || 0,
-years:+$("property-years")?.value || 0
+cost:+$("property-cost").value || 0,
+rent:+$("property-rent").value || 0,
+expenses:+$("property-expenses").value || 0,
+vacancyPct:+$("property-vacancy").value || 0,
+years:+$("property-years").value || 0
 
 })
 });
@@ -67,7 +69,7 @@ if(!res.ok) return;
 const d = await res.json();
 
 /* =========================
-UPDATE VALUES
+VALUES
 ========================= */
 
 $("property-annual-income").textContent = money(d.annualIncome);
@@ -92,7 +94,7 @@ $("property-reason").textContent = d.reason;
 PROFIT PER R1
 ========================= */
 
-const cost = +$("property-cost")?.value || 0;
+const cost = +$("property-cost").value || 0;
 
 $("property-profit-per-r").textContent =
 cost > 0 ? (d.profit / cost).toFixed(2) : "0.00";
@@ -146,6 +148,11 @@ else
 setClass($("property-decision"),"decision-avoid");
 
 }
+catch(err){
+console.error(err);
+}
+
+}
 
 /* =========================
 DEBOUNCE
@@ -154,7 +161,7 @@ DEBOUNCE
 function update(){
 
 clearTimeout(timer);
-timer = setTimeout(calculate,300);
+timer = setTimeout(run,300);
 
 }
 
