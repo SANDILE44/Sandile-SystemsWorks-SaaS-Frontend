@@ -1950,3 +1950,62 @@ details p {
   }
 
 }
+
+/* ===============================
+   HERO PROOF (Value Examples)
+================================ */
+
+.hero-proof{
+margin:1.4rem 0 0.8rem;
+padding:1.1rem 1.1rem;
+border-radius:14px;
+border:1px solid var(--border-soft);
+background:rgba(255,255,255,0.03);
+backdrop-filter: blur(6px);
+}
+
+.hero-proof-title{
+font-size:0.8rem;
+font-weight:900;
+letter-spacing:1.2px;
+text-transform:uppercase;
+color:var(--text-muted);
+margin-bottom:0.8rem;
+}
+
+.hero-proof-list{
+display:grid;
+gap:0.65rem;
+}
+
+.hero-proof-item{
+padding:0.75rem 0.8rem;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.02);
+transition:all .2s ease;
+}
+
+.hero-proof-item:hover{
+border-color:rgba(0,180,216,0.35);
+background:rgba(255,255,255,0.04);
+}
+
+.hero-proof-sector{
+display:inline-block;
+font-size:0.78rem;
+font-weight:800;
+color:var(--accent);
+margin-bottom:0.2rem;
+}
+
+.hero-proof-item p{
+font-size:0.92rem;
+color:var(--text-muted);
+line-height:1.45;
+}
+
+.hero-proof-item strong{
+color:#ffffff;
+font-weight:800;
+}
