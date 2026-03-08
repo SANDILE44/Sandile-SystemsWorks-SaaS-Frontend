@@ -11,131 +11,106 @@ maximumFractionDigits:2
 const percent = (v) =>
 (Number(v) || 0).toFixed(2) + "%";
 
-let debounce;
+let timer;
 
-/* ===============================
+/* =========================
 CLASS HELPER
-================================*/
+========================= */
 
 function setClass(el, cls){
+
 if(!el) return;
 
 el.className = "output-value";
 
 if(cls) el.classList.add(cls);
+
 }
 
-/* ===============================
-API HELPER
-================================*/
+/* =========================
+API CALL
+========================= */
 
-async function apiPost(url, body){
+async function calculate(){
 
 const token = localStorage.getItem("token");
 
 if(!token){
 location.replace("login.html");
-return null;
+return;
 }
 
-const res = await fetch(`${API_BASE}${url}`,{
+const res = await fetch(`${API_BASE}/api/property/investment`,{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
 Authorization:`Bearer ${token}`
 },
-body:JSON.stringify(body)
-});
+body:JSON.stringify({
 
-if(res.status === 401){
-localStorage.removeItem("token");
-location.replace("login.html");
-return null;
-}
-
-if(res.status === 403){
-location.replace("payment.html");
-return null;
-}
-
-if(!res.ok) return null;
-
-return res.json();
-}
-
-/* ===============================
-INPUT UPDATE
-================================*/
-
-function update(){
-clearTimeout(debounce);
-debounce = setTimeout(run,300);
-}
-
-/* ===============================
-MAIN CALCULATION
-================================*/
-
-async function run(){
-
-const data = await apiPost(
-"/api/calculators/property/investment",
-{
 cost:+$("property-cost")?.value || 0,
 rent:+$("property-rent")?.value || 0,
 expenses:+$("property-expenses")?.value || 0,
 vacancyPct:+$("property-vacancy")?.value || 0,
 years:+$("property-years")?.value || 0
+
+})
+});
+
+if(res.status === 403){
+location.replace("payment.html");
+return;
 }
-);
 
-if(!data) return;
+if(!res.ok) return;
 
-/* ===============================
-VALUES
-================================*/
+const d = await res.json();
 
-$("property-annual-income").textContent = money(data.annualIncome);
-$("property-total-income").textContent = money(data.totalIncome);
-$("property-total-expenses").textContent = money(data.totalExpenses);
+/* =========================
+UPDATE VALUES
+========================= */
 
-$("property-profit").textContent = money(data.profit);
+$("property-annual-income").textContent = money(d.annualIncome);
+$("property-total-income").textContent = money(d.totalIncome);
+$("property-total-expenses").textContent = money(d.totalExpenses);
 
-$("property-roi").textContent = percent(data.roi);
-$("property-margin").textContent = percent(data.margin);
+$("property-profit").textContent = money(d.profit);
 
-$("property-monthly-profit").textContent = money(data.monthlyProfit);
-$("property-annual-profit").textContent = money(data.annualProfit);
+$("property-roi").textContent = percent(d.roi);
+$("property-margin").textContent = percent(d.margin);
 
-$("property-breakeven-rent").textContent = money(data.breakEvenRent);
+$("property-monthly-profit").textContent = money(d.monthlyProfit);
+$("property-annual-profit").textContent = money(d.annualProfit);
 
-$("property-risk").textContent = data.riskLevel || "—";
-$("property-decision").textContent = data.decision || "—";
-$("property-reason").textContent = data.reason || "—";
+$("property-breakeven-rent").textContent = money(d.breakEvenRent);
 
-/* ===============================
+$("property-risk").textContent = d.riskLevel;
+$("property-decision").textContent = d.decision;
+$("property-reason").textContent = d.reason;
+
+/* =========================
 PROFIT PER R1
-================================*/
+========================= */
 
 const cost = +$("property-cost")?.value || 0;
 
 $("property-profit-per-r").textContent =
-cost > 0 ? (data.profit / cost).toFixed(2) : "0.00";
+cost > 0 ? (d.profit / cost).toFixed(2) : "0.00";
 
-/* ===============================
+/* =========================
 PROFIT COLOR
-================================*/
+========================= */
 
-if(data.profit >= 0)
+if(d.profit >= 0)
 setClass($("property-profit"),"profit-positive");
 else
 setClass($("property-profit"),"profit-negative");
 
-/* ===============================
+/* =========================
 ROI COLOR
-================================*/
+========================= */
 
-const roi = Number(data.roi) || 0;
+const roi = Number(d.roi) || 0;
 
 if(roi >= 20)
 setClass($("property-roi"),"roi-strong");
@@ -144,11 +119,11 @@ setClass($("property-roi"),"roi-medium");
 else
 setClass($("property-roi"),"roi-low");
 
-/* ===============================
+/* =========================
 RISK COLOR
-================================*/
+========================= */
 
-const risk = (data.riskLevel || "").toLowerCase();
+const risk = (d.riskLevel || "").toLowerCase();
 
 if(risk === "low")
 setClass($("property-risk"),"risk-low");
@@ -157,11 +132,11 @@ setClass($("property-risk"),"risk-medium");
 else
 setClass($("property-risk"),"risk-high");
 
-/* ===============================
+/* =========================
 DECISION COLOR
-================================*/
+========================= */
 
-const decision = (data.decision || "").toUpperCase();
+const decision = (d.decision || "").toUpperCase();
 
 if(decision === "BUY")
 setClass($("property-decision"),"decision-buy");
@@ -172,31 +147,42 @@ setClass($("property-decision"),"decision-avoid");
 
 }
 
-/* ===============================
-EVENT LISTENERS
-================================*/
+/* =========================
+DEBOUNCE
+========================= */
+
+function update(){
+
+clearTimeout(timer);
+timer = setTimeout(calculate,300);
+
+}
+
+/* =========================
+INPUT LISTENERS
+========================= */
 
 document
 .querySelectorAll(".input-section input")
 .forEach(i => i.addEventListener("input",update));
 
-/* ===============================
+/* =========================
 RESET BUTTON
-================================*/
+========================= */
 
-$("resetBtn")?.addEventListener("click", () => {
+$("resetBtn")?.addEventListener("click",()=>{
 
 document
 .querySelectorAll(".input-section input")
-.forEach(i => i.value = "");
+.forEach(i => i.value="");
 
 update();
 
 });
 
-/* ===============================
+/* =========================
 INITIAL RUN
-================================*/
+========================= */
 
 update();
 
