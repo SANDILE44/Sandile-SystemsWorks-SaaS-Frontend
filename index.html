@@ -895,11 +895,6 @@ const calculated = {
   manufacturing: false, construction: false, restaurant: false
 };
 
-/* ── HIDE ALL PANELS ON LOAD ── */
-document.querySelectorAll('.demo-panel').forEach(p => {
-  p.style.cssText = '';
-});
-
 /* ── USAGE ── */
 function updateUsageDisplay() {
   const el = document.getElementById('demo-uses-left');
@@ -918,29 +913,22 @@ function useCalculation(key) {
   if (demoUses <= 0) setTimeout(lockDemo, 1500);
 }
 
-function lockDemo() {
-  demoActive = false;
-  document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
-  const locked = document.getElementById('demo-locked');
-  const usage  = document.getElementById('demo-usage');
-  if (locked) locked.style.display = 'flex';
-  if (usage)  usage.style.display  = 'none';
-}
-
-/* ── SHOW PANEL ── */
 function showPanel(value) {
   if (!demoActive) return;
-  document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
   if (!value) return;
   const panel = document.getElementById('demo-' + value);
-  if (panel) {
-    panel.style.display = 'block';
-    panel.style.animation = 'none';
-    panel.offsetHeight;
-    panel.style.animation = 'fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
-  }
+  if (panel) panel.classList.add('active');
 }
 
+function lockDemo() {
+  demoActive = false;
+  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+  const locked = document.getElementById('demo-locked');
+  const usage = document.getElementById('demo-usage');
+  if (locked) locked.style.display = 'flex';
+  if (usage) usage.style.display = 'none';
+}
 /* ── CUSTOM DROPDOWN ── */
 const demoSelect = document.getElementById('demo-select');
 const selectWrap = document.querySelector('.demo-select-wrap');
