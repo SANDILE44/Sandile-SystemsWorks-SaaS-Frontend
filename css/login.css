@@ -1,4 +1,4 @@
-:root {
+99:root {
   --bg-main: #020617;
   --bg-soft: #0f172a;
   --border-soft: rgba(255, 255, 255, 0.1);
@@ -418,6 +418,54 @@ input:focus {
     gap: 0.75rem;
   }
 
+/* =========================
+   GOOGLE SIGN-IN BUTTON
+========================= */
+
+.g_id_signin {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.8rem;
+}
+
+/* space between google button and form */
+.auth-card .g_id_signin + p {
+  margin-top: 0.9rem;
+}
+
+/* divider text */
+.auth-divider {
+  text-align: center;
+  margin: 0.9rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: var(--border-soft);
+}
+
+.auth-divider::before {
+  left: 0;
+}
+
+.auth-divider::after {
+  right: 0;
+}
+
+/* responsive alignment */
+@media (max-width: 480px) {
+  .g_id_signin {
+    transform: scale(0.95);
+  }
+}
   .footer-brand .brand-logo {
     height: 38px;
   }
