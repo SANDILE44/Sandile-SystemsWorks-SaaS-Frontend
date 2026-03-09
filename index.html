@@ -235,7 +235,6 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       <p>Pick a tool, enter your numbers, and get an instant decision.</p>
     </div>
 
-    <!-- DROPDOWN -->
     <div class="demo-select-wrap">
       <select id="demo-select">
         <option value="">— Choose a tool —</option>
@@ -256,12 +255,10 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </select>
     </div>
 
-    <!-- USAGE COUNTER -->
     <div class="demo-usage" id="demo-usage">
       <span id="demo-uses-left">3</span> free calculations remaining
     </div>
 
-    <!-- LOCKED OVERLAY -->
     <div class="demo-locked" id="demo-locked" style="display:none">
       <div class="demo-locked-inner">
         <div class="demo-locked-icon">🔒</div>
@@ -272,11 +269,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 1: SHIPMENT -->
-    <div id="demo-shipment" class="demo-panel" style="display:none">
+    <!-- SHIPMENT -->
+    <div id="demo-shipment" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Per-Shipment Risk Analysis</div>
-        <div class="demo-panel-desc">Find out if this shipment is worth taking before you commit.</div>
+        <div>
+          <div class="demo-panel-title">Per-Shipment Risk Analysis</div>
+          <div class="demo-panel-desc">Find out if this shipment is worth taking before you commit.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -300,11 +299,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 2: OPERATIONS -->
-    <div id="demo-operations" class="demo-panel" style="display:none">
+    <!-- OPERATIONS -->
+    <div id="demo-operations" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Monthly Operations Analysis</div>
-        <div class="demo-panel-desc">See if your entire operation is profitable this month.</div>
+        <div>
+          <div class="demo-panel-title">Monthly Operations Analysis</div>
+          <div class="demo-panel-desc">See if your entire operation is profitable this month.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -329,11 +330,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 3: FREIGHT -->
-    <div id="demo-freight" class="demo-panel" style="display:none">
+    <!-- FREIGHT -->
+    <div id="demo-freight" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Freight Import / Export Analysis</div>
-        <div class="demo-panel-desc">Evaluate international shipments before quoting a client.</div>
+        <div>
+          <div class="demo-panel-title">Freight Import / Export Analysis</div>
+          <div class="demo-panel-desc">Evaluate international shipments before quoting a client.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -359,11 +362,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 4: MANUFACTURING -->
-    <div id="demo-manufacturing" class="demo-panel" style="display:none">
+    <!-- MANUFACTURING -->
+    <div id="demo-manufacturing" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Manufacturing Profitability</div>
-        <div class="demo-panel-desc">Know if your production run makes money before it starts.</div>
+        <div>
+          <div class="demo-panel-title">Manufacturing Profitability</div>
+          <div class="demo-panel-desc">Know if your production run makes money before it starts.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -388,11 +393,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 5: CONSTRUCTION -->
-    <div id="demo-construction" class="demo-panel" style="display:none">
+    <!-- CONSTRUCTION -->
+    <div id="demo-construction" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Construction Project Profitability</div>
-        <div class="demo-panel-desc">Test if your contract is profitable before the project starts.</div>
+        <div>
+          <div class="demo-panel-title">Construction Project Profitability</div>
+          <div class="demo-panel-desc">Test if your contract is profitable before the project starts.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -417,11 +424,13 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
       </div>
     </div>
 
-    <!-- PANEL 6: RESTAURANT -->
-    <div id="demo-restaurant" class="demo-panel" style="display:none">
+    <!-- RESTAURANT -->
+    <div id="demo-restaurant" class="demo-panel">
       <div class="demo-panel-header">
-        <div class="demo-panel-title">Restaurant Profitability</div>
-        <div class="demo-panel-desc">See if your restaurant is making money before the month ends.</div>
+        <div>
+          <div class="demo-panel-title">Restaurant Profitability</div>
+          <div class="demo-panel-desc">See if your restaurant is making money before the month ends.</div>
+        </div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -450,7 +459,6 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
 
   </div>
 </section>
-
       <!-- VALUE PROPS -->
       <section class="section">
         <div class="container">
@@ -877,25 +885,26 @@ Most businesses lose money from pricing mistakes. SystemsWorks helps detect them
     </script>
 
 <script>
-/* ── STATE ── */
+ /* ── STATE ── */
 let demoUses = 3;
 let demoActive = true;
 const calculated = {
-  shipment: false,
-  operations: false,
-  freight: false,
-  manufacturing: false,
-  construction: false,
-  restaurant: false
+  shipment: false, operations: false, freight: false,
+  manufacturing: false, construction: false, restaurant: false
 };
 
-/* ── USAGE COUNTER ── */
+/* ── HIDE ALL PANELS ON LOAD ── */
+document.querySelectorAll('.demo-panel').forEach(p => {
+  p.style.cssText = '';
+});
+
+/* ── USAGE ── */
 function updateUsageDisplay() {
   const el = document.getElementById('demo-uses-left');
   if (el) el.textContent = demoUses;
   if (demoUses <= 1) {
-    const usage = document.getElementById('demo-usage');
-    if (usage) usage.style.color = '#ef4444';
+    const u = document.getElementById('demo-usage');
+    if (u) u.style.color = '#ef4444';
   }
 }
 
@@ -911,12 +920,12 @@ function lockDemo() {
   demoActive = false;
   document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
   const locked = document.getElementById('demo-locked');
-  const usage = document.getElementById('demo-usage');
+  const usage  = document.getElementById('demo-usage');
   if (locked) locked.style.display = 'flex';
-  if (usage) usage.style.display = 'none';
+  if (usage)  usage.style.display  = 'none';
 }
 
-/* ── PANEL SWITCHER ── */
+/* ── SHOW PANEL ── */
 function showPanel(value) {
   if (!demoActive) return;
   document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
@@ -947,7 +956,6 @@ if (demoSelect && selectWrap) {
 
   Array.from(demoSelect.options).forEach((opt, i) => {
     if (i === 0) return;
-
     if (opt.parentElement.tagName === 'OPTGROUP') {
       const isFirst = opt.parentElement.options[0] === opt;
       if (isFirst) {
@@ -957,19 +965,16 @@ if (demoSelect && selectWrap) {
         optionsList.appendChild(group);
       }
     }
-
     const item = document.createElement('div');
     item.className = 'custom-select-option';
     item.textContent = opt.text;
     item.dataset.value = opt.value;
-
     item.addEventListener('click', () => {
       selectedDiv.textContent = opt.text;
       optionsList.classList.remove('open');
       customSelect.classList.remove('open');
       showPanel(opt.value);
     });
-
     optionsList.appendChild(item);
   });
 
@@ -993,27 +998,16 @@ if (demoSelect && selectWrap) {
 
 /* ── HELPERS ── */
 const R = n => 'R ' + (isNaN(n) ? '0.00' : n.toLocaleString('en-ZA', {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
+  minimumFractionDigits: 2, maximumFractionDigits: 2
 }));
 
 function setVerdict(el, profit, hasData) {
   if (!el) return;
   el.className = 'demo-verdict';
-  if (!hasData) {
-    el.textContent = 'Enter your numbers above to get a decision';
-    return;
-  }
-  if (profit > 0) {
-    el.classList.add('approve');
-    el.textContent = '✅ APPROVE — Profitable. Unlock full breakdown to see margin and ROI.';
-  } else if (profit === 0) {
-    el.classList.add('review');
-    el.textContent = '⚠️ REVIEW — Breaking even. Unlock full analysis to see risk level.';
-  } else {
-    el.classList.add('reject');
-    el.textContent = '🚫 REJECT — This deal loses money. Unlock to see exactly how much.';
-  }
+  if (!hasData) { el.textContent = 'Enter your numbers above to get a decision'; return; }
+  if (profit > 0) { el.classList.add('approve'); el.textContent = '✅ APPROVE — Profitable. Unlock full breakdown to see margin and ROI.'; }
+  else if (profit === 0) { el.classList.add('review'); el.textContent = '⚠️ REVIEW — Breaking even. Unlock full analysis to see risk level.'; }
+  else { el.classList.add('reject'); el.textContent = '🚫 REJECT — This deal loses money. Unlock to see exactly how much.'; }
 }
 
 /* ── SHIPMENT ── */
@@ -1021,11 +1015,11 @@ function setVerdict(el, profit, hasData) {
   document.getElementById(id)?.addEventListener('input', calcShipment);
 });
 function calcShipment() {
-  const quote  = +document.getElementById('s-quote').value  || 0;
-  const costs  = (+document.getElementById('s-fuel').value   || 0)
-               + (+document.getElementById('s-driver').value || 0)
-               + (+document.getElementById('s-tolls').value  || 0)
-               + (+document.getElementById('s-other').value  || 0);
+  const quote = +document.getElementById('s-quote').value || 0;
+  const costs = (+document.getElementById('s-fuel').value || 0)
+              + (+document.getElementById('s-driver').value || 0)
+              + (+document.getElementById('s-tolls').value || 0)
+              + (+document.getElementById('s-other').value || 0);
   const profit = quote - costs;
   document.getElementById('s-total').textContent  = R(costs);
   document.getElementById('s-profit').textContent = R(profit);
