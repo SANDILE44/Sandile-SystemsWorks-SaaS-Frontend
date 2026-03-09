@@ -232,24 +232,51 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
 
     <div class="section-head">
       <h2>Try it yourself — free</h2>
-      <p>Pick a logistics tool, enter your numbers, and get an instant decision.</p>
+      <p>Pick a tool, enter your numbers, and get an instant decision.</p>
     </div>
 
     <!-- DROPDOWN -->
     <div class="demo-select-wrap">
       <select id="demo-select">
-        <option value="">— Choose a logistics tool —</option>
-        <option value="shipment">Per-Shipment Risk Analysis</option>
-        <option value="operations">Monthly Operations Analysis</option>
-        <option value="freight">Freight Import / Export Analysis</option>
+        <option value="">— Choose a tool —</option>
+        <optgroup label="Logistics">
+          <option value="shipment">Per-Shipment Risk Analysis</option>
+          <option value="operations">Monthly Operations Analysis</option>
+          <option value="freight">Freight Import / Export Analysis</option>
+        </optgroup>
+        <optgroup label="Manufacturing">
+          <option value="manufacturing">Manufacturing Profitability</option>
+        </optgroup>
+        <optgroup label="Construction">
+          <option value="construction">Construction Project Profitability</option>
+        </optgroup>
+        <optgroup label="Restaurant">
+          <option value="restaurant">Restaurant Profitability</option>
+        </optgroup>
       </select>
+    </div>
+
+    <!-- USAGE COUNTER -->
+    <div class="demo-usage" id="demo-usage">
+      <span id="demo-uses-left">3</span> free calculations remaining
+    </div>
+
+    <!-- LOCKED OVERLAY -->
+    <div class="demo-locked" id="demo-locked" style="display:none">
+      <div class="demo-locked-inner">
+        <div class="demo-locked-icon">🔒</div>
+        <h3>You've seen what it can do</h3>
+        <p>Start your 3-day free trial to unlock full calculations, all sectors, and unlimited decisions.</p>
+        <a href="signup.html" class="demo-cta">Start Free Trial — No Credit Card</a>
+        <p class="demo-note">Full access · 3 days free · Cancel anytime</p>
+      </div>
     </div>
 
     <!-- PANEL 1: SHIPMENT -->
     <div id="demo-shipment" class="demo-panel" style="display:none">
       <div class="demo-panel-header">
         <div class="demo-panel-title">Per-Shipment Risk Analysis</div>
-        
+        <div class="demo-panel-desc">Find out if this shipment is worth taking before you commit.</div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -264,10 +291,11 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
           <h4>Instant Results</h4>
           <div class="result-row"><span>Total Costs</span><span id="s-total">R 0.00</span></div>
           <div class="result-row"><span>Net Profit</span><span id="s-profit">R 0.00</span></div>
-          <div class="result-row"><span>Profit Margin</span><span id="s-margin">0.00%</span></div>
-          <div class="result-row"><span>ROI</span><span id="s-roi">0.00%</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>ROI</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Cost Per Rand Earned</span><span class="locked-value">🔒 Unlock</span></div>
           <div class="demo-verdict" id="s-verdict">Enter your numbers above to get a decision</div>
-          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
         </div>
       </div>
     </div>
@@ -276,7 +304,7 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
     <div id="demo-operations" class="demo-panel" style="display:none">
       <div class="demo-panel-header">
         <div class="demo-panel-title">Monthly Operations Analysis</div>
-    
+        <div class="demo-panel-desc">See if your entire operation is profitable this month.</div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -292,11 +320,11 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
           <div class="result-row"><span>Total Revenue</span><span id="o-total-rev">R 0.00</span></div>
           <div class="result-row"><span>Total Costs</span><span id="o-total-cost">R 0.00</span></div>
           <div class="result-row"><span>Net Profit</span><span id="o-profit">R 0.00</span></div>
-          <div class="result-row"><span>Profit Margin</span><span id="o-margin">0.00%</span></div>
-          <div class="result-row"><span>Break-even Shipments</span><span id="o-breakeven">—</span></div>
-          <div class="result-row"><span>Annual Projection</span><span id="o-annual">R 0.00</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Break-even Shipments</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Annual Projection</span><span class="locked-value">🔒 Unlock</span></div>
           <div class="demo-verdict" id="o-verdict">Enter your numbers above to get a decision</div>
-          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
         </div>
       </div>
     </div>
@@ -305,7 +333,7 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
     <div id="demo-freight" class="demo-panel" style="display:none">
       <div class="demo-panel-header">
         <div class="demo-panel-title">Freight Import / Export Analysis</div>
-        
+        <div class="demo-panel-desc">Evaluate international shipments before quoting a client.</div>
       </div>
       <div class="demo-grid">
         <div class="demo-inputs">
@@ -320,13 +348,102 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
         <div class="demo-results">
           <h4>Instant Results</h4>
           <div class="result-row"><span>Duty Cost</span><span id="f-duty-cost">R 0.00</span></div>
-          <div class="result-row"><span>Insurance Cost</span><span id="f-ins-cost">R 0.00</span></div>
           <div class="result-row"><span>Total Logistics Cost</span><span id="f-total">R 0.00</span></div>
           <div class="result-row"><span>Net Profit</span><span id="f-profit">R 0.00</span></div>
-          <div class="result-row"><span>Profit Margin</span><span id="f-margin">0.00%</span></div>
-          <div class="result-row"><span>Break-even Quote</span><span id="f-breakeven">R 0.00</span></div>
+          <div class="result-row locked-row"><span>Insurance Cost</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Break-even Quote</span><span class="locked-value">🔒 Unlock</span></div>
           <div class="demo-verdict" id="f-verdict">Enter your numbers above to get a decision</div>
-          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: MANUFACTURING -->
+    <div id="demo-manufacturing" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Manufacturing Profitability</div>
+        <div class="demo-panel-desc">Know if your production run makes money before it starts.</div>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Units Produced</label><input type="number" id="m-units" placeholder="e.g. 5000" /></div>
+          <div class="demo-field"><label>Selling Price Per Unit (R)</label><input type="number" id="m-price" placeholder="e.g. 120" /></div>
+          <div class="demo-field"><label>Material Cost Per Unit (R)</label><input type="number" id="m-material" placeholder="e.g. 60" /></div>
+          <div class="demo-field"><label>Labor Costs (R)</label><input type="number" id="m-labor" placeholder="e.g. 50000" /></div>
+          <div class="demo-field"><label>Fixed Costs (R)</label><input type="number" id="m-fixed" placeholder="e.g. 30000" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Total Revenue</span><span id="m-revenue">R 0.00</span></div>
+          <div class="result-row"><span>Total Costs</span><span id="m-total-cost">R 0.00</span></div>
+          <div class="result-row"><span>Profit / Loss</span><span id="m-profit">R 0.00</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Break-even Units</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>ROI</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="demo-verdict" id="m-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 5: CONSTRUCTION -->
+    <div id="demo-construction" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Construction Project Profitability</div>
+        <div class="demo-panel-desc">Test if your contract is profitable before the project starts.</div>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Project Contract Value (R)</label><input type="number" id="c-contract" placeholder="e.g. 1800000" /></div>
+          <div class="demo-field"><label>Material Costs (R)</label><input type="number" id="c-materials" placeholder="e.g. 700000" /></div>
+          <div class="demo-field"><label>Labor Costs Monthly (R)</label><input type="number" id="c-labor" placeholder="e.g. 80000" /></div>
+          <div class="demo-field"><label>Equipment Costs Monthly (R)</label><input type="number" id="c-equipment" placeholder="e.g. 40000" /></div>
+          <div class="demo-field"><label>Fixed Costs Monthly (R)</label><input type="number" id="c-fixed" placeholder="e.g. 20000" /></div>
+          <div class="demo-field"><label>Project Duration (Months)</label><input type="number" id="c-months" placeholder="e.g. 6" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Total Costs</span><span id="c-total-cost">R 0.00</span></div>
+          <div class="result-row"><span>Profit / Loss</span><span id="c-profit">R 0.00</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>ROI</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Break-even Revenue</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="demo-verdict" id="c-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 6: RESTAURANT -->
+    <div id="demo-restaurant" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Restaurant Profitability</div>
+        <div class="demo-panel-desc">See if your restaurant is making money before the month ends.</div>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Number of Tables</label><input type="number" id="r-tables" placeholder="e.g. 20" /></div>
+          <div class="demo-field"><label>Covers Per Table Daily</label><input type="number" id="r-covers" placeholder="e.g. 3" /></div>
+          <div class="demo-field"><label>Average Check Per Customer (R)</label><input type="number" id="r-check" placeholder="e.g. 250" /></div>
+          <div class="demo-field"><label>Food Cost (%)</label><input type="number" id="r-food-pct" placeholder="e.g. 35" /></div>
+          <div class="demo-field"><label>Labour Costs Monthly (R)</label><input type="number" id="r-labour" placeholder="e.g. 40000" /></div>
+          <div class="demo-field"><label>Fixed Costs Monthly (R)</label><input type="number" id="r-fixed" placeholder="e.g. 25000" /></div>
+          <div class="demo-field"><label>Operating Days Per Month</label><input type="number" id="r-days" placeholder="e.g. 26" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Monthly Revenue</span><span id="r-revenue">R 0.00</span></div>
+          <div class="result-row"><span>Total Costs</span><span id="r-total-cost">R 0.00</span></div>
+          <div class="result-row"><span>Net Profit</span><span id="r-profit">R 0.00</span></div>
+          <div class="result-row locked-row"><span>Profit Margin</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Break-even Covers/Day</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="result-row locked-row"><span>Annual Profit</span><span class="locked-value">🔒 Unlock</span></div>
+          <div class="demo-verdict" id="r-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
         </div>
       </div>
     </div>
@@ -757,8 +874,36 @@ Most businesses lose money from pricing mistakes. SystemsWorks helps detect them
         console.warn('Slideshow missing elements. Check IDs in HTML.');
       }
 
-/* ── DROPDOWN SWITCHING ── */
+/* ── Demo ── */
+/* ── USAGE COUNTER ── */
+let demoUses = 3;
+let demoActive = true;
+const calculated = { shipment: false, operations: false, freight: false, manufacturing: false, construction: false, restaurant: false };
+
+function updateUsageDisplay() {
+  document.getElementById('demo-uses-left').textContent = demoUses;
+  if (demoUses <= 1) document.getElementById('demo-usage').style.color = '#ef4444';
+}
+
+function useCalculation(key) {
+  if (!demoActive || calculated[key]) return;
+  calculated[key] = true;
+  demoUses--;
+  updateUsageDisplay();
+  if (demoUses <= 0) setTimeout(lockDemo, 1500);
+}
+
+function lockDemo() {
+  demoActive = false;
+  document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('demo-locked').style.display = 'flex';
+  document.getElementById('demo-usage').style.display = 'none';
+  document.getElementById('demo-select').disabled = true;
+}
+
+/* ── DROPDOWN ── */
 document.getElementById('demo-select').addEventListener('change', function () {
+  if (!demoActive) return;
   document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
   const val = this.value;
   if (val) document.getElementById('demo-' + val).style.display = 'block';
@@ -766,71 +911,60 @@ document.getElementById('demo-select').addEventListener('change', function () {
 
 /* ── HELPERS ── */
 const R = n => 'R ' + (isNaN(n) ? '0.00' : n.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-const pct = n => (isNaN(n) ? '0.00' : n.toFixed(2)) + '%';
 
-function setVerdict(el, margin, hasData) {
+function setVerdict(el, profit, hasData) {
   el.className = 'demo-verdict';
   if (!hasData) { el.textContent = 'Enter your numbers above to get a decision'; return; }
-  if (margin >= 15) {
+  if (profit > 0) {
     el.classList.add('approve');
-    el.textContent = '✅ APPROVE — Profitable. Good margin to proceed.';
-  } else if (margin >= 5) {
+    el.textContent = '✅ APPROVE — Profitable. Unlock full breakdown to see margin and ROI.';
+  } else if (profit === 0) {
     el.classList.add('review');
-    el.textContent = '⚠️ REVIEW — Thin margin. Negotiate costs or price higher.';
+    el.textContent = '⚠️ REVIEW — Breaking even. Unlock full analysis to see risk level.';
   } else {
     el.classList.add('reject');
-    el.textContent = '🚫 REJECT — This deal loses money. Do not proceed.';
+    el.textContent = '🚫 REJECT — This deal loses money. Unlock to see exactly how much.';
   }
 }
 
-/* ── SHIPMENT CALC ── */
+/* ── SHIPMENT ── */
 ['s-quote','s-fuel','s-driver','s-tolls','s-other'].forEach(id => {
   document.getElementById(id)?.addEventListener('input', calcShipment);
 });
 function calcShipment() {
-  const quote  = +document.getElementById('s-quote').value  || 0;
-  const costs  = (+document.getElementById('s-fuel').value   || 0)
-               + (+document.getElementById('s-driver').value || 0)
-               + (+document.getElementById('s-tolls').value  || 0)
-               + (+document.getElementById('s-other').value  || 0);
+  const quote = +document.getElementById('s-quote').value || 0;
+  const costs = (+document.getElementById('s-fuel').value || 0)
+              + (+document.getElementById('s-driver').value || 0)
+              + (+document.getElementById('s-tolls').value || 0)
+              + (+document.getElementById('s-other').value || 0);
   const profit = quote - costs;
-  const margin = quote > 0 ? (profit / quote) * 100 : 0;
-  const roi    = costs > 0 ? (profit / costs) * 100 : 0;
-
-  document.getElementById('s-total').textContent  = R(costs);
+  document.getElementById('s-total').textContent = R(costs);
   document.getElementById('s-profit').textContent = R(profit);
-  document.getElementById('s-margin').textContent = pct(margin);
-  document.getElementById('s-roi').textContent    = pct(roi);
-  setVerdict(document.getElementById('s-verdict'), margin, quote > 0);
+  setVerdict(document.getElementById('s-verdict'), profit, quote > 0);
+  if (quote > 0) useCalculation('shipment');
 }
 
-/* ── OPERATIONS CALC ── */
+/* ── OPERATIONS ── */
 ['o-shipments','o-revenue','o-fuel','o-labor','o-fixed'].forEach(id => {
   document.getElementById(id)?.addEventListener('input', calcOperations);
 });
 function calcOperations() {
-  const shipments  = +document.getElementById('o-shipments').value || 0;
-  const revPerShip = +document.getElementById('o-revenue').value   || 0;
-  const fuel       = +document.getElementById('o-fuel').value      || 0;
-  const labor      = +document.getElementById('o-labor').value     || 0;
-  const fixed      = +document.getElementById('o-fixed').value     || 0;
-
-  const totalRev  = shipments * revPerShip;
+  const shipments = +document.getElementById('o-shipments').value || 0;
+  const revenue   = +document.getElementById('o-revenue').value   || 0;
+  const fuel      = +document.getElementById('o-fuel').value      || 0;
+  const labor     = +document.getElementById('o-labor').value     || 0;
+  const fixed     = +document.getElementById('o-fixed').value     || 0;
+  const totalRev  = shipments * revenue;
   const totalCost = fuel + labor + fixed;
   const profit    = totalRev - totalCost;
-  const margin    = totalRev > 0 ? (profit / totalRev) * 100 : 0;
-  const breakeven = revPerShip > 0 ? Math.ceil(totalCost / revPerShip) : '—';
-
   document.getElementById('o-total-rev').textContent  = R(totalRev);
   document.getElementById('o-total-cost').textContent = R(totalCost);
   document.getElementById('o-profit').textContent     = R(profit);
-  document.getElementById('o-margin').textContent     = pct(margin);
-  document.getElementById('o-breakeven').textContent  = typeof breakeven === 'number' ? breakeven + ' shipments' : '—';
-  document.getElementById('o-annual').textContent     = R(profit * 12);
-  setVerdict(document.getElementById('o-verdict'), margin, totalRev > 0);
+  setVerdict(document.getElementById('o-verdict'), profit, totalRev > 0);
+  if (totalRev > 0) useCalculation('operations');
 }
 
-/* ── FREIGHT CALC ── */
+/* ── FREIGHT ── */
 ['f-quote','f-cargo','f-freight','f-duty','f-customs','f-insurance'].forEach(id => {
   document.getElementById(id)?.addEventListener('input', calcFreight);
 });
@@ -841,20 +975,79 @@ function calcFreight() {
   const dutyRate = +document.getElementById('f-duty').value      || 0;
   const customs  = +document.getElementById('f-customs').value   || 0;
   const insRate  = +document.getElementById('f-insurance').value || 0;
-
-  const dutyCost  = cargo * (dutyRate / 100);
-  const insCost   = cargo * (insRate / 100);
-  const totalCost = freight + dutyCost + insCost + customs;
-  const profit    = quote - totalCost;
-  const margin    = quote > 0 ? (profit / quote) * 100 : 0;
-
+  const dutyCost = cargo * (dutyRate / 100);
+  const insCost  = cargo * (insRate / 100);
+  const total    = freight + dutyCost + insCost + customs;
+  const profit   = quote - total;
   document.getElementById('f-duty-cost').textContent = R(dutyCost);
-  document.getElementById('f-ins-cost').textContent  = R(insCost);
-  document.getElementById('f-total').textContent     = R(totalCost);
+  document.getElementById('f-total').textContent     = R(total);
   document.getElementById('f-profit').textContent    = R(profit);
-  document.getElementById('f-margin').textContent    = pct(margin);
-  document.getElementById('f-breakeven').textContent = R(totalCost);
-  setVerdict(document.getElementById('f-verdict'), margin, quote > 0);
+  setVerdict(document.getElementById('f-verdict'), profit, quote > 0);
+  if (quote > 0) useCalculation('freight');
+}
+
+/* ── MANUFACTURING ── */
+['m-units','m-price','m-material','m-labor','m-fixed'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', calcManufacturing);
+});
+function calcManufacturing() {
+  const units    = +document.getElementById('m-units').value    || 0;
+  const price    = +document.getElementById('m-price').value    || 0;
+  const material = +document.getElementById('m-material').value || 0;
+  const labor    = +document.getElementById('m-labor').value    || 0;
+  const fixed    = +document.getElementById('m-fixed').value    || 0;
+  const revenue  = units * price;
+  const total    = (units * material) + labor + fixed;
+  const profit   = revenue - total;
+  document.getElementById('m-revenue').textContent    = R(revenue);
+  document.getElementById('m-total-cost').textContent = R(total);
+  document.getElementById('m-profit').textContent     = R(profit);
+  setVerdict(document.getElementById('m-verdict'), profit, revenue > 0);
+  if (revenue > 0) useCalculation('manufacturing');
+}
+
+/* ── CONSTRUCTION ── */
+['c-contract','c-materials','c-labor','c-equipment','c-fixed','c-months'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', calcConstruction);
+});
+function calcConstruction() {
+  const contract   = +document.getElementById('c-contract').value  || 0;
+  const materials  = +document.getElementById('c-materials').value || 0;
+  const labor      = +document.getElementById('c-labor').value     || 0;
+  const equipment  = +document.getElementById('c-equipment').value || 0;
+  const fixed      = +document.getElementById('c-fixed').value     || 0;
+  const months     = +document.getElementById('c-months').value    || 0;
+  const monthlyCost = labor + equipment + fixed;
+  const total      = materials + (monthlyCost * months);
+  const profit     = contract - total;
+  document.getElementById('c-total-cost').textContent = R(total);
+  document.getElementById('c-profit').textContent     = R(profit);
+  setVerdict(document.getElementById('c-verdict'), profit, contract > 0);
+  if (contract > 0) useCalculation('construction');
+}
+
+/* ── RESTAURANT ── */
+['r-tables','r-covers','r-check','r-food-pct','r-labour','r-fixed','r-days'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', calcRestaurant);
+});
+function calcRestaurant() {
+  const tables   = +document.getElementById('r-tables').value    || 0;
+  const covers   = +document.getElementById('r-covers').value    || 0;
+  const check    = +document.getElementById('r-check').value     || 0;
+  const foodPct  = +document.getElementById('r-food-pct').value  || 0;
+  const labour   = +document.getElementById('r-labour').value    || 0;
+  const fixed    = +document.getElementById('r-fixed').value     || 0;
+  const days     = +document.getElementById('r-days').value      || 0;
+  const dailyCovers   = tables * covers;
+  const monthlyRev    = dailyCovers * check * days;
+  const foodCost      = monthlyRev * (foodPct / 100);
+  const total         = foodCost + labour + fixed;
+  const profit        = monthlyRev - total;
+  document.getElementById('r-revenue').textContent    = R(monthlyRev);
+  document.getElementById('r-total-cost').textContent = R(total);
+  document.getElementById('r-profit').textContent     = R(profit);
+  setVerdict(document.getElementById('r-verdict'), profit, monthlyRev > 0);
+  if (monthlyRev > 0) useCalculation('restaurant');
 }
     </script>
   </body>
