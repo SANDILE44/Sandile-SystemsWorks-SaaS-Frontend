@@ -947,7 +947,8 @@ if (demoSelect && selectWrap) {
   Array.from(demoSelect.options).forEach((opt, i) => {
     if (i === 0) return;
     if (opt.parentElement.tagName === 'OPTGROUP') {
-      const isFirst = opt.parentElement.options[0] === opt;
+      const siblings = Array.from(opt.parentElement.querySelectorAll('option'));
+      const isFirst = siblings[0] === opt;
       if (isFirst) {
         const group = document.createElement('div');
         group.className = 'custom-select-group';
@@ -955,6 +956,7 @@ if (demoSelect && selectWrap) {
         optionsList.appendChild(group);
       }
     }
+
     const item = document.createElement('div');
     item.className = 'custom-select-option';
     item.textContent = opt.text;
