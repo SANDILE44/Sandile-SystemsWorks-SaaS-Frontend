@@ -226,6 +226,114 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
         </div>
       </section>
 
+<!-- INTERACTIVE DEMO -->
+<section class="section section-soft" id="demo">
+  <div class="container">
+
+    <div class="section-head">
+      <h2>Try it yourself — free</h2>
+      <p>Pick a logistics tool, enter your numbers, and get an instant decision.</p>
+    </div>
+
+    <!-- DROPDOWN -->
+    <div class="demo-select-wrap">
+      <select id="demo-select">
+        <option value="">— Choose a logistics tool —</option>
+        <option value="shipment">Per-Shipment Risk Analysis</option>
+        <option value="operations">Monthly Operations Analysis</option>
+        <option value="freight">Freight Import / Export Analysis</option>
+      </select>
+    </div>
+
+    <!-- PANEL 1: SHIPMENT -->
+    <div id="demo-shipment" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Per-Shipment Risk Analysis</div>
+        <button class="help-btn" onclick="openHelp('shipment')">?</button>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Client Quote Price (R)</label><input type="number" id="s-quote" placeholder="e.g. 15000" /></div>
+          <div class="demo-field"><label>Fuel Cost (R)</label><input type="number" id="s-fuel" placeholder="e.g. 4000" /></div>
+          <div class="demo-field"><label>Driver Cost (R)</label><input type="number" id="s-driver" placeholder="e.g. 3000" /></div>
+          <div class="demo-field"><label>Tolls & Permits (R)</label><input type="number" id="s-tolls" placeholder="e.g. 800" /></div>
+          <div class="demo-field"><label>Other Costs (R)</label><input type="number" id="s-other" placeholder="e.g. 500" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Total Costs</span><span id="s-total">R 0.00</span></div>
+          <div class="result-row"><span>Net Profit</span><span id="s-profit">R 0.00</span></div>
+          <div class="result-row"><span>Profit Margin</span><span id="s-margin">0.00%</span></div>
+          <div class="result-row"><span>ROI</span><span id="s-roi">0.00%</span></div>
+          <div class="demo-verdict" id="s-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: OPERATIONS -->
+    <div id="demo-operations" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Monthly Operations Analysis</div>
+        <button class="help-btn" onclick="openHelp('operations')">?</button>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Shipments Per Month</label><input type="number" id="o-shipments" placeholder="e.g. 40" /></div>
+          <div class="demo-field"><label>Revenue Per Shipment (R)</label><input type="number" id="o-revenue" placeholder="e.g. 8000" /></div>
+          <div class="demo-field"><label>Monthly Fuel Costs (R)</label><input type="number" id="o-fuel" placeholder="e.g. 60000" /></div>
+          <div class="demo-field"><label>Monthly Labor Costs (R)</label><input type="number" id="o-labor" placeholder="e.g. 80000" /></div>
+          <div class="demo-field"><label>Fixed Costs (R)</label><input type="number" id="o-fixed" placeholder="e.g. 40000" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Total Revenue</span><span id="o-total-rev">R 0.00</span></div>
+          <div class="result-row"><span>Total Costs</span><span id="o-total-cost">R 0.00</span></div>
+          <div class="result-row"><span>Net Profit</span><span id="o-profit">R 0.00</span></div>
+          <div class="result-row"><span>Profit Margin</span><span id="o-margin">0.00%</span></div>
+          <div class="result-row"><span>Break-even Shipments</span><span id="o-breakeven">—</span></div>
+          <div class="result-row"><span>Annual Projection</span><span id="o-annual">R 0.00</span></div>
+          <div class="demo-verdict" id="o-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: FREIGHT -->
+    <div id="demo-freight" class="demo-panel" style="display:none">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title">Freight Import / Export Analysis</div>
+        <button class="help-btn" onclick="openHelp('freight')">?</button>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-inputs">
+          <h4>Your Numbers</h4>
+          <div class="demo-field"><label>Client Quote Price (R)</label><input type="number" id="f-quote" placeholder="e.g. 85000" /></div>
+          <div class="demo-field"><label>Cargo Value (R)</label><input type="number" id="f-cargo" placeholder="e.g. 500000" /></div>
+          <div class="demo-field"><label>Freight Cost (R)</label><input type="number" id="f-freight" placeholder="e.g. 30000" /></div>
+          <div class="demo-field"><label>Import Duty Rate (%)</label><input type="number" id="f-duty" placeholder="e.g. 15" /></div>
+          <div class="demo-field"><label>Customs & Port Fees (R)</label><input type="number" id="f-customs" placeholder="e.g. 8000" /></div>
+          <div class="demo-field"><label>Insurance Rate (%)</label><input type="number" id="f-insurance" placeholder="e.g. 1.5" /></div>
+        </div>
+        <div class="demo-results">
+          <h4>Instant Results</h4>
+          <div class="result-row"><span>Duty Cost</span><span id="f-duty-cost">R 0.00</span></div>
+          <div class="result-row"><span>Insurance Cost</span><span id="f-ins-cost">R 0.00</span></div>
+          <div class="result-row"><span>Total Logistics Cost</span><span id="f-total">R 0.00</span></div>
+          <div class="result-row"><span>Net Profit</span><span id="f-profit">R 0.00</span></div>
+          <div class="result-row"><span>Profit Margin</span><span id="f-margin">0.00%</span></div>
+          <div class="result-row"><span>Break-even Quote</span><span id="f-breakeven">R 0.00</span></div>
+          <div class="demo-verdict" id="f-verdict">Enter your numbers above to get a decision</div>
+          <a href="signup.html" class="demo-cta">Get Full Analysis — Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
       <!-- VALUE PROPS -->
       <section class="section">
         <div class="container">
