@@ -1,1007 +1,192 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Logistics Calculators - Sandile SystemsWorks</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/calculators.css" />
-  </head>
-
-  <body>
-    <style>
-<style>
-
-/* ===============================  
-         TOOL SELECTOR  
-      =================================*/  
-      .tool-selector {  
-        margin-bottom: 30px;  
-      }  .tool-buttons {  
-    display: flex;  
-    gap: 15px;  
-    margin-top: 10px;  
-    flex-wrap: wrap;  
-  }  
-
-  .tool-btn {  
-    padding: 12px 20px;  
-    border: none;  
-    background: #1f2937;  
-    color: white;  
-    cursor: pointer;  
-    border-radius: 8px;  
-    transition: all 0.3s ease;  
-  }  
-
-  .tool-btn:hover {  
-    background: #374151;  
-  }  
-
-  .tool-btn.active {  
-    background: #2563eb;  
-  }  
-
-  .hidden {  
-    display: none;  
-  }  
-
-  /* ===============================  
-     RESULT VALUE BASE STYLE  
-  =================================*/  
-  .output-value {  
-    font-weight: 600;  
-    transition: all 0.2s ease;  
-  }  
-
-  /* ===============================  
-     MONTHLY RISK LEVEL  
-  =================================*/  
-  .risk-low {  
-    color: #22c55e;  
-  }  
-
-  .risk-medium {  
-    color: #f59e0b;  
-  }  
-
-  .risk-high {  
-    color: #ef4444;  
-  }  
-
-  /* ===============================  
-     SHIPMENT DECISION  
-  =================================*/  
-  .decision-approve {  
-    color: #22c55e;  
-  }  
-
-  .decision-review {  
-    color: #f59e0b;  
-  }  
-
-  .decision-reject {  
-    color: #ef4444;  
-  }  
-
-  /* ===============================  
-     PROFIT / LOSS COLORS  
-  =================================*/  
-  .profit-positive {  
-    color: #22c55e;  
-  }  
-
-  .profit-negative {  
-    color: #ef4444;  
-  }  
-
-  /* ===============================  
-     SAFETY STATUS  
-  =================================*/  
-  .safety-healthy {  
-    color: #22c55e;  
-  }  
-
-  .safety-risk {  
-    color: #f59e0b;  
-  }  
-
-  .safety-critical {  
-    color: #ef4444;  
-  }  
-
-  /* ===============================
-
-PROFIT MARGIN COLORS
-================================*/
-
-.margin-strong {
-color: #22c55e; /* green */
-}
-
-.margin-medium {
-color: #f59e0b; /* orange */
-}
-
-.margin-low {
-color: #ef4444; /* red */
-/ ===============================
-FREIGHT RISK LEVEL
-================================*/
-
-.freight-risk-low {
-color: #22c55e;
-}
-
-.freight-risk-medium {
-color: #f59e0b;
-}
-
-.freight-risk-high {
-color: #ef4444;
-}
-.tool-hint {
-margin: 8px 0 15px;
-font-size: 0.85rem;
-color: var(--text-muted);
-line-height: 1.4;
-}
-
-</style>
-    </style>
-
-    <!-- APP LAYOUT -->
-    <div class="app-shell">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-top">
-          <div class="sidebar-brand">
-            <img
-              src="images/Untitled design.png"
-              alt="Sandile SystemsWorks"
-              class="sidebar-logo"
-            />
-            <span class="sidebar-name">Sandile SystemsWorks</span>
-          </div>
-
-          <nav class="sidebar-nav">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="sector-primary.html">Primary Sector</a>
-            <a href="sector-secondary.html">Secondary Sector</a>
-            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
-            <a href="sector-quaternary.html">Quaternary Sector</a>
-            <a href="sector-quinary.html">Quinary Sector</a>
-          </nav>
-        </div>
-
-        <!-- ACCOUNT -->
-        <div class="sidebar-account">
-          <button id="accountBtn" class="account-btn">
-            <span id="accountAvatar" class="account-avatar">U</span>
-            <span id="accountName" class="account-name">Account</span>
-          </button>
-
-          <div id="accountMenu" class="account-menu">
-            <a href="index.html">Home</a>
-            <button id="logoutBtn">Logout</button>
-          </div>
-        </div>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="main-content">
-        <!-- MOBILE HAMBURGER -->
-        <button id="hamburger" class="hamburger" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <div class="breadcrumb">
-          <a href="dashboard.html">Sectors</a>
-          <span>→</span>
-          <a href="sector-tertiary.html">Tertiary</a>
-          <span>→</span>
-          <span>Logistics</span>
-        </div>
-<h1>Logistics Profit & Risk Decision Tools</h1>
-<p>
-Make pricing, shipment approval, and expansion decisions with
-clear margin visibility and operational risk detection.
-</p>
-
-        <!-- TOOL SELECTOR (TOP) -->
-        <div class="tool-selector">
-          <h2>What are you trying to decide today?</h2>
-
-            <p class="tool-hint">
-📊 Analyze your entire month<br>
-🚛 Evaluate a single shipment before approval<br>
-🌍 Evaluate international freight (imports / exports)
-            </p>
-          
-          <div class="tool-buttons">
-            <button id="btn-operations" class="tool-btn">
-              Monthly Operations Analysis
-            </button>
-
-            <button id="btn-shipment" class="tool-btn">
-              Per-Shipment Risk Analysis
-            </button>
-
-            <button id="btn-freight" class="tool-btn">
-  Freight Import / Export Analysis
-            </button>
-          </div>
-        </div>
-
-  <div id="tool-placeholder" class="tool-placeholder">
-  <p>Please select an analysis type above to begin.</p>
-  </div>
-
-        <!-- ==========================
-             PANEL 1: OPERATIONS
-        =========================== -->
-        <div class="calculator-container tool-panel hidden" id="operations-panel">
-<h2>Monthly Logistics Performance & Risk Analysis</h2>
-<p>
-  Evaluate revenue, cost structure, break-even exposure, and pricing strength
-  across your entire monthly operation — before risk becomes loss.
-</p>
-
-          <div class="calculator-grid">
-            <!-- INPUTS -->
-            <div class="input-section">
-              <h3>Inputs</h3>
-
-              <div class="input-group">
-                <label for="log-shipments">Shipments Per Month</label>
-                <input
-                  type="number"
-                  id="log-shipments"
-                  placeholder="Enter number of shipments"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="log-revenue">Revenue Per Shipment</label>
-                <input
-                  type="number"
-                  id="log-revenue"
-                  placeholder="Average charge per shipment"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="log-fuel">Fuel Costs</label>
-                <input
-                  type="number"
-                  id="log-fuel"
-                  placeholder="Monthly fuel expenses"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="log-labor">Labor Costs</label>
-                <input
-                  type="number"
-                  id="log-labor"
-                  placeholder="Driver and staff wages"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="log-maintenance">Vehicle Maintenance</label>
-                <input
-                  type="number"
-                  id="log-maintenance"
-                  placeholder="Monthly vehicle upkeep"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="log-fixed">Fixed Costs</label>
-                <input
-                  type="number"
-                  id="log-fixed"
-                  placeholder="Facility, insurance, permits"
-                />
-              </div>
-
-              <!-- ✅ UNIQUE RESET ID -->
-              <button type="button" id="resetOperationsBtn">Reset All</button>
-            </div>
-
-            <!-- OUTPUTS -->
-            <div class="output-section">
-              <h3>Results</h3>
-
-              <div class="output-group">
-                <div class="output-label">Monthly Shipments</div>
-                <div class="output-value" id="log-shipments-output">0</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Total Revenue</div>
-                <div class="output-value" id="log-total-revenue">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Total Costs</div>
-                <div class="output-value" id="log-total-costs">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Net Profit</div>
-                <div class="output-value" id="log-profit">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Cost Per Shipment</div>
-                <div class="output-value" id="log-per-shipment">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Revenue Per Shipment</div>
-                <div class="output-value" id="log-revenue-per-shipment">
-                  0.00
-                </div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">ROI (%)</div>
-                <div class="output-value" id="log-roi">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Profit Margin (%)</div>
-                <div class="output-value" id="log-margin">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Profit / Loss Status</div>
-                <div class="output-value" id="log-status">—</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Profit Per Shipment</div>
-                <div class="output-value" id="log-profit-per-shipment">
-                  0.00
-                </div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Break-even Shipments</div>
-                <div class="output-value" id="log-breakeven-shipments">0</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Annual Profit Projection</div>
-                <div class="output-value" id="log-annual-profit">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Fuel Cost % of Revenue</div>
-                <div class="output-value" id="log-fuel-pct">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Labor Cost % of Revenue</div>
-                <div class="output-value" id="log-labor-pct">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Maintenance % of Revenue</div>
-                <div class="output-value" id="log-maintenance-pct">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Fixed Cost % of Revenue</div>
-                <div class="output-value" id="log-fixed-pct">0.00%</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Operational Risk Level</div>
-                <div class="output-value" id="log-risk-level">—</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Recommended Minimum Price Per Shipment</div>
-                <div class="output-value" id="log-recommended-price">0.00</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Safety Margin Status</div>
-                <div class="output-value" id="log-safety">—</div>
-              </div>
-
-              <div class="output-group">
-                <div class="output-label">Take / Don’t Take Advice</div>
-                <div class="output-value" id="log-advice">—</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================
-             PANEL 2: SHIPMENT
-        =========================== -->
-        <div
-          class="calculator-container advanced-module tool-panel hidden"
-          id="shipment-panel"
-        >
-          <h2>Shipment Risk & Pricing Simulator</h2>
-          <p>Evaluate shipment profitability before approving the contract.</p>
-
-          <div class="calculator-grid">
-            <!-- INPUTS -->
-            <div class="input-section">
-              <h3>Shipment Inputs</h3>
-
-              <div class="input-group">
-                <label for="ship-quote">Client Quote Price</label>
-                <input
-                  type="number"
-                  id="ship-quote"
-                  placeholder="Total amount the client will pay for this shipment"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-min-margin">Required Minimum Margin (%)</label>
-                <input
-                  type="number"
-                  id="ship-min-margin"
-                  placeholder="Minimum profit margin your business requires"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-buffer">Safety Buffer (%)</label>
-                <input
-                  type="number"
-                  id="ship-buffer"
-                  placeholder="Extra margin cushion for unexpected costs"
-                />
-              </div>
-
-              <hr />
-
-              <div class="input-group">
-                <label for="ship-distance">Distance (km)</label>
-                <input
-                  type="number"
-                  id="ship-distance"
-                  placeholder="Total route distance"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-fuel-km">Fuel Cost Per KM</label>
-                <input
-                  type="number"
-                  id="ship-fuel-km"
-                  placeholder="Estimated fuel expense per kilometre"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-vehicle-km">Vehicle Wear Cost Per KM</label>
-                <input
-                  type="number"
-                  id="ship-vehicle-km"
-                  placeholder="Maintenance & depreciation per kilometre"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-load-factor">Load Factor (%)</label>
-                <input
-                  type="number"
-                  id="ship-load-factor"
-                  placeholder="Percentage of truck capacity used"
-                />
-              </div>
-
-              <hr />
-
-              <div class="input-group">
-                <label for="ship-driving-hours">Driving Time (Hours)</label>
-                <input
-                  type="number"
-                  id="ship-driving-hours"
-                  placeholder="Total estimated driving time"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-wait-hours">Loading / Waiting Time (Hours)</label>
-                <input
-                  type="number"
-                  id="ship-wait-hours"
-                  placeholder="Time spent loading/unloading/waiting"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-driver-rate">Driver Cost Per Hour</label>
-                <input
-                  type="number"
-                  id="ship-driver-rate"
-                  placeholder="Hourly wage or assigned driver cost"
-                />
-              </div>
-
-              <hr />
-
-              <div class="input-group">
-                <label for="ship-tolls">Toll Costs</label>
-                <input type="number" id="ship-tolls" placeholder="Total toll costs" />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-permits">Permits / Border Fees</label>
-                <input
-                  type="number"
-                  id="ship-permits"
-                  placeholder="Permits, border charges, admin costs"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-other-fees">Other Route Expenses</label>
-                <input
-                  type="number"
-                  id="ship-other-fees"
-                  placeholder="Additional route-related expenses"
-                />
-              </div>
-
-              <hr />
-
-              <div class="input-group">
-                <label for="ship-cargo-value">Cargo Value</label>
-                <input
-                  type="number"
-                  id="ship-cargo-value"
-                  placeholder="Declared value of goods"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-insurance">Insurance Rate (%)</label>
-                <input
-                  type="number"
-                  id="ship-insurance"
-                  placeholder="Insurance % applied to cargo value"
-                />
-              </div>
-
-              <hr />
-
-              <div class="input-group">
-                <label for="ship-duties">Customs Duties</label>
-                <input type="number" id="ship-duties" placeholder="Customs duties" />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-handling">Handling Fees</label>
-                <input
-                  type="number"
-                  id="ship-handling"
-                  placeholder="Warehouse / loading / unloading fees"
-                />
-              </div>
-
-              <div class="input-group">
-                <label for="ship-pass-through">Pass-through Costs</label>
-                <input
-                  type="number"
-                  id="ship-pass-through"
-                  placeholder="Third-party charges passed to you"
-                />
-              </div>
-
-              <!-- ✅ UNIQUE RESET ID -->
-              <button type="button" id="resetShipmentBtn">Reset All</button>
-            </div>
-
-         <!-- OUTPUTS -->
-<div class="output-section">
-<h3>Shipment Results</h3>
-
-<div class="output-group">
-<div class="output-label">Total Shipment Cost</div>
-<div class="output-value" id="ship-total-cost">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Estimated Profit</div>
-<div class="output-value" id="ship-profit">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Profit Margin</div>
-<div class="output-value" id="ship-margin">0.00%</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Recommended Minimum Quote</div>
-<div class="output-value" id="ship-min-quote">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Decision</div>
-<div class="output-value" id="ship-decision">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Decision Explanation</div>
-<div class="output-value" id="ship-reason">—</div>
-</div>
-
-</div>
-            </div>
-          </div>
-        </div>
-
-
-<!-- ==========================
-     PANEL 3: FREIGHT
-========================== -->
-<div
-  class="calculator-container advanced-module tool-panel hidden"
-  id="freight-panel"
->
-  <h2>Freight Import / Export Profit Simulator</h2>
-  <p>
-    Evaluate international shipments including freight, duties,
-    insurance, and logistics costs before quoting a client.
-  </p>
-
-  <div class="calculator-grid">
-
-    <!-- INPUTS -->
-    <div class="input-section">
-      <h3>Freight Inputs</h3>
-
-      <div class="input-group">
-        <label for="freight-quote">Client Quote Price</label>
-        <input type="number" id="freight-quote"
-        placeholder="Total price charged to client for this shipment" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-cargo-value">Cargo Value</label>
-        <input type="number" id="freight-cargo-value"
-        placeholder="Declared value of goods being shipped" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-insurance-rate">Insurance Rate (%)</label>
-        <input type="number" id="freight-insurance-rate"
-        placeholder="Insurance % applied to cargo value" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-cost">Freight Cost</label>
-        <input type="number" id="freight-cost"
-        placeholder="Air, sea, or rail freight cost" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-fuel-surcharge">Fuel Surcharge</label>
-        <input type="number" id="freight-fuel-surcharge"
-        placeholder="Carrier fuel surcharge" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-duty-rate">Import Duty Rate (%)</label>
-        <input type="number" id="freight-duty-rate"
-        placeholder="Import duty % applied to cargo value" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-customs-fees">Customs Clearance Fees</label>
-        <input type="number" id="freight-customs-fees"
-        placeholder="Customs broker and documentation costs" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-port-fees">Port / Terminal Fees</label>
-        <input type="number" id="freight-port-fees"
-        placeholder="Port handling and terminal charges" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-handling-fees">Handling Charges</label>
-        <input type="number" id="freight-handling-fees"
-        placeholder="Warehouse or cargo handling costs" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-inland-transport">Inland Transport</label>
-        <input type="number" id="freight-inland-transport"
-        placeholder="Truck or rail transport after arrival" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-tolls">Toll Costs</label>
-        <input type="number" id="freight-tolls"
-        placeholder="Highway tolls or route fees" />
-      </div>
-
-      <div class="input-group">
-        <label for="freight-other-costs">Other Logistics Costs</label>
-        <input type="number" id="freight-other-costs"
-        placeholder="Storage, inspection, or additional logistics fees" />
-      </div>
-
-      <button type="button" id="resetFreightBtn">Reset All</button>
-    </div>
-
-    <!-- OUTPUTS -->
-    <div class="output-section">
-      <h3>Freight Results</h3>
-
-      <div class="output-group">
-        <div class="output-label">Insurance Cost</div>
-        <div class="output-value" id="freight-insurance-cost">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Duty Cost</div>
-        <div class="output-value" id="freight-duties">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Total Logistics Cost</div>
-        <div class="output-value" id="freight-total-cost">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Estimated Profit</div>
-        <div class="output-value" id="freight-profit">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Profit Margin</div>
-        <div class="output-value" id="freight-margin">0.00%</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Break-even Quote</div>
-        <div class="output-value" id="freight-breakeven">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision</div>
-        <div class="output-value" id="freight-decision">—</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision Explanation</div>
-        <div class="output-value" id="freight-reason">—</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Risk Level</div>
-        <div class="output-value" id="freight-risk">—</div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-           <!-- ================================
-             SECTORS & INDUSTRIES NAVIGATION
-        ================================ -->
-        <div class="sectors-navigation">
-          <h2>Explore All Sectors & Industries</h2>
-          <p>
-            Jump to any sector or industry calculators to quickly compare and
-            analyze multiple business areas.
-          </p>
-
-          <div class="sectors-grid">
-            <div class="sector-group">
-              <h3>Primary Sector</h3>
-              <ul>
-                <li><a href="industry-agriculture.html">Agriculture</a></li>
-                <li><a href="industry-forestry.html">Forestry</a></li>
-                <li><a href="industry-fishing.html">Fishing</a></li>
-                <li><a href="industry-mining.html">Mining</a></li>
-                <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-                <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Secondary Sector</h3>
-              <ul>
-                <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-                <li><a href="industry-construction.html">Construction</a></li>
-                <li><a href="industry-automotive.html">Automotive</a></li>
-                <li><a href="industry-electronics.html">Electronics</a></li>
-                <li><a href="industry-textiles.html">Textiles</a></li>
-                <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Tertiary Sector</h3>
-              <ul>
-                <li><a href="industry-real-estate.html">Real Estate</a></li>
-                <li><a href="industry-retail.html">Retail</a></li>
-                <li><a href="industry-restaurants.html">Restaurants</a></li>
-                <li><a href="industry-hospitality.html">Hospitality</a></li>
-                <li><a href="industry-logistics.html">Logistics</a></li>
-                <li><a href="industry-healthcare.html">Healthcare</a></li>
-                <li><a href="industry-education.html">Education</a></li>
-                <li><a href="industry-finance.html">Finance</a></li>
-                <li><a href="industry-marketing.html">Marketing</a></li>
-                <li><a href="industry-consulting.html">Consulting</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quaternary Sector</h3>
-              <ul>
-                <li><a href="industry-software.html">Software</a></li>
-                <li><a href="industry-saas.html">SaaS</a></li>
-                <li><a href="industry-it-services.html">IT Services</a></li>
-                <li><a href="industry-media.html">Media</a></li>
-                <li><a href="industry-research-development.html">R&D</a></li>
-                <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quinary Sector</h3>
-              <ul>
-                <li><a href="industry-government.html">Government</a></li>
-                <li><a href="industry-ngos.html">NGOs</a></li>
-                <li>
-                  <a href="industry-social-services.html"
-                    >Social & Community Services</a
-                  >
-                </li>
-                <li>
-                  <a href="industry-public-administration.html"
-                    >Public Administration</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-
 <script>
-/* ===============================
-   RESET BUTTON HANDLING
-================================*/
-(function () {
-  const resetOperationsBtn = document.getElementById("resetOperationsBtn");
-  const resetShipmentBtn = document.getElementById("resetShipmentBtn");
-  const resetFreightBtn = document.getElementById("resetFreightBtn");
+(async function guardCalculators() {
 
-  resetOperationsBtn?.addEventListener("click", () => {
-    document
-      .querySelectorAll("#operations-panel input")
-      .forEach((input) => (input.value = ""));
-    if (typeof runMonthly === "function") runMonthly();
-  });
+const token = localStorage.getItem("token");
 
-  resetShipmentBtn?.addEventListener("click", () => {
-    document
-      .querySelectorAll("#shipment-panel input")
-      .forEach((input) => (input.value = ""));
-    if (typeof runShipment === "function") runShipment();
-  });
+let redirected = false;
 
-  resetFreightBtn?.addEventListener("click", () => {
-    document
-      .querySelectorAll("#freight-panel input")
-      .forEach((input) => (input.value = ""));
-    if (typeof runFreight === "function") runFreight();
-  });
-})();
+function go(url, message) {
 
-/* ===============================
-   TOOL PANEL SWITCHING
-================================*/
-(function () {
+if (redirected) return;
+redirected = true;
 
-  const btnOperations = document.getElementById("btn-operations");
-  const btnShipment = document.getElementById("btn-shipment");
-  const btnFreight = document.getElementById("btn-freight");
+localStorage.setItem("authMessage", message);
+localStorage.setItem("afterLogin", window.location.pathname);
 
-  const operationsPanel = document.getElementById("operations-panel");
-  const shipmentPanel = document.getElementById("shipment-panel");
-  const freightPanel = document.getElementById("freight-panel");
+window.location.replace(url);
 
-  const placeholder = document.getElementById("tool-placeholder");
+}
 
-  if (
-    !btnOperations ||
-    !btnShipment ||
-    !btnFreight ||
-    !operationsPanel ||
-    !shipmentPanel ||
-    !freightPanel ||
-    !placeholder
-  ) return;
+/* =====================================
+   NOT LOGGED IN
+===================================== */
 
-  /* INITIAL STATE */
-  btnOperations.classList.remove("active");
-  btnShipment.classList.remove("active");
-  btnFreight.classList.remove("active");
+if (!token) {
 
-  operationsPanel.classList.add("hidden");
-  shipmentPanel.classList.add("hidden");
-  freightPanel.classList.add("hidden");
+document.body.innerHTML = `
+<div style="
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#020617;
+color:white;
+font-family:Arial,sans-serif;
+text-align:center;
+padding:20px;
+">
 
-  placeholder.classList.remove("hidden");
+<div style="
+max-width:420px;
+background:#0f172a;
+padding:30px 24px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+">
 
-  /* OPERATIONS */
-  btnOperations.addEventListener("click", () => {
+<h2 style="margin-bottom:10px;">
+You are logged out
+</h2>
 
-    btnOperations.classList.add("active");
-    btnShipment.classList.remove("active");
-    btnFreight.classList.remove("active");
+<p style="
+opacity:0.8;
+margin-bottom:24px;
+line-height:1.5;
+">
+Please log in to continue using Sandile SystemsWorks calculators.
+</p>
 
-    operationsPanel.classList.remove("hidden");
-    shipmentPanel.classList.add("hidden");
-    freightPanel.classList.add("hidden");
+<button id="goLogin" style="
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+width:100%;
+">
+Log in to continue
+</button>
 
-    placeholder.classList.add("hidden");
+</div>
+</div>
+`;
 
-  });
+document.getElementById("goLogin").onclick = () => {
 
-  /* SHIPMENT */
-  btnShipment.addEventListener("click", () => {
+localStorage.setItem("afterLogin", window.location.pathname);
+window.location.href = "login.html";
 
-    btnShipment.classList.add("active");
-    btnOperations.classList.remove("active");
-    btnFreight.classList.remove("active");
+};
 
-    shipmentPanel.classList.remove("hidden");
-    operationsPanel.classList.add("hidden");
-    freightPanel.classList.add("hidden");
+return;
 
-    placeholder.classList.add("hidden");
+}
 
-  });
+/* =====================================
+   SAFETY CHECK
+===================================== */
 
-  /* FREIGHT */
-  btnFreight.addEventListener("click", () => {
+if (!window.API_BASE) {
 
-    btnFreight.classList.add("active");
-    btnOperations.classList.remove("active");
-    btnShipment.classList.remove("active");
+console.error("API_BASE not loaded");
+return;
 
-    freightPanel.classList.remove("hidden");
-    operationsPanel.classList.add("hidden");
-    shipmentPanel.classList.add("hidden");
+}
 
-    placeholder.classList.add("hidden");
+/* =====================================
+   ACCESS CHECK
+===================================== */
 
-  });
+try {
+
+const res = await fetch(`${window.API_BASE}/api/calculators/access`, {
+
+method: "GET",
+
+headers: {
+Authorization: `Bearer ${token}`
+}
+
+});
+
+/* SESSION EXPIRED */
+
+if (res.status === 401) {
+
+localStorage.removeItem("token");
+
+go(
+"login.html",
+"Session expired. Please log in again."
+);
+
+return;
+
+}
+
+/* SUBSCRIPTION ENDED */
+
+if (res.status === 403) {
+
+go(
+"payment.html",
+"Your trial or subscription has ended."
+);
+
+return;
+
+}
+
+if (!res.ok) {
+
+console.error("Guard error status:", res.status);
+return;
+
+}
+
+console.log("Access granted");
+
+/* =====================================
+   LOAD GOOGLE TRANSLATOR
+===================================== */
+
+const translator = document.createElement("div");
+
+translator.id = "google_translate_element";
+
+translator.style.position = "fixed";
+translator.style.bottom = "15px";
+translator.style.right = "15px";
+translator.style.zIndex = "9999";
+
+document.body.appendChild(translator);
+
+window.googleTranslateElementInit = function () {
+
+new google.translate.TranslateElement(
+{ pageLanguage: "en" },
+"google_translate_element"
+);
+
+};
+
+const script = document.createElement("script");
+
+script.src =
+"https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+
+document.body.appendChild(script);
+
+}
+
+catch (err) {
+
+console.error("Guard fetch failed:", err);
+
+}
 
 })();
 </script>
-
-    <!-- YOUR EXISTING SCRIPTS -->
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/logistics.js"></script>
-    <script src="js/hamburger.js"></script>
-    <script src="js/user-display.js"></script>
-  </body>
-</html>
-                                                                               </html>
