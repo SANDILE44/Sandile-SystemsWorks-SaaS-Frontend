@@ -875,6 +875,86 @@ Most businesses lose money from pricing mistakes. SystemsWorks helps detect them
       }
 
 /* ── Demo ── */
+
+/* ── CUSTOM DROPDOWN ── */
+const demoSelect = document.getElementById('demo-select');
+const selectWrap = document.querySelector('.demo-select-wrap');
+
+// Create custom dropdown
+const customSelect = document.createElement('div');
+customSelect.className = 'custom-select';
+
+const selected = document.createElement('div');
+selected.className = 'custom-select-selected';
+selected.textContent = '— Choose a tool —';
+
+const optionsList = document.createElement('div');
+optionsList.className = 'custom-select-options';
+
+// Build options from existing select
+Array.from(demoSelect.options).forEach((opt, i) => {
+  if (i === 0) return; // skip default
+  const item = document.createElement('div');
+  item.className = 'custom-select-option';
+  item.textContent = opt.text;
+  item.dataset.value = opt.value;
+
+  // Check if it's inside an optgroup
+  if (opt.parentElement.tagName === 'OPTGROUP') {
+    const groupLabel = opt.parentElement.label;
+    // Add group header if first in group
+    const firstInGroup = opt.parentElement.options[0] === opt;
+    if (firstInGroup) {
+      const group = document.createElement('div');
+      group.className = 'custom-select-group';
+      group.textContent = groupLabel;
+      optionsList.appendChild(group);
+    }
+  }
+
+  item.addEventListener('click', () => {
+    selected.textContent = opt.text;
+    selected.classList.remove('placeholder');
+    optionsList.classList.remove('open');
+    customSelect.classList.remove('open');
+
+    // Trigger panel switching
+    document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
+    if (item.dataset.value && demoActive) {
+      const panel = document.getElementById('demo-' + item.dataset.value);
+      if (panel) {
+        panel.style.display = 'block';
+        panel.style.animation = 'none';
+        panel.offsetHeight; // reflow
+        panel.style.animation = 'fadeIn 0.3s ease';
+      }
+    }
+  });
+
+  optionsList.appendChild(item);
+});
+
+// Toggle open/close
+selected.addEventListener('click', () => {
+  if (!demoActive) return;
+  optionsList.classList.toggle('open');
+  customSelect.classList.toggle('open');
+});
+
+// Close on outside click
+document.addEventListener('click', (e) => {
+  if (!customSelect.contains(e.target)) {
+    optionsList.classList.remove('open');
+    customSelect.classList.remove('open');
+  }
+});
+
+customSelect.appendChild(selected);
+customSelect.appendChild(optionsList);
+
+// Hide original select and insert custom one
+demoSelect.style.display = 'none';
+selectWrap.appendChild(customSelect);
 /* ── USAGE COUNTER ── */
 let demoUses = 3;
 let demoActive = true;
