@@ -1,147 +1,191 @@
+
 (async function guardCalculators() {
 
-  /* =====================================
-     PREVENT DOUBLE EXECUTION
-  ===================================== */
-  if (window.guardLoaded) return;
-  window.guardLoaded = true;
+const token = localStorage.getItem("token");
 
-  const token = localStorage.getItem("token");
-  let redirected = false;
+let redirected = false;
 
-  function go(url, message) {
-    if (redirected) return;
-    redirected = true;
+function go(url, message) {
 
-    if (message) {
-      localStorage.setItem("authMessage", message);
-    }
+if (redirected) return;
+redirected = true;
 
-    localStorage.setItem("afterLogin", window.location.pathname);
+localStorage.setItem("authMessage", message);
+localStorage.setItem("afterLogin", window.location.pathname);
 
-    window.location.replace(url);
-  }
+window.location.replace(url);
 
-  /* =====================================
-     NOT LOGGED IN
-     SHOW LOGIN SCREEN IMMEDIATELY
-  ===================================== */
-  if (!token) {
+}
 
-    document.body.innerHTML = `
-      <div style="
-        min-height:100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        background:#020617;
-        color:white;
-        font-family:Arial,sans-serif;
-        text-align:center;
-        padding:20px;
-      ">
-        <div style="
-          max-width:420px;
-          background:#0f172a;
-          padding:30px 24px;
-          border-radius:14px;
-          box-shadow:0 10px 30px rgba(0,0,0,0.45);
-        ">
+/* =====================================
+   NOT LOGGED IN
+===================================== */
 
-          <h2 style="margin-bottom:12px;">
-            You are logged out
-          </h2>
+if (!token) {
 
-          <p style="
-            opacity:0.85;
-            margin-bottom:24px;
-            line-height:1.5;
-          ">
-            Please log in to continue using Sandile SystemsWorks calculators.
-          </p>
+document.body.innerHTML = `
+<div style="
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#020617;
+color:white;
+font-family:Arial,sans-serif;
+text-align:center;
+padding:20px;
+">
 
-          <button id="goLogin" style="
-            background:#2563eb;
-            color:white;
-            border:none;
-            padding:12px 20px;
-            border-radius:8px;
-            font-size:16px;
-            font-weight:600;
-            cursor:pointer;
-            width:100%;
-          ">
-            Log in to continue
-          </button>
+<div style="
+max-width:420px;
+background:#0f172a;
+padding:30px 24px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+">
 
-        </div>
-      </div>
-    `;
+<h2 style="margin-bottom:10px;">
+You are logged out
+</h2>
 
-    document.getElementById("goLogin").onclick = () => {
-      localStorage.setItem("afterLogin", window.location.pathname);
-      window.location.href = "login.html";
-    };
+<p style="
+opacity:0.8;
+margin-bottom:24px;
+line-height:1.5;
+">
+Please log in to continue using Sandile SystemsWorks calculators.
+</p>
 
-    return;
-  }
+<button id="goLogin" style="
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+width:100%;
+">
+Log in to continue
+</button>
 
-  /* =====================================
-     SAFETY CHECK
-  ===================================== */
-  if (!window.API_BASE) {
-    console.error("API_BASE not loaded");
-    return;
-  }
+</div>
+</div>
+`;
 
-  /* =====================================
-     ACCESS / SUBSCRIPTION CHECK
-  ===================================== */
-  try {
+document.getElementById("goLogin").onclick = () => {
 
-    const res = await fetch(`${window.API_BASE}/api/calculators/access`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+localStorage.setItem("afterLogin", window.location.pathname);
+window.location.href = "login.html";
 
-    /* SESSION EXPIRED */
-    if (res.status === 401) {
+};
 
-      localStorage.removeItem("token");
+return;
 
-      go(
-        "login.html",
-        "Session expired. Please log in again."
-      );
+}
 
-      return;
-    }
+/* =====================================
+   SAFETY CHECK
+===================================== */
 
-    /* SUBSCRIPTION OR TRIAL ENDED */
-    if (res.status === 403) {
+if (!window.API_BASE) {
 
-      go(
-        "payment.html",
-        "Your trial or subscription has ended."
-      );
+console.error("API_BASE not loaded");
+return;
 
-      return;
-    }
+}
 
-    if (!res.ok) {
-      console.error("Guard error status:", res.status);
-      return;
-    }
+/* =====================================
+   ACCESS CHECK
+===================================== */
 
-    console.log("Access granted");
+try {
 
-  } catch (err) {
+const res = await fetch(`${window.API_BASE}/api/calculators/access`, {
 
-    console.error("Guard fetch failed:", err);
+method: "GET",
 
-    /* do not redirect on network errors */
-  }
+headers: {
+Authorization: `Bearer ${token}`
+}
+
+});
+
+/* SESSION EXPIRED */
+
+if (res.status === 401) {
+
+localStorage.removeItem("token");
+
+go(
+"login.html",
+"Session expired. Please log in again."
+);
+
+return;
+
+}
+
+/* SUBSCRIPTION ENDED */
+
+if (res.status === 403) {
+
+go(
+"payment.html",
+"Your trial or subscription has ended."
+);
+
+return;
+
+}
+
+if (!res.ok) {
+
+console.error("Guard error status:", res.status);
+return;
+
+}
+
+console.log("Access granted");
+
+/* =====================================
+   LOAD GOOGLE TRANSLATOR
+===================================== */
+
+const translator = document.createElement("div");
+
+translator.id = "google_translate_element";
+
+translator.style.position = "fixed";
+translator.style.bottom = "15px";
+translator.style.right = "15px";
+translator.style.zIndex = "9999";
+
+document.body.appendChild(translator);
+
+window.googleTranslateElementInit = function () {
+
+new google.translate.TranslateElement(
+{ pageLanguage: "en" },
+"google_translate_element"
+);
+
+};
+
+const script = document.createElement("script");
+
+script.src =
+"https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+
+document.body.appendChild(script);
+
+}
+
+catch (err) {
+
+console.error("Guard fetch failed:", err);
+
+}
 
 })();
