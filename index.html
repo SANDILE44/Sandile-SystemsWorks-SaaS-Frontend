@@ -874,95 +874,29 @@ Most businesses lose money from pricing mistakes. SystemsWorks helps detect them
         console.warn('Slideshow missing elements. Check IDs in HTML.');
       }
 
-/* ── Demo ── */
+    </script>
 
-/* ── CUSTOM DROPDOWN ── */
-const demoSelect = document.getElementById('demo-select');
-const selectWrap = document.querySelector('.demo-select-wrap');
-
-// Create custom dropdown
-const customSelect = document.createElement('div');
-customSelect.className = 'custom-select';
-
-const selected = document.createElement('div');
-selected.className = 'custom-select-selected';
-selected.textContent = '— Choose a tool —';
-
-const optionsList = document.createElement('div');
-optionsList.className = 'custom-select-options';
-
-// Build options from existing select
-Array.from(demoSelect.options).forEach((opt, i) => {
-  if (i === 0) return; // skip default
-  const item = document.createElement('div');
-  item.className = 'custom-select-option';
-  item.textContent = opt.text;
-  item.dataset.value = opt.value;
-
-  // Check if it's inside an optgroup
-  if (opt.parentElement.tagName === 'OPTGROUP') {
-    const groupLabel = opt.parentElement.label;
-    // Add group header if first in group
-    const firstInGroup = opt.parentElement.options[0] === opt;
-    if (firstInGroup) {
-      const group = document.createElement('div');
-      group.className = 'custom-select-group';
-      group.textContent = groupLabel;
-      optionsList.appendChild(group);
-    }
-  }
-
-  item.addEventListener('click', () => {
-    selected.textContent = opt.text;
-    selected.classList.remove('placeholder');
-    optionsList.classList.remove('open');
-    customSelect.classList.remove('open');
-
-    // Trigger panel switching
-    document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
-    if (item.dataset.value && demoActive) {
-      const panel = document.getElementById('demo-' + item.dataset.value);
-      if (panel) {
-        panel.style.display = 'block';
-        panel.style.animation = 'none';
-        panel.offsetHeight; // reflow
-        panel.style.animation = 'fadeIn 0.3s ease';
-      }
-    }
-  });
-
-  optionsList.appendChild(item);
-});
-
-// Toggle open/close
-selected.addEventListener('click', () => {
-  if (!demoActive) return;
-  optionsList.classList.toggle('open');
-  customSelect.classList.toggle('open');
-});
-
-// Close on outside click
-document.addEventListener('click', (e) => {
-  if (!customSelect.contains(e.target)) {
-    optionsList.classList.remove('open');
-    customSelect.classList.remove('open');
-  }
-});
-
-customSelect.appendChild(selected);
-customSelect.appendChild(optionsList);
-
-// Hide original select and insert custom one
-demoSelect.style.display = 'none';
-selectWrap.appendChild(customSelect);
-/* ── USAGE COUNTER ── */
+<script>
+/* ── STATE ── */
 let demoUses = 3;
 let demoActive = true;
-const calculated = { shipment: false, operations: false, freight: false, manufacturing: false, construction: false, restaurant: false };
+const calculated = {
+  shipment: false,
+  operations: false,
+  freight: false,
+  manufacturing: false,
+  construction: false,
+  restaurant: false
+};
 
+/* ── USAGE COUNTER ── */
 function updateUsageDisplay() {
-  document.getElementById('demo-uses-left').textContent = demoUses;
-  if (demoUses <= 1) document.getElementById('demo-usage').style.color = '#ef4444';
+  const el = document.getElementById('demo-uses-left');
+  if (el) el.textContent = demoUses;
+  if (demoUses <= 1) {
+    const usage = document.getElementById('demo-usage');
+    if (usage) usage.style.color = '#ef4444';
+  }
 }
 
 function useCalculation(key) {
@@ -976,25 +910,100 @@ function useCalculation(key) {
 function lockDemo() {
   demoActive = false;
   document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
-  document.getElementById('demo-locked').style.display = 'flex';
-  document.getElementById('demo-usage').style.display = 'none';
-  document.getElementById('demo-select').disabled = true;
+  const locked = document.getElementById('demo-locked');
+  const usage = document.getElementById('demo-usage');
+  if (locked) locked.style.display = 'flex';
+  if (usage) usage.style.display = 'none';
 }
 
-/* ── DROPDOWN ── */
-document.getElementById('demo-select').addEventListener('change', function () {
+/* ── PANEL SWITCHER ── */
+function showPanel(value) {
   if (!demoActive) return;
   document.querySelectorAll('.demo-panel').forEach(p => p.style.display = 'none');
-  const val = this.value;
-  if (val) document.getElementById('demo-' + val).style.display = 'block';
-});
+  if (!value) return;
+  const panel = document.getElementById('demo-' + value);
+  if (panel) {
+    panel.style.display = 'block';
+    panel.style.animation = 'none';
+    panel.offsetHeight;
+    panel.style.animation = 'fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+  }
+}
+
+/* ── CUSTOM DROPDOWN ── */
+const demoSelect = document.getElementById('demo-select');
+const selectWrap = document.querySelector('.demo-select-wrap');
+
+if (demoSelect && selectWrap) {
+  const customSelect = document.createElement('div');
+  customSelect.className = 'custom-select';
+
+  const selectedDiv = document.createElement('div');
+  selectedDiv.className = 'custom-select-selected';
+  selectedDiv.textContent = '— Choose a tool —';
+
+  const optionsList = document.createElement('div');
+  optionsList.className = 'custom-select-options';
+
+  Array.from(demoSelect.options).forEach((opt, i) => {
+    if (i === 0) return;
+
+    if (opt.parentElement.tagName === 'OPTGROUP') {
+      const isFirst = opt.parentElement.options[0] === opt;
+      if (isFirst) {
+        const group = document.createElement('div');
+        group.className = 'custom-select-group';
+        group.textContent = opt.parentElement.label;
+        optionsList.appendChild(group);
+      }
+    }
+
+    const item = document.createElement('div');
+    item.className = 'custom-select-option';
+    item.textContent = opt.text;
+    item.dataset.value = opt.value;
+
+    item.addEventListener('click', () => {
+      selectedDiv.textContent = opt.text;
+      optionsList.classList.remove('open');
+      customSelect.classList.remove('open');
+      showPanel(opt.value);
+    });
+
+    optionsList.appendChild(item);
+  });
+
+  selectedDiv.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!demoActive) return;
+    optionsList.classList.toggle('open');
+    customSelect.classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => {
+    optionsList.classList.remove('open');
+    customSelect.classList.remove('open');
+  });
+
+  customSelect.appendChild(selectedDiv);
+  customSelect.appendChild(optionsList);
+  demoSelect.style.display = 'none';
+  selectWrap.appendChild(customSelect);
+}
 
 /* ── HELPERS ── */
-const R = n => 'R ' + (isNaN(n) ? '0.00' : n.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+const R = n => 'R ' + (isNaN(n) ? '0.00' : n.toLocaleString('en-ZA', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}));
 
 function setVerdict(el, profit, hasData) {
+  if (!el) return;
   el.className = 'demo-verdict';
-  if (!hasData) { el.textContent = 'Enter your numbers above to get a decision'; return; }
+  if (!hasData) {
+    el.textContent = 'Enter your numbers above to get a decision';
+    return;
+  }
   if (profit > 0) {
     el.classList.add('approve');
     el.textContent = '✅ APPROVE — Profitable. Unlock full breakdown to see margin and ROI.';
@@ -1012,13 +1021,13 @@ function setVerdict(el, profit, hasData) {
   document.getElementById(id)?.addEventListener('input', calcShipment);
 });
 function calcShipment() {
-  const quote = +document.getElementById('s-quote').value || 0;
-  const costs = (+document.getElementById('s-fuel').value || 0)
-              + (+document.getElementById('s-driver').value || 0)
-              + (+document.getElementById('s-tolls').value || 0)
-              + (+document.getElementById('s-other').value || 0);
+  const quote  = +document.getElementById('s-quote').value  || 0;
+  const costs  = (+document.getElementById('s-fuel').value   || 0)
+               + (+document.getElementById('s-driver').value || 0)
+               + (+document.getElementById('s-tolls').value  || 0)
+               + (+document.getElementById('s-other').value  || 0);
   const profit = quote - costs;
-  document.getElementById('s-total').textContent = R(costs);
+  document.getElementById('s-total').textContent  = R(costs);
   document.getElementById('s-profit').textContent = R(profit);
   setVerdict(document.getElementById('s-verdict'), profit, quote > 0);
   if (quote > 0) useCalculation('shipment');
@@ -1091,15 +1100,14 @@ function calcManufacturing() {
   document.getElementById(id)?.addEventListener('input', calcConstruction);
 });
 function calcConstruction() {
-  const contract   = +document.getElementById('c-contract').value  || 0;
-  const materials  = +document.getElementById('c-materials').value || 0;
-  const labor      = +document.getElementById('c-labor').value     || 0;
-  const equipment  = +document.getElementById('c-equipment').value || 0;
-  const fixed      = +document.getElementById('c-fixed').value     || 0;
-  const months     = +document.getElementById('c-months').value    || 0;
-  const monthlyCost = labor + equipment + fixed;
-  const total      = materials + (monthlyCost * months);
-  const profit     = contract - total;
+  const contract  = +document.getElementById('c-contract').value  || 0;
+  const materials = +document.getElementById('c-materials').value || 0;
+  const labor     = +document.getElementById('c-labor').value     || 0;
+  const equipment = +document.getElementById('c-equipment').value || 0;
+  const fixed     = +document.getElementById('c-fixed').value     || 0;
+  const months    = +document.getElementById('c-months').value    || 0;
+  const total     = materials + ((labor + equipment + fixed) * months);
+  const profit    = contract - total;
   document.getElementById('c-total-cost').textContent = R(total);
   document.getElementById('c-profit').textContent     = R(profit);
   setVerdict(document.getElementById('c-verdict'), profit, contract > 0);
@@ -1111,24 +1119,23 @@ function calcConstruction() {
   document.getElementById(id)?.addEventListener('input', calcRestaurant);
 });
 function calcRestaurant() {
-  const tables   = +document.getElementById('r-tables').value    || 0;
-  const covers   = +document.getElementById('r-covers').value    || 0;
-  const check    = +document.getElementById('r-check').value     || 0;
-  const foodPct  = +document.getElementById('r-food-pct').value  || 0;
-  const labour   = +document.getElementById('r-labour').value    || 0;
-  const fixed    = +document.getElementById('r-fixed').value     || 0;
-  const days     = +document.getElementById('r-days').value      || 0;
-  const dailyCovers   = tables * covers;
-  const monthlyRev    = dailyCovers * check * days;
-  const foodCost      = monthlyRev * (foodPct / 100);
-  const total         = foodCost + labour + fixed;
-  const profit        = monthlyRev - total;
+  const tables   = +document.getElementById('r-tables').value   || 0;
+  const covers   = +document.getElementById('r-covers').value   || 0;
+  const check    = +document.getElementById('r-check').value    || 0;
+  const foodPct  = +document.getElementById('r-food-pct').value || 0;
+  const labour   = +document.getElementById('r-labour').value   || 0;
+  const fixed    = +document.getElementById('r-fixed').value    || 0;
+  const days     = +document.getElementById('r-days').value     || 0;
+  const monthlyRev = tables * covers * check * days;
+  const foodCost   = monthlyRev * (foodPct / 100);
+  const total      = foodCost + labour + fixed;
+  const profit     = monthlyRev - total;
   document.getElementById('r-revenue').textContent    = R(monthlyRev);
   document.getElementById('r-total-cost').textContent = R(total);
   document.getElementById('r-profit').textContent     = R(profit);
   setVerdict(document.getElementById('r-verdict'), profit, monthlyRev > 0);
   if (monthlyRev > 0) useCalculation('restaurant');
 }
-    </script>
+</script>
   </body>
 </html>
