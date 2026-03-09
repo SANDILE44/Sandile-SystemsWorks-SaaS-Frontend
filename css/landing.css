@@ -445,12 +445,11 @@ a {
 /* ── PANELS ── */
 .demo-panel {
   display: none;
-  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.demo-panel[style*="display: block"],
-.demo-panel[style*="display:block"] {
-  display: block !important;
+.demo-panel.active {
+  display: block;
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeIn {
