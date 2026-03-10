@@ -176,7 +176,6 @@ showMsg(err.message || 'Login failed','error');
 /* =========================
 GOOGLE LOGIN
 ========================= */
-
 async function handleGoogleLogin(response){
 
 window.loader.show('Signing you in with Google…');
@@ -185,7 +184,7 @@ try{
 
 const googleToken = response.credential;
 
-const res = await fetch(window.api.base + "/auth/google",{
+const res = await fetch(window.api.base + "/api/auth/google",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -211,7 +210,6 @@ showMsg("Google login failed","error");
 }
 
 }
-
 </script>
 
 </body>
