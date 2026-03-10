@@ -276,40 +276,25 @@
 }
 
 /* GOOGLE AUTH */
-.google-auth {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
+.google-auth{
+display:flex;
+justify-content:center;
+width:100%;
+margin-bottom:0.5rem;
 }
 
-.google-btn-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.google-btn-wrapper > div {
-  width: 100% !important;
-}
-
-.google-btn-wrapper iframe {
-  width: 100% !important;
-  margin: 0 auto !important;
+.google-btn-wrapper{
+display:flex;
+justify-content:center;
+width:100%;
 }
 
 /* Force Google button to fill width and center */
-.g_id_signin {
-  display: flex !important;
-  justify-content: center !important;
-  width: 100% !important;
+.g_id_signin{
+display:flex;
+justify-content:center
 }
 
-.g_id_signin > div {
-  width: 100% !important;
-}
 
 /* DIVIDER fix for "or continue with email" */
 .auth-divider {
