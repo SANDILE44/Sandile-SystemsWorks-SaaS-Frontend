@@ -124,9 +124,201 @@ grid-template-columns:1fr;
 
 }
 
+
+body{
+font-family:Arial, sans-serif;
+background:#020617;
+color:#e5e7eb;
+margin:0;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 30px;
+border-bottom:1px solid #334155;
+background:#020617;
+}
+
+.logo{
+font-weight:bold;
+font-size:18px;
+}
+
+.create-btn{
+background:#00b4d8;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.create-btn:hover{
+background:#0096c7;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:70px 20px;
+max-width:900px;
+margin:auto;
+}
+
+.hero h1{
+font-size:36px;
+margin-bottom:20px;
+line-height:1.4;
+}
+
+.highlight{
+color:#00b4d8;
+font-weight:bold;
+}
+
+.hero p{
+color:#94a3b8;
+font-size:18px;
+max-width:700px;
+margin:auto;
+}
+
+/* DEMO SECTION */
+
+.demo{
+padding:60px 20px;
+max-width:1000px;
+margin:auto;
+}
+
+/* PRICING */
+
+.pricing{
+margin-top:80px;
+text-align:center;
+padding:60px 20px;
+border-top:1px solid #334155;
+}
+
+.price-box{
+background:#0f172a;
+border:1px solid #334155;
+border-radius:10px;
+padding:40px;
+max-width:400px;
+margin:auto;
+}
+
+.price{
+font-size:40px;
+font-weight:bold;
+margin:20px 0;
+color:#00b4d8;
+}
+
+.features{
+text-align:left;
+margin-top:20px;
+}
+
+.features li{
+margin-bottom:10px;
+}
+
+.buy-btn{
+margin-top:25px;
+width:100%;
+padding:12px;
+background:#00b4d8;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.buy-btn:hover{
+background:#0096c7;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:28px;
+}
+
+}
+
 </style>
 </head>
+
 <body>
+
+<header>
+
+<div class="logo">
+Sandile SystemsWorks
+</div>
+
+<button class="create-btn">
+Create Account
+</button>
+
+</header>
+
+
+<section class="hero">
+
+<h1>
+Make <span class="highlight">profitable decisions</span> before your business loses money.
+</h1>
+
+<p>
+Sandile SystemsWorks provides professional decision tools that help businesses analyze profit, risk, and pricing before accepting deals.
+</p>
+
+</section>
+
+
+<section class="demo">
+
+<!-- Your calculator demo goes here -->
+
+</section>
+
+
+<section class="pricing">
+
+<h2>Simple Pricing</h2>
+
+<div class="price-box">
+
+<div class="price">
+R12,499 / month
+</div>
+
+<ul class="features">
+<li>✔ Access to all industry decision tools</li>
+<li>✔ Profit & margin analysis</li>
+<li>✔ Operational risk detection</li>
+<li>✔ Shipment & operations simulators</li>
+<li>✔ International freight analysis</li>
+</ul>
+
+<button class="buy-btn">
+Start Free Trial
+</button>
+
+</div>
+
+</section>
 
 <div class="container">
 
