@@ -2045,6 +2045,90 @@ details p {
   font-size: 0.9rem;
 }
 
+/* ── SOCIAL BUTTONS ── */
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.social-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.social-btn.tiktok {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e8f0f8;
+}
+
+.social-btn.tiktok:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.social-btn.linkedin {
+  background: rgba(10,102,194,0.12);
+  border: 1px solid rgba(10,102,194,0.25);
+  color: #4a9fd5;
+}
+
+.social-btn.linkedin:hover {
+  background: rgba(10,102,194,0.2);
+  border-color: rgba(10,102,194,0.4);
+  color: #6ab4e8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10,102,194,0.2);
+}
+
+/* ── FOOTER BOTTOM SOCIALS ── */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom-socials {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-bottom-socials a {
+  color: var(--text-muted, #6b8aaa);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.footer-bottom-socials a:hover {
+  color: var(--accent, #00d5ff);
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+
 /* =========================
    RESPONSIVE
 ========================= */
