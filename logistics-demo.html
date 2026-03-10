@@ -1,755 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistics Decision Tool — Sandile SystemsWorks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    :root {
-      --bg:        #030a14;
-      --bg-card:   rgba(10, 22, 40, 0.85);
-      --border:    rgba(0, 213, 255, 0.12);
-      --accent:    #00d5ff;
-      --accent2:   #0098b8;
-      --text:      #e8f0f8;
-      --muted:     #6b8aaa;
-      --approve:   #00e87a;
-      --reject:    #ff4d4d;
-      --review:    #ffb800;
-      --locked:    rgba(255,255,255,0.05);
-    }
+<title>Logistics Profit Tools Demo</title>
 
-    html { scroll-behavior: smooth; }
+<style>
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse 800px 500px at 10% 0%, rgba(0,213,255,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 600px 400px at 90% 100%, rgba(0,150,200,0.05) 0%, transparent 70%);
-    }
+body{
+font-family:Arial, sans-serif;
+background:#020617;
+color:#e5e7eb;
+margin:0;
+padding:25px;
+}
 
-    /* HEADER */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(20px);
-      background: rgba(3, 10, 20, 0.85);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-    }
-    .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .brand-logo {
-      height: 38px;
-      object-fit: contain;
-      mix-blend-mode: screen;
-    }
-    .brand-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-    .header-cta {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #000;
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 9px 18px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-    .header-cta:hover {
-      filter: brightness(1.1);
-      transform: translateY(-1px);
-    }
+.container{
+max-width:1000px;
+margin:auto;
+}
 
-    /* HERO */
-    .hero {
-      text-align: center;
-      padding: 52px 24px 36px;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(0,213,255,0.08);
-      border: 1px solid rgba(0,213,255,0.2);
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .hero-tag::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.75); }
-    }
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-      margin-bottom: 14px;
-    }
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--accent), #0077ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero p {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.65;
-      max-width: 480px;
-      margin: 0 auto;
-    }
+h1{
+margin-bottom:10px;
+}
 
-    /* MAIN */
-    .demo-wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
-    }
+.subtitle{
+color:#94a3b8;
+margin-bottom:30px;
+}
 
-    /* DROPDOWN */
-    .tool-selector {
-      margin-bottom: 32px;
-      text-align: center;
-    }
-    .tool-selector label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .custom-select {
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      user-select: none;
-    }
-    .cs-selected {
-      background: var(--bg-card);
-      border: 1.5px solid var(--accent);
-      border-radius: 14px;
-      padding: 15px 48px 15px 20px;
-      color: var(--text);
-      font-size: 0.97rem;
-      font-weight: 600;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s ease;
-      box-shadow: 0 0 0 1px rgba(0,213,255,0.05), 0 8px 32px rgba(0,0,0,0.4);
-      text-align: left;
-    }
-    .cs-selected::after {
-      content: '▾';
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent);
-      font-size: 1.1rem;
-      transition: transform 0.3s ease;
-    }
-    .custom-select.open .cs-selected {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    .custom-select.open .cs-selected::after {
-      transform: translateY(-50%) rotate(180deg);
-    }
-    .cs-options {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: linear-gradient(160deg, #0a1828, #06101e);
-      border: 1.5px solid var(--accent);
-      border-top: none;
-      border-bottom-left-radius: 14px;
-      border-bottom-right-radius: 14px;
-      z-index: 50;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    }
-    .cs-options.open {
-      display: block;
-      animation: dropIn 0.2s ease;
-    }
-    @keyframes dropIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .cs-option {
-      padding: 13px 20px;
-      color: #a0bcd0;
-      cursor: pointer;
-      font-size: 0.93rem;
-      font-weight: 500;
-      transition: all 0.15s ease;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-align: left;
-    }
-    .cs-option:last-child { border-bottom: none; }
-    .cs-option:hover {
-      background: rgba(0,213,255,0.07);
-      color: #fff;
-      padding-left: 26px;
-    }
+select{
+width:100%;
+padding:12px;
+background:#0f172a;
+border:1px solid #334155;
+border-radius:6px;
+color:white;
+margin-bottom:30px;
+}
 
-    /* PANELS */
-    .demo-panel { display: none; }
-    .demo-panel.active {
-      display: block;
-      animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+.panel{
+display:none;
+}
 
-    .panel-title-bar {
-      margin-bottom: 22px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-    }
-    .panel-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.3px;
-    }
-    .panel-desc {
-      font-size: 0.87rem;
-      color: var(--muted);
-      margin-top: 5px;
-    }
+.panel.active{
+display:block;
+}
 
-    /* GRID */
-    .calc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 660px) {
-      .calc-grid { grid-template-columns: 1fr; }
-      .custom-select { max-width: 100%; }
-    }
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
 
-    /* INPUTS */
-    .inputs-box, .results-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 24px;
-      backdrop-filter: blur(10px);
-    }
-    .results-box {
-      display: flex;
-      flex-direction: column;
-    }
-    .box-label {
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 18px;
-      opacity: 0.85;
-    }
-    .field { margin-bottom: 14px; }
-    .field:last-child { margin-bottom: 0; }
-    .field label {
-      display: block;
-      font-size: 0.79rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .field input {
-      width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1.5px solid rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 11px 14px;
-      color: #fff;
-      font-size: 0.92rem;
-      font-family: 'DM Sans', sans-serif;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-    .field input:focus {
-      border-color: var(--accent);
-      background: rgba(0,213,255,0.04);
-      box-shadow: 0 0 0 3px rgba(0,213,255,0.07);
-    }
-    .field input::placeholder { color: rgba(255,255,255,0.15); }
+.box{
+background:#0f172a;
+padding:20px;
+border-radius:8px;
+border:1px solid #334155;
+}
 
-    /* RESULTS */
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.87rem;
-    }
-    .result-row:last-of-type { border-bottom: none; }
-    .result-row .rl { color: var(--muted); font-weight: 500; }
-    .result-row .rv { font-weight: 700; color: #fff; font-size: 0.91rem; }
-    .result-row.locked .rv {
-      background: var(--locked);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 6px;
-      padding: 3px 10px;
-      font-size: 0.74rem;
-      color: rgba(255,255,255,0.22);
-      letter-spacing: 0.04em;
-    }
+.box h3{
+margin-top:0;
+margin-bottom:15px;
+}
 
-    /* VERDICT */
-    .verdict {
-      margin-top: 14px;
-      padding: 13px 16px;
-      border-radius: 11px;
-      font-weight: 700;
-      font-size: 0.86rem;
-      text-align: center;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      color: var(--muted);
-      transition: all 0.4s ease;
-      line-height: 1.5;
-    }
-    .verdict.approve {
-      background: linear-gradient(135deg, rgba(0,80,30,0.5), rgba(0,100,40,0.3));
-      color: var(--approve);
-      border-color: rgba(0,232,122,0.25);
-    }
-    .verdict.review {
-      background: linear-gradient(135deg, rgba(80,50,0,0.5), rgba(100,70,0,0.3));
-      color: var(--review);
-      border-color: rgba(255,184,0,0.25);
-    }
-    .verdict.reject {
-      background: linear-gradient(135deg, rgba(80,0,0,0.5), rgba(100,10,10,0.3));
-      color: var(--reject);
-      border-color: rgba(255,77,77,0.25);
-    }
+.field{
+margin-bottom:12px;
+}
 
-    /* EMPTY STATE */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
-    }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 14px; opacity: 0.4; }
-    .empty-state p { font-size: 0.95rem; }
+.field label{
+display:block;
+font-size:13px;
+margin-bottom:4px;
+color:#94a3b8;
+}
 
-    /* UNLOCK SECTION */
-    .unlock-section {
-      margin-top: 40px;
-      background: linear-gradient(135deg, rgba(0,213,255,0.05), rgba(0,100,180,0.07));
-      border: 1px solid rgba(0,213,255,0.18);
-      border-radius: 20px;
-      padding: 40px 32px;
-      text-align: center;
-    }
-    .unlock-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-    .unlock-sub {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 26px;
-      line-height: 1.65;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .unlock-features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 9px;
-      margin-bottom: 30px;
-    }
-    .unlock-feature {
-      background: rgba(0,213,255,0.07);
-      border: 1px solid rgba(0,213,255,0.15);
-      border-radius: 999px;
-      padding: 5px 13px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .unlock-price {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -1px;
-      margin-bottom: 4px;
-    }
-    .unlock-price span {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0;
-    }
-    .unlock-period {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 24px;
-    }
-    .btn-signup {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #000;
-      font-weight: 800;
-      font-size: 1rem;
-      padding: 16px 40px;
-      border-radius: 14px;
-      text-decoration: none;
-      transition: all 0.25s ease;
-      box-shadow: 0 8px 32px rgba(0,213,255,0.2);
-      width: 100%;
-      max-width: 380px;
-    }
-    .btn-signup:hover {
-      filter: brightness(1.1);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(0,213,255,0.3);
-    }
-    .trial-note {
-      font-size: 0.79rem;
-      color: var(--muted);
-      margin-top: 12px;
-    }
-    .trial-note strong { color: #00e87a; }
+input{
+width:100%;
+padding:10px;
+background:#020617;
+border:1px solid #334155;
+border-radius:6px;
+color:white;
+}
 
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      padding: 22px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.77rem;
-    }
-  </style>
+.locked-field input{
+opacity:0.45;
+cursor:not-allowed;
+}
+
+.locked-field label::before{
+content:"🔒 ";
+}
+
+.result{
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid #334155;
+}
+
+.result.locked{
+opacity:0.4;
+}
+
+.verdict{
+margin-top:15px;
+padding:10px;
+background:#020617;
+border:1px solid #334155;
+border-radius:6px;
+text-align:center;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="brand-logo" />
-        <span class="brand-name">Sandile SystemsWorks</span>
-      </a>
-      <a href="signup.html" class="header-cta">Create Account →</a>
-    </div>
-  </header>
+<div class="container">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag">Free Logistics Tool</div>
-    <h1>Know if your shipment <span>makes money</span> before you commit.</h1>
-    <p>Enter your real numbers below. Get an instant profit, cost and risk analysis — no signup needed.</p>
-  </div>
+<h1>Logistics Profit Decision Tools</h1>
+<div class="subtitle">Enter your numbers to see if a shipment or operation is profitable.</div>
 
-  <!-- DEMO -->
-  <div class="demo-wrap">
+<select id="toolSelect">
+<option value="">Select a tool</option>
+<option value="shipment">Per-Shipment Risk Analysis</option>
+<option value="operations">Monthly Operations Analysis</option>
+<option value="freight">Freight Import / Export Analysis</option>
+</select>
 
-    <!-- DROPDOWN -->
-    <div class="tool-selector">
-      <label>Choose a logistics tool</label>
-      <div class="custom-select" id="customSelect">
-        <div class="cs-selected" id="csSelected">— Select a tool to begin —</div>
-        <div class="cs-options" id="csOptions">
-          <div class="cs-option" data-value="shipment">🚛 &nbsp;Per-Shipment Risk Analysis</div>
-          <div class="cs-option" data-value="operations">📦 &nbsp;Monthly Operations Analysis</div>
-          <div class="cs-option" data-value="freight">🌍 &nbsp;Freight Import / Export Analysis</div>
-        </div>
-      </div>
-    </div>
+<!-- SHIPMENT TOOL -->
 
-    <!-- EMPTY STATE -->
-    <div class="empty-state" id="emptyState">
-      <div class="empty-icon">🚛</div>
-      <p>Select a logistics tool above to start your free analysis</p>
-    </div>
+<div id="shipment" class="panel">
 
-    <!-- PANEL 1: SHIPMENT -->
-    <div id="panel-shipment" class="demo-panel">
-      <div class="panel-title-bar">
-        <div class="panel-title">Per-Shipment Risk Analysis</div>
-        <div class="panel-desc">Find out if this shipment is worth taking before you commit.</div>
-      </div>
-      <div class="calc-grid">
-        <div class="inputs-box">
-          <div class="box-label">Your Numbers</div>
-          <div class="field"><label>Client Quote Price (R)</label><input type="number" id="s-quote" placeholder="e.g. 15000" /></div>
-          <div class="field"><label>Fuel Cost (R)</label><input type="number" id="s-fuel" placeholder="e.g. 6500" /></div>
-          <div class="field"><label>Driver Cost (R)</label><input type="number" id="s-driver" placeholder="e.g. 4200" /></div>
-          <div class="field"><label>Tolls & Permits (R)</label><input type="number" id="s-tolls" placeholder="e.g. 1800" /></div>
-          <div class="field"><label>Other Costs (R)</label><input type="number" id="s-other" placeholder="e.g. 1200" /></div>
-        </div>
-        <div class="results-box">
-          <div class="box-label">Instant Results</div>
-          <div class="result-row"><span class="rl">Total Costs</span><span class="rv" id="s-total">R 0.00</span></div>
-          <div class="result-row"><span class="rl">Net Profit</span><span class="rv" id="s-profit">R 0.00</span></div>
-          <div class="result-row locked"><span class="rl">Profit Margin</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">ROI</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Cost Per Rand Earned</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Risk Level</span><span class="rv">🔒 Unlock</span></div>
-          <div class="verdict" id="s-verdict">Enter your numbers to get a decision</div>
-        </div>
-      </div>
-    </div>
+<div class="grid">
 
-    <!-- PANEL 2: OPERATIONS -->
-    <div id="panel-operations" class="demo-panel">
-      <div class="panel-title-bar">
-        <div class="panel-title">Monthly Operations Analysis</div>
-        <div class="panel-desc">See if your entire operation is profitable this month.</div>
-      </div>
-      <div class="calc-grid">
-        <div class="inputs-box">
-          <div class="box-label">Your Numbers</div>
-          <div class="field"><label>Shipments Per Month</label><input type="number" id="o-shipments" placeholder="e.g. 40" /></div>
-          <div class="field"><label>Revenue Per Shipment (R)</label><input type="number" id="o-revenue" placeholder="e.g. 8000" /></div>
-          <div class="field"><label>Monthly Fuel Costs (R)</label><input type="number" id="o-fuel" placeholder="e.g. 60000" /></div>
-          <div class="field"><label>Monthly Labor Costs (R)</label><input type="number" id="o-labor" placeholder="e.g. 80000" /></div>
-          <div class="field"><label>Fixed Costs (R)</label><input type="number" id="o-fixed" placeholder="e.g. 40000" /></div>
-        </div>
-        <div class="results-box">
-          <div class="box-label">Instant Results</div>
-          <div class="result-row"><span class="rl">Total Revenue</span><span class="rv" id="o-total-rev">R 0.00</span></div>
-          <div class="result-row"><span class="rl">Total Costs</span><span class="rv" id="o-total-cost">R 0.00</span></div>
-          <div class="result-row"><span class="rl">Net Profit</span><span class="rv" id="o-profit">R 0.00</span></div>
-          <div class="result-row locked"><span class="rl">Profit Margin</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Break-even Shipments</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Annual Projection</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Cost Per Shipment</span><span class="rv">🔒 Unlock</span></div>
-          <div class="verdict" id="o-verdict">Enter your numbers to get a decision</div>
-        </div>
-      </div>
-    </div>
+<div class="box">
 
-    <!-- PANEL 3: FREIGHT -->
-    <div id="panel-freight" class="demo-panel">
-      <div class="panel-title-bar">
-        <div class="panel-title">Freight Import / Export Analysis</div>
-        <div class="panel-desc">Evaluate international shipments before quoting a client.</div>
-      </div>
-      <div class="calc-grid">
-        <div class="inputs-box">
-          <div class="box-label">Your Numbers</div>
-          <div class="field"><label>Client Quote Price (R)</label><input type="number" id="f-quote" placeholder="e.g. 85000" /></div>
-          <div class="field"><label>Cargo Value (R)</label><input type="number" id="f-cargo" placeholder="e.g. 500000" /></div>
-          <div class="field"><label>Freight Cost (R)</label><input type="number" id="f-freight" placeholder="e.g. 30000" /></div>
-          <div class="field"><label>Import Duty Rate (%)</label><input type="number" id="f-duty" placeholder="e.g. 15" /></div>
-          <div class="field"><label>Customs & Port Fees (R)</label><input type="number" id="f-customs" placeholder="e.g. 8000" /></div>
-          <div class="field"><label>Insurance Rate (%)</label><input type="number" id="f-insurance" placeholder="e.g. 1.5" /></div>
-         
+<h3>Shipment Inputs</h3>
 
-<div class="results-box">
-          <div class="box-label">Instant Results</div>
-          <div class="result-row"><span class="rl">Duty Cost</span><span class="rv" id="f-duty-cost">R 0.00</span></div>
-          <div class="result-row"><span class="rl">Total Logistics Cost</span><span class="rv" id="f-total">R 0.00</span></div>
-          <div class="result-row"><span class="rl">Net Profit</span><span class="rv" id="f-profit">R 0.00</span></div>
-          <div class="result-row locked"><span class="rl">Insurance Cost</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Profit Margin</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Break-even Quote</span><span class="rv">🔒 Unlock</span></div>
-          <div class="result-row locked"><span class="rl">Landed Cost Ratio</span><span class="rv">🔒 Unlock</span></div>
-          <div class="verdict" id="f-verdict">Enter your numbers to get a decision</div>
-        </div>
-      </div>
-    </div>
+<div class="field">
+<label>Client Quote Price</label>
+<input id="s-quote" type="number">
+</div>
 
-    <!-- UNLOCK SECTION -->
-    <div class="unlock-section">
-      <div class="unlock-title">Unlock the full analysis</div>
-      <div class="unlock-sub">You're seeing basic results only. The full platform unlocks margin, ROI, break-even, risk level, annual projections — across all 5 sectors and 20+ industries.</div>
-      <div class="unlock-features">
-        <span class="unlock-feature">✓ All 5 Sectors</span>
-        <span class="unlock-feature">✓ 20+ Industry Tools</span>
-        <span class="unlock-feature">✓ Full ROI & Margin</span>
-        <span class="unlock-feature">✓ Break-even Analysis</span>
-        <span class="unlock-feature">✓ Risk Assessment</span>
-        <span class="unlock-feature">✓ Annual Projections</span>
-        <span class="unlock-feature">✓ Unlimited Calculations</span>
-      </div>
-      <div class="unlock-price">R12,499 <span>/ month</span></div>
-      <div class="unlock-period">Everything included · One plan · No surprise fees</div>
-      <a href="signup.html" class="btn-signup">Start 3-Day Free Trial — No Credit Card</a>
-      <p class="trial-note"><strong>3 days free</strong> · Full access · Cancel anytime</p>
-    </div>
+<div class="field">
+<label>Fuel Cost</label>
+<input id="s-fuel" type="number">
+</div>
 
-  </div>
+<div class="field">
+<label>Driver Cost</label>
+<input id="s-driver" type="number">
+</div>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    © 2026 Sandile SystemsWorks &nbsp;·&nbsp; thabethesandile44@gmail.com &nbsp;·&nbsp; 0717378540
-  </footer>
+<div class="field">
+<label>Toll Costs</label>
+<input id="s-tolls" type="number">
+</div>
 
-<script>
-    /* DROPDOWN */
-    const customSelect = document.getElementById('customSelect');
-    const csSelected   = document.getElementById('csSelected');
-    const csOptions    = document.getElementById('csOptions');
-    const emptyState   = document.getElementById('emptyState');
+<div class="field">
+<label>Other Expenses</label>
+<input id="s-other" type="number">
+</div>
 
-    csSelected.addEventListener('click', (e) => {
-      e.stopPropagation();
-      csOptions.classList.toggle('open');
-      customSelect.classList.toggle('open');
-    });
+<div class="field locked-field">
+<label>Maintenance Allocation</label>
+<input disabled placeholder="Unlock with trial">
+</div>
 
-    document.addEventListener('click', () => {
-      csOptions.classList.remove('open');
-      customSelect.classList.remove('open');
-    });
+<div class="field locked-field">
+<label>Insurance Allocation</label>
+<input disabled placeholder="Unlock with trial">
+</div>
 
-    document.querySelectorAll('.cs-option').forEach(opt => {
-      opt.addEventListener('click', () => {
-        csSelected.textContent = opt.textContent;
-        csOptions.classList.remove('open');
-        customSelect.classList.remove('open');
-        document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
-        emptyState.style.display = 'none';
-        const panel = document.getElementById('panel-' + opt.dataset.value);
-        if (panel) panel.classList.add('active');
-      });
-    });
+<div class="field locked-field">
+<label>Vehicle Depreciation</label>
+<input disabled placeholder="Unlock with trial">
+</div>
 
-    /* HELPERS */
-    const R = n => 'R ' + (isNaN(n) ? '0.00' : n.toLocaleString('en-ZA', {
-      minimumFractionDigits: 2, maximumFractionDigits: 2
-    }));
+</div>
 
-    function setVerdict(el, profit, hasData) {
-      if (!el) return;
-      el.className = 'verdict';
-      if (!hasData) { el.textContent = 'Enter your numbers above to get a decision'; return; }
-      if (profit > 0) {
-        el.classList.add('approve');
-        el.textContent = '✅ APPROVE — Profitable. Sign up to unlock full margin & ROI breakdown.';
-      } else if (profit === 0) {
-        el.classList.add('review');
-        el.textContent = '⚠️ REVIEW — Breaking even. Any unexpected cost puts you in the red.';
-      } else {
-        el.classList.add('reject');
-        el.textContent = '🚫 REJECT — This deal loses money. Sign up to see exactly where.';
-      }
-    }
+<div class="box">
 
-    /* SHIPMENT */
-    ['s-quote','s-fuel','s-driver','s-tolls','s-other'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', calcShipment);
-    });
-    function calcShipment() {
-      const quote  = +document.getElementById('s-quote').value  || 0;
-      const costs  = (+document.getElementById('s-fuel').value   || 0)
-                   + (+document.getElementById('s-driver').value || 0)
-                   + (+document.getElementById('s-tolls').value  || 0)
-                   + (+document.getElementById('s-other').value  || 0);
-      const profit = quote - costs;
-      document.getElementById('s-total').textContent  = R(costs);
-      document.getElementById('s-profit').textContent = R(profit);
-      setVerdict(document.getElementById('s-verdict'), profit, quote > 0);
-    }
+<h3>Shipment Results</h3>
 
-    /* OPERATIONS */
-    ['o-shipments','o-revenue','o-fuel','o-labor','o-fixed'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', calcOperations);
-    });
-    function calcOperations() {
-      const shipments = +document.getElementById('o-shipments').value || 0;
-      const revenue   = +document.getElementById('o-revenue').value   || 0;
-      const fuel      = +document.getElementById('o-fuel').value      || 0;
-      const labor     = +document.getElementById('o-labor').value     || 0;
-      const fixed     = +document.getElementById('o-fixed').value     || 0;
-      const totalRev  = shipments * revenue;
-      const totalCost = fuel + labor + fixed;
-      const profit    = totalRev - totalCost;
-      document.getElementById('o-total-rev').textContent  = R(totalRev);
-      document.getElementById('o-total-cost').textContent = R(totalCost);
-      document.getElementById('o-profit').textContent     = R(profit);
-      setVerdict(document.getElementById('o-verdict'), profit, totalRev > 0);
-    }
+<div class="result">
+<span>Total Cost</span>
+<span id="s-total">R 0.00</span>
+</div>
 
-    /* FREIGHT */
-    ['f-quote','f-cargo','f-freight','f-duty','f-customs','f-insurance'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', calcFreight);
-    });
-    function calcFreight() {
-      const quote    = +document.getElementById('f-quote').value     || 0;
-      const cargo    = +document.getElementById('f-cargo').value     || 0;
-      const freight  = +document.getElementById('f-freight').value   || 0;
-      const dutyRate = +document.getElementById('f-duty').value      || 0;
-      const customs  = +document.getElementById('f-customs').value   || 0;
-      const insRate  = +document.getElementById('f-insurance').value || 0;
-      const dutyCost = cargo * (dutyRate / 100);
-      const insCost  = cargo * (insRate / 100);
-      const total    = freight + dutyCost + insCost + customs;
-      const profit   = quote - total;
-      document.getElementById('f-duty-cost').textContent = R(dutyCost);
-      document.getElementById('f-total').textContent     = R(total);
-      document.getElementById('f-profit').textContent    = R(profit);
-      setVerdict(document.getElementById('f-verdict'), profit, quote > 0);
-    }
-  </script>
+<div class="result">
+<span>Net Profit</span>
+<span id="s-profit">R 0.00</span>
+</div>
+
+<div class="result locked">
+<span>Profit Margin</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>ROI</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Break-Even Price</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Shipment Risk Score</span>
+<span>🔒</span>
+</div>
+
+<div class="verdict" id="s-verdict">
+Enter shipment numbers
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- OPERATIONS TOOL -->
+
+<div id="operations" class="panel">
+
+<div class="grid">
+
+<div class="box">
+
+<h3>Monthly Inputs</h3>
+
+<div class="field">
+<label>Shipments Per Month</label>
+<input id="o-shipments" type="number">
+</div>
+
+<div class="field">
+<label>Revenue Per Shipment</label>
+<input id="o-revenue" type="number">
+</div>
+
+<div class="field">
+<label>Fuel Costs</label>
+<input id="o-fuel" type="number">
+</div>
+
+<div class="field">
+<label>Labor Costs</label>
+<input id="o-labor" type="number">
+</div>
+
+<div class="field">
+<label>Fixed Costs</label>
+<input id="o-fixed" type="number">
+</div>
+
+<div class="field locked-field">
+<label>Maintenance Budget</label>
+<input disabled placeholder="Unlock with trial">
+</div>
+
+<div class="field locked-field">
+<label>Insurance Budget</label>
+<input disabled placeholder="Unlock with trial">
+</div>
+
+</div>
+
+<div class="box">
+
+<h3>Operations Results</h3>
+
+<div class="result">
+<span>Total Revenue</span>
+<span id="o-total-rev">R 0.00</span>
+</div>
+
+<div class="result">
+<span>Total Costs</span>
+<span id="o-total-cost">R 0.00</span>
+</div>
+
+<div class="result">
+<span>Net Profit</span>
+<span id="o-profit">R 0.00</span>
+</div>
+
+<div class="result locked">
+<span>Profit Margin</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Break-Even Shipments</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Annual Projection</span>
+<span>🔒</span>
+</div>
+
+<div class="verdict" id="o-verdict">
+Enter monthly numbers
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- FREIGHT TOOL -->
+
+<div id="freight" class="panel">
+
+<div class="grid">
+
+<div class="box">
+
+<h3>Freight Inputs</h3>
+
+<div class="field">
+<label>Client Quote Price</label>
+<input id="f-quote" type="number">
+</div>
+
+<div class="field">
+<label>Cargo Value</label>
+<input id="f-cargo" type="number">
+</div>
+
+<div class="field">
+<label>Freight Cost</label>
+<input id="f-freight" type="number">
+</div>
+
+<div class="field">
+<label>Import Duty %</label>
+<input id="f-duty" type="number">
+</div>
+
+<div class="field">
+<label>Customs Fees</label>
+<input id="f-customs" type="number">
+</div>
+
+<div class="field">
+<label>Insurance Rate %</label>
+<input id="f-insurance" type="number">
+</div>
+
+<div class="field locked-field">
+<label>Port / Terminal Fees</label>
+<input disabled placeholder="Unlock with trial">
+</div>
+
+<div class="field locked-field">
+<label>Warehouse Handling</label>
+<input disabled placeholder="Unlock with trial">
+</div>
+
+</div>
+
+<div class="box">
+
+<h3>Freight Results</h3>
+
+<div class="result">
+<span>Duty Cost</span>
+<span id="f-duty-cost">R 0.00</span>
+</div>
+
+<div class="result">
+<span>Total Logistics Cost</span>
+<span id="f-total">R 0.00</span>
+</div>
+
+<div class="result">
+<span>Estimated Profit</span>
+<span id="f-profit">R 0.00</span>
+</div>
+
+<div class="result locked">
+<span>Profit Margin</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Break-Even Quote</span>
+<span>🔒</span>
+</div>
+
+<div class="result locked">
+<span>Risk Level</span>
+<span>🔒</span>
+</div>
+
+<div class="verdict" id="f-verdict">
+Enter freight numbers
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
 </body>
 </html>
