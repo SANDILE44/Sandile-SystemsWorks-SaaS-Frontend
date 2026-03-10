@@ -272,7 +272,7 @@ top:0 !important;
 #google_translate_element{
 position:fixed;
 left:15px;
-top:50%;
+bottom:50%;
 transform:translateY(-50%);
 z-index:9999;
 }
