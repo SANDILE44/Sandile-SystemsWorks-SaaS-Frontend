@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/loader.css">
 
-<!-- Google Identity -->
+<!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </head>
@@ -38,6 +38,7 @@
 </header>
 
 
+
 <div class="auth-container">
 
 <div class="auth-card">
@@ -56,6 +57,8 @@
 
 <!-- GOOGLE LOGIN -->
 
+<div class="google-auth">
+
 <div id="g_id_onload"
 data-client_id="1064963647591-k76sv5dgcm3ihrsbmaccr63rij0vikda.apps.googleusercontent.com"
 data-context="signin"
@@ -63,16 +66,25 @@ data-callback="handleGoogleLogin"
 data-auto_prompt="false">
 </div>
 
+<div class="google-btn-wrapper">
 <div class="g_id_signin"
 data-type="standard"
 data-size="large"
 data-theme="outline"
 data-text="continue_with"
-data-shape="rectangular"
+data-shape="pill"
+data-logo_alignment="left"
 data-width="320">
 </div>
+</div>
 
-<p style="text-align:center;margin:16px 0;">or</p>
+</div>
+
+
+<div class="auth-divider">
+or continue with email
+</div>
+
 
 
 <!-- EMAIL LOGIN -->
@@ -107,6 +119,7 @@ Don't have an account?
 </div>
 
 
+
 <!-- GLOBAL LOADER -->
 
 <div id="global-loader" class="loader-overlay hidden">
@@ -115,10 +128,12 @@ Don't have an account?
 </div>
 
 
+
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/loader.js"></script>
+
 
 
 <script>
@@ -130,96 +145,113 @@ MESSAGE SYSTEM
 const loginForm = document.getElementById("loginForm");
 const msg = document.getElementById("msg");
 
-function showMsg(text, type = "") {
-  msg.textContent = text;
-  msg.className = type;
-  msg.style.display = text ? "block" : "none";
+function showMsg(text,type=""){
+
+msg.textContent = text;
+msg.className = type;
+msg.style.display = text ? "block" : "none";
+
 }
+
 
 
 /* =========================
 WAKE SERVER (Render sleep fix)
 ========================= */
 
-window.addEventListener("load", () => {
+window.addEventListener("load",()=>{
 
-  if (window.API_BASE) {
-    fetch(window.API_BASE + "/health").catch(() => {});
-  }
+if(window.API_BASE){
+
+fetch(window.API_BASE + "/health").catch(()=>{});
+
+}
 
 });
+
 
 
 /* =========================
 EMAIL LOGIN
 ========================= */
 
-loginForm.addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", async (e)=>{
 
-  e.preventDefault();
+e.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const btn = loginForm.querySelector("button");
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+const btn = loginForm.querySelector("button");
 
-  showMsg("");
-  btn.disabled = true;
+showMsg("");
 
-  window.loader.show("Signing you in…");
+if(!email) return showMsg("Enter your email","error");
+if(!password) return showMsg("Enter your password","error");
 
-  try {
+btn.disabled = true;
 
-    const data = await window.api.loginRequest(email, password);
+window.loader.show("Signing you in...");
 
-    if (!data?.token) throw new Error("Login failed");
+try{
 
-    window.auth.setToken(data.token);
+const data = await window.api.loginRequest(email,password);
 
-    window.location.href = "dashboard.html";
+if(!data?.token)
+throw new Error("Login failed");
 
-  } catch (err) {
+window.auth.setToken(data.token);
 
-    window.loader.hide();
-    btn.disabled = false;
+window.location.replace("dashboard.html");
 
-    showMsg(err.message || "Login failed", "error");
+}catch(err){
 
-  }
+window.loader.hide();
+btn.disabled=false;
+
+showMsg(err.message || "Login failed","error");
+
+}
 
 });
+
 
 
 /* =========================
 GOOGLE LOGIN
 ========================= */
 
-async function handleGoogleLogin(response) {
+async function handleGoogleLogin(response){
 
-  window.loader.show("Signing you in with Google…");
+window.loader.show("Signing you in with Google...");
 
-  try {
+try{
 
-    const googleToken = response.credential;
+const googleToken = response.credential;
 
-    const data = await window.api.apiFetch("/api/auth/google", {
-      method: "POST",
-      body: { token: googleToken }
-    });
+const data = await window.api.apiFetch("/api/auth/google",{
+method:"POST",
+body:{token:googleToken}
+});
 
-    if (!data?.token) throw new Error("Google login failed");
+if(!data?.token)
+throw new Error("Google login failed");
 
-    window.auth.setToken(data.token);
+window.auth.setToken(data.token);
 
-    window.location.href = "dashboard.html";
+window.location.replace("dashboard.html");
 
-  } catch (err) {
+}catch(err){
 
-    window.loader.hide();
-    showMsg("Google login failed", "error");
+window.loader.hide();
 
-  }
+console.error(err);
+
+showMsg("Google login failed","error");
 
 }
+
+}
+
 </script>
 
 </body>
