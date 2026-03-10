@@ -255,6 +255,58 @@ body {
   margin: 0 0 0.4rem;
 }
 
+/* =====================================
+   GOOGLE TRANSLATE FIX + POSITION
+===================================== */
+
+/* Remove Google top bar */
+.goog-te-banner-frame.skiptranslate{
+display:none !important;
+}
+
+body{
+top:0 !important;
+}
+
+/* Position translator left center */
+#google_translate_element{
+position:fixed;
+left:15px;
+top:50%;
+transform:translateY(-50%);
+z-index:9999;
+}
+
+/* Style the dropdown */
+.goog-te-combo{
+background:#0f172a;
+color:#e5e7eb;
+border:1px solid #334155;
+padding:8px 10px;
+border-radius:6px;
+font-size:14px;
+cursor:pointer;
+}
+
+/* Hide Google branding text */
+.goog-logo-link{
+display:none !important;
+}
+
+.goog-te-gadget{
+color:transparent !important;
+font-size:0;
+}
+
+/* Prevent layout shifts */
+.skiptranslate iframe{
+display:none !important;
+}
+
+body {
+top: 0 !important;
+}
+
 /* ================= PAY BOX ================= */
 .pay-box {
   margin-bottom: 2rem;
