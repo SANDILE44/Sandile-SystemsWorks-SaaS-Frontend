@@ -826,10 +826,13 @@ quote > 0
    LOAD GOOGLE TRANSLATOR
 ===================================== */
 
+(function(){
+
+try {
+
 const translator = document.createElement("div");
 
 translator.id = "google_translate_element";
-
 translator.style.position = "fixed";
 translator.style.bottom = "15px";
 translator.style.right = "15px";
@@ -857,7 +860,7 @@ document.body.appendChild(script);
 
 catch (err) {
 
-console.error("Guard fetch failed:", err);
+console.error("Translator failed:", err);
 
 }
 
