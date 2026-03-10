@@ -130,12 +130,10 @@ MESSAGE SYSTEM
 const loginForm = document.getElementById("loginForm");
 const msg = document.getElementById("msg");
 
-function showMsg(text,type=""){
-
-msg.textContent = text;
-msg.className = type;
-msg.style.display = text ? "block" : "none";
-
+function showMsg(text, type = "") {
+  msg.textContent = text;
+  msg.className = type;
+  msg.style.display = text ? "block" : "none";
 }
 
 
@@ -143,11 +141,11 @@ msg.style.display = text ? "block" : "none";
 WAKE SERVER (Render sleep fix)
 ========================= */
 
-window.addEventListener("load",()=>{
+window.addEventListener("load", () => {
 
-if(window.api?.base){
-fetch(window.api.base).catch(()=>{});
-}
+  if (window.API_BASE) {
+    fetch(window.API_BASE + "/health").catch(() => {});
+  }
 
 });
 
@@ -156,38 +154,37 @@ fetch(window.api.base).catch(()=>{});
 EMAIL LOGIN
 ========================= */
 
-loginForm.addEventListener("submit", async (e)=>{
+loginForm.addEventListener("submit", async (e) => {
 
-e.preventDefault();
+  e.preventDefault();
 
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
-const btn = loginForm.querySelector("button");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const btn = loginForm.querySelector("button");
 
-showMsg("");
-btn.disabled = true;
+  showMsg("");
+  btn.disabled = true;
 
-window.loader.show("Signing you in…");
+  window.loader.show("Signing you in…");
 
-try{
+  try {
 
-const data = await window.api.loginRequest(email,password);
+    const data = await window.api.loginRequest(email, password);
 
-if(!data?.token)
-throw new Error("Login failed");
+    if (!data?.token) throw new Error("Login failed");
 
-window.auth.setToken(data.token);
+    window.auth.setToken(data.token);
 
-window.location.href="dashboard.html";
+    window.location.href = "dashboard.html";
 
-}catch(err){
+  } catch (err) {
 
-window.loader.hide();
-btn.disabled=false;
+    window.loader.hide();
+    btn.disabled = false;
 
-showMsg(err.message || "Login failed","error");
+    showMsg(err.message || "Login failed", "error");
 
-}
+  }
 
 });
 
@@ -196,46 +193,33 @@ showMsg(err.message || "Login failed","error");
 GOOGLE LOGIN
 ========================= */
 
-async function handleGoogleLogin(response){
+async function handleGoogleLogin(response) {
 
-window.loader.show("Signing you in with Google…");
+  window.loader.show("Signing you in with Google…");
 
-try{
+  try {
 
-const googleToken = response.credential;
+    const googleToken = response.credential;
 
-const res = await fetch(window.api.base + "/api/auth/google",{
+    const data = await window.api.apiFetch("/api/auth/google", {
+      method: "POST",
+      body: { token: googleToken }
+    });
 
-method:"POST",
+    if (!data?.token) throw new Error("Google login failed");
 
-headers:{
-"Content-Type":"application/json"
-},
+    window.auth.setToken(data.token);
 
-body:JSON.stringify({
-token:googleToken
-})
+    window.location.href = "dashboard.html";
 
-});
+  } catch (err) {
 
-const data = await res.json();
+    window.loader.hide();
+    showMsg("Google login failed", "error");
 
-if(!data?.token)
-throw new Error("Google login failed");
-
-window.auth.setToken(data.token);
-
-window.location.href="dashboard.html";
-
-}catch(err){
-
-window.loader.hide();
-showMsg("Google login failed","error");
+  }
 
 }
-
-}
-
 </script>
 
 </body>
