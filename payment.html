@@ -1,64 +1,357 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment - Sandile SystemsWorks</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment — Sandile SystemsWorks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <body>
-    <main style="max-width: 600px; margin: 50px auto; text-align: center">
-      <h1>Payment Required</h1>
-      <p>Your free access has ended. Please subscribe to continue.</p>
+    :root {
+      --bg:      #030a14;
+      --card:    linear-gradient(145deg, rgba(10,22,40,0.97), rgba(6,14,26,0.99));
+      --accent:  #00d5ff;
+      --accent2: #0098b8;
+      --text:    #e8f0f8;
+      --muted:   #4a6a85;
+      --border:  rgba(0,213,255,0.13);
+      --green:   #00e87a;
+      --yellow:  #ffb800;
+    }
 
-      <div id="payBox" style="margin: 18px 0"></div>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      background-image:
+        radial-gradient(ellipse 700px 500px at 15% 10%, rgba(0,213,255,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 500px 400px at 85% 90%, rgba(0,120,200,0.05) 0%, transparent 65%);
+    }
 
-      <p style="margin-top: 20px">
-        <a href="dashboard.html">Back</a>
-      </p>
-    </main>
+    /* CARD */
+    .pay-card {
+      width: min(480px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(0,213,255,0.04),
+        0 24px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+      animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
 
-    <!-- ✅ REQUIRED GLOBALS FIRST (ORDER MATTERS) -->
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    <!-- ✅ PAGE LOGIC AFTER globals are loaded -->
-    <script>
-      (async () => {
-        const profile = await window.auth.requireAuth();
-        if (!profile) return;
+    .pay-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,213,255,0.4), transparent);
+    }
 
-        const payBox = document.getElementById('payBox');
-        if (!payBox) return;
+    /* LOGO */
+    .pay-logo {
+      height: 48px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 10px rgba(0,213,255,0.3));
+      margin-bottom: 1.6rem;
+    }
 
-        // If already paid, show status and go back to dashboard
-        if (profile.user?.hasPaid) {
-          payBox.innerHTML = `<p style="color:#00ff7f; font-weight:800;">✅ Active Subscription</p>
-                              <p style="color:#94a3b8;">Redirecting you back...</p>`;
-          setTimeout(() => (window.location.href = 'dashboard.html'), 900);
-          return;
-        }
+    /* ICON */
+    .pay-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255,184,0,0.08);
+      border: 1px solid rgba(255,184,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1.6rem;
+    }
 
-        // Not paid → show pay button
+    /* HEADINGS */
+    .pay-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .pay-sub {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* PRICE BOX */
+    .price-box {
+      background: rgba(0,213,255,0.04);
+      border: 1px solid rgba(0,213,255,0.12);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .price-amount {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+    }
+
+    .price-amount span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+
+    .price-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .price-note strong {
+      color: var(--green);
+    }
+
+    /* FEATURES */
+    .pay-features {
+      list-style: none;
+      margin-bottom: 1.8rem;
+      text-align: left;
+    }
+
+    .pay-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.88rem;
+      color: #a0bcd0;
+    }
+
+    .pay-features li:last-child { border-bottom: none; }
+
+    .pay-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    /* PAY BUTTON */
+    .btn-pay {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 28px rgba(0,213,255,0.25);
+      letter-spacing: 0.1px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-pay:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,213,255,0.35);
+    }
+
+    .btn-pay:active { transform: translateY(0); }
+
+    .btn-pay:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* SUCCESS STATE */
+    .status-active {
+      background: rgba(0,232,122,0.07);
+      border: 1px solid rgba(0,232,122,0.2);
+      border-radius: 14px;
+      padding: 1.2rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .status-active p:first-child {
+      color: var(--green);
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .status-active p:last-child {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      display: inline-block;
+      margin-top: 1.4rem;
+      color: var(--muted);
+      font-size: 0.87rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    /* LOADER */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3,10,20,0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 999;
+    }
+
+    .loader-overlay.hidden { display: none; }
+
+    .loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0,213,255,0.15);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-overlay p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 520px) {
+      .pay-card { padding: 2.2rem 1.4rem; border-radius: 20px; }
+      .pay-title { font-size: 1.45rem; }
+      .price-amount { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pay-card">
+    <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="pay-logo" />
+
+    <div id="payBox">
+      <!-- JS renders content here -->
+    </div>
+
+    <a href="dashboard.html" class="back-link">← Back to dashboard</a>
+  </div>
+
+  <!-- GLOBAL LOADER -->
+  <div id="global-loader" class="loader-overlay hidden">
+    <div class="loader-spinner"></div>
+    <p>Please wait…</p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    (async () => {
+      const profile = await window.auth.requireAuth();
+      if (!profile) return;
+
+      const payBox = document.getElementById('payBox');
+      if (!payBox) return;
+
+      if (profile.user?.hasPaid) {
         payBox.innerHTML = `
-          <p style="color:#ffcc00; font-weight:800;">Payment required</p>
-          <button type="button" class="btn" id="payBtn">Pay R12,499 / month</button>
+          <div class="status-active">
+            <p>✅ Active Subscription</p>
+            <p>Redirecting you back to the dashboard...</p>
+          </div>
         `;
+        setTimeout(() => (window.location.href = 'dashboard.html'), 1200);
+        return;
+      }
 
-        document
-          .getElementById('payBtn')
-          .addEventListener('click', async () => {
-            try {
-              const token = window.auth.getToken();
-              const data = await window.api.createCheckoutRequest(token);
-              window.location.href = data.checkoutUrl;
-            } catch (e) {
-              alert(e.message || 'Checkout failed');
-            }
-          });
-      })();
-    </script>
-  </body>
+      payBox.innerHTML = `
+        <div class="pay-icon">⚠️</div>
+        <h1 class="pay-title">Subscription Required</h1>
+        <p class="pay-sub">Your free trial has ended. Subscribe to continue making smarter business decisions.</p>
+
+        <div class="price-box">
+          <div class="price-amount">R12,499 <span>/ month</span></div>
+          <p class="price-note"><strong>3 days free</strong> · Full access · Cancel anytime</p>
+        </div>
+
+        <ul class="pay-features">
+          <li>All 5 sectors — logistics, construction, manufacturing & more</li>
+          <li>20+ industry decision tools</li>
+          <li>Full ROI, margin & break-even analysis</li>
+          <li>Risk assessment & annual projections</li>
+          <li>Unlimited calculations</li>
+          <li>Continuous updates with new tools</li>
+        </ul>
+
+        <button type="button" class="btn-pay" id="payBtn">Pay R12,499 / month</button>
+      `;
+
+      document.getElementById('payBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('payBtn');
+        btn.disabled = true;
+        btn.textContent = 'Redirecting...';
+
+        try {
+          const token = window.auth.getToken();
+          const data = await window.api.createCheckoutRequest(token);
+          window.location.href = data.checkoutUrl;
+        } catch (e) {
+          btn.disabled = false;
+          btn.textContent = 'Pay R12,499 / month';
+          alert(e.message || 'Checkout failed. Please try again.');
+        }
+      });
+    })();
+  </script>
+
+</body>
 </html>
