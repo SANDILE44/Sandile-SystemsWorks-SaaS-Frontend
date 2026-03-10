@@ -425,18 +425,24 @@ input:focus {
 .g_id_signin {
   display: flex;
   justify-content: center;
-  margin-top: 0.8rem;
-}
-
-/* space between google button and form */
-.auth-card .g_id_signin + p {
+  align-items: center;
+  width: 100%;
   margin-top: 0.9rem;
 }
 
-/* divider text */
+/* force google iframe to center */
+.g_id_signin iframe {
+  margin: 0 auto;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
 .auth-divider {
   text-align: center;
-  margin: 0.9rem 0;
+  margin: 1rem 0;
   font-size: 0.85rem;
   color: var(--text-muted);
   position: relative;
@@ -460,28 +466,20 @@ input:focus {
   right: 0;
 }
 
-/* responsive alignment */
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 480px) {
+
   .g_id_signin {
+    display: flex;
+    justify-content: center;
+  }
+
+  .g_id_signin iframe {
     transform: scale(0.95);
   }
-}
-  .footer-brand .brand-logo {
-    height: 38px;
-  }
 
-  .footer-note {
-    padding: 0.9rem 0.95rem;
-  }
-
-  /* slightly tighter links on mobile */
-  .footer-col a {
-    margin-bottom: 0.45rem;
-    padding: 0.35rem 0;
-  }
-
-  .footer-bottom {
-    margin-top: 1.6rem;
-    padding-top: 1rem;
-  }
 }
