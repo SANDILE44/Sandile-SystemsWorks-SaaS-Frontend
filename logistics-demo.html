@@ -424,5 +424,204 @@ Enter freight numbers
 
 </div>
 
+<script>
+
+/* TOOL SELECTOR */
+
+const toolSelect = document.getElementById("toolSelect");
+
+toolSelect.addEventListener("change", () => {
+
+document.querySelectorAll(".panel").forEach(p => {
+p.classList.remove("active");
+});
+
+const val = toolSelect.value;
+
+if(val){
+document.getElementById(val).classList.add("active");
+}
+
+});
+
+
+/* FORMAT MONEY */
+
+function R(n){
+return "R " + (isNaN(n) ? "0.00" : n.toLocaleString("en-ZA",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}));
+}
+
+
+/* VERDICT SYSTEM */
+
+function setVerdict(el, profit, hasData){
+
+if(!el) return;
+
+if(!hasData){
+el.textContent = "Enter numbers above";
+return;
+}
+
+if(profit > 0){
+el.textContent = "✅ PROFITABLE SHIPMENT";
+}
+
+else if(profit === 0){
+el.textContent = "⚠️ BREAK EVEN — Any cost increase causes loss";
+}
+
+else{
+el.textContent = "🚫 LOSS — This deal loses money";
+}
+
+}
+
+
+
+/* SHIPMENT TOOL */
+
+["s-quote","s-fuel","s-driver","s-tolls","s-other"]
+.forEach(id => {
+
+const el = document.getElementById(id);
+
+if(el){
+el.addEventListener("input", calcShipment);
+}
+
+});
+
+function calcShipment(){
+
+const quote = +document.getElementById("s-quote").value || 0;
+
+const fuel = +document.getElementById("s-fuel").value || 0;
+
+const driver = +document.getElementById("s-driver").value || 0;
+
+const tolls = +document.getElementById("s-tolls").value || 0;
+
+const other = +document.getElementById("s-other").value || 0;
+
+const cost = fuel + driver + tolls + other;
+
+const profit = quote - cost;
+
+document.getElementById("s-total").textContent = R(cost);
+
+document.getElementById("s-profit").textContent = R(profit);
+
+setVerdict(
+document.getElementById("s-verdict"),
+profit,
+quote > 0
+);
+
+}
+
+
+
+/* OPERATIONS TOOL */
+
+["o-shipments","o-revenue","o-fuel","o-labor","o-fixed"]
+.forEach(id => {
+
+const el = document.getElementById(id);
+
+if(el){
+el.addEventListener("input", calcOperations);
+}
+
+});
+
+function calcOperations(){
+
+const shipments = +document.getElementById("o-shipments").value || 0;
+
+const revenue = +document.getElementById("o-revenue").value || 0;
+
+const fuel = +document.getElementById("o-fuel").value || 0;
+
+const labor = +document.getElementById("o-labor").value || 0;
+
+const fixed = +document.getElementById("o-fixed").value || 0;
+
+const totalRevenue = shipments * revenue;
+
+const totalCost = fuel + labor + fixed;
+
+const profit = totalRevenue - totalCost;
+
+document.getElementById("o-total-rev").textContent = R(totalRevenue);
+
+document.getElementById("o-total-cost").textContent = R(totalCost);
+
+document.getElementById("o-profit").textContent = R(profit);
+
+setVerdict(
+document.getElementById("o-verdict"),
+profit,
+totalRevenue > 0
+);
+
+}
+
+
+
+/* FREIGHT TOOL */
+
+["f-quote","f-cargo","f-freight","f-duty","f-customs","f-insurance"]
+.forEach(id => {
+
+const el = document.getElementById(id);
+
+if(el){
+el.addEventListener("input", calcFreight);
+}
+
+});
+
+function calcFreight(){
+
+const quote = +document.getElementById("f-quote").value || 0;
+
+const cargo = +document.getElementById("f-cargo").value || 0;
+
+const freight = +document.getElementById("f-freight").value || 0;
+
+const dutyRate = +document.getElementById("f-duty").value || 0;
+
+const customs = +document.getElementById("f-customs").value || 0;
+
+const insuranceRate = +document.getElementById("f-insurance").value || 0;
+
+const dutyCost = cargo * (dutyRate / 100);
+
+const insuranceCost = cargo * (insuranceRate / 100);
+
+const total = freight + dutyCost + insuranceCost + customs;
+
+const profit = quote - total;
+
+document.getElementById("f-duty-cost").textContent = R(dutyCost);
+
+document.getElementById("f-total").textContent = R(total);
+
+document.getElementById("f-profit").textContent = R(profit);
+
+setVerdict(
+document.getElementById("f-verdict"),
+profit,
+quote > 0
+);
+
+}
+
+</script>
+
 </body>
 </html>
