@@ -415,37 +415,47 @@ input:focus {
 }
 
 /* =========================
-   GOOGLE SIGN-IN BUTTON
+   GOOGLE AUTH SECTION
 ========================= */
 
-.g_id_signin {
+.google-auth{
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* wrapper creates perfect centering */
+.google-btn-wrapper{
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+}
+
+/* Google iframe button */
+.g_id_signin{
+  display: flex;
+  justify-content: center;
   width: 100%;
-  margin-top: 0.9rem;
 }
 
-/* force google iframe to center */
-.g_id_signin iframe {
-  margin: 0 auto;
+/* make iframe responsive */
+.g_id_signin iframe{
+  margin: auto;
+  border-radius: 999px !important;
 }
 
-
-/* =========================
-   DIVIDER
-========================= */
-
-.auth-divider {
+/* divider */
+.auth-divider{
+  margin: 18px 0;
   text-align: center;
-  margin: 1rem 0;
   font-size: 0.85rem;
   color: var(--text-muted);
   position: relative;
 }
 
 .auth-divider::before,
-.auth-divider::after {
+.auth-divider::after{
   content: "";
   position: absolute;
   top: 50%;
@@ -454,28 +464,19 @@ input:focus {
   background: var(--border-soft);
 }
 
-.auth-divider::before {
+.auth-divider::before{
   left: 0;
 }
 
-.auth-divider::after {
+.auth-divider::after{
   right: 0;
 }
 
+/* mobile polish */
+@media (max-width:480px){
 
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 480px) {
-
-  .g_id_signin {
-    display: flex;
-    justify-content: center;
-  }
-
-  .g_id_signin iframe {
-    transform: scale(0.95);
+  .g_id_signin iframe{
+    transform: scale(0.96);
   }
 
 }
