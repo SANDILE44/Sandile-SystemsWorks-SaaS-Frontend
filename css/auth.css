@@ -274,3 +274,60 @@
     font-size: 0.93rem;
   }
 }
+
+/* GOOGLE AUTH */
+.google-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.google-btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.google-btn-wrapper > div {
+  width: 100% !important;
+}
+
+.google-btn-wrapper iframe {
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Force Google button to fill width and center */
+.g_id_signin {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.g_id_signin > div {
+  width: 100% !important;
+}
+
+/* DIVIDER fix for "or continue with email" */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.6rem 0;
+  color: #3d5a73;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
