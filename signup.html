@@ -119,106 +119,92 @@ Already have an account?
 
 <script>
 
-/* MESSAGE DISPLAY */
+/* =========================
+MESSAGE DISPLAY
+========================= */
 
 const signupForm = document.getElementById("signupForm");
 const msg = document.getElementById("msg");
 
-function showMsg(text,type=""){
-
-msg.textContent = text;
-msg.className = type;
-msg.style.display = text ? "block" : "none";
-
+function showMsg(text, type = "") {
+  msg.textContent = text;
+  msg.className = type;
+  msg.style.display = text ? "block" : "none";
 }
 
 
-/* EMAIL SIGNUP */
+/* =========================
+EMAIL SIGNUP
+========================= */
 
-signupForm.addEventListener("submit", async (e)=>{
+signupForm.addEventListener("submit", async (e) => {
 
-e.preventDefault();
+  e.preventDefault();
 
-const name = document.getElementById("name").value.trim();
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-showMsg("");
+  showMsg("");
 
-if(!name) return showMsg("Enter your name","error");
+  if (!name) return showMsg("Enter your name", "error");
+  if (!email) return showMsg("Enter your email", "error");
+  if (password.length < 8)
+    return showMsg("Password must be at least 8 characters", "error");
 
-if(!email) return showMsg("Enter your email","error");
+  try {
 
-if(password.length < 8)
-return showMsg("Password must be at least 8 characters","error");
+    const data = await window.api.signupRequest(name, email, password);
 
+    if (!data?.token) throw new Error("Signup failed");
 
-try{
+    window.auth.setToken(data.token);
 
-const data = await window.api.signupRequest(name,email,password);
+    showMsg("Account created. Redirecting...", "success");
 
-if(!data?.token)
-throw new Error("Signup failed");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 800);
 
-window.auth.setToken(data.token);
+  } catch (err) {
 
-showMsg("Account created. Redirecting...","success");
+    showMsg(err.message || "Signup failed", "error");
 
-setTimeout(()=>{
-window.location.href = "dashboard.html";
-},800);
-
-}catch(err){
-
-showMsg(err.message || "Signup failed","error");
-
-}
+  }
 
 });
 
 
+/* =========================
+GOOGLE SIGNUP
+========================= */
 
-/* GOOGLE SIGNUP */
+async function handleGoogleSignup(response) {
 
-async function handleGoogleSignup(response){
+  try {
 
-try{
+    const googleToken = response.credential;
 
-const googleToken = response.credential;
+    const data = await window.api.apiFetch("/api/auth/google", {
+      method: "POST",
+      body: { token: googleToken }
+    });
 
-const res = await fetch(window.api.base + "/api/auth/google",{
+    if (!data?.token)
+      throw new Error("Google login failed");
 
-method:"POST",
+    window.auth.setToken(data.token);
 
-headers:{
-"Content-Type":"application/json"
-},
+    window.location.href = "dashboard.html";
 
-body:JSON.stringify({
-token: googleToken
-})
+  } catch (err) {
 
-});
+    console.error(err);
+    showMsg("Google login failed", "error");
 
-const data = await res.json();
-
-if(!data?.token)
-throw new Error("Google login failed");
-
-window.auth.setToken(data.token);
-
-window.location.href="dashboard.html";
-
-}catch(err){
-
-console.error(err);
-
-showMsg("Google login failed","error");
+  }
 
 }
-
-}
-
 </script>
 
 </body>
