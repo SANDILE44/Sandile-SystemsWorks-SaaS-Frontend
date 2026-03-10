@@ -1,45 +1,301 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Successful - Sandile SystemsWorks</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful — Sandile SystemsWorks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <!-- Page-only CSS -->
-    <link rel="stylesheet" href="css/success.css" />
-  </head>
-  <body>
-    <main class="status-page">
-      <div class="status-card">
-        <div class="icon success">✓</div>
+    :root {
+      --bg:      #030a14;
+      --card:    linear-gradient(145deg, rgba(10,22,40,0.97), rgba(6,14,26,0.99));
+      --accent:  #00d5ff;
+      --accent2: #0098b8;
+      --text:    #e8f0f8;
+      --muted:   #4a6a85;
+      --border:  rgba(0,213,255,0.13);
+      --green:   #00e87a;
+    }
 
-        <h1>Payment successful</h1>
-        <p id="statusText">Finalizing your access… please wait a moment.</p>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      background-image:
+        radial-gradient(ellipse 700px 500px at 15% 10%, rgba(0,232,122,0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 500px 400px at 85% 90%, rgba(0,213,255,0.04) 0%, transparent 65%);
+    }
 
-        <div class="actions">
-          <a
-            href="dashboard.html"
-            class="btn btn-primary"
-            id="goDashboardBtn"
-            style="display: none"
-          >
-            Go to Dashboard
-          </a>
-          <a href="pricing.html" class="btn btn-ghost"> View Pricing </a>
-        </div>
+    /* CARD */
+    .status-card {
+      width: min(480px, 100%);
+      background: var(--card);
+      border: 1px solid rgba(0,232,122,0.15);
+      border-radius: 24px;
+      padding: 3rem 2.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(0,232,122,0.04),
+        0 24px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+      animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
 
-        <p class="small-note">
-          If you don’t get redirected, tap “Go to Dashboard”.
-        </p>
-      </div>
-    </main>
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    <!-- IMPORTANT: load shared JS first -->
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
+    .status-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,232,122,0.5), transparent);
+    }
 
-    <!-- Page-only JS -->
-    <script src="js/success.js"></script>
-  </body>
+    /* LOGO */
+    .pay-logo {
+      height: 44px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 10px rgba(0,213,255,0.3));
+      margin-bottom: 1.8rem;
+    }
+
+    /* SUCCESS ICON */
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(0,232,122,0.1);
+      border: 2px solid rgba(0,232,122,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 1.8rem;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+      box-shadow: 0 0 40px rgba(0,232,122,0.15);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* TEXT */
+    .status-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.4px;
+      margin-bottom: 0.7rem;
+    }
+
+    #statusText {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      min-height: 44px;
+    }
+
+    /* DIVIDER */
+    .card-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.05);
+      margin: 1.6rem 0;
+    }
+
+    /* WHAT YOU UNLOCKED */
+    .unlocked-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--green);
+      opacity: 0.8;
+      margin-bottom: 14px;
+    }
+
+    .unlocked-list {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .unlocked-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.87rem;
+      color: #a0bcd0;
+    }
+
+    .unlocked-list li:last-child { border-bottom: none; }
+
+    .unlocked-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 800;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    /* BUTTONS */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 1.4rem;
+    }
+
+    .btn-dashboard {
+      width: 100%;
+      padding: 0.95rem 1.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000;
+      border: none;
+      border-radius: 13px;
+      font-weight: 800;
+      font-size: 0.97rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 28px rgba(0,213,255,0.25);
+      text-decoration: none;
+      display: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-dashboard.visible { display: block; }
+
+    .btn-dashboard:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,213,255,0.35);
+    }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.93rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+    }
+
+    /* SMALL NOTE */
+    .small-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    /* LOADER */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3,10,20,0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 999;
+    }
+
+    .loader-overlay.hidden { display: none; }
+
+    .loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0,213,255,0.15);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-overlay p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 520px) {
+      .status-card { padding: 2.2rem 1.4rem; border-radius: 20px; }
+      .status-title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="status-card">
+    <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="pay-logo" />
+
+    <div class="success-icon">✓</div>
+
+    <h1 class="status-title">Payment Successful</h1>
+    <p id="statusText">Finalizing your access… please wait a moment.</p>
+
+    <div class="card-divider"></div>
+
+    <div class="unlocked-label">What you unlocked</div>
+    <ul class="unlocked-list">
+      <li>All 5 sectors — logistics, construction, manufacturing & more</li>
+      <li>20+ industry decision tools</li>
+      <li>Full ROI, margin & break-even analysis</li>
+      <li>Risk assessment & annual projections</li>
+      <li>Unlimited calculations</li>
+      <li>Continuous updates with new tools</li>
+    </ul>
+
+    <div class="actions">
+      <a href="dashboard.html" class="btn-dashboard" id="goDashboardBtn">Go to Dashboard →</a>
+      <a href="pricing.html" class="btn-ghost">View Pricing</a>
+    </div>
+
+    <p class="small-note">If you don't get redirected, tap "Go to Dashboard".</p>
+  </div>
+
+  <!-- LOADER -->
+  <div id="global-loader" class="loader-overlay hidden">
+    <div class="loader-spinner"></div>
+    <p>Please wait…</p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/success.js"></script>
+
+</body>
 </html>
