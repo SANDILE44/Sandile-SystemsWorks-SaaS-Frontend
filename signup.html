@@ -5,12 +5,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sign Up - Sandile SystemsWorks</title>
+<title>Create Account - Sandile SystemsWorks</title>
 
 <link rel="stylesheet" href="css/landing.css">
 <link rel="stylesheet" href="css/auth.css">
 
-<!-- Google Identity Services -->
+<!-- Google Identity -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </head>
@@ -22,7 +22,7 @@
 <div class="header-inner">
 
 <div class="brand">
-<a href="index.html" style="display:flex;align-items:center;gap:0.65rem;min-width:220px;">
+<a href="index.html" style="display:flex;align-items:center;gap:.65rem;min-width:220px;">
 <img src="images/Untitled design.png" alt="Logo" class="brand-logo">
 <span class="brand-name">Sandile SystemsWorks</span>
 </a>
@@ -37,6 +37,7 @@
 </header>
 
 
+
 <div class="auth-container">
 <div class="auth-card">
 
@@ -46,13 +47,15 @@
 
 <div>
 <h1>Create your account</h1>
-<p>Start your <strong>3 days free trial</strong> and make smarter, data-driven decisions.</p>
+<p>Start your <strong>3 day free trial</strong> and make smarter decisions.</p>
 </div>
 
 </div>
 
 
-<!-- GOOGLE LOGIN -->
+<!-- GOOGLE SIGNUP -->
+
+<div class="google-auth">
 
 <div id="g_id_onload"
 data-client_id="1064963647591-k76sv5dgcm3ihrsbmaccr63rij0vikda.apps.googleusercontent.com"
@@ -61,16 +64,24 @@ data-callback="handleGoogleSignup"
 data-auto_prompt="false">
 </div>
 
+<div class="google-btn-wrapper">
 <div class="g_id_signin"
 data-type="standard"
 data-size="large"
 data-theme="outline"
 data-text="continue_with"
-data-shape="rectangular"
+data-shape="pill"
+data-logo_alignment="left"
 data-width="320">
 </div>
+</div>
 
-<p style="text-align:center;margin:16px 0;">or</p>
+</div>
+
+
+<div class="auth-divider">
+or continue with email
+</div>
 
 
 <!-- EMAIL SIGNUP -->
@@ -114,97 +125,128 @@ Already have an account?
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/translation.js"></script>
+
 
 
 <script>
 
 /* =========================
-MESSAGE DISPLAY
+MESSAGE SYSTEM
 ========================= */
 
 const signupForm = document.getElementById("signupForm");
 const msg = document.getElementById("msg");
 
-function showMsg(text, type = "") {
-  msg.textContent = text;
-  msg.className = type;
-  msg.style.display = text ? "block" : "none";
+function showMsg(text,type=""){
+
+msg.textContent = text;
+msg.className = type;
+msg.style.display = text ? "block" : "none";
+
 }
+
 
 
 /* =========================
 EMAIL SIGNUP
 ========================= */
 
-signupForm.addEventListener("submit", async (e) => {
+signupForm.addEventListener("submit", async (e)=>{
 
-  e.preventDefault();
+e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+const name = document.getElementById("name").value.trim();
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
 
-  showMsg("");
+const btn = signupForm.querySelector("button");
 
-  if (!name) return showMsg("Enter your name", "error");
-  if (!email) return showMsg("Enter your email", "error");
-  if (password.length < 8)
-    return showMsg("Password must be at least 8 characters", "error");
+showMsg("");
 
-  try {
+if(!name) return showMsg("Enter your name","error");
 
-    const data = await window.api.signupRequest(name, email, password);
+if(!email) return showMsg("Enter your email","error");
 
-    if (!data?.token) throw new Error("Signup failed");
+if(password.length < 8)
+return showMsg("Password must be at least 8 characters","error");
 
-    window.auth.setToken(data.token);
 
-    showMsg("Account created. Redirecting...", "success");
+btn.disabled = true;
 
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 800);
+try{
 
-  } catch (err) {
+const data = await window.api.signupRequest(name,email,password);
 
-    showMsg(err.message || "Signup failed", "error");
+if(!data?.token)
+throw new Error("Signup failed");
 
-  }
+window.auth.setToken(data.token);
+
+showMsg("Account created. Redirecting...","success");
+
+setTimeout(()=>{
+
+window.location.replace("dashboard.html");
+
+},800);
+
+}catch(err){
+
+btn.disabled=false;
+
+showMsg(err.message || "Signup failed","error");
+
+}
 
 });
+
 
 
 /* =========================
 GOOGLE SIGNUP
 ========================= */
 
-async function handleGoogleSignup(response) {
+async function handleGoogleSignup(response){
 
-  try {
+showMsg("");
 
-    const googleToken = response.credential;
+try{
 
-    const data = await window.api.apiFetch("/api/auth/google", {
-      method: "POST",
-      body: { token: googleToken }
-    });
+const googleToken = response.credential;
 
-    if (!data?.token)
-      throw new Error("Google login failed");
+const res = await fetch(window.api.base + "/api/auth/google",{
 
-    window.auth.setToken(data.token);
+method:"POST",
 
-    window.location.href = "dashboard.html";
+headers:{
+"Content-Type":"application/json"
+},
 
-  } catch (err) {
+body:JSON.stringify({
+token:googleToken
+})
 
-    console.error(err);
-    showMsg("Google login failed", "error");
+});
 
-  }
+const data = await res.json();
+
+if(!data?.token)
+throw new Error("Google signup failed");
+
+window.auth.setToken(data.token);
+
+window.location.replace("dashboard.html");
+
+}catch(err){
+
+console.error(err);
+
+showMsg("Google signup failed","error");
 
 }
+
+}
+
 </script>
 
 </body>
