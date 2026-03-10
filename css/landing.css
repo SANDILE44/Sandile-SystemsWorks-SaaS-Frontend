@@ -2498,3 +2498,50 @@ line-height:1.45;
 color:#ffffff;
 font-weight:800;
 }
+
+/* ================= FOUNDER SECTION ================= */
+
+.founder-section{
+padding:70px 20px;
+text-align:center;
+border-top:1px solid var(--border-soft);
+border-bottom:1px solid var(--border-soft);
+background:rgba(2,6,23,0.35);
+}
+
+.founder-container{
+max-width:720px;
+margin:auto;
+}
+
+.founder-container img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin:0 auto 20px;
+border:2px solid rgba(0,213,255,0.5);
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+.founder-container h3{
+font-size:1.4rem;
+font-weight:800;
+letter-spacing:-0.3px;
+margin-bottom:6px;
+}
+
+.founder-role{
+color:var(--accent);
+font-size:0.9rem;
+font-weight:700;
+margin-bottom:16px;
+letter-spacing:0.2px;
+}
+
+.founder-text{
+color:var(--text-muted);
+font-size:0.95rem;
+line-height:1.7;
+margin-bottom:14px;
+}
