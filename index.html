@@ -35,6 +35,26 @@ document.getElementById("demo-select").addEventListener("change", function() {
 
 });
 </script>
+
+<script>
+document.getElementById("demo-select").addEventListener("change", function () {
+
+  const tool = this.value;
+  const toolName = this.options[this.selectedIndex].text;
+  const category = this.options[this.selectedIndex].parentElement.label;
+
+  if(tool){
+
+    gtag('event', 'tool_selected', {
+      event_category: category,
+      event_label: toolName,
+      value: tool
+    });
+
+  }
+
+});
+</script>
     
 
     <title>Sandile SystemsWorks - Decision Calculators & Dashboards</title>
@@ -281,8 +301,17 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
         <div class="demo-locked-icon">🔒</div>
         <h3>You've seen what it can do</h3>
         <p>Start your 3-day free trial to unlock full calculations, all sectors, and unlimited decisions.</p>
-        <a href="signup.html" class="demo-cta">Start Free Trial — No Credit Card</a>
-        <p class="demo-note">Full access · 3 days free · Cancel anytime</p>
+
+
+     <a href="signup.html" class="demo-cta"
+onclick="gtag('event','start_trial_click',{
+event_category:'conversion',
+event_label:'demo_locked_trial'
+});">
+Start Free Trial — No Credit Card
+</a>
+
+<p class="demo-note">Full access · 3 days free · Cancel anytime</p>
       </div>
     </div>
 
