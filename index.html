@@ -20,6 +20,21 @@
 
   gtag('config', 'G-V1M5L4408K');
 </script>
+
+<script>
+document.getElementById("demo-select").addEventListener("change", function() {
+
+  const selectedTool = this.value;
+
+  if(selectedTool){
+    gtag('event', 'demo_tool_selected', {
+      event_category: 'demo',
+      event_label: selectedTool
+    });
+  }
+
+});
+</script>
     
 
     <title>Sandile SystemsWorks - Decision Calculators & Dashboards</title>
