@@ -1,5 +1,9 @@
 (() => {
 
+/* ===============================
+HELPERS
+=============================== */
+
 const $ = (id) => document.getElementById(id);
 
 const money = (v) =>
@@ -8,14 +12,18 @@ minimumFractionDigits:2,
 maximumFractionDigits:2
 });
 
-const percent = (v) =>
-(Number(v) || 0).toFixed(2) + "%";
+const percent = (v) => {
+const n = Number(v) || 0;
+const val = Math.abs(n) <= 1 ? n * 100 : n;
+return val.toFixed(2) + "%";
+};
 
 let debounceTimer;
 
+
 /* ===============================
 API HELPER
-===============================*/
+=============================== */
 
 async function apiPost(url, body){
 
@@ -25,6 +33,8 @@ if(!token){
 location.replace("login.html");
 return null;
 }
+
+try{
 
 const res = await fetch(`${API_BASE}${url}`,{
 method:"POST",
@@ -48,43 +58,67 @@ return null;
 
 if(!res.ok) return null;
 
-return res.json();
+return await res.json();
+
+}catch(err){
+
+console.error("API error",err);
+return null;
+
 }
+
+}
+
 
 /* ===============================
 CLASS HELPER
-===============================*/
+=============================== */
 
 function setClass(el, extra){
+
 if(!el) return;
+
 el.className = `output-value ${extra || ""}`;
+
 }
+
 
 /* ===============================
 MONTHLY OPERATIONS
-===============================*/
+=============================== */
 
 function updateMonthly(){
+
 clearTimeout(debounceTimer);
+
 debounceTimer = setTimeout(runMonthly,300);
+
 }
 
 async function runMonthly(){
 
 const data = await apiPost("/api/calculators/logistics/business",{
+
 shipments:+$("log-shipments")?.value || 0,
 revenuePer:+$("log-revenue")?.value || 0,
+
 fuel:+$("log-fuel")?.value || 0,
 labor:+$("log-labor")?.value || 0,
 maintenance:+$("log-maintenance")?.value || 0,
 fixed:+$("log-fixed")?.value || 0
+
 });
 
 if(!data) return;
 
+
+/* OUTPUTS */
+
 $("log-shipments-output").textContent = data.shipments ?? 0;
+
 $("log-total-revenue").textContent = money(data.totalRevenue);
 $("log-total-costs").textContent = money(data.totalCosts);
+
 $("log-profit").textContent = money(data.profit);
 
 $("log-per-shipment").textContent = money(data.costPerShipment);
@@ -95,6 +129,7 @@ $("log-margin").textContent = percent(data.margin);
 $("log-roi").textContent = percent(data.roi);
 
 $("log-breakeven-shipments").textContent = data.breakEvenShipments ?? 0;
+
 $("log-annual-profit").textContent = money(data.annualProfit);
 
 $("log-fuel-pct").textContent = percent(data.fuelPercent);
@@ -105,20 +140,25 @@ $("log-fixed-pct").textContent = percent(data.fixedPercent);
 $("log-status").textContent = data.status || "—";
 $("log-risk-level").textContent = data.riskLevel || "—";
 
-$("log-recommended-price").textContent = money(data.recommendedPricePerShipment);
+$("log-recommended-price").textContent =
+money(data.recommendedPricePerShipment);
+
 $("log-safety").textContent = data.safetyStatus || "—";
+
 $("log-advice").textContent = data.advice || "—";
+
 
 /* COLORS */
 
 const risk = (data.riskLevel || "").toLowerCase();
 
-if(risk==="low")
+if(risk === "low")
 setClass($("log-risk-level"),"risk-low");
-else if(risk==="medium")
+else if(risk === "medium")
 setClass($("log-risk-level"),"risk-medium");
 else
 setClass($("log-risk-level"),"risk-high");
+
 
 if(data.profit >= 0)
 setClass($("log-profit"),"profit-positive");
@@ -127,9 +167,10 @@ setClass($("log-profit"),"profit-negative");
 
 }
 
+
 /* ===============================
 SHIPMENT CALCULATOR
-===============================*/
+=============================== */
 
 async function runShipment(){
 
@@ -142,6 +183,7 @@ buffer:+$("ship-buffer")?.value || 0,
 distance:+$("ship-distance")?.value || 0,
 fuelPerKm:+$("ship-fuel-km")?.value || 0,
 vehiclePerKm:+$("ship-vehicle-km")?.value || 0,
+
 loadFactor:+$("ship-load-factor")?.value || 100,
 
 drivingHours:+$("ship-driving-hours")?.value || 0,
@@ -163,24 +205,36 @@ passThrough:+$("ship-pass-through")?.value || 0
 
 if(!data) return;
 
+
+/* OUTPUTS */
+
 $("ship-total-cost").textContent = money(data.totalCost);
+
 $("ship-profit").textContent = money(data.profit);
+
 $("ship-margin").textContent = percent(data.margin);
-$("ship-min-quote").textContent = money(data.recommendedMinQuote);
+
+$("ship-min-quote").textContent =
+money(data.recommendedMinQuote);
 
 $("ship-decision").textContent = data.decision;
+
 $("ship-reason").textContent = data.reason;
+
 
 /* COLORS */
 
 const decision = (data.decision || "").toUpperCase();
 
-if(decision==="APPROVE")
+if(decision === "APPROVE")
 setClass($("ship-decision"),"decision-approve");
-else if(decision==="REJECT")
+
+else if(decision === "REJECT")
 setClass($("ship-decision"),"decision-reject");
+
 else
 setClass($("ship-decision"),"decision-review");
+
 
 if(data.profit >= 0)
 setClass($("ship-profit"),"profit-positive");
@@ -189,107 +243,159 @@ setClass($("ship-profit"),"profit-negative");
 
 }
 
+
 /* ===============================
 FREIGHT CALCULATOR
-===============================*/
+=============================== */
 
 async function runFreight(){
 
 const data = await apiPost("/api/calculators/logistics/freight",{
 
 quote:+$("freight-quote")?.value || 0,
+
 cargoValue:+$("freight-cargo-value")?.value || 0,
+
 insuranceRate:+$("freight-insurance-rate")?.value || 0,
 
 freightCost:+$("freight-cost")?.value || 0,
+
 fuelSurcharge:+$("freight-fuel-surcharge")?.value || 0,
 
 dutyRate:+$("freight-duty-rate")?.value || 0,
+
 customsFees:+$("freight-customs-fees")?.value || 0,
 
 portFees:+$("freight-port-fees")?.value || 0,
+
 handlingFees:+$("freight-handling-fees")?.value || 0,
 
 inlandTransport:+$("freight-inland-transport")?.value || 0,
 
 tollCosts:+$("freight-tolls")?.value || 0,
+
 otherCosts:+$("freight-other-costs")?.value || 0
 
 });
 
 if(!data) return;
 
-$("freight-insurance-cost").textContent = money(data.insuranceCost);
-$("freight-duties").textContent = money(data.duties);
-$("freight-total-cost").textContent = money(data.totalCost);
 
-$("freight-profit").textContent = money(data.profit);
-$("freight-margin").textContent = percent(data.margin);
-$("freight-breakeven").textContent = money(data.breakEvenQuote);
+/* OUTPUTS */
 
-$("freight-decision").textContent = data.decision;
-$("freight-reason").textContent = data.reason;
-$("freight-risk").textContent = data.riskLevel;
+$("freight-insurance-cost").textContent =
+money(data.insuranceCost);
+
+$("freight-duties").textContent =
+money(data.duties);
+
+$("freight-total-cost").textContent =
+money(data.totalCost);
+
+$("freight-profit").textContent =
+money(data.profit);
+
+$("freight-margin").textContent =
+percent(data.margin);
+
+$("freight-breakeven").textContent =
+money(data.breakEvenQuote);
+
+$("freight-decision").textContent =
+data.decision;
+
+$("freight-reason").textContent =
+data.reason;
+
+$("freight-risk").textContent =
+data.riskLevel;
+
 
 /* COLORS */
 
 const decision = (data.decision || "").toUpperCase();
 
-if(decision==="APPROVE")
+if(decision === "APPROVE")
 setClass($("freight-decision"),"decision-approve");
-else if(decision==="REJECT")
+
+else if(decision === "REJECT")
 setClass($("freight-decision"),"decision-reject");
+
 else
 setClass($("freight-decision"),"decision-review");
+
 
 if(data.profit >= 0)
 setClass($("freight-profit"),"profit-positive");
 else
 setClass($("freight-profit"),"profit-negative");
 
-const margin = Number(data.margin)||0;
+
+const margin = Number(data.margin) || 0;
 
 if(margin >= 20)
 setClass($("freight-margin"),"margin-strong");
+
 else if(margin >= 10)
 setClass($("freight-margin"),"margin-medium");
+
 else
 setClass($("freight-margin"),"margin-low");
 
+
 const risk = (data.riskLevel || "").toLowerCase();
 
-if(risk==="low")
+if(risk === "low")
 setClass($("freight-risk"),"freight-risk-low");
-else if(risk==="medium")
+
+else if(risk === "medium")
 setClass($("freight-risk"),"freight-risk-medium");
+
 else
 setClass($("freight-risk"),"freight-risk-high");
 
 }
 
+
 /* ===============================
 EVENT BINDING
-===============================*/
+=============================== */
 
 function bindEvents(){
 
 document
 .querySelectorAll("#operations-panel input")
-.forEach(i => i.addEventListener("input", updateMonthly));
+.forEach(i =>
+i.addEventListener("input",updateMonthly)
+);
+
 
 document
 .querySelectorAll("#shipment-panel input")
-.forEach(i => i.addEventListener("input", ()=>{
+.forEach(i =>
+i.addEventListener("input",() => {
+
 clearTimeout(debounceTimer);
-debounceTimer = setTimeout(runShipment,300);
-}));
+
+debounceTimer =
+setTimeout(runShipment,300);
+
+})
+);
+
 
 document
 .querySelectorAll("#freight-panel input")
-.forEach(i => i.addEventListener("input", ()=>{
+.forEach(i =>
+i.addEventListener("input",() => {
+
 clearTimeout(debounceTimer);
-debounceTimer = setTimeout(runFreight,300);
-}));
+
+debounceTimer =
+setTimeout(runFreight,300);
+
+})
+);
 
 }
 
