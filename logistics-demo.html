@@ -301,10 +301,14 @@ Test a shipment below — it takes less than 30 seconds.
 
 <div class="container">
 
-<h1>Logistics Profit Decision Tools</h1>
+<h1>This shipment… is it actually making you money?</h1>
 
 <div class="subtitle">
-Enter real shipment numbers and instantly see if the job makes profit or loss.
+Enter a real shipment you’re considering right now and see if you're making profit — or silently losing money.
+</div>
+
+<div style="margin-top:10px;color:#fbbf24;font-size:14px;">
+⚠️ Most transport businesses underestimate real costs.
 </div>
 
 <select id="toolSelect">
@@ -325,7 +329,7 @@ Enter real shipment numbers and instantly see if the job makes profit or loss.
 <h3>Shipment Inputs</h3>
 
 <div class="field">
-<label>Client Quote Price</label>
+<label>Client Quote Price (what you plan to charge)</label>
 <input id="s-quote" type="number">
 </div>
 
@@ -345,7 +349,7 @@ Enter real shipment numbers and instantly see if the job makes profit or loss.
 </div>
 
 <div class="field">
-<label>Other Expenses</label>
+<label>Other Expenses (small costs you might overlook)</label>
 <input id="s-other" type="number">
 </div>
 
@@ -368,10 +372,12 @@ Enter real shipment numbers and instantly see if the job makes profit or loss.
 
 <div class="box">
 
-<h3>Shipment Results</h3>
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+Based on your inputs — but this may not include all real operating costs.
+</p>
 
 <div class="result">
-<span>Total Cost</span>
+<span>Estimated Base Cost</span>
 <span id="s-total">R 0.00</span>
 </div>
 
@@ -464,7 +470,9 @@ Unlock Full Analysis — Start Free Trial
 
 <div class="box">
 
-<h3>Operations Results</h3>
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+This is a simplified view — real margins may be lower after hidden costs.
+</p>
 
 <div class="result">
 <span>Total Revenue</span>
@@ -472,7 +480,7 @@ Unlock Full Analysis — Start Free Trial
 </div>
 
 <div class="result">
-<span>Total Costs</span>
+<span>Estimated Operating Costs</span>
 <span id="o-total-cost">R 0.00</span>
 </div>
 
@@ -566,6 +574,11 @@ Unlock Full Analysis — Start Free Trial
 
 <div class="box">
 
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+International shipments often include hidden charges not shown here.
+</p>
+
+
 <h3>Freight Results</h3>
 
 <div class="result">
@@ -574,7 +587,7 @@ Unlock Full Analysis — Start Free Trial
 </div>
 
 <div class="result">
-<span>Total Logistics Cost</span>
+<span>Estimated Logistics Cost</span>
 <span id="f-total">R 0.00</span>
 </div>
 
@@ -727,7 +740,7 @@ maximumFractionDigits:2
 }
 
 
-/* VERDICT SYSTEM */
+/* VERDICT SYSTEM (UPGRADED) */
 
 function setVerdict(el, profit, hasData){
 
@@ -739,19 +752,82 @@ return;
 }
 
 if(profit > 0){
-el.textContent = "✅ PROFITABLE SHIPMENT";
+el.textContent = "✅ PROFITABLE — but your true margin may be lower than it appears";
 }
 
 else if(profit === 0){
-el.textContent = "⚠️ BREAK EVEN — Any cost increase causes loss";
+el.textContent = "⚠️ BREAK EVEN — hidden costs could turn this into a loss";
 }
 
 else{
-el.textContent = "🚫 LOSS — This deal loses money";
+el.textContent = "🚫 LOSS — this deal is likely costing you money";
 }
 
 }
 
+
+/* INSIGHT SYSTEM (NEW 🔥) */
+
+function addInsight(el, profit){
+
+if(!el) return;
+
+let insight = "";
+
+if(profit > 0){
+insight = "⚠️ You may be underpricing this shipment.";
+}
+else if(profit === 0){
+insight = "⚠️ You are highly exposed to cost increases.";
+}
+else{
+insight = "🚨 This job should be rejected or repriced immediately.";
+}
+
+let existing = el.querySelector(".insight");
+
+if(!existing){
+let div = document.createElement("div");
+div.className = "insight";
+div.style.marginTop = "8px";
+div.style.fontSize = "13px";
+div.style.color = "#fbbf24";
+el.appendChild(div);
+existing = div;
+}
+
+existing.textContent = insight;
+}
+
+
+/* LOCKED LABEL UPGRADE (NEW 🔥) */
+
+function upgradeLockedLabels(){
+
+document.querySelectorAll(".result.locked span:first-child")
+.forEach(el => {
+
+if(el.textContent.includes("Profit Margin")){
+el.textContent = "🔒 True Profit Margin (after hidden costs)";
+}
+
+if(el.textContent.includes("Break-Even")){
+el.textContent = "🔒 Recommended Safe Price";
+}
+
+if(el.textContent.includes("ROI")){
+el.textContent = "🔒 Real ROI (actual performance)";
+}
+
+if(el.textContent.includes("Risk")){
+el.textContent = "🔒 Risk Level (loss probability)";
+}
+
+});
+
+}
+
+upgradeLockedLabels();
 
 
 /* SHIPMENT TOOL */
@@ -770,31 +846,23 @@ el.addEventListener("input", calcShipment);
 function calcShipment(){
 
 const quote = +document.getElementById("s-quote").value || 0;
-
 const fuel = +document.getElementById("s-fuel").value || 0;
-
 const driver = +document.getElementById("s-driver").value || 0;
-
 const tolls = +document.getElementById("s-tolls").value || 0;
-
 const other = +document.getElementById("s-other").value || 0;
 
 const cost = fuel + driver + tolls + other;
-
 const profit = quote - cost;
 
 document.getElementById("s-total").textContent = R(cost);
-
 document.getElementById("s-profit").textContent = R(profit);
 
-setVerdict(
-document.getElementById("s-verdict"),
-profit,
-quote > 0
-);
+const verdictEl = document.getElementById("s-verdict");
+
+setVerdict(verdictEl, profit, quote > 0);
+addInsight(verdictEl, profit);
 
 }
-
 
 
 /* OPERATIONS TOOL */
@@ -813,35 +881,25 @@ el.addEventListener("input", calcOperations);
 function calcOperations(){
 
 const shipments = +document.getElementById("o-shipments").value || 0;
-
 const revenue = +document.getElementById("o-revenue").value || 0;
-
 const fuel = +document.getElementById("o-fuel").value || 0;
-
 const labor = +document.getElementById("o-labor").value || 0;
-
 const fixed = +document.getElementById("o-fixed").value || 0;
 
 const totalRevenue = shipments * revenue;
-
 const totalCost = fuel + labor + fixed;
-
 const profit = totalRevenue - totalCost;
 
 document.getElementById("o-total-rev").textContent = R(totalRevenue);
-
 document.getElementById("o-total-cost").textContent = R(totalCost);
-
 document.getElementById("o-profit").textContent = R(profit);
 
-setVerdict(
-document.getElementById("o-verdict"),
-profit,
-totalRevenue > 0
-);
+const verdictEl = document.getElementById("o-verdict");
+
+setVerdict(verdictEl, profit, totalRevenue > 0);
+addInsight(verdictEl, profit);
 
 }
-
 
 
 /* FREIGHT TOOL */
@@ -860,39 +918,28 @@ el.addEventListener("input", calcFreight);
 function calcFreight(){
 
 const quote = +document.getElementById("f-quote").value || 0;
-
 const cargo = +document.getElementById("f-cargo").value || 0;
-
 const freight = +document.getElementById("f-freight").value || 0;
-
 const dutyRate = +document.getElementById("f-duty").value || 0;
-
 const customs = +document.getElementById("f-customs").value || 0;
-
 const insuranceRate = +document.getElementById("f-insurance").value || 0;
 
 const dutyCost = cargo * (dutyRate / 100);
-
 const insuranceCost = cargo * (insuranceRate / 100);
 
 const total = freight + dutyCost + insuranceCost + customs;
-
 const profit = quote - total;
 
 document.getElementById("f-duty-cost").textContent = R(dutyCost);
-
 document.getElementById("f-total").textContent = R(total);
-
 document.getElementById("f-profit").textContent = R(profit);
 
-setVerdict(
-document.getElementById("f-verdict"),
-profit,
-quote > 0
-);
+const verdictEl = document.getElementById("f-verdict");
+
+setVerdict(verdictEl, profit, quote > 0);
+addInsight(verdictEl, profit);
 
 }
-
 
 </script>
 
