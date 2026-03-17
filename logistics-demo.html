@@ -328,52 +328,58 @@ Enter a real shipment you’re considering right now and see if you're making pr
 
 <h3>Shipment Inputs</h3>
 
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+Enter a real shipment you're about to take — not estimates.
+</p>
+
 <div class="field">
 <label>Client Quote Price (what you plan to charge)</label>
-<input id="s-quote" type="number">
+<input id="s-quote" type="number" placeholder="e.g. 9500">
 </div>
 
 <div class="field">
 <label>Fuel Cost</label>
-<input id="s-fuel" type="number">
+<input id="s-fuel" type="number" placeholder="e.g. 3200">
 </div>
 
 <div class="field">
 <label>Driver Cost</label>
-<input id="s-driver" type="number">
+<input id="s-driver" type="number" placeholder="e.g. 1800">
 </div>
 
 <div class="field">
 <label>Toll Costs</label>
-<input id="s-tolls" type="number">
+<input id="s-tolls" type="number" placeholder="e.g. 600">
 </div>
 
 <div class="field">
 <label>Other Expenses (small costs you might overlook)</label>
-<input id="s-other" type="number">
+<input id="s-other" type="number" placeholder="e.g. 300">
 </div>
 
 <div class="field locked-field">
-<label>Maintenance Allocation</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Maintenance Allocation (real vehicle cost per trip)</label>
+<input disabled placeholder="Unlock to reveal real cost impact">
 </div>
 
 <div class="field locked-field">
-<label>Insurance Allocation</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Insurance Allocation (hidden cost per shipment)</label>
+<input disabled placeholder="Unlock full cost breakdown">
 </div>
 
 <div class="field locked-field">
-<label>Vehicle Depreciation</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Vehicle Depreciation (asset wear per trip)</label>
+<input disabled placeholder="See true profit after asset loss">
 </div>
 
 </div>
 
 <div class="box">
 
+<h3>Shipment Results</h3>
+
 <p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
-Based on your inputs — but this may not include all real operating costs.
+Based on your inputs — but this does NOT include all real operating costs.
 </p>
 
 <div class="result">
@@ -382,27 +388,27 @@ Based on your inputs — but this may not include all real operating costs.
 </div>
 
 <div class="result">
-<span>Net Profit</span>
+<span>Estimated Profit (before hidden costs)</span>
 <span id="s-profit">R 0.00</span>
 </div>
 
 <div class="result locked">
-<span>Profit Margin</span>
+<span>🔒 True Profit Margin (after ALL costs)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>ROI</span>
+<span>🔒 Real ROI (actual performance)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Break-Even Price</span>
+<span>🔒 Recommended Safe Price</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Shipment Risk Score</span>
+<span>🔒 Shipment Risk Level</span>
 <span>🔒</span>
 </div>
 
@@ -410,11 +416,14 @@ Based on your inputs — but this may not include all real operating costs.
 Enter shipment numbers
 </div>
 
-
+<p style="margin-top:10px;font-size:13px;color:#fbbf24;">
+⚠️ Many businesses think they’re profitable — until hidden costs are included.
+</p>
 
 </div>
+
 <a href="signup.html" class="buy-btn">
-Unlock Full Analysis — Start Free Trial
+See Full Profit & Risk Breakdown — Start Free Trial
 </a>
 
 </div>
@@ -431,47 +440,53 @@ Unlock Full Analysis — Start Free Trial
 
 <h3>Monthly Inputs</h3>
 
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+Enter your real monthly numbers — this reveals how your business is actually performing.
+</p>
+
 <div class="field">
 <label>Shipments Per Month</label>
-<input id="o-shipments" type="number">
+<input id="o-shipments" type="number" placeholder="e.g. 120">
 </div>
 
 <div class="field">
 <label>Revenue Per Shipment</label>
-<input id="o-revenue" type="number">
+<input id="o-revenue" type="number" placeholder="e.g. 9500">
 </div>
 
 <div class="field">
-<label>Fuel Costs</label>
-<input id="o-fuel" type="number">
+<label>Fuel Costs (monthly total)</label>
+<input id="o-fuel" type="number" placeholder="e.g. 320000">
 </div>
 
 <div class="field">
-<label>Labor Costs</label>
-<input id="o-labor" type="number">
+<label>Labor Costs (drivers, staff)</label>
+<input id="o-labor" type="number" placeholder="e.g. 210000">
 </div>
 
 <div class="field">
-<label>Fixed Costs</label>
-<input id="o-fixed" type="number">
+<label>Fixed Costs (rent, admin, etc.)</label>
+<input id="o-fixed" type="number" placeholder="e.g. 120000">
 </div>
 
 <div class="field locked-field">
-<label>Maintenance Budget</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Maintenance Budget (fleet wear & repairs)</label>
+<input disabled placeholder="Unlock real operating cost">
 </div>
 
 <div class="field locked-field">
-<label>Insurance Budget</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Insurance Budget (hidden monthly cost)</label>
+<input disabled placeholder="Reveal full expense structure">
 </div>
 
 </div>
 
 <div class="box">
 
+<h3>Monthly Results</h3>
+
 <p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
-This is a simplified view — real margins may be lower after hidden costs.
+This is a simplified view — your real profit may be lower after hidden costs.
 </p>
 
 <div class="result">
@@ -485,22 +500,22 @@ This is a simplified view — real margins may be lower after hidden costs.
 </div>
 
 <div class="result">
-<span>Net Profit</span>
+<span>Estimated Net Profit (before hidden costs)</span>
 <span id="o-profit">R 0.00</span>
 </div>
 
 <div class="result locked">
-<span>Profit Margin</span>
+<span>🔒 True Profit Margin (after ALL costs)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Break-Even Shipments</span>
+<span>🔒 Break-Even Shipments (minimum to survive)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Annual Projection</span>
+<span>🔒 Annual Profit Projection (real outlook)</span>
 <span>🔒</span>
 </div>
 
@@ -508,17 +523,18 @@ This is a simplified view — real margins may be lower after hidden costs.
 Enter monthly numbers
 </div>
 
+<p style="margin-top:10px;font-size:13px;color:#fbbf24;">
+⚠️ Many businesses look profitable monthly — but lose money over time.
+</p>
 
 </div>
 
-
 <a href="signup.html" class="buy-btn">
-Unlock Full Analysis — Start Free Trial
+See Full Business Breakdown — Start Free Trial
 </a>
 
 </div>
 </div>
-
 
 <!-- FREIGHT TOOL -->
 
@@ -530,56 +546,59 @@ Unlock Full Analysis — Start Free Trial
 
 <h3>Freight Inputs</h3>
 
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+Enter a real import/export shipment — international deals often hide the biggest costs.
+</p>
+
 <div class="field">
-<label>Client Quote Price</label>
-<input id="f-quote" type="number">
+<label>Client Quote Price (what you're charging)</label>
+<input id="f-quote" type="number" placeholder="e.g. 45000">
 </div>
 
 <div class="field">
-<label>Cargo Value</label>
-<input id="f-cargo" type="number">
+<label>Cargo Value (used for duties & insurance)</label>
+<input id="f-cargo" type="number" placeholder="e.g. 120000">
 </div>
 
 <div class="field">
-<label>Freight Cost</label>
-<input id="f-freight" type="number">
+<label>Freight Cost (shipping)</label>
+<input id="f-freight" type="number" placeholder="e.g. 15000">
 </div>
 
 <div class="field">
 <label>Import Duty %</label>
-<input id="f-duty" type="number">
+<input id="f-duty" type="number" placeholder="e.g. 20">
 </div>
 
 <div class="field">
 <label>Customs Fees</label>
-<input id="f-customs" type="number">
+<input id="f-customs" type="number" placeholder="e.g. 3500">
 </div>
 
 <div class="field">
 <label>Insurance Rate %</label>
-<input id="f-insurance" type="number">
+<input id="f-insurance" type="number" placeholder="e.g. 2">
 </div>
 
 <div class="field locked-field">
-<label>Port / Terminal Fees</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Port / Terminal Fees (often unexpected)</label>
+<input disabled placeholder="Reveal hidden port charges">
 </div>
 
 <div class="field locked-field">
-<label>Warehouse Handling</label>
-<input disabled placeholder="Unlock with trial">
+<label>🔒 Warehouse Handling & Delays</label>
+<input disabled placeholder="See full landed cost impact">
 </div>
 
 </div>
 
 <div class="box">
 
-<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
-International shipments often include hidden charges not shown here.
-</p>
-
-
 <h3>Freight Results</h3>
+
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">
+This estimate excludes several real-world charges — your actual cost may be higher.
+</p>
 
 <div class="result">
 <span>Duty Cost</span>
@@ -592,22 +611,22 @@ International shipments often include hidden charges not shown here.
 </div>
 
 <div class="result">
-<span>Estimated Profit</span>
+<span>Estimated Profit (before hidden costs)</span>
 <span id="f-profit">R 0.00</span>
 </div>
 
 <div class="result locked">
-<span>Profit Margin</span>
+<span>🔒 True Profit Margin (after ALL import costs)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Break-Even Quote</span>
+<span>🔒 Break-Even Quote (safe pricing)</span>
 <span>🔒</span>
 </div>
 
 <div class="result locked">
-<span>Risk Level</span>
+<span>🔒 Risk Level (chance of loss)</span>
 <span>🔒</span>
 </div>
 
@@ -615,11 +634,14 @@ International shipments often include hidden charges not shown here.
 Enter freight numbers
 </div>
 
+<p style="margin-top:10px;font-size:13px;color:#fbbf24;">
+⚠️ Many international shipments look profitable — until final charges arrive.
+</p>
 
 </div>
 
 <a href="signup.html" class="buy-btn">
-Unlock Full Analysis — Start Free Trial
+See True Landed Cost & Risk — Start Free Trial
 </a>
 
 </div>
