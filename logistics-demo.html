@@ -102,22 +102,41 @@ content:"🔒 ";
 .result{
 display:flex;
 justify-content:space-between;
-padding:8px 0;
+align-items:center;
+padding:10px 0;
 border-bottom:1px solid #334155;
+gap:10px;
+}
+
+.result span:first-child{
+flex:1;
+font-size:14px;
+color:#cbd5f5;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.result span:last-child{
+flex-shrink:0;
+font-weight:bold;
+font-size:14px;
+white-space:nowrap;
 }
 
 .result.locked{
 opacity:0.4;
 }
 
-.verdict{
+..verdict{
 margin-top:15px;
-padding:10px;
+padding:12px;
 background:#020617;
 border:1px solid #334155;
 border-radius:6px;
 text-align:center;
 font-size:14px;
+line-height:1.4;
 }
 
 @media(max-width:768px){
