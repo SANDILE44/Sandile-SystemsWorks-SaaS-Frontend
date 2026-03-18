@@ -203,28 +203,29 @@ color:#64748b;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:10px 0;
-border-bottom:1px solid #334155;
-gap:10px;
-}
-
-.result{
-display:flex;
-justify-content:space-between;
-align-items:center;
 padding:12px 0;
 border-bottom:1px solid #1e293b;
 font-size:14px;
+gap:10px;
+min-width:0;
 }
 
 .result span:first-child{
+flex:1;
+min-width:0;
 color:#94a3b8;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .result span:last-child{
+flex-shrink:0;
 font-weight:bold;
 font-size:15px;
 color:#e5e7eb;
+white-space:nowrap;
+text-align:right;
 }
 
 #s-profit, #o-profit, #f-profit{
