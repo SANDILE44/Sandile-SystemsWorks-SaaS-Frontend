@@ -137,6 +137,7 @@ gap:24px;
 /* BOX */
 
 .box{
+align-items:center;
 gap:6px;
 background:#0f172a;
 padding:22px;
@@ -154,9 +155,9 @@ font-size:16px;
 /* FIELDS */
 
 .field{
-margin-bottom:14px;
+margin:0 auto 14px auto;
 width:100%;
-margin-bottom:12px
+max-width:360px;
 }
 
 .field label{
@@ -173,11 +174,15 @@ padding:11px;
 background:#020617;
 border:1px solid #334155;
 border-radius:6px;
+color:white;
+font-size:14px;
+transition:0.2s ease;
+}
+
+input:focus{
 outline:none;
 border-color:#00b4d8;
 box-shadow:0 0 0 1px #00b4d8;
-color:white;
-font-size:14px;
 }
 
 /* LOCKED FIELDS */
