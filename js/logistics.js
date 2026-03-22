@@ -241,6 +241,17 @@ setClass($("ship-profit"),"profit-positive");
 else
 setClass($("ship-profit"),"profit-negative");
 
+const margin = Number(data.margin) || 0;
+
+if(margin >= 20)
+setClass($("ship-margin"),"margin-strong");
+
+else if(margin >= 10)
+setClass($("ship-margin"),"margin-medium");
+
+else
+setClass($("ship-margin"),"margin-low");
+
 }
 
 
