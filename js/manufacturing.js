@@ -88,7 +88,6 @@ $("mfg-revenue-per-unit").textContent = money(d.revenuePerUnit);
 
 $("mfg-profit-per-unit").textContent = money(d.profitPerUnit);
 
-
 /* =========================
 PROFIT
 ========================= */
