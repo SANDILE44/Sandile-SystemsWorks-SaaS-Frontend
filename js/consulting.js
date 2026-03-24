@@ -103,24 +103,26 @@
     $('consult-breakeven').textContent = d.breakevenHours.toFixed(2);
 
     // ===== DECISION & ADVICE =====
-    const decisionEl = $('consult-decision');
-    const adviceEl = $('consult-advice');
-    decisionEl.textContent = d.decision;
-    adviceEl.textContent = d.advice;
+const decisionEl = $('consult-decision');
+const adviceEl = $('consult-advice');
+decisionEl.textContent = d.decision;
+adviceEl.textContent = d.advice;
 
-    // Color code decision based on riskLevel
-    switch (d.riskLevel) {
-      case 'High':
-        applyColor(decisionEl, 'negative');
-        break;
-      case 'Medium':
-        applyColor(decisionEl, 'caution');
-        break;
-      case 'Low':
-        applyColor(decisionEl, 'positive');
-        break;
-    }
-  }
+// Color code based on riskLevel
+switch (d.riskLevel) {
+  case 'High':
+    applyColor(decisionEl, 'negative');
+    applyColor(adviceEl, 'negative'); // ✅ advice matches decision
+    break;
+  case 'Medium':
+    applyColor(decisionEl, 'caution');
+    applyColor(adviceEl, 'caution'); // ✅ advice matches decision
+    break;
+  case 'Low':
+    applyColor(decisionEl, 'positive');
+    applyColor(adviceEl, 'positive'); // ✅ advice matches decision
+    break;
+}
 
   /* =========================
      INPUT LISTENERS
