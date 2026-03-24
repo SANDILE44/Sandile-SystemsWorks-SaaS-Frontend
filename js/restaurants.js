@@ -216,7 +216,7 @@ async function runRestaurant() {
 
   } else {
 
-    statusEl.textContent = "✅ Strong Restaurant Profitability";
+    statusEl.textContent = "🟢 Strong Restaurant Profitability";
     statusEl.className = "profit";
 
     if (adviceEl)
