@@ -86,7 +86,16 @@ $("mfg-cost-per-unit").textContent = money(d.costPerUnit);
 
 $("mfg-revenue-per-unit").textContent = money(d.revenuePerUnit);
 
-$("mfg-profit-per-unit").textContent = money(d.profitPerUnit);
+const profitUnitEl = $("mfg-profit-per-unit");
+
+profitUnitEl.textContent = money(d.profitPerUnit);
+
+if (d.profitPerUnit < 0)
+  applyColor(profitUnitEl, "negative");
+else if (d.profitPerUnit < 5)
+  applyColor(profitUnitEl, "caution");
+else
+  applyColor(profitUnitEl, "positive");
 
 /* =========================
 PROFIT
