@@ -104,7 +104,7 @@ async function runRestaurant() {
     days:          +$("days")?.value        || 0
   });
 
-  if (!data) return;
+  if (!data) { alert("API returned null — check backend or subscription"); return; }
 
 
   /* ===============================
