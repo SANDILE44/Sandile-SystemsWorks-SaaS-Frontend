@@ -71,8 +71,6 @@
     $('consult-expenses-output').textContent = money(d.expenses || 0);
     $('consult-labor-output').textContent = money(d.labor || 0);
     $('consult-fixed-output').textContent = money(d.fixed || 0);
-
-    $('consult-overtime-output').textContent = money(d.overtimeRevenue);
     $('consult-variable-output').textContent = money(d.variableCosts || 0);
     $('consult-contingency-output').textContent = money(d.contingencyAmount);
 
@@ -103,26 +101,26 @@
     $('consult-breakeven').textContent = d.breakevenHours.toFixed(2);
 
     // ===== DECISION & ADVICE =====
-const decisionEl = $('consult-decision');
-const adviceEl = $('consult-advice');
-decisionEl.textContent = d.decision;
-adviceEl.textContent = d.advice;
+    const decisionEl = $('consult-decision');
+    const adviceEl = $('consult-advice');
+    decisionEl.textContent = d.decision;
+    adviceEl.textContent = d.advice;
 
-// Color code based on riskLevel
-switch (d.riskLevel) {
-  case 'High':
-    applyColor(decisionEl, 'negative');
-    applyColor(adviceEl, 'negative'); // ✅ advice matches decision
-    break;
-  case 'Medium':
-    applyColor(decisionEl, 'caution');
-    applyColor(adviceEl, 'caution'); // ✅ advice matches decision
-    break;
-  case 'Low':
-    applyColor(decisionEl, 'positive');
-    applyColor(adviceEl, 'positive'); // ✅ advice matches decision
-    break;
-}
+    switch (d.riskLevel) {
+      case 'High':
+        applyColor(decisionEl, 'negative');
+        applyColor(adviceEl, 'negative');
+        break;
+      case 'Medium':
+        applyColor(decisionEl, 'caution');
+        applyColor(adviceEl, 'caution');
+        break;
+      case 'Low':
+        applyColor(decisionEl, 'positive');
+        applyColor(adviceEl, 'positive');
+        break;
+    }
+  }
 
   /* =========================
      INPUT LISTENERS
@@ -139,6 +137,26 @@ switch (d.riskLevel) {
     'consult-variable-costs',
     'consult-contingency',
   ].forEach((id) => $(id)?.addEventListener('input', updateConsulting));
+
+  /* =========================
+     RESET BUTTON
+  ========================= */
+  $('resetBtn')?.addEventListener('click', () => {
+    [
+      'consult-hours',
+      'consult-rate',
+      'consult-expenses',
+      'consult-labor',
+      'consult-fixed',
+      'consult-discount',
+      'consult-overtime-hours',
+      'consult-overtime-rate',
+      'consult-variable-costs',
+      'consult-contingency',
+    ].forEach((id) => ($(id).value = ''));
+
+    runConsulting();
+  });
 
   /* =========================
      INITIAL RUN
