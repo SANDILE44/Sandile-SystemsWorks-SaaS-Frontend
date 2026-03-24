@@ -1,116 +1,275 @@
-// restaurants.js
+(() => {
 
-// --- HELPER FUNCTIONS ---
-function money(value) {
-  return "R" + Number(value).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
+/* ===============================
+HELPERS
+=============================== */
 
-function percent(value) {
-  return Number(value).toFixed(2) + "%";
-}
+const $ = (id) => document.getElementById(id);
 
-function applyStatusColor(element, status) {
-  element.classList.remove("profit", "loss", "neutral");
-  if (status === "profit") element.classList.add("profit");
-  else if (status === "loss") element.classList.add("loss");
-  else element.classList.add("neutral");
-}
+const money = (v) =>
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
-// --- DOM ELEMENTS ---
-const tablesInput = document.getElementById("tables");
-const coversInput = document.getElementById("covers");
-const checkInput = document.getElementById("check");
-const foodPercentInput = document.getElementById("foodPercent");
-const laborInput = document.getElementById("labor");
-const fixedInput = document.getElementById("fixed");
-const daysInput = document.getElementById("days");
+const percent = (v) => {
+  const n = Number(v) || 0;
+  const val = Math.abs(n) <= 1 ? n * 100 : n;
+  return val.toFixed(2) + "%";
+};
 
-const dailyCoversOutput = document.getElementById("dailyCovers");
-const revenueOutput = document.getElementById("revenue");
-const foodCostOutput = document.getElementById("foodCost");
-const totalCostsOutput = document.getElementById("totalCosts");
-const profitOutput = document.getElementById("profit");
-const marginOutput = document.getElementById("margin");
-const ratioOutput = document.getElementById("ratio");
-const profitCoverOutput = document.getElementById("profitCover");
-const breakevenOutput = document.getElementById("breakeven");
-const monthlyOutput = document.getElementById("monthly");
-const annualOutput = document.getElementById("annual");
+let debounceTimer;
 
-const statusOutput = document.getElementById("status");
-const decisionAdviceOutput = document.getElementById("decisionAdvice");
 
-const resetBtn = document.getElementById("resetBtn");
+/* ===============================
+API HELPER
+=============================== */
 
-// --- CALCULATION FUNCTION ---
-function calculate() {
-  const tables = Number(tablesInput.value) || 0;
-  const covers = Number(coversInput.value) || 0;
-  const check = Number(checkInput.value) || 0;
-  const foodPercent = Number(foodPercentInput.value) || 0;
-  const labor = Number(laborInput.value) || 0;
-  const fixed = Number(fixedInput.value) || 0;
-  const days = Number(daysInput.value) || 0;
+async function apiPost(url, body) {
 
-  // --- Revenue ---
-  const dailyCovers = tables * covers;
-  const monthlyRevenue = dailyCovers * check * days;
+  const token = localStorage.getItem("token");
 
-  // --- Costs ---
-  const foodCost = (foodPercent / 100) * monthlyRevenue;
-  const totalCosts = foodCost + labor + fixed;
-  const costRatio = monthlyRevenue ? (totalCosts / monthlyRevenue) * 100 : 0;
-
-  // --- Profit ---
-  const profit = monthlyRevenue - totalCosts;
-  const profitMargin = monthlyRevenue ? (profit / monthlyRevenue) * 100 : 0;
-  const profitPerCover = dailyCovers ? profit / (dailyCovers * days) : 0;
-
-  // --- Break-even ---
-  const breakevenCovers = check ? totalCosts / (check * days) : 0;
-
-  // --- Monthly & Annual ---
-  const monthlyProfit = profit;
-  const annualProfit = monthlyProfit * 12;
-
-  // --- Update DOM ---
-  dailyCoversOutput.textContent = dailyCovers;
-  revenueOutput.textContent = money(monthlyRevenue);
-  foodCostOutput.textContent = money(foodCost);
-  totalCostsOutput.textContent = money(totalCosts);
-  profitOutput.textContent = money(profit);
-  marginOutput.textContent = percent(profitMargin);
-  ratioOutput.textContent = percent(costRatio);
-  profitCoverOutput.textContent = money(profitPerCover);
-  breakevenOutput.textContent = Math.ceil(breakevenCovers);
-  monthlyOutput.textContent = money(monthlyProfit);
-  annualOutput.textContent = money(annualProfit);
-
-  // --- Decision logic ---
-  let status = "neutral";
-  let advice = "Review your costs and pricing.";
-  if (profit > 0) {
-    status = "profit";
-    advice = "Your restaurant is profitable! Consider growth or investment.";
-  } else if (profit < 0) {
-    status = "loss";
-    advice = "You are operating at a loss. Reduce costs or increase revenue.";
+  if (!token) {
+    location.replace("login.html");
+    return null;
   }
-  statusOutput.textContent = status === "neutral" ? "Break-even" : status === "profit" ? "Profit" : "Loss";
-  applyStatusColor(statusOutput, status);
-  decisionAdviceOutput.textContent = advice;
+
+  try {
+
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+      return null;
+    }
+
+    if (res.status === 403) {
+      location.replace("payment.html");
+      return null;
+    }
+
+    if (!res.ok) return null;
+
+    return await res.json();
+
+  } catch (err) {
+    console.error("API error", err);
+    return null;
+  }
+
 }
 
-// --- EVENT LISTENERS ---
-[tablesInput, coversInput, checkInput, foodPercentInput, laborInput, fixedInput, daysInput].forEach(input => {
-  input.addEventListener("input", calculate);
+
+/* ===============================
+CLASS HELPER
+=============================== */
+
+function setClass(el, extra) {
+  if (!el) return;
+  el.className = `output-value ${extra || ""}`;
+}
+
+
+/* ===============================
+DEBOUNCE RUNNER
+=============================== */
+
+function update() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(runRestaurant, 300);
+}
+
+
+/* ===============================
+MAIN CALCULATION
+=============================== */
+
+async function runRestaurant() {
+
+  const data = await apiPost("/api/calculators/restaurant/operations", {
+    tables:        +$("tables")?.value      || 0,
+    coversPerTable:+$("covers")?.value      || 0,
+    avgCheck:      +$("check")?.value       || 0,
+    foodPct:       +$("foodPercent")?.value || 0,
+    labor:         +$("labor")?.value       || 0,
+    fixed:         +$("fixed")?.value       || 0,
+    days:          +$("days")?.value        || 0
+  });
+
+  if (!data) return;
+
+
+  /* ===============================
+  REVENUE
+  =============================== */
+
+  $("dailyCovers").textContent = data.dailyCovers ?? 0;
+
+  $("revenue").textContent = money(data.monthlyRevenue);
+
+
+  /* ===============================
+  COSTS
+  =============================== */
+
+  $("foodCost").textContent  = money(data.foodCost);
+  $("totalCosts").textContent = money(data.totalCosts);
+
+  const ratioEl = $("ratio");
+  ratioEl.textContent = percent(data.costRatio);
+
+  if (data.costRatio > 80)
+    setClass(ratioEl, "profit-negative");
+  else if (data.costRatio > 60)
+    setClass(ratioEl, "margin-medium");
+  else
+    setClass(ratioEl, "profit-positive");
+
+
+  /* ===============================
+  PROFIT
+  =============================== */
+
+  const profitEl = $("profit");
+  profitEl.textContent = money(data.profit);
+
+  if (data.profit >= 0)
+    setClass(profitEl, "profit-positive");
+  else
+    setClass(profitEl, "profit-negative");
+
+
+  const marginEl = $("margin");
+  marginEl.textContent = percent(data.margin);
+
+  if (data.margin < 10)
+    setClass(marginEl, "profit-negative");
+  else if (data.margin < 20)
+    setClass(marginEl, "margin-medium");
+  else
+    setClass(marginEl, "margin-strong");
+
+
+  const coverEl = $("profitCover");
+  coverEl.textContent = money(data.profitPerCover);
+
+  if (data.profitPerCover < 0)
+    setClass(coverEl, "profit-negative");
+  else if (data.profitPerCover < 10)
+    setClass(coverEl, "margin-medium");
+  else
+    setClass(coverEl, "profit-positive");
+
+
+  $("monthly").textContent = money(data.monthlyProfit);
+  $("annual").textContent  = money(data.annualProfit);
+
+
+  /* ===============================
+  BREAKEVEN
+  =============================== */
+
+  $("breakeven").textContent = data.breakevenCovers ?? 0;
+
+
+  /* ===============================
+  DECISION ENGINE
+  =============================== */
+
+  const statusEl = $("status");
+  const adviceEl = $("decisionAdvice");
+
+  if (data.profit <= 0) {
+
+    statusEl.textContent = "❌ Restaurant Losing Money";
+    statusEl.className = "loss";
+
+    if (adviceEl)
+      adviceEl.textContent = data.advice ||
+        "Costs are higher than revenue. Increase pricing or reduce food and labor costs.";
+
+  } else if (data.margin < 10) {
+
+    statusEl.textContent = "⚠ Dangerous Margin";
+    statusEl.className = "loss";
+
+    if (adviceEl)
+      adviceEl.textContent = data.advice ||
+        "Profit margin is too small. Any cost increase could cause losses.";
+
+  } else if (data.margin < 20) {
+
+    statusEl.textContent = "🟡 Moderate Profitability";
+    statusEl.className = "neutral";
+
+    if (adviceEl)
+      adviceEl.textContent = data.advice ||
+        "Restaurant is profitable but margin can improve.";
+
+  } else {
+
+    statusEl.textContent = "✅ Strong Restaurant Profitability";
+    statusEl.className = "profit";
+
+    if (adviceEl)
+      adviceEl.textContent = data.advice ||
+        "Healthy restaurant margins. Scaling could significantly increase profits.";
+
+  }
+
+}
+
+
+/* ===============================
+EVENT BINDING
+=============================== */
+
+document
+  .querySelectorAll(".input-section input")
+  .forEach(i => i.addEventListener("input", update));
+
+
+/* ===============================
+RESET
+=============================== */
+
+$("resetBtn")?.addEventListener("click", () => {
+
+  document
+    .querySelectorAll(".input-section input")
+    .forEach(i => i.value = "");
+
+  const ids = [
+    "dailyCovers","revenue","foodCost","totalCosts",
+    "ratio","profit","margin","profitCover",
+    "monthly","annual","breakeven"
+  ];
+
+  ids.forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.textContent = "—";
+      el.className = "output-value";
+    }
+  });
+
+  const statusEl = $("status");
+  if (statusEl) {
+    statusEl.textContent = "—";
+    statusEl.className = "";
+  }
+
+  const adviceEl = $("decisionAdvice");
+  if (adviceEl) adviceEl.textContent = "";
+
 });
 
-// --- RESET BUTTON ---
-resetBtn.addEventListener("click", () => {
-  [tablesInput, coversInput, checkInput, foodPercentInput, laborInput, fixedInput, daysInput].forEach(i => i.value = "");
-  calculate();
-});
-
-// --- INITIAL CALCULATION ---
-calculate();
+})();
