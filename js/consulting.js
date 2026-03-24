@@ -83,6 +83,10 @@
 
     $('consult-profit-hour').textContent = money(d.profitPerHour);
 
+const cph = $('consult-cost-hour');
+cph.textContent = money(d.costPerHour);
+applyColor(cph, d.costPerHour > 0 ? 'caution' : 'negative'); // example
+
     // ===== MARGIN =====
     const m = $('consult-margin');
     m.textContent = percent(d.margin);
