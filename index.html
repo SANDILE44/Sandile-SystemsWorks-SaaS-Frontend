@@ -290,20 +290,33 @@ Used for evaluating contracts, shipments, projects, and pricing decisions.
     <div class="demo-select-wrap">
       <select id="demo-select">
         <option value="">— Choose a tool —</option>
+
+
         <optgroup label="Logistics">
           <option value="shipment">Per-Shipment Risk Analysis</option>
+
+
           <option value="operations">Monthly Operations Analysis</option>
           <option value="freight">Freight Import / Export Analysis</option>
         </optgroup>
+
         <optgroup label="Manufacturing">
           <option value="manufacturing">Manufacturing Profitability</option>
         </optgroup>
+
         <optgroup label="Construction">
           <option value="construction">Construction Project Profitability</option>
-        </optgroup>
+  </optgroup>
+
+<optgroup label="Real Estate">
+  <option value="realestate">Property Investment Analysis</option>
+</optgroup>
+
         <optgroup label="Restaurant">
           <option value="restaurant">Restaurant Profitability</option>
         </optgroup>
+
+
       </select>
     </div>
 
@@ -484,6 +497,36 @@ Start Free Trial — No Credit Card
         </div>
       </div>
     </div>
+
+<!-- REAL ESTATE -->
+<div id="demo-realestate" class="demo-panel">
+  <div class="demo-panel-header">
+    <div>
+      <div class="demo-panel-title">Property Investment Analysis</div>
+      <div class="demo-panel-desc">Find out if a property will make money before you buy it.</div>
+    </div>
+  </div>
+  <div class="demo-grid">
+    <div class="demo-inputs">
+      <h4>Your Numbers</h4>
+      <div class="demo-field"><label>Property Purchase Price (R)</label><input type="number" id="re-price" placeholder="e.g. 2300000" /></div>
+      <div class="demo-field"><label>Monthly Rental Income (R)</label><input type="number" id="re-rent" placeholder="e.g. 25000" /></div>
+      <div class="demo-field"><label>Monthly Expenses (R)</label><input type="number" id="re-expenses" placeholder="e.g. 8000" /></div>
+      <div class="demo-field"><label>Vacancy Rate (%)</label><input type="number" id="re-vacancy" placeholder="e.g. 10" /></div>
+      <div class="demo-field"><label>Investment Duration (Years)</label><input type="number" id="re-years" placeholder="e.g. 5" /></div>
+    </div>
+    <div class="demo-results">
+      <h4>Instant Results</h4>
+      <div class="result-row"><span>Annual Rental Income</span><span id="re-annual-income">R 0.00</span></div>
+      <div class="result-row"><span>Monthly Profit</span><span id="re-monthly-profit">R 0.00</span></div>
+      <div class="result-row"><span>Net Profit / Loss</span><span id="re-profit">R 0.00</span></div>
+      <div class="result-row locked-row"><span>ROI (%)</span><span class="locked-value">🔒 Unlock</span></div>
+      <div class="result-row locked-row"><span>Break-even Rent</span><span class="locked-value">🔒 Unlock</span></div>
+      <div class="result-row locked-row"><span>Investment Risk Level</span><span class="locked-value">🔒 Unlock</span></div>
+      <div class="demo-verdict" id="re-verdict">Enter your numbers above to get a decision</div>
+      <a href="signup.html" class="demo-cta">Unlock Full Analysis — Start Free Trial</a>
+    </div>
+
 
     <!-- RESTAURANT -->
     <div id="demo-restaurant" class="demo-panel">
@@ -1396,6 +1439,34 @@ function calcConstruction() {
   setVerdict(document.getElementById('c-verdict'), profit, contract > 0);
   if (contract > 0) useCalculation('construction');
 }
+
+/* ── REAL ESTATE ── */
+['re-price','re-rent','re-expenses','re-vacancy','re-years'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', calcRealEstate);
+});
+function calcRealEstate() {
+  const price    = +document.getElementById('re-price').value    || 0;
+  const rent     = +document.getElementById('re-rent').value     || 0;
+  const expenses = +document.getElementById('re-expenses').value || 0;
+  const vacancy  = +document.getElementById('re-vacancy').value  || 0;
+  const years    = +document.getElementById('re-years').value    || 0;
+
+  const vacancyFactor = Math.max(0.01, 1 - vacancy / 100);
+  const annualIncome  = rent * 12 * vacancyFactor;
+  const annualExpenses = expenses * 12;
+  const totalIncome   = annualIncome * years;
+  const totalExpenses = annualExpenses * years;
+  const profit        = totalIncome - totalExpenses;
+  const monthlyProfit = (annualIncome - annualExpenses) / 12;
+
+  document.getElementById('re-annual-income').textContent   = R(annualIncome);
+  document.getElementById('re-monthly-profit').textContent  = R(monthlyProfit);
+  document.getElementById('re-profit').textContent          = R(profit);
+
+  setVerdict(document.getElementById('re-verdict'), profit, price > 0);
+  if (price > 0) useCalculation('realestate');
+}
+
 
 /* ── RESTAURANT ── */
 ['r-tables','r-covers','r-check','r-food-pct','r-labour','r-fixed','r-days'].forEach(id => {
