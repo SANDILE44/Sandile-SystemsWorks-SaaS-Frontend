@@ -2,15 +2,15 @@
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
-    'R' +
-    (Number(v) || 0).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
-  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
+  const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
-  const API_BASE = 'https://sandile-systemsworks-saas-backend-2.onrender.com';
+  const API_BASE =
+    "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
   let timer;
 
@@ -27,101 +27,126 @@
   ========================= */
   function applyColor(el, type) {
     if (!el) return;
-    el.classList.remove('positive', 'negative', 'caution');
+    el.classList.remove("positive", "negative", "caution");
     if (type) el.classList.add(type);
   }
 
   /* =========================
-     MAIN CALCULATION RUNNER
+     MAIN CALCULATION
   ========================= */
   async function runConsulting() {
-    const token = localStorage.getItem('token');
-    if (!token) return location.replace('login.html');
+    const token = localStorage.getItem("token");
+    if (!token) return location.replace("login.html");
 
-    const res = await fetch(`${API_BASE}/api/calculators/consulting/project`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        hours: +$('consult-hours').value || 0,
-        rate: +$('consult-rate').value || 0,
-        expenses: +$('consult-expenses').value || 0,
-        labor: +$('consult-labor').value || 0,
-        fixed: +$('consult-fixed').value || 0,
-        discountPct: +$('consult-discount').value || 0,
-        otHours: +$('consult-overtime-hours').value || 0,
-        otRate: +$('consult-overtime-rate').value || 0,
-        variableCosts: +$('consult-variable-costs').value || 0,
-        contingencyPct: +$('consult-contingency').value || 0,
-      }),
-    });
+    const res = await fetch(
+      `${API_BASE}/api/calculators/consulting/project`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          hours: +$("consult-hours").value || 0,
+          rate: +$("consult-rate").value || 0,
+          expenses: +$("consult-expenses").value || 0,
+          labor: +$("consult-labor").value || 0,
+          fixed: +$("consult-fixed").value || 0,
+          discountPct: +$("consult-discount").value || 0,
+          otHours: +$("consult-overtime-hours").value || 0,
+          otRate: +$("consult-overtime-rate").value || 0,
+          variableCosts: +$("consult-variable-costs").value || 0,
+          contingencyPct: +$("consult-contingency").value || 0,
+        }),
+      }
+    );
 
-    if (res.status === 403) return location.replace('payment.html');
+    if (res.status === 403) return location.replace("payment.html");
     if (!res.ok) return;
 
     const d = await res.json();
 
-    // ===== UPDATE REVENUE & COSTS =====
-    $('consult-revenue').textContent = money(d.totalRevenue);
-    $('consult-discount-output').textContent = money(d.discountAmount);
-    $('consult-revenue-after-discount').textContent = money(d.revenueAfterDiscount);
+    /* =========================
+       REVENUE
+    ========================= */
+    $("consult-revenue").textContent = money(d.totalRevenue);
+    $("consult-discount-output").textContent = money(d.discountAmount);
+    $("consult-revenue-after-discount").textContent = money(
+      d.revenueAfterDiscount
+    );
+    $("consult-overtime-output").textContent = money(d.overtimeRevenue);
 
-    $('consult-expenses-output').textContent = money(d.expenses || 0);
-    $('consult-labor-output').textContent = money(d.labor || 0);
-    $('consult-fixed-output').textContent = money(d.fixed || 0);
-    $('consult-variable-output').textContent = money(d.variableCosts || 0);
-    $('consult-contingency-output').textContent = money(d.contingencyAmount);
+    /* =========================
+       COSTS
+    ========================= */
+    $("consult-contingency-output").textContent = money(
+      d.contingencyAmount
+    );
 
-    $('consult-costs').textContent = money(d.totalCosts);
+    const cph = $("consult-cost-hour");
+    cph.textContent = money(d.costPerHour);
+    applyColor(cph, "caution");
 
-    // ===== PROFIT =====
-    const p = $('consult-profit');
+    $("consult-costs").textContent = money(d.totalCosts);
+
+    /* =========================
+       PROFIT
+    ========================= */
+    const p = $("consult-profit");
     p.textContent = money(d.profit);
-    applyColor(p, d.profit > 0 ? 'positive' : 'negative');
+    applyColor(p, d.profit > 0 ? "positive" : "negative");
 
-    $('consult-profit-hour').textContent = money(d.profitPerHour);
+    $("consult-profit-hour").textContent = money(d.profitPerHour);
 
-const cph = $('consult-cost-hour');
-cph.textContent = money(d.costPerHour);
-applyColor(cph, d.costPerHour > 0 ? 'caution' : 'negative'); // example
-
-    // ===== MARGIN =====
-    const m = $('consult-margin');
+    /* =========================
+       MARGIN
+    ========================= */
+    const m = $("consult-margin");
     m.textContent = percent(d.margin);
-    if (d.margin < 10) applyColor(m, 'negative');
-    else if (d.margin < 20) applyColor(m, 'caution');
-    else applyColor(m, 'positive');
 
-    // ===== ROI =====
-    const r = $('consult-roi');
+    if (d.margin < 10) applyColor(m, "negative");
+    else if (d.margin < 20) applyColor(m, "caution");
+    else applyColor(m, "positive");
+
+    /* =========================
+       ROI
+    ========================= */
+    const r = $("consult-roi");
     r.textContent = percent(d.roi);
-    if (d.roi < 50) applyColor(r, 'negative');
-    else if (d.roi < 100) applyColor(r, 'caution');
-    else applyColor(r, 'positive');
 
-    // ===== BREAKEVEN HOURS =====
-    $('consult-breakeven').textContent = d.breakevenHours.toFixed(2);
+    if (d.roi < 50) applyColor(r, "negative");
+    else if (d.roi < 100) applyColor(r, "caution");
+    else applyColor(r, "positive");
 
-    // ===== DECISION & ADVICE =====
-    const decisionEl = $('consult-decision');
-    const adviceEl = $('consult-advice');
-    decisionEl.textContent = d.decision;
-    adviceEl.textContent = d.advice;
+    /* =========================
+       BREAKEVEN
+    ========================= */
+    $("consult-breakeven").textContent =
+      (d.breakevenHours || 0).toFixed(2);
+
+    /* =========================
+       DECISION
+    ========================= */
+    const decisionEl = $("consult-decision");
+    const adviceEl = $("consult-advice");
+
+    decisionEl.textContent = d.decision || "—";
+    adviceEl.textContent = d.advice || "—";
 
     switch (d.riskLevel) {
-      case 'High':
-        applyColor(decisionEl, 'negative');
-        applyColor(adviceEl, 'negative');
+      case "High":
+        applyColor(decisionEl, "negative");
+        applyColor(adviceEl, "negative");
         break;
-      case 'Medium':
-        applyColor(decisionEl, 'caution');
-        applyColor(adviceEl, 'caution');
+
+      case "Medium":
+        applyColor(decisionEl, "caution");
+        applyColor(adviceEl, "caution");
         break;
-      case 'Low':
-        applyColor(decisionEl, 'positive');
-        applyColor(adviceEl, 'positive');
+
+      case "Low":
+        applyColor(decisionEl, "positive");
+        applyColor(adviceEl, "positive");
         break;
     }
   }
@@ -130,34 +155,36 @@ applyColor(cph, d.costPerHour > 0 ? 'caution' : 'negative'); // example
      INPUT LISTENERS
   ========================= */
   [
-    'consult-hours',
-    'consult-rate',
-    'consult-expenses',
-    'consult-labor',
-    'consult-fixed',
-    'consult-discount',
-    'consult-overtime-hours',
-    'consult-overtime-rate',
-    'consult-variable-costs',
-    'consult-contingency',
-  ].forEach((id) => $(id)?.addEventListener('input', updateConsulting));
+    "consult-hours",
+    "consult-rate",
+    "consult-expenses",
+    "consult-labor",
+    "consult-fixed",
+    "consult-discount",
+    "consult-overtime-hours",
+    "consult-overtime-rate",
+    "consult-variable-costs",
+    "consult-contingency",
+  ].forEach((id) =>
+    $(id)?.addEventListener("input", updateConsulting)
+  );
 
   /* =========================
-     RESET BUTTON
+     RESET
   ========================= */
-  $('resetBtn')?.addEventListener('click', () => {
+  $("resetBtn")?.addEventListener("click", () => {
     [
-      'consult-hours',
-      'consult-rate',
-      'consult-expenses',
-      'consult-labor',
-      'consult-fixed',
-      'consult-discount',
-      'consult-overtime-hours',
-      'consult-overtime-rate',
-      'consult-variable-costs',
-      'consult-contingency',
-    ].forEach((id) => ($(id).value = ''));
+      "consult-hours",
+      "consult-rate",
+      "consult-expenses",
+      "consult-labor",
+      "consult-fixed",
+      "consult-discount",
+      "consult-overtime-hours",
+      "consult-overtime-rate",
+      "consult-variable-costs",
+      "consult-contingency",
+    ].forEach((id) => ($(id).value = ""));
 
     runConsulting();
   });
