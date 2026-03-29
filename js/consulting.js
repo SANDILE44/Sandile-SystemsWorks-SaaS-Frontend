@@ -1,3 +1,8 @@
+function clampPercent(value, min = 0, max = 100) {
+  value = Number(value) || 0;
+  return Math.min(Math.max(value, min), max);
+}
+
 (() => {
   const $ = (id) => document.getElementById(id);
 
@@ -52,11 +57,11 @@
           expenses: +$("consult-expenses").value || 0,
           labor: +$("consult-labor").value || 0,
           fixed: +$("consult-fixed").value || 0,
-          discountPct: +$("consult-discount").value || 0,
+          discountPct: clampPercent($("consult-discount").value, 0, 100),
           otHours: +$("consult-overtime-hours").value || 0,
           otRate: +$("consult-overtime-rate").value || 0,
           variableCosts: +$("consult-variable-costs").value || 0,
-          contingencyPct: +$("consult-contingency").value || 0,
+          contingencyPct: clampPercent($("consult-contingency").value, 0, 50),
         }),
       }
     );
