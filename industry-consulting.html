@@ -29,6 +29,27 @@
   color: #ffc107;  /* yellow / amber */
   font-weight: 600;
 }
+
+#consult-steps {
+  list-style: decimal inside;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+#consult-steps li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+#consult-steps li strong {
+  color: #007bff; /* step number in blue */
+}
+
+#consult-steps li em {
+  color: #6c757d; /* reason text in gray */
+  font-style: italic;
+}
+
 </style>
 
   </head>
@@ -301,7 +322,16 @@ Analyze consulting engagements, pricing, costs, and risk before accepting a proj
 
   <div class="output-group">
     <div class="output-label">Advice</div>
-    <div class="output-value" id="consult-advice">—</div>
+    <div class="output-value" id="consult-advice">
+</div>
+
+<div class="output-group">
+  <div class="output-label">Step-by-Step Guidance</div>
+  <ul class="output-value" id="consult-steps">
+    <!-- JS will populate steps here -->
+  </ul>
+</div>
+
   </div>
 
 </div>
