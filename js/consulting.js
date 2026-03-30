@@ -7,10 +7,10 @@ function clampPercent(value, min = 0, max = 100) {
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
-  (Number(v) || 0).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+    (Number(v) || 0).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
@@ -43,28 +43,25 @@ function clampPercent(value, min = 0, max = 100) {
     const token = localStorage.getItem("token");
     if (!token) return location.replace("login.html");
 
-    const res = await fetch(
-      `${API_BASE}/api/calculators/consulting/project`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          hours: +$("consult-hours").value || 0,
-          rate: +$("consult-rate").value || 0,
-          expenses: +$("consult-expenses").value || 0,
-          labor: +$("consult-labor").value || 0,
-          fixed: +$("consult-fixed").value || 0,
-          discountPct: clampPercent($("consult-discount").value, 0, 100),
-          otHours: +$("consult-overtime-hours").value || 0,
-          otRate: +$("consult-overtime-rate").value || 0,
-          variableCosts: +$("consult-variable-costs").value || 0,
-          contingencyPct: clampPercent($("consult-contingency").value, 0, 50),
-        }),
-      }
-    );
+    const res = await fetch(`${API_BASE}/api/calculators/consulting/project`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        hours: +$("consult-hours").value || 0,
+        rate: +$("consult-rate").value || 0,
+        expenses: +$("consult-expenses").value || 0,
+        labor: +$("consult-labor").value || 0,
+        fixed: +$("consult-fixed").value || 0,
+        discountPct: clampPercent($("consult-discount").value, 0, 100),
+        otHours: +$("consult-overtime-hours").value || 0,
+        otRate: +$("consult-overtime-rate").value || 0,
+        variableCosts: +$("consult-variable-costs").value || 0,
+        contingencyPct: clampPercent($("consult-contingency").value, 0, 50),
+      }),
+    });
 
     if (res.status === 403) return location.replace("payment.html");
     if (!res.ok) return;
@@ -84,9 +81,7 @@ function clampPercent(value, min = 0, max = 100) {
     /* =========================
        COSTS
     ========================= */
-    $("consult-contingency-output").textContent = money(
-      d.contingencyAmount
-    );
+    $("consult-contingency-output").textContent = money(d.contingencyAmount);
 
     const cph = $("consult-cost-hour");
     cph.textContent = money(d.costPerHour);
@@ -126,17 +121,29 @@ function clampPercent(value, min = 0, max = 100) {
     /* =========================
        BREAKEVEN
     ========================= */
-    $("consult-breakeven").textContent =
-      (d.breakevenHours || 0).toFixed(2);
+    $("consult-breakeven").textContent = (d.breakevenHours || 0).toFixed(2);
 
     /* =========================
        DECISION
     ========================= */
     const decisionEl = $("consult-decision");
     const adviceEl = $("consult-advice");
+    const stepsEl = $("consult-steps");
 
     decisionEl.textContent = d.decision || "—";
     adviceEl.textContent = d.advice || "—";
+
+    // Clear previous steps
+    if (stepsEl) stepsEl.innerHTML = "";
+
+    // Render new step-by-step guidance
+    if (d.steps && d.steps.length && stepsEl) {
+      d.steps.forEach((step, i) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>Step ${i + 1}:</strong> ${step.action} — current: ${step.current}, suggested: ${step.suggested} <em>(${step.reason})</em>`;
+        stepsEl.appendChild(li);
+      });
+    }
 
     switch (d.riskLevel) {
       case "High":
@@ -170,9 +177,7 @@ function clampPercent(value, min = 0, max = 100) {
     "consult-overtime-rate",
     "consult-variable-costs",
     "consult-contingency",
-  ].forEach((id) =>
-    $(id)?.addEventListener("input", updateConsulting)
-  );
+  ].forEach((id) => $(id)?.addEventListener("input", updateConsulting));
 
   /* =========================
      RESET
