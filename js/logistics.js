@@ -69,45 +69,65 @@ function setClass(el, extra){
 STEP RENDERER
 =============================== */
 
-function renderSteps(containerId, steps){
+function renderSteps(containerId, steps) {
   const container = document.getElementById(containerId);
-  if(!container) return;
+  if (!container) return;
 
-  if(!steps || !Array.isArray(steps)) {
+  if (!steps || !Array.isArray(steps)) {
     container.innerHTML = "";
     return;
   }
 
   container.innerHTML = steps.map(s => {
     let text = "";
-    let cssClass = "";
-
-    // Handle string or object
-    if(typeof s === "string"){
-      text = s;
-    } else if(typeof s === "object"){
-      text = Object.entries(s).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join(", ");
+    
+    if (typeof s === "string") text = s;
+    else if (typeof s === "object") {
+      text = Object.entries(s)
+        .map(([k, v]) => `<strong>${k}:</strong> ${v}`)
+        .join(", ");
     }
 
-    // Assign color classes based on keywords / logic
-    if(text.toLowerCase().includes("profit") && text.toLowerCase().includes("positive")) cssClass = "profit-positive";
-    else if(text.toLowerCase().includes("profit") && text.toLowerCase().includes("negative")) cssClass = "profit-negative";
+    // Replace values with color spans
+    // ROI example
+    text = text.replace(/ROI\s*[:=]\s*([\d.]+)%/i, (m, val) => {
+      const n = parseFloat(val);
+      const cls = n >= 20 ? "profit-positive" : n >= 10 ? "margin-medium" : "profit-negative";
+      return `ROI: <span class="${cls}">${val}%</span>`;
+    });
 
-    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("low")) cssClass = "risk-low";
-    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("medium")) cssClass = "risk-medium";
-    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("high")) cssClass = "risk-high";
+    // Profit example
+    text = text.replace(/Profit\s*[:=]\s*([\d.]+)/i, (m, val) => {
+      const n = parseFloat(val);
+      const cls = n >= 0 ? "profit-positive" : "profit-negative";
+      return `Profit: <span class="${cls}">${val}</span>`;
+    });
 
-    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("strong")) cssClass = "margin-strong";
-    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("medium")) cssClass = "margin-medium";
-    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("low")) cssClass = "margin-low";
+    // Margin example
+    text = text.replace(/Margin\s*[:=]\s*([\d.]+)%/i, (m, val) => {
+      const n = parseFloat(val);
+      const cls = n >= 20 ? "margin-strong" : n >= 10 ? "margin-medium" : "margin-low";
+      return `Margin: <span class="${cls}">${val}%</span>`;
+    });
 
-    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("healthy")) cssClass = "safety-healthy";
-    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("risk")) cssClass = "safety-risk";
-    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("critical")) cssClass = "safety-critical";
+    // Risk example
+    text = text.replace(/Risk\s*[:=]\s*(Low|Medium|High)/i, (m, val) => {
+      const cls = val.toLowerCase() === "low" ? "risk-low" :
+                  val.toLowerCase() === "medium" ? "risk-medium" : "risk-high";
+      return `Risk: <span class="${cls}">${val}</span>`;
+    });
 
-    return `<li class="${cssClass}">${text}</li>`;
+    // Safety example
+    text = text.replace(/Safety\s*[:=]\s*(Healthy|Risk|Critical)/i, (m, val) => {
+      const cls = val.toLowerCase() === "healthy" ? "safety-healthy" :
+                  val.toLowerCase() === "risk" ? "safety-risk" : "safety-critical";
+      return `Safety: <span class="${cls}">${val}</span>`;
+    });
+
+    return `<li>${text}</li>`;
   }).join("");
 }
+
 
 /* ===============================
 MONTHLY OPERATIONS
