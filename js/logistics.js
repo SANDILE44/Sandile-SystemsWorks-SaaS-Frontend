@@ -70,7 +70,7 @@ STEP RENDERER
 =============================== */
 
 function renderSteps(containerId, steps){
-  const container = $(containerId);
+  const container = document.getElementById(containerId);
   if(!container) return;
 
   if(!steps || !Array.isArray(steps)) {
@@ -79,23 +79,33 @@ function renderSteps(containerId, steps){
   }
 
   container.innerHTML = steps.map(s => {
-    let msg = "", cls = "";
+    let text = "";
+    let cssClass = "";
 
-    // If step is a simple string, default to "info"
-    if(typeof s === "string") {
-      msg = s;
-      cls = "step-info";
-    } 
-    // If step is an object with a type
-    else if(typeof s === "object") {
-      msg = s.message || JSON.stringify(s);
-      cls = s.type === "success" ? "step-success"
-          : s.type === "warning" ? "step-warning"
-          : s.type === "error"   ? "step-error"
-          : "step-info";
+    // Handle string or object
+    if(typeof s === "string"){
+      text = s;
+    } else if(typeof s === "object"){
+      text = Object.entries(s).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join(", ");
     }
 
-    return `<li class="${cls}">${msg}</li>`;
+    // Assign color classes based on keywords / logic
+    if(text.toLowerCase().includes("profit") && text.toLowerCase().includes("positive")) cssClass = "profit-positive";
+    else if(text.toLowerCase().includes("profit") && text.toLowerCase().includes("negative")) cssClass = "profit-negative";
+
+    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("low")) cssClass = "risk-low";
+    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("medium")) cssClass = "risk-medium";
+    else if(text.toLowerCase().includes("risk") && text.toLowerCase().includes("high")) cssClass = "risk-high";
+
+    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("strong")) cssClass = "margin-strong";
+    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("medium")) cssClass = "margin-medium";
+    else if(text.toLowerCase().includes("margin") && text.toLowerCase().includes("low")) cssClass = "margin-low";
+
+    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("healthy")) cssClass = "safety-healthy";
+    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("risk")) cssClass = "safety-risk";
+    else if(text.toLowerCase().includes("safety") && text.toLowerCase().includes("critical")) cssClass = "safety-critical";
+
+    return `<li class="${cssClass}">${text}</li>`;
   }).join("");
 }
 
