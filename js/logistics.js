@@ -66,16 +66,26 @@ function setClass(el, extra){
 }
 
 /* ===============================
-OUTPUT RENDERER
+STEP RENDERER
 =============================== */
 
 function renderSteps(containerId, steps){
-  if(!containerId) return;
   const container = $(containerId);
   if(!container) return;
-  container.innerHTML = (steps && Array.isArray(steps)) 
-    ? steps.map(s => `<li>${s}</li>`).join("") 
-    : "";
+
+  if(!steps || !Array.isArray(steps)) {
+    container.innerHTML = "";
+    return;
+  }
+
+  container.innerHTML = steps.map(s => {
+    if(typeof s === "string") return `<li>${s}</li>`;
+    // If it's an object, try to stringify or format nicely
+    if(typeof s === "object") {
+      return `<li>${Object.entries(s).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join(", ")}</li>`;
+    }
+    return `<li>${s}</li>`;
+  }).join("");
 }
 
 /* ===============================
@@ -95,7 +105,6 @@ async function runMonthly(){
   });
   if(!data) return;
 
-  /* OUTPUTS */
   const map = {
     "log-shipments-output": data.shipments ?? 0,
     "log-total-revenue": money(data.totalRevenue),
@@ -124,12 +133,11 @@ async function runMonthly(){
     if(el) el.textContent = value;
   });
 
-  /* COLORS */
   const risk = (data.riskLevel || "").toLowerCase();
   setClass($("log-risk-level"), risk === "low" ? "risk-low" : risk === "medium" ? "risk-medium" : "risk-high");
   setClass($("log-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
 
-  /* STEPS */
+  // Render step-by-step guidance
   renderSteps("log-steps", data.steps);
 }
 
@@ -153,14 +161,13 @@ async function runShipment(){
     permits: +$("ship-permits")?.value || 0,
     otherFees: +$("ship-other-fees")?.value || 0,
     cargoValue: +$("ship-cargo-value")?.value || 0,
-    insuranceRate: +$("ship-insurance")?.value || 0,
+    insuranceRate: +$("ship-insurance-rate")?.value || 0,
     duties: +$("ship-duties")?.value || 0,
     handling: +$("ship-handling")?.value || 0,
     passThrough: +$("ship-pass-through")?.value || 0
   });
   if(!data) return;
 
-  /* OUTPUTS */
   const map = {
     "ship-total-cost": money(data.totalCost),
     "ship-profit": money(data.profit),
@@ -174,14 +181,12 @@ async function runShipment(){
     if(el) el.textContent = value;
   });
 
-  /* COLORS */
   const decision = (data.decision || "").toUpperCase();
   setClass($("ship-decision"), decision === "APPROVE" ? "decision-approve" : decision === "REJECT" ? "decision-reject" : "decision-review");
   setClass($("ship-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
   const margin = Number(data.margin) || 0;
   setClass($("ship-margin"), margin >= 20 ? "margin-strong" : margin >= 10 ? "margin-medium" : "margin-low");
 
-  /* STEPS */
   renderSteps("ship-steps", data.steps);
 }
 
@@ -206,7 +211,6 @@ async function runFreight(){
   });
   if(!data) return;
 
-  /* OUTPUTS */
   const map = {
     "freight-insurance-cost": money(data.insuranceCost),
     "freight-duties": money(data.duties),
@@ -223,7 +227,6 @@ async function runFreight(){
     if(el) el.textContent = value;
   });
 
-  /* COLORS */
   const decision = (data.decision || "").toUpperCase();
   setClass($("freight-decision"), decision === "APPROVE" ? "decision-approve" : decision === "REJECT" ? "decision-reject" : "decision-review");
   setClass($("freight-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
@@ -232,7 +235,6 @@ async function runFreight(){
   const risk = (data.riskLevel || "").toLowerCase();
   setClass($("freight-risk"), risk === "low" ? "freight-risk-low" : risk === "medium" ? "freight-risk-medium" : "freight-risk-high");
 
-  /* STEPS */
   renderSteps("freight-steps", data.steps);
 }
 
