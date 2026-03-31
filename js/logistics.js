@@ -66,6 +66,19 @@ function setClass(el, extra){
 }
 
 /* ===============================
+OUTPUT RENDERER
+=============================== */
+
+function renderSteps(containerId, steps){
+  if(!containerId) return;
+  const container = $(containerId);
+  if(!container) return;
+  container.innerHTML = (steps && Array.isArray(steps)) 
+    ? steps.map(s => `<li>${s}</li>`).join("") 
+    : "";
+}
+
+/* ===============================
 MONTHLY OPERATIONS
 =============================== */
 
@@ -83,31 +96,41 @@ async function runMonthly(){
   if(!data) return;
 
   /* OUTPUTS */
-  $("log-shipments-output").textContent = data.shipments ?? 0;
-  $("log-total-revenue").textContent = money(data.totalRevenue);
-  $("log-total-costs").textContent = money(data.totalCosts);
-  $("log-profit").textContent = money(data.profit);
-  $("log-per-shipment").textContent = money(data.costPerShipment);
-  $("log-revenue-per-shipment").textContent = money(data.revenuePerShipment);
-  $("log-profit-per-shipment").textContent = money(data.profitPerShipment);
-  $("log-margin").textContent = percent(data.margin);
-  $("log-roi").textContent = percent(data.roi);
-  $("log-breakeven-shipments").textContent = data.breakEvenShipments ?? 0;
-  $("log-annual-profit").textContent = money(data.annualProfit);
-  $("log-fuel-pct").textContent = percent(data.fuelPercent);
-  $("log-labor-pct").textContent = percent(data.laborPercent);
-  $("log-maintenance-pct").textContent = percent(data.maintenancePercent);
-  $("log-fixed-pct").textContent = percent(data.fixedPercent);
-  $("log-status").textContent = data.status || "—";
-  $("log-risk-level").textContent = data.riskLevel || "—";
-  $("log-recommended-price").textContent = money(data.recommendedPricePerShipment);
-  $("log-safety").textContent = data.safetyStatus || "—";
-  $("log-advice").textContent = data.advice || "—";
+  const map = {
+    "log-shipments-output": data.shipments ?? 0,
+    "log-total-revenue": money(data.totalRevenue),
+    "log-total-costs": money(data.totalCosts),
+    "log-profit": money(data.profit),
+    "log-per-shipment": money(data.costPerShipment),
+    "log-revenue-per-shipment": money(data.revenuePerShipment),
+    "log-profit-per-shipment": money(data.profitPerShipment),
+    "log-margin": percent(data.margin),
+    "log-roi": percent(data.roi),
+    "log-breakeven-shipments": data.breakEvenShipments ?? 0,
+    "log-annual-profit": money(data.annualProfit),
+    "log-fuel-pct": percent(data.fuelPercent),
+    "log-labor-pct": percent(data.laborPercent),
+    "log-maintenance-pct": percent(data.maintenancePercent),
+    "log-fixed-pct": percent(data.fixedPercent),
+    "log-status": data.status || "—",
+    "log-risk-level": data.riskLevel || "—",
+    "log-recommended-price": money(data.recommendedPricePerShipment),
+    "log-safety": data.safetyStatus || "—",
+    "log-advice": data.advice || "—"
+  };
+
+  Object.entries(map).forEach(([id, value]) => {
+    const el = $(id);
+    if(el) el.textContent = value;
+  });
 
   /* COLORS */
   const risk = (data.riskLevel || "").toLowerCase();
   setClass($("log-risk-level"), risk === "low" ? "risk-low" : risk === "medium" ? "risk-medium" : "risk-high");
   setClass($("log-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
+
+  /* STEPS */
+  renderSteps("log-steps", data.steps);
 }
 
 /* ===============================
@@ -138,12 +161,18 @@ async function runShipment(){
   if(!data) return;
 
   /* OUTPUTS */
-  $("ship-total-cost").textContent = money(data.totalCost);
-  $("ship-profit").textContent = money(data.profit);
-  $("ship-margin").textContent = percent(data.margin);
-  $("ship-min-quote").textContent = money(data.recommendedMinQuote);
-  $("ship-decision").textContent = data.decision;
-  $("ship-reason").textContent = data.reason;
+  const map = {
+    "ship-total-cost": money(data.totalCost),
+    "ship-profit": money(data.profit),
+    "ship-margin": percent(data.margin),
+    "ship-min-quote": money(data.recommendedMinQuote),
+    "ship-decision": data.decision,
+    "ship-reason": data.reason
+  };
+  Object.entries(map).forEach(([id, value]) => {
+    const el = $(id);
+    if(el) el.textContent = value;
+  });
 
   /* COLORS */
   const decision = (data.decision || "").toUpperCase();
@@ -151,6 +180,9 @@ async function runShipment(){
   setClass($("ship-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
   const margin = Number(data.margin) || 0;
   setClass($("ship-margin"), margin >= 20 ? "margin-strong" : margin >= 10 ? "margin-medium" : "margin-low");
+
+  /* STEPS */
+  renderSteps("ship-steps", data.steps);
 }
 
 /* ===============================
@@ -170,20 +202,26 @@ async function runFreight(){
     handlingFees: +$("freight-handling-fees")?.value || 0,
     inlandTransport: +$("freight-inland-transport")?.value || 0,
     tollCosts: +$("freight-toll-costs")?.value || 0,
-otherCosts: +$("freight-other-costs")?.value || 0
+    otherCosts: +$("freight-other-costs")?.value || 0
   });
   if(!data) return;
 
   /* OUTPUTS */
-  $("freight-insurance-cost").textContent = money(data.insuranceCost);
-  $("freight-duties").textContent = money(data.duties);
-  $("freight-total-cost").textContent = money(data.totalCost);
-  $("freight-profit").textContent = money(data.profit);
-  $("freight-margin").textContent = percent(data.margin);
-  $("freight-breakeven").textContent = money(data.breakEvenQuote);
-  $("freight-decision").textContent = data.decision;
-  $("freight-reason").textContent = data.reason;
-  $("freight-risk").textContent = data.riskLevel;
+  const map = {
+    "freight-insurance-cost": money(data.insuranceCost),
+    "freight-duties": money(data.duties),
+    "freight-total-cost": money(data.totalCost),
+    "freight-profit": money(data.profit),
+    "freight-margin": percent(data.margin),
+    "freight-breakeven": money(data.breakEvenQuote),
+    "freight-decision": data.decision,
+    "freight-reason": data.reason,
+    "freight-risk": data.riskLevel
+  };
+  Object.entries(map).forEach(([id, value]) => {
+    const el = $(id);
+    if(el) el.textContent = value;
+  });
 
   /* COLORS */
   const decision = (data.decision || "").toUpperCase();
@@ -193,6 +231,9 @@ otherCosts: +$("freight-other-costs")?.value || 0
   setClass($("freight-margin"), margin >= 20 ? "margin-strong" : margin >= 10 ? "margin-medium" : "margin-low");
   const risk = (data.riskLevel || "").toLowerCase();
   setClass($("freight-risk"), risk === "low" ? "freight-risk-low" : risk === "medium" ? "freight-risk-medium" : "freight-risk-high");
+
+  /* STEPS */
+  renderSteps("freight-steps", data.steps);
 }
 
 /* ===============================
