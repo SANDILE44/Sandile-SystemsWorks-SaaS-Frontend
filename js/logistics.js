@@ -79,12 +79,23 @@ function renderSteps(containerId, steps){
   }
 
   container.innerHTML = steps.map(s => {
-    if(typeof s === "string") return `<li>${s}</li>`;
-    // If it's an object, try to stringify or format nicely
-    if(typeof s === "object") {
-      return `<li>${Object.entries(s).map(([k,v]) => `<strong>${k}:</strong> ${v}`).join(", ")}</li>`;
+    let msg = "", cls = "";
+
+    // If step is a simple string, default to "info"
+    if(typeof s === "string") {
+      msg = s;
+      cls = "step-info";
+    } 
+    // If step is an object with a type
+    else if(typeof s === "object") {
+      msg = s.message || JSON.stringify(s);
+      cls = s.type === "success" ? "step-success"
+          : s.type === "warning" ? "step-warning"
+          : s.type === "error"   ? "step-error"
+          : "step-info";
     }
-    return `<li>${s}</li>`;
+
+    return `<li class="${cls}">${msg}</li>`;
   }).join("");
 }
 
