@@ -169,8 +169,8 @@ async function runFreight(){
     portFees: +$("freight-port-fees")?.value || 0,
     handlingFees: +$("freight-handling-fees")?.value || 0,
     inlandTransport: +$("freight-inland-transport")?.value || 0,
-    tollCosts: +$("freight-other-costs")?.value || 0,
-    otherCosts: +$("freight-other-costs")?.value || 0
+    tollCosts: +$("freight-toll-costs")?.value || 0,
+otherCosts: +$("freight-other-costs")?.value || 0
   });
   if(!data) return;
 
