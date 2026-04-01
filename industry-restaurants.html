@@ -93,6 +93,23 @@ RESTAURANT DECISION ENGINE UI
   font-weight: 800;
 }
 
+
+.steps-container{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.step{
+  padding:10px 12px;
+  border-radius:6px;
+  font-size:0.85rem;
+  line-height:1.4;
+  background:none;
+  border:none;
+}
+
 </style>
   
     <!-- APP LAYOUT -->  
@@ -292,14 +309,14 @@ RESTAURANT DECISION ENGINE UI
     <div class="output-value" id="decisionAdvice"></div>
   </div>
 
-<div class="output-section" id="stepsContainer">
-  <h3>Step-by-Step Operational Insights</h3>
-  <!-- JS will populate steps here as <div class="step"> -->
+<div class="output-group">
+  <div class="output-label">Step-by-Step Operational Insights</div>
+  <div id="stepsContainer" class="steps-container"></div>
   <span class="tool-hint">Values auto-update based on your inputs above — no need to type them again.</span>
 </div>
-</div> 
 
- 
+
+</div> 
       </div>  
     </div>  
 
@@ -408,35 +425,6 @@ RESTAURANT DECISION ENGINE UI
   <script src="js/user-display.js"></script>  
 </div>
 
-<script>
-  // Example: simulate backend response
-  const exampleData = {
-    steps: [
-      { step: "Revenue vs Costs", message: "Revenue covers costs. Operations are sustainable." },
-      { step: "Profit Margin Check", message: "Margin is healthy at 25%." },
-      { step: "Largest Cost Contributor", message: "Labor is the largest cost. Consider optimization." },
-      { step: "Break-even Analysis", message: "Minimum covers per day to break even: 50." },
-      { step: "Profit per Cover", message: "Profit per customer: R30." },
-      { step: "Risk Assessment", message: "Operations are stable. Keep monitoring costs." }
-    ]
-  };
-
-  const stepsList = document.getElementById("stepsList");
-
-  function renderSteps(data) {
-    // Clear any existing steps
-    stepsList.innerHTML = "";
-
-    data.steps.forEach(s => {
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>${s.step}:</strong> ${s.message}`;
-      stepsList.appendChild(li);
-    });
-  }
-
-  // Call the function with your data (replace exampleData with API response)
-  renderSteps(exampleData);
-</script>
 
   </body>  
                                                                             </html>  
