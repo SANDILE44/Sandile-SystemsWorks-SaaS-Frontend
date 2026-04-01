@@ -73,21 +73,18 @@ function clampPercent(value, min = 0, max = 100) {
     ========================= */
     $("consult-revenue").textContent = money(d.totalRevenue);
     $("consult-discount-output").textContent = money(d.discountAmount);
-    $("consult-revenue-after-discount").textContent = money(
-      d.revenueAfterDiscount
-    );
+    $("consult-revenue-after-discount").textContent = money(d.revenueAfterDiscount);
     $("consult-overtime-output").textContent = money(d.overtimeRevenue);
 
     /* =========================
        COSTS
     ========================= */
     $("consult-contingency-output").textContent = money(d.contingencyAmount);
+    $("consult-costs").textContent = money(d.totalCosts);
 
     const cph = $("consult-cost-hour");
     cph.textContent = money(d.costPerHour);
     applyColor(cph, "caution");
-
-    $("consult-costs").textContent = money(d.totalCosts);
 
     /* =========================
        PROFIT
@@ -95,7 +92,6 @@ function clampPercent(value, min = 0, max = 100) {
     const p = $("consult-profit");
     p.textContent = money(d.profit);
     applyColor(p, d.profit > 0 ? "positive" : "negative");
-
     $("consult-profit-hour").textContent = money(d.profitPerHour);
 
     /* =========================
@@ -103,7 +99,6 @@ function clampPercent(value, min = 0, max = 100) {
     ========================= */
     const m = $("consult-margin");
     m.textContent = percent(d.margin);
-
     if (d.margin < 10) applyColor(m, "negative");
     else if (d.margin < 20) applyColor(m, "caution");
     else applyColor(m, "positive");
@@ -113,7 +108,6 @@ function clampPercent(value, min = 0, max = 100) {
     ========================= */
     const r = $("consult-roi");
     r.textContent = percent(d.roi);
-
     if (d.roi < 50) applyColor(r, "negative");
     else if (d.roi < 100) applyColor(r, "caution");
     else applyColor(r, "positive");
@@ -124,7 +118,7 @@ function clampPercent(value, min = 0, max = 100) {
     $("consult-breakeven").textContent = (d.breakevenHours || 0).toFixed(2);
 
     /* =========================
-       DECISION
+       DECISION & ADVICE
     ========================= */
     const decisionEl = $("consult-decision");
     const adviceEl = $("consult-advice");
@@ -133,33 +127,36 @@ function clampPercent(value, min = 0, max = 100) {
     decisionEl.textContent = d.decision || "—";
     adviceEl.textContent = d.advice || "—";
 
-    // Clear previous steps
-    if (stepsEl) stepsEl.innerHTML = "";
-
-    // Render new step-by-step guidance
-    if (d.steps && d.steps.length && stepsEl) {
-      d.steps.forEach((step, i) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<strong>Step ${i + 1}:</strong> ${step.action} — current: ${step.current}, suggested: ${step.suggested} <em>(${step.reason})</em>`;
-        stepsEl.appendChild(li);
-      });
-    }
-
     switch (d.riskLevel) {
       case "High":
         applyColor(decisionEl, "negative");
         applyColor(adviceEl, "negative");
         break;
-
       case "Medium":
         applyColor(decisionEl, "caution");
         applyColor(adviceEl, "caution");
         break;
-
       case "Low":
         applyColor(decisionEl, "positive");
         applyColor(adviceEl, "positive");
         break;
+    }
+
+    /* =========================
+       STEP-BY-STEP GUIDANCE
+    ========================= */
+    if (stepsEl) stepsEl.innerHTML = ""; // clear old steps
+
+    if (d.steps && d.steps.length) {
+      d.steps.forEach((step, i) => {
+        const container = document.createElement("div");
+        container.classList.add("step-item");
+        container.innerHTML = `
+          <h3>Step ${i + 1}: ${step.step || step.action}</h3>
+          <p>${step.message || `${step.action} — current: ${step.current}, suggested: ${step.suggested} (${step.reason})`}</p>
+        `;
+        stepsEl.appendChild(container);
+      });
     }
   }
 
@@ -195,7 +192,6 @@ function clampPercent(value, min = 0, max = 100) {
       "consult-variable-costs",
       "consult-contingency",
     ].forEach((id) => ($(id).value = ""));
-
     runConsulting();
   });
 
