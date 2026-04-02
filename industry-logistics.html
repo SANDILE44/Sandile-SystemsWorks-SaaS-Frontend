@@ -315,10 +315,11 @@ clear margin visibility and operational risk detection.
               <button type="button" id="resetOperationsBtn">Reset All</button>
             </div>
 
+
 <!-- ==================== RESULTS ==================== -->
 <div class="output-section">
 
-  <!-- FINANCIALS -->
+  <!-- FINANCIAL OVERVIEW -->
   <h3>Financial Overview</h3>
   <div class="output-group">
     <div class="output-label">Total Revenue</div>
@@ -398,14 +399,16 @@ clear margin visibility and operational risk detection.
     <div class="output-value" id="log-advice">—</div>
   </div>
 
+  
   <!-- STEP-BY-STEP GUIDANCE -->
-  <h3>Step-by-Step Guidance</h3>
-  <ol id="log-steps" class="steps-list">
-    <!-- JS will insert steps here -->
-  </ol>
+  <div class="steps-section">
+    <h3>Step-by-Step Guidance</h3>
+    <ol id="log-steps" class="steps-list">
+      <!-- JS will insert steps here -->
+    </ol>
+  </div>
 
 </div>
-
               </div>
             </div>
           </div>
@@ -594,50 +597,46 @@ clear margin visibility and operational risk detection.
               <button type="button" id="resetShipmentBtn">Reset All</button>
             </div>
 
-         <!-- OUTPUTS -->
+<!-- ==================== SHIPMENT OUTPUTS ==================== -->
 <div class="output-section">
-<h3>Shipment Results</h3>
 
-<div class="output-group">
-<div class="output-label">Total Shipment Cost</div>
-<div class="output-value" id="ship-total-cost">0.00</div>
-</div>
+  <h3>Shipment Results</h3>
 
-<div class="output-group">
-<div class="output-label">Estimated Profit</div>
-<div class="output-value" id="ship-profit">0.00</div>
-</div>
+  <!-- FINANCIAL METRICS -->
+  <div class="output-group">
+    <div class="output-label">Total Shipment Cost</div>
+    <div class="output-value" id="ship-total-cost">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Estimated Profit</div>
+    <div class="output-value" id="ship-profit">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Profit Margin</div>
+    <div class="output-value" id="ship-margin">0.00%</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Recommended Minimum Quote</div>
+    <div class="output-value" id="ship-min-quote">0.00</div>
+  </div>
 
-<div class="output-group">
-<div class="output-label">Profit Margin</div>
-<div class="output-value" id="ship-margin">0.00%</div>
-</div>
+  <!-- DECISION SUPPORT -->
+  <div class="output-group">
+    <div class="output-label">Decision</div>
+    <div class="output-value" id="ship-decision">—</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Decision Explanation</div>
+    <div class="output-value" id="ship-reason">—</div>
+  </div>
 
-<div class="output-group">
-<div class="output-label">Recommended Minimum Quote</div>
-<div class="output-value" id="ship-min-quote">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Decision</div>
-<div class="output-value" id="ship-decision">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Decision Explanation</div>
-<div class="output-value" id="ship-reason">—</div>
-</div>
-
-
-
-<!-- Step-by-Step Guidance -->
-<div class="steps-section">
-  <h3>Step-by-Step Guidance</h3>
-  <ol id="ship-steps" class="steps-list">
-    <!-- JS will insert steps here -->
-  </ol>
-</div>
-
+  <!-- STEP-BY-STEP GUIDANCE -->
+  <div class="steps-section">
+    <h3>Step-by-Step Guidance</h3>
+    <ol id="ship-steps" class="steps-list">
+      <!-- JS will insert steps here -->
+    </ol>
+  </div>
 </div>
 
             </div>
@@ -738,64 +737,60 @@ clear margin visibility and operational risk detection.
 
       <button type="button" id="resetFreightBtn">Reset All</button>
     </div>
+<!-- ==================== FREIGHT OUTPUTS ==================== -->
+<div class="output-section">
 
-    <!-- OUTPUTS -->
-    <div class="output-section">
-      <h3>Freight Results</h3>
+  <h3>Freight Results</h3>
 
-      <div class="output-group">
-        <div class="output-label">Insurance Cost</div>
-        <div class="output-value" id="freight-insurance-cost">0.00</div>
-      </div>
+  <!-- FINANCIAL METRICS -->
+  <div class="output-group">
+    <div class="output-label">Insurance Cost</div>
+    <div class="output-value" id="freight-insurance-cost">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Duty Cost</div>
+    <div class="output-value" id="freight-duties">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Total Logistics Cost</div>
+    <div class="output-value" id="freight-total-cost">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Estimated Profit</div>
+    <div class="output-value" id="freight-profit">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Profit Margin</div>
+    <div class="output-value" id="freight-margin">0.00%</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Break-even Quote</div>
+    <div class="output-value" id="freight-breakeven">0.00</div>
+  </div>
 
-      <div class="output-group">
-        <div class="output-label">Duty Cost</div>
-        <div class="output-value" id="freight-duties">0.00</div>
-      </div>
+  <!-- DECISION SUPPORT -->
+  <div class="output-group">
+    <div class="output-label">Decision</div>
+    <div class="output-value" id="freight-decision">—</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Decision Explanation</div>
+    <div class="output-value" id="freight-reason">—</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Risk Level</div>
+    <div class="output-value" id="freight-risk">—</div>
+  </div>
 
-      <div class="output-group">
-        <div class="output-label">Total Logistics Cost</div>
-        <div class="output-value" id="freight-total-cost">0.00</div>
-      </div>
+  <!-- STEP-BY-STEP GUIDANCE -->
+  <div class="steps-section">
+    <h3>Step-by-Step Guidance</h3>
+    <ol id="freight-steps" class="steps-list">
+      <!-- JS will insert steps here -->
+    </ol>
+  </div>
 
-      <div class="output-group">
-        <div class="output-label">Estimated Profit</div>
-        <div class="output-value" id="freight-profit">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Profit Margin</div>
-        <div class="output-value" id="freight-margin">0.00%</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Break-even Quote</div>
-        <div class="output-value" id="freight-breakeven">0.00</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision</div>
-        <div class="output-value" id="freight-decision">—</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Decision Explanation</div>
-        <div class="output-value" id="freight-reason">—</div>
-      </div>
-
-      <div class="output-group">
-        <div class="output-label">Risk Level</div>
-        <div class="output-value" id="freight-risk">—</div>
-      </div>
-
-<!-- Step-by-Step Guidance -->
-<div class="steps-section">
-  <h3>Step-by-Step Guidance</h3>
-  <ol id="freight-steps" class="steps-list">
-    <!-- JS will insert steps here -->
-  </ol>
-</div>
-
+  
   </div>
 </div>
 
