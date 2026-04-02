@@ -15,8 +15,6 @@ const percent = v => {
   return (Math.abs(n) <= 1 ? n * 100 : n).toFixed(2) + "%";
 };
 
-let debounceTimer;
-
 /* ===============================
 API POST HELPER
 =============================== */
@@ -68,7 +66,7 @@ function renderSteps(containerId, steps) {
   const container = $(containerId);
   if (!container) return;
 
-  if (!steps || !Array.isArray(steps)) {
+  if (!Array.isArray(steps)) {
     container.innerHTML = "";
     return;
   }
@@ -81,30 +79,30 @@ function renderSteps(containerId, steps) {
     }
 
     // Color-code values
-    text = text.replace(/ROI\s*[:=]\s*([\d.]+)%/i, (m, val) => {
+    text = text.replace(/ROI\s*[:=]\s*([\d.]+)%/i, (_, val) => {
       const n = parseFloat(val);
       const cls = n >= 20 ? "profit-positive" : n >= 10 ? "margin-medium" : "profit-negative";
       return `ROI: <span class="${cls}">${val}%</span>`;
     });
 
-    text = text.replace(/Profit\s*[:=]\s*([\d.]+)/i, (m, val) => {
+    text = text.replace(/Profit\s*[:=]\s*([\d.]+)/i, (_, val) => {
       const n = parseFloat(val);
       return `Profit: <span class="${n >= 0 ? "profit-positive" : "profit-negative"}">${val}</span>`;
     });
 
-    text = text.replace(/Margin\s*[:=]\s*([\d.]+)%/i, (m, val) => {
+    text = text.replace(/Margin\s*[:=]\s*([\d.]+)%/i, (_, val) => {
       const n = parseFloat(val);
       const cls = n >= 20 ? "margin-strong" : n >= 10 ? "margin-medium" : "margin-low";
       return `Margin: <span class="${cls}">${val}%</span>`;
     });
 
-    text = text.replace(/Risk\s*[:=]\s*(Low|Medium|High)/i, (m, val) => {
+    text = text.replace(/Risk\s*[:=]\s*(Low|Medium|High)/i, (_, val) => {
       const cls = val.toLowerCase() === "low" ? "risk-low" :
                   val.toLowerCase() === "medium" ? "risk-medium" : "risk-high";
       return `Risk: <span class="${cls}">${val}</span>`;
     });
 
-    text = text.replace(/Safety\s*[:=]\s*(Healthy|Risk|Critical)/i, (m, val) => {
+    text = text.replace(/Safety\s*[:=]\s*(Healthy|Risk|Critical)/i, (_, val) => {
       const cls = val.toLowerCase() === "healthy" ? "safety-healthy" :
                   val.toLowerCase() === "risk" ? "safety-risk" : "safety-critical";
       return `Safety: <span class="${cls}">${val}</span>`;
@@ -115,9 +113,18 @@ function renderSteps(containerId, steps) {
 }
 
 /* ===============================
+DEBOUNCE HELPERS
+=============================== */
+const debounceTimers = {};
+function debounce(key, fn, delay = 300) {
+  clearTimeout(debounceTimers[key]);
+  debounceTimers[key] = setTimeout(fn, delay);
+}
+
+/* ===============================
 MONTHLY OPERATIONS
 =============================== */
-function updateMonthly() { clearTimeout(debounceTimer); debounceTimer = setTimeout(runMonthly, 300); }
+function updateMonthly() { debounce("monthly", runMonthly); }
 
 async function runMonthly() {
   const data = await apiPost("/api/logistics/business", {
@@ -152,10 +159,7 @@ async function runMonthly() {
     "log-advice": data.advice || "—"
   };
 
-  Object.entries(map).forEach(([id, value]) => {
-    const el = $(id);
-    if (el) el.textContent = value;
-  });
+  Object.entries(map).forEach(([id, value]) => $(id)?.textContent = value);
 
   const risk = (data.riskLevel || "").toLowerCase();
   setClass($("log-risk-level"), risk === "low" ? "risk-low" : risk === "medium" ? "risk-medium" : "risk-high");
@@ -165,13 +169,8 @@ async function runMonthly() {
 }
 
 /* ===============================
-SHIPMENT & FREIGHT WRAPPERS
+SHIPMENT & FREIGHT
 =============================== */
-function debounceRun(fn, delay = 300) {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(fn, delay);
-}
-
 async function runShipment() {
   const data = await apiPost("/api/logistics/shipment", Object.fromEntries(
     Array.from(document.querySelectorAll("#shipment-panel input")).map(i => [i.id.replace("ship-", ""), +i.value || 0])
@@ -232,8 +231,8 @@ EVENT BINDING
 =============================== */
 function bindEvents() {
   document.querySelectorAll("#operations-panel input").forEach(i => i.addEventListener("input", updateMonthly));
-  document.querySelectorAll("#shipment-panel input").forEach(i => i.addEventListener("input", () => debounceRun(runShipment)));
-  document.querySelectorAll("#freight-panel input").forEach(i => i.addEventListener("input", () => debounceRun(runFreight)));
+  document.querySelectorAll("#shipment-panel input").forEach(i => i.addEventListener("input", () => debounce("shipment", runShipment)));
+  document.querySelectorAll("#freight-panel input").forEach(i => i.addEventListener("input", () => debounce("freight", runFreight)));
 }
 
 bindEvents();
