@@ -120,7 +120,7 @@ MONTHLY OPERATIONS
 function updateMonthly() { clearTimeout(debounceTimer); debounceTimer = setTimeout(runMonthly, 300); }
 
 async function runMonthly() {
-  const data = await apiPost("/api/calculators/logistics/business", {
+  const data = await apiPost("/api/logistics/business", {
     shipments: +$("log-shipments")?.value || 0,
     revenuePer: +$("log-revenue")?.value || 0,
     fuel: +$("log-fuel")?.value || 0,
@@ -136,7 +136,6 @@ async function runMonthly() {
     "log-total-costs": money(data.totalCosts),
     "log-profit": money(data.profit),
     "log-per-shipment": money(data.costPerShipment),
-    "log-revenue-per-shipment": money(data.revenuePerShipment),
     "log-profit-per-shipment": money(data.profitPerShipment),
     "log-margin": percent(data.margin),
     "log-roi": percent(data.roi),
@@ -174,7 +173,7 @@ function debounceRun(fn, delay = 300) {
 }
 
 async function runShipment() {
-  const data = await apiPost("/api/calculators/logistics/shipment", Object.fromEntries(
+  const data = await apiPost("/api/logistics/shipment", Object.fromEntries(
     Array.from(document.querySelectorAll("#shipment-panel input")).map(i => [i.id.replace("ship-", ""), +i.value || 0])
   ));
   if (!data) return;
@@ -199,7 +198,7 @@ async function runShipment() {
 }
 
 async function runFreight() {
-  const data = await apiPost("/api/calculators/logistics/freight", Object.fromEntries(
+  const data = await apiPost("/api/logistics/freight", Object.fromEntries(
     Array.from(document.querySelectorAll("#freight-panel input")).map(i => [i.id.replace("freight-", ""), +i.value || 0])
   ));
   if (!data) return;
