@@ -147,7 +147,58 @@ color: var(--text-muted);
 line-height: 1.4;
 }
 
+/* ============================
+   STEP-BY-STEP STRUCTURE
+============================ */
 
+/* Container for all steps */
+.steps-section {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd; /* simple box around steps */
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+/* Ordered list for steps */
+.steps-section ol.steps-list {
+  list-style: none; /* remove default numbers */
+  counter-reset: step-counter; /* custom numbering */
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Each step item */
+.steps-section ol.steps-list li {
+  counter-increment: step-counter;
+  margin-bottom: 12px;
+  padding-left: 40px; /* space for number */
+  position: relative;
+  line-height: 1.4;
+}
+
+/* Number bubble */
+.steps-section ol.steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #eee;
+  color: #333;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Step title (strong text) */
+.steps-section ol.steps-list li strong {
+  display: block;
+  margin-bottom: 2px;
+}
 
 
 </style>
