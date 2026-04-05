@@ -148,20 +148,16 @@ line-height: 1.4;
 }
 
 /* ============================
-   STEP-BY-STEP STRUCTURE
-============================ */
-
-/* ============================
-   STEP-BY-STEP STRUCTURE
+   STEP-BY-STEP STRUCTURE (DARK THEME)
 ============================ */
 
 /* Container for all steps */
 .steps-section {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ddd; /* simple box around steps */
-  border-radius: 6px;
-  /* background-color removed */
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: transparent; /* matches your theme */
 }
 
 /* Ordered list for steps */
@@ -175,36 +171,51 @@ line-height: 1.4;
 /* Each step item */
 .steps-section ol.steps-list li {
   counter-increment: step-counter;
-  margin-bottom: 12px;
-  padding-left: 40px; /* space for number */
+  margin-bottom: 1.25rem;
+  padding-left: 44px; /* space for number */
   position: relative;
-  line-height: 1.4;
+  line-height: 1.5;
+  color: var(--text-main);
 }
 
-/* Number bubble (now just text) */
+/* Number circle (just border, no fill) */
 .steps-section ol.steps-list li::before {
   content: counter(step-counter);
   position: absolute;
   left: 0;
   top: 0;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  color: #333;
+  border: 1px solid var(--border-soft);
+  color: var(--accent); /* highlight numbers */
   text-align: center;
-  line-height: 28px;
-  font-weight: bold;
+  line-height: 32px;
+  font-weight: 700;
   font-size: 14px;
-  border: 1px solid #ccc; /* optional outline */
-  /* background-color removed */
 }
 
-/* Step title (strong text) */
+/* Step title */
 .steps-section ol.steps-list li strong {
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  color: var(--accent);
 }
 
+/* Step description (optional) */
+.steps-section ol.steps-list li span {
+  display: block;
+  font-weight: 400;
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+/* Hover subtle highlight for each step */
+.steps-section ol.steps-list li:hover {
+  border-left: 3px solid var(--accent);
+  padding-left: 41px; /* adjust to keep text aligned */
+}
 </style>
     
 
