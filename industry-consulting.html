@@ -30,24 +30,53 @@
   font-weight: 600;
 }
 
+/* ===============================
+CONSULTING STEP-BY-STEP STYLE
+=============================== */
+
 #consult-steps {
-  list-style: decimal inside;
+  list-style: none;           /* remove default bullets */
+  counter-reset: step-counter; /* initialize step counter */
   padding-left: 0;
   margin-top: 0.5rem;
 }
 
 #consult-steps li {
-  margin-bottom: 0.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+  padding-left: 2.5rem;       /* space for step number circle */
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Step number circle */
+#consult-steps li::before {
+  counter-increment: step-counter;
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #3b82f6;  /* blue circle, same as Logistics */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
   font-size: 0.95rem;
 }
 
-#consult-steps li strong {
-  color: #007bff; /* step number in blue */
+/* Optional: italic / gray text inside step */
+#consult-steps li em {
+  font-style: italic;
+  color: #6b7280; /* gray for notes */
 }
 
-#consult-steps li em {
-  color: #6c757d; /* reason text in gray */
-  font-style: italic;
+/* Optional: bold for key points */
+#consult-steps li strong {
+  color: #111827; /* almost black for emphasis */
 }
 
 </style>
