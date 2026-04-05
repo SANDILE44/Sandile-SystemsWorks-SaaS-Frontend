@@ -151,13 +151,17 @@ line-height: 1.4;
    STEP-BY-STEP STRUCTURE
 ============================ */
 
+/* ============================
+   STEP-BY-STEP STRUCTURE
+============================ */
+
 /* Container for all steps */
 .steps-section {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ddd; /* simple box around steps */
   border-radius: 6px;
-  background-color: #fafafa;
+  /* background-color removed */
 }
 
 /* Ordered list for steps */
@@ -177,7 +181,7 @@ line-height: 1.4;
   line-height: 1.4;
 }
 
-/* Number bubble */
+/* Number bubble (now just text) */
 .steps-section ol.steps-list li::before {
   content: counter(step-counter);
   position: absolute;
@@ -186,12 +190,13 @@ line-height: 1.4;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #eee;
   color: #333;
   text-align: center;
   line-height: 28px;
   font-weight: bold;
   font-size: 14px;
+  border: 1px solid #ccc; /* optional outline */
+  /* background-color removed */
 }
 
 /* Step title (strong text) */
@@ -199,7 +204,6 @@ line-height: 1.4;
   display: block;
   margin-bottom: 2px;
 }
-
 
 </style>
     
