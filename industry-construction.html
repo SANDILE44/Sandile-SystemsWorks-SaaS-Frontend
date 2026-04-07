@@ -93,6 +93,84 @@
   color: #ef4444;
 }
 
+/* ============================
+   STEP-BY-STEP STRUCTURE — CONSTRUCTION
+============================ */
+
+/* Container for all steps */
+#const-steps-list {
+  counter-reset: step-counter;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+}
+
+/* Each step item */
+#const-steps-list li {
+  counter-increment: step-counter;
+  position: relative;
+  margin-bottom: 1.25rem;
+  padding-left: 44px; /* space for number circle */
+  line-height: 1.5;
+  color: var(--text-main);
+  transition: border-left 0.25s ease;
+}
+
+/* Number circle */
+#const-steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-soft);
+  background: transparent; /* optional, matches dark theme */
+  color: var(--accent);
+  text-align: center;
+  line-height: 32px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Step title */
+#const-steps-list li strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Step description (optional) */
+#const-steps-list li span {
+  display: block;
+  font-weight: 400;
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+/* Hover highlight */
+#const-steps-list li:hover {
+  border-left: 3px solid var(--accent);
+  padding-left: 41px; /* maintain text alignment */
+}
+
+/* Status colors for steps (optional) */
+#const-steps-list li.positive::before {
+  border-color: #16a34a; /* green */
+  color: #16a34a;
+}
+
+#const-steps-list li.negative::before {
+  border-color: #dc2626; /* red */
+  color: #dc2626;
+}
+
+#const-steps-list li.caution::before {
+  border-color: #f59e0b; /* yellow/orange */
+  color: #f59e0b;
+}
 </style>
 </head>
 
