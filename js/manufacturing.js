@@ -132,11 +132,10 @@
     if (stepsContainer) {
       stepsContainer.innerHTML = "";
       d.steps?.forEach(s => {
-        const el = document.createElement("div");
-        el.className = "step";
-        el.innerHTML = `<strong>${s.step}:</strong> ${s.message}`;
-        stepsContainer.appendChild(el);
-      });
+  const li = document.createElement("li");
+  li.innerHTML = `<strong>${s.step}</strong><span>${s.message}</span>`;
+  stepsContainer.appendChild(li);
+});
     }
   }
 
