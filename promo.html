@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SaaS Promo</title>
+
+<style>
+body{
+background:#0b0f1a;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+font-family:Arial;
+overflow:hidden;
+}
+
+.container{
+position:relative;
+width:900px;
+height:500px;
+}
+
+.phone{
+position:absolute;
+right:0;
+width:260px;
+animation:slideIn 1s ease;
+}
+
+.screen{
+position:absolute;
+right:18px;
+top:20px;
+width:224px;
+height:460px;
+object-fit:cover;
+}
+
+.text{
+position:absolute;
+left:0;
+top:40%;
+color:white;
+font-size:38px;
+font-weight:bold;
+animation:fade 2s ease;
+}
+
+@keyframes slideIn{
+from{transform:translateX(200px);opacity:0}
+to{transform:translateX(0);opacity:1}
+}
+
+@keyframes fade{
+from{opacity:0}
+to{opacity:1}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="text">
+Stop accepting<br>
+unprofitable deals
+</div>
+
+<img src="assets/promo/phone.png" class="phone">
+
+<img src="assets/promo/demo.png" class="screen">
+
+</div>
+
+</body>
+</html>
