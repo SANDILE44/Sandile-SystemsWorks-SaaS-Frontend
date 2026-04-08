@@ -1,131 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Promo Builder</title>
-
+<title>3D Promo Builder</title>
 <style>
-body{
-margin:0;
-background:#0b0f1a;
-font-family:Arial;
-overflow:hidden;
-}
+  body {
+    margin: 0;
+    background: #0b0f1a;
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
-.stage{
-width:100vw;
-height:100vh;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+  .scene-container {
+    width: 360px;
+    height: 640px;
+    margin: 20px;
+    background: #111427;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    perspective: 1000px;
+  }
 
-.text{
-position:absolute;
-left:8%;
-top:40%;
-color:white;
-font-size:42px;
-font-weight:bold;
-width:40%;
-transition:0.5s;
-}
+  .phone-frame {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: transform 0.8s;
+  }
 
-.phone{
-position:absolute;
-right:8%;
-width:280px;
-}
+  .scene-video, .scene-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.screen{
-position:absolute;
-right:8%;
-width:240px;
-top:50%;
-transform:translateY(-50%);
-border-radius:20px;
-overflow:hidden;
-}
+  .text-overlay {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    pointer-events: none;
+  }
 
-.screen video{
-width:100%;
-height:100%;
-object-fit:cover;
-}
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
 
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background: #16c79a;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  input[type="text"] {
+    padding: 5px;
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="stage">
+<h1>3D Promo Builder</h1>
 
-<div class="text" id="text">
-Most businesses lose money
-</div>
+<div id="scenes-wrapper"></div>
 
-<img src="assets/phone.png" class="phone">
-
-<div class="screen">
-<video id="video" autoplay muted></video>
-</div>
-
+<div class="controls">
+  <button onclick="prevScene()">⬅️ Previous Scene</button>
+  <button onclick="nextScene()">Next Scene ➡️</button>
+  <button onclick="exportVideo()">Export Video</button>
 </div>
 
 <script>
+  // --- Scene Data ---
+  const sceneCount = 5;
+  let currentScene = 0;
+  const scenes = Array.from({length: sceneCount}, (_, i) => ({
+    text: `Scene ${i+1} text`,
+    video: null, // URL from upload
+    image: null // fallback if video not uploaded
+  }));
 
-const scenes = [
+  const wrapper = document.getElementById('scenes-wrapper');
 
-{
-text: "Most businesses lose money\nwithout knowing",
-video: "assets/scene1.mp4"
-},
+  function renderScene(index) {
+    wrapper.innerHTML = '';
+    const sceneData = scenes[index];
 
-{
-text: "See real profit\nbefore saying yes",
-video: "assets/scene2.mp4"
-},
+    const container = document.createElement('div');
+    container.className = 'scene-container';
 
-{
-text: "Detect losses\ninstantly",
-video: "assets/scene3.mp4"
-},
+    const phone = document.createElement('div');
+    phone.className = 'phone-frame';
 
-{
-text: "Know when to\nREJECT a deal",
-video: "assets/scene4.mp4"
-},
+    // video or image
+    const media = document.createElement(sceneData.video ? 'video' : 'img');
+    media.className = sceneData.video ? 'scene-video' : 'scene-image';
+    media.src = sceneData.video || sceneData.image || '';
+    if(sceneData.video) media.autoplay = true;
+    if(sceneData.video) media.loop = true;
+    phone.appendChild(media);
 
-{
-text: "Free demo available\n3-day free trial",
-video: "assets/scene5.mp4"
-}
+    // text overlay
+    const text = document.createElement('div');
+    text.className = 'text-overlay';
+    text.contentEditable = true;
+    text.innerText = sceneData.text;
+    text.addEventListener('input', e => scenes[index].text = e.target.innerText);
+    phone.appendChild(text);
 
-];
+    // upload button
+    const uploadBtn = document.createElement('input');
+    uploadBtn.type = 'file';
+    uploadBtn.accept = 'video/*,image/*';
+    uploadBtn.onchange = e => {
+      const file = e.target.files[0];
+      if(file) {
+        const url = URL.createObjectURL(file);
+        if(file.type.includes('video')) {
+          sceneData.video = url;
+          sceneData.image = null;
+        } else {
+          sceneData.image = url;
+          sceneData.video = null;
+        }
+        renderScene(index); // re-render to show media
+      }
+    };
+    container.appendChild(uploadBtn);
 
-let i = 0;
-const text = document.getElementById("text");
-const video = document.getElementById("video");
+    container.appendChild(phone);
+    wrapper.appendChild(container);
+  }
 
-function playScene(){
+  function prevScene() {
+    if(currentScene > 0) currentScene--;
+    renderScene(currentScene);
+  }
 
-text.innerText = scenes[i].text;
-video.src = scenes[i].video;
-video.play();
+  function nextScene() {
+    if(currentScene < sceneCount - 1) currentScene++;
+    renderScene(currentScene);
+  }
 
-i++;
+  function exportVideo() {
+    alert("Here we would merge all scenes into one video file for gallery download.");
+    // You will need a JS library like Whammy.js, CCapture.js, or FFmpeg WASM to actually merge
+  }
 
-if(i >= scenes.length){
-i = 0;
-}
-
-}
-
-playScene();
-
-setInterval(playScene, 5000);
-
+  // Initial render
+  renderScene(currentScene);
 </script>
 
 </body>
