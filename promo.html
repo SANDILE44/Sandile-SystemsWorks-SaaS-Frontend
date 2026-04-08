@@ -2,172 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>3D Promo Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5-Scene Promo Builder</title>
 <style>
-  body {
+body {
     margin: 0;
-    background: #0b0f1a;
     font-family: Arial, sans-serif;
+    background: #0b0f1a;
     color: white;
+    overflow-x: hidden;
+}
+.stage {
+    width: 100vw;
+    height: 80vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-  }
-
-  .scene-container {
-    width: 360px;
-    height: 640px;
-    margin: 20px;
-    background: #111427;
-    border-radius: 30px;
-    overflow: hidden;
+    align-items: center;
     position: relative;
-    perspective: 1000px;
-  }
-
-  .phone-frame {
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform: rotateY(0deg);
-    transition: transform 0.8s;
-  }
-
-  .scene-video, .scene-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .text-overlay {
+}
+.phone {
+    width: 250px;
+    border-radius: 20px;
+    transform: rotateY(10deg);
+    transition: transform 0.5s;
+}
+.phone:hover {
+    transform: rotateY(-10deg);
+}
+.text-container {
     position: absolute;
-    top: 10%;
-    left: 10%;
-    right: 10%;
-    color: white;
+    left: 5%;
+    top: 20%;
+    width: 45%;
+}
+.text-container textarea {
+    width: 100%;
     font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    pointer-events: none;
-  }
-
-  .controls {
+    color: white;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 6px;
+    padding: 10px;
+    resize: none;
+}
+.scene-controls {
+    margin-top: 10px;
     display: flex;
     gap: 10px;
-    margin-top: 10px;
-  }
-
-  button {
+}
+.scene-controls input[type="file"] {
+    display: none;
+}
+button {
     padding: 10px 15px;
+    background: #16a085;
     border: none;
-    border-radius: 5px;
-    background: #16c79a;
+    border-radius: 6px;
     color: white;
-    font-weight: bold;
     cursor: pointer;
-  }
-
-  input[type="text"] {
-    padding: 5px;
-    width: 200px;
-    border-radius: 5px;
-    border: none;
-  }
+}
+button:hover {
+    background: #138d75;
+}
+#exportBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
 </style>
 </head>
 <body>
 
-<h1>3D Promo Builder</h1>
-
-<div id="scenes-wrapper"></div>
-
-<div class="controls">
-  <button onclick="prevScene()">⬅️ Previous Scene</button>
-  <button onclick="nextScene()">Next Scene ➡️</button>
-  <button onclick="exportVideo()">Export Video</button>
+<div class="stage">
+    <div class="text-container">
+        <textarea id="sceneText" rows="4">Most businesses lose money without knowing</textarea>
+        <div class="scene-controls">
+            <label>
+                Upload Video
+                <input type="file" id="videoUpload" accept="video/*">
+            </label>
+            Start: <input type="number" id="startTime" value="0" min="0" style="width:60px;">s
+            Duration: <input type="number" id="duration" value="5" min="1" style="width:60px;">s
+            <button id="nextScene">Next Scene</button>
+        </div>
+    </div>
+    <video id="phoneVideo" class="phone" autoplay muted loop></video>
 </div>
 
+<button id="exportBtn">Export All Scenes</button>
+
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.0/dist/ffmpeg.min.js"></script>
 <script>
-  // --- Scene Data ---
-  const sceneCount = 5;
-  let currentScene = 0;
-  const scenes = Array.from({length: sceneCount}, (_, i) => ({
-    text: `Scene ${i+1} text`,
-    video: null, // URL from upload
-    image: null // fallback if video not uploaded
-  }));
+const { createFFmpeg, fetchFile } = FFmpeg;
+const ffmpeg = createFFmpeg({ log: true });
 
-  const wrapper = document.getElementById('scenes-wrapper');
+let scenes = [
+    { text: "Most businesses lose money without knowing", video: null, start: 0, duration: 5 },
+    { text: "See real profit before saying yes", video: null, start: 0, duration: 5 },
+    { text: "Detect losses instantly", video: null, start: 0, duration: 5 },
+    { text: "Know when to REJECT a deal", video: null, start: 0, duration: 5 },
+    { text: "Free demo available - 3-day free trial", video: null, start: 0, duration: 5 }
+];
 
-  function renderScene(index) {
-    wrapper.innerHTML = '';
-    const sceneData = scenes[index];
+let currentScene = 0;
 
-    const container = document.createElement('div');
-    container.className = 'scene-container';
+const phoneVideo = document.getElementById('phoneVideo');
+const sceneText = document.getElementById('sceneText');
+const videoUpload = document.getElementById('videoUpload');
+const startTime = document.getElementById('startTime');
+const duration = document.getElementById('duration');
+const nextSceneBtn = document.getElementById('nextScene');
+const exportBtn = document.getElementById('exportBtn');
 
-    const phone = document.createElement('div');
-    phone.className = 'phone-frame';
+function loadScene(index) {
+    sceneText.value = scenes[index].text;
+    startTime.value = scenes[index].start;
+    duration.value = scenes[index].duration;
+    if (scenes[index].video) {
+        phoneVideo.src = URL.createObjectURL(scenes[index].video);
+        phoneVideo.currentTime = scenes[index].start;
+    } else {
+        phoneVideo.src = "";
+    }
+}
 
-    // video or image
-    const media = document.createElement(sceneData.video ? 'video' : 'img');
-    media.className = sceneData.video ? 'scene-video' : 'scene-image';
-    media.src = sceneData.video || sceneData.image || '';
-    if(sceneData.video) media.autoplay = true;
-    if(sceneData.video) media.loop = true;
-    phone.appendChild(media);
+videoUpload.addEventListener('change', (e) => {
+    if (e.target.files.length) {
+        scenes[currentScene].video = e.target.files[0];
+        phoneVideo.src = URL.createObjectURL(scenes[currentScene].video);
+        phoneVideo.currentTime = scenes[currentScene].start;
+    }
+});
 
-    // text overlay
-    const text = document.createElement('div');
-    text.className = 'text-overlay';
-    text.contentEditable = true;
-    text.innerText = sceneData.text;
-    text.addEventListener('input', e => scenes[index].text = e.target.innerText);
-    phone.appendChild(text);
+sceneText.addEventListener('input', () => {
+    scenes[currentScene].text = sceneText.value;
+});
 
-    // upload button
-    const uploadBtn = document.createElement('input');
-    uploadBtn.type = 'file';
-    uploadBtn.accept = 'video/*,image/*';
-    uploadBtn.onchange = e => {
-      const file = e.target.files[0];
-      if(file) {
-        const url = URL.createObjectURL(file);
-        if(file.type.includes('video')) {
-          sceneData.video = url;
-          sceneData.image = null;
-        } else {
-          sceneData.image = url;
-          sceneData.video = null;
-        }
-        renderScene(index); // re-render to show media
-      }
-    };
-    container.appendChild(uploadBtn);
+startTime.addEventListener('input', () => {
+    scenes[currentScene].start = Number(startTime.value);
+});
 
-    container.appendChild(phone);
-    wrapper.appendChild(container);
-  }
+duration.addEventListener('input', () => {
+    scenes[currentScene].duration = Number(duration.value);
+});
 
-  function prevScene() {
-    if(currentScene > 0) currentScene--;
-    renderScene(currentScene);
-  }
+nextSceneBtn.addEventListener('click', () => {
+    currentScene = (currentScene + 1) % scenes.length;
+    loadScene(currentScene);
+});
 
-  function nextScene() {
-    if(currentScene < sceneCount - 1) currentScene++;
-    renderScene(currentScene);
-  }
+// --- EXPORT FUNCTION ---
+exportBtn.addEventListener('click', async () => {
+    exportBtn.disabled = true;
+    exportBtn.textContent = 'Exporting...';
 
-  function exportVideo() {
-    alert("Here we would merge all scenes into one video file for gallery download.");
-    // You will need a JS library like Whammy.js, CCapture.js, or FFmpeg WASM to actually merge
-  }
+    if (!ffmpeg.isLoaded()) await ffmpeg.load();
 
-  // Initial render
-  renderScene(currentScene);
+    // Load all scenes into ffmpeg FS
+    for (let i = 0; i < scenes.length; i++) {
+        if (!scenes[i].video) continue;
+        ffmpeg.FS('writeFile', `scene${i}.mp4`, await fetchFile(scenes[i].video));
+    }
+
+    // Create commands to trim each scene
+    let concatList = '';
+    for (let i = 0; i < scenes.length; i++) {
+        if (!scenes[i].video) continue;
+        const s = scenes[i];
+        const outFile = `scene${i}_cut.mp4`;
+        await ffmpeg.run('-i', `scene${i}.mp4`, '-ss', `${s.start}`, '-t', `${s.duration}`, '-c', 'copy', outFile);
+        concatList += `file '${outFile}'\n`;
+    }
+
+    // Write concat list
+    ffmpeg.FS('writeFile', 'concat.txt', concatList);
+
+    // Merge all scenes
+    await ffmpeg.run('-f', 'concat', '-safe', '0', '-i', 'concat.txt', '-c', 'copy', 'final.mp4');
+
+    // Download
+    const data = ffmpeg.FS('readFile', 'final.mp4');
+    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'promo.mp4';
+    a.click();
+
+    exportBtn.disabled = false;
+    exportBtn.textContent = 'Export All Scenes';
+});
+
+loadScene(currentScene);
 </script>
-
 </body>
 </html>
