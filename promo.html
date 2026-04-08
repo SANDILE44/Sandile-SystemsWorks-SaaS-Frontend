@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5-Scene Promo Builder</title>
-<style>
+/* Reset & basics */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -12,187 +6,123 @@ body {
     color: white;
     overflow-x: hidden;
 }
+
+/* Stage container */
 .stage {
-    width: 100vw;
-    height: 80vh;
+    width: 100%;
+    height: 70vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    position: relative;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
+
+/* Phone container */
 .phone {
-    width: 250px;
+    width: 80%;
+    max-width: 300px;
     border-radius: 20px;
-    transform: rotateY(10deg);
-    transition: transform 0.5s;
+    margin-bottom: 15px;
+    transform: rotateY(5deg);
+    transition: transform 0.3s;
 }
 .phone:hover {
-    transform: rotateY(-10deg);
+    transform: rotateY(-5deg);
 }
+
+/* Text container */
 .text-container {
-    position: absolute;
-    left: 5%;
-    top: 20%;
-    width: 45%;
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
 }
+
+/* Editable text area */
 .text-container textarea {
     width: 100%;
-    font-size: 24px;
+    font-size: 18px;
     color: white;
-    background: transparent;
-    border: 2px solid white;
-    border-radius: 6px;
-    padding: 10px;
-    resize: none;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid #16a085;
+    border-radius: 8px;
+    padding: 8px;
+    resize: vertical;
 }
+
+/* Scene controls (file upload + crop) */
 .scene-controls {
-    margin-top: 10px;
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
 }
+
+/* File input styling */
 .scene-controls input[type="file"] {
     display: none;
 }
+
+.scene-controls label {
+    padding: 6px 10px;
+    background: #16a085;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Number inputs */
+.scene-controls input[type="number"] {
+    width: 60px;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #16a085;
+    background: rgba(0,0,0,0.3);
+    color: white;
+}
+
+/* Buttons */
 button {
-    padding: 10px 15px;
+    padding: 8px 12px;
     background: #16a085;
     border: none;
     border-radius: 6px;
     color: white;
+    font-size: 14px;
     cursor: pointer;
 }
 button:hover {
     background: #138d75;
 }
+
+/* Export button fixed */
 #exportBtn {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-}
-</style>
-</head>
-<body>
-
-<div class="stage">
-    <div class="text-container">
-        <textarea id="sceneText" rows="4">Most businesses lose money without knowing</textarea>
-        <div class="scene-controls">
-            <label>
-                Upload Video
-                <input type="file" id="videoUpload" accept="video/*">
-            </label>
-            Start: <input type="number" id="startTime" value="0" min="0" style="width:60px;">s
-            Duration: <input type="number" id="duration" value="5" min="1" style="width:60px;">s
-            <button id="nextScene">Next Scene</button>
-        </div>
-    </div>
-    <video id="phoneVideo" class="phone" autoplay muted loop></video>
-</div>
-
-<button id="exportBtn">Export All Scenes</button>
-
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.0/dist/ffmpeg.min.js"></script>
-<script>
-const { createFFmpeg, fetchFile } = FFmpeg;
-const ffmpeg = createFFmpeg({ log: true });
-
-let scenes = [
-    { text: "Most businesses lose money without knowing", video: null, start: 0, duration: 5 },
-    { text: "See real profit before saying yes", video: null, start: 0, duration: 5 },
-    { text: "Detect losses instantly", video: null, start: 0, duration: 5 },
-    { text: "Know when to REJECT a deal", video: null, start: 0, duration: 5 },
-    { text: "Free demo available - 3-day free trial", video: null, start: 0, duration: 5 }
-];
-
-let currentScene = 0;
-
-const phoneVideo = document.getElementById('phoneVideo');
-const sceneText = document.getElementById('sceneText');
-const videoUpload = document.getElementById('videoUpload');
-const startTime = document.getElementById('startTime');
-const duration = document.getElementById('duration');
-const nextSceneBtn = document.getElementById('nextScene');
-const exportBtn = document.getElementById('exportBtn');
-
-function loadScene(index) {
-    sceneText.value = scenes[index].text;
-    startTime.value = scenes[index].start;
-    duration.value = scenes[index].duration;
-    if (scenes[index].video) {
-        phoneVideo.src = URL.createObjectURL(scenes[index].video);
-        phoneVideo.currentTime = scenes[index].start;
-    } else {
-        phoneVideo.src = "";
-    }
+    bottom: 15px;
+    right: 15px;
+    font-size: 16px;
 }
 
-videoUpload.addEventListener('change', (e) => {
-    if (e.target.files.length) {
-        scenes[currentScene].video = e.target.files[0];
-        phoneVideo.src = URL.createObjectURL(scenes[currentScene].video);
-        phoneVideo.currentTime = scenes[currentScene].start;
+/* Mobile tweaks */
+@media (max-width: 480px) {
+    .phone {
+        width: 90%;
     }
-});
-
-sceneText.addEventListener('input', () => {
-    scenes[currentScene].text = sceneText.value;
-});
-
-startTime.addEventListener('input', () => {
-    scenes[currentScene].start = Number(startTime.value);
-});
-
-duration.addEventListener('input', () => {
-    scenes[currentScene].duration = Number(duration.value);
-});
-
-nextSceneBtn.addEventListener('click', () => {
-    currentScene = (currentScene + 1) % scenes.length;
-    loadScene(currentScene);
-});
-
-// --- EXPORT FUNCTION ---
-exportBtn.addEventListener('click', async () => {
-    exportBtn.disabled = true;
-    exportBtn.textContent = 'Exporting...';
-
-    if (!ffmpeg.isLoaded()) await ffmpeg.load();
-
-    // Load all scenes into ffmpeg FS
-    for (let i = 0; i < scenes.length; i++) {
-        if (!scenes[i].video) continue;
-        ffmpeg.FS('writeFile', `scene${i}.mp4`, await fetchFile(scenes[i].video));
+    .text-container {
+        width: 95%;
     }
-
-    // Create commands to trim each scene
-    let concatList = '';
-    for (let i = 0; i < scenes.length; i++) {
-        if (!scenes[i].video) continue;
-        const s = scenes[i];
-        const outFile = `scene${i}_cut.mp4`;
-        await ffmpeg.run('-i', `scene${i}.mp4`, '-ss', `${s.start}`, '-t', `${s.duration}`, '-c', 'copy', outFile);
-        concatList += `file '${outFile}'\n`;
+    .scene-controls {
+        flex-direction: column;
+        align-items: flex-start;
     }
-
-    // Write concat list
-    ffmpeg.FS('writeFile', 'concat.txt', concatList);
-
-    // Merge all scenes
-    await ffmpeg.run('-f', 'concat', '-safe', '0', '-i', 'concat.txt', '-c', 'copy', 'final.mp4');
-
-    // Download
-    const data = ffmpeg.FS('readFile', 'final.mp4');
-    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'promo.mp4';
-    a.click();
-
-    exportBtn.disabled = false;
-    exportBtn.textContent = 'Export All Scenes';
-});
-
-loadScene(currentScene);
-</script>
-</body>
-</html>
+    .scene-controls input[type="number"] {
+        width: 50px;
+    }
+    button {
+        width: 100%;
+    }
+}
