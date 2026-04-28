@@ -1,150 +1,132 @@
-
 (async function guardCalculators() {
 
-const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-let redirected = false;
+  let redirected = false;
 
-function go(url, message) {
+  function go(url, message) {
+    if (redirected) return;
+    redirected = true;
 
-if (redirected) return;
-redirected = true;
+    localStorage.setItem("authMessage", message);
+    localStorage.setItem("afterLogin", window.location.pathname);
 
-localStorage.setItem("authMessage", message);
-localStorage.setItem("afterLogin", window.location.pathname);
+    window.location.replace(url);
+  }
 
-window.location.replace(url);
+  /* =====================================
+     NOT LOGGED IN
+  ===================================== */
 
-}
+  if (!token) {
 
-/* =====================================
-   NOT LOGGED IN
-===================================== */
+    document.body.innerHTML = `
+      <div style="
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#020617;
+        color:white;
+        font-family:Arial,sans-serif;
+        text-align:center;
+        padding:20px;
+      ">
 
-if (!token) {
+        <div style="
+          max-width:420px;
+          background:#0f172a;
+          padding:30px 24px;
+          border-radius:14px;
+          box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        ">
 
-document.body.innerHTML = `
-<div style="
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#020617;
-color:white;
-font-family:Arial,sans-serif;
-text-align:center;
-padding:20px;
-">
+          <h2 style="margin-bottom:10px;">
+            You are logged out
+          </h2>
 
-<div style="
-max-width:420px;
-background:#0f172a;
-padding:30px 24px;
-border-radius:14px;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-">
+          <p style="
+            opacity:0.8;
+            margin-bottom:24px;
+            line-height:1.5;
+          ">
+            Please log in to continue using Sandile SystemsWorks calculators.
+          </p>
 
-<h2 style="margin-bottom:10px;">
-You are logged out
-</h2>
+          <button id="goLogin" style="
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            width:100%;
+          ">
+            Log in to continue
+          </button>
 
-<p style="
-opacity:0.8;
-margin-bottom:24px;
-line-height:1.5;
-">
-Please log in to continue using Sandile SystemsWorks calculators.
-</p>
+        </div>
+      </div>
+    `;
 
-<button id="goLogin" style="
-background:#2563eb;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-width:100%;
-">
-Log in to continue
-</button>
+    const btn = document.getElementById("goLogin");
 
-</div>
-</div>
-`;
+    if (btn) {
+      btn.onclick = () => {
+        localStorage.setItem("afterLogin", window.location.pathname);
+        window.location.href = "login.html";
+      };
+    }
 
-document.getElementById("goLogin").onclick = () => {
+    return;
+  }
 
-localStorage.setItem("afterLogin", window.location.pathname);
-window.location.href = "login.html";
+  /* =====================================
+     SAFETY CHECK
+  ===================================== */
 
-};
+  if (!window.API_BASE) {
+    console.error("API_BASE not loaded");
+    return;
+  }
 
-return;
+  /* =====================================
+     ACCESS CHECK
+  ===================================== */
 
-}
+  try {
 
-/* =====================================
-   SAFETY CHECK
-===================================== */
+    const res = await fetch(`${window.API_BASE}/api/calculators/access`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-if (!window.API_BASE) {
+    /* SESSION EXPIRED */
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      go("login.html", "Session expired. Please log in again.");
+      return;
+    }
 
-console.error("API_BASE not loaded");
-return;
+    /* SUBSCRIPTION ENDED */
+    if (res.status === 403) {
+      go("payment.html", "Your trial or subscription has ended.");
+      return;
+    }
 
-}
+    if (!res.ok) {
+      console.error("Guard error status:", res.status);
+      return;
+    }
 
-/* =====================================
-   ACCESS CHECK
-===================================== */
+    console.log("Access granted");
 
-try {
+  } catch (err) {
+    console.error("Guard failed:", err);
+  }
 
-const res = await fetch(`${window.API_BASE}/api/calculators/access`, {
-
-method: "GET",
-
-headers: {
-Authorization: `Bearer ${token}`
-}
-
-});
-
-/* SESSION EXPIRED */
-
-if (res.status === 401) {
-
-localStorage.removeItem("token");
-
-go(
-"login.html",
-"Session expired. Please log in again."
-);
-
-return;
-
-}
-
-/* SUBSCRIPTION ENDED */
-
-if (res.status === 403) {
-
-go(
-"payment.html",
-"Your trial or subscription has ended."
-);
-
-return;
-
-}
-
-if (!res.ok) {
-
-console.error("Guard error status:", res.status);
-return;
-
-}
-
-console.log("Access granted");
+})();
