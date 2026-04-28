@@ -10,8 +10,6 @@
 <link rel="stylesheet" href="css/styles.css" />
 
 <style>
-
-/* ================= PAGE LAYOUT ================= */
 .saved-wrapper {
   margin-left: 260px;
   padding: 2rem;
@@ -22,25 +20,17 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* ================= GRID ================= */
 .deals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
 
-/* ================= CARD ================= */
 .deal-card {
   background: #0b1220;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
   padding: 1rem;
-  transition: 0.2s ease;
-}
-
-.deal-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0,180,216,0.4);
 }
 
 .deal-title {
@@ -56,7 +46,6 @@ h1 {
   opacity: 0.9;
 }
 
-/* ================= BUTTON ================= */
 .delete-btn {
   margin-top: 1rem;
   width: 100%;
@@ -67,21 +56,13 @@ h1 {
   color: #ff6b6b;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
-.delete-btn:hover {
-  background: rgba(255,0,0,0.2);
-  transform: translateY(-2px);
-}
-
-/* ================= EMPTY STATE ================= */
 .empty {
   padding: 2rem;
   text-align: center;
   opacity: 0.6;
 }
-
 </style>
 
 </head>
@@ -103,19 +84,20 @@ h1 {
 <script>
 (() => {
 
-const $ = id => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 
-/* ================= CONFIG ================= */
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-/* ================= API ================= */
+/* ================= SAFE API ================= */
 async function api(url, method = "GET", body = null) {
 
   const token = localStorage.getItem("token");
-  if (!token) return location.replace("login.html");
+  if (!token) {
+    location.replace("login.html");
+    return null;
+  }
 
   try {
-
     const res = await fetch(`${API_BASE}${url}`, {
       method,
       headers: {
@@ -127,13 +109,19 @@ async function api(url, method = "GET", body = null) {
 
     if (res.status === 401) {
       localStorage.removeItem("token");
-      return location.replace("login.html");
+      location.replace("login.html");
+      return null;
+    }
+
+    if (!res.ok) {
+      console.error("API Error:", res.status);
+      return null;
     }
 
     return await res.json();
 
   } catch (err) {
-    console.error("SavedDeals error:", err);
+    console.error("Network error:", err);
     return null;
   }
 }
@@ -146,7 +134,7 @@ async function loadDeals() {
 /* ================= DELETE ================= */
 async function deleteDeal(id) {
   await api(`/api/saved-deals/${id}`, "DELETE");
-  await initSavedDeals(); // FIXED
+  await initSavedDeals();
 }
 
 /* ================= RENDER ================= */
@@ -155,7 +143,7 @@ function renderDeals(deals) {
   const container = $("savedDealsContainer");
   const empty = $("emptyState");
 
-  if (!container) return;
+  if (!container || !empty) return;
 
   if (!deals || deals.length === 0) {
     container.innerHTML = "";
@@ -165,28 +153,31 @@ function renderDeals(deals) {
 
   empty.style.display = "none";
 
-  container.innerHTML = deals.map(d => `
+  container.innerHTML = deals.map(d => {
 
-    <div class="deal-card">
+    const type = (d.type || "unknown").toUpperCase();
+    const date = d.createdAt ? new Date(d.createdAt).toLocaleDateString() : "—";
 
-      <div class="deal-title">
-        ${(d.type || "unknown").toUpperCase()} -
-        ${new Date(d.createdAt).toLocaleDateString()}
+    return `
+      <div class="deal-card">
+
+        <div class="deal-title">
+          ${type} - ${date}
+        </div>
+
+        <div class="deal-body">
+          <div><strong>Profit:</strong> ${d?.results?.profit ?? 0}</div>
+          <div><strong>Revenue:</strong> ${d?.results?.monthlyRevenue ?? 0}</div>
+          <div><strong>Margin:</strong> ${d?.results?.margin ?? 0}%</div>
+        </div>
+
+        <button class="delete-btn" data-id="${d._id}">
+          Delete
+        </button>
+
       </div>
-
-      <div class="deal-body">
-        <div><strong>Profit:</strong> ${d.results?.profit ?? 0}</div>
-        <div><strong>Revenue:</strong> ${d.results?.monthlyRevenue ?? 0}</div>
-        <div><strong>Margin:</strong> ${d.results?.margin ?? 0}%</div>
-      </div>
-
-      <button class="delete-btn" data-id="${d._id}">
-        Delete
-      </button>
-
-    </div>
-
-  `).join("");
+    `;
+  }).join("");
 }
 
 /* ================= INIT ================= */
@@ -195,14 +186,16 @@ async function initSavedDeals() {
   renderDeals(deals);
 }
 
-/* ================= CLICK EVENTS ================= */
+/* ================= EVENTS ================= */
 document.addEventListener("click", async (e) => {
 
-  if (e.target.classList.contains("delete-btn")) {
-    const id = e.target.dataset.id;
-    await deleteDeal(id);
-  }
+  const btn = e.target.closest(".delete-btn");
+  if (!btn) return;
 
+  const id = btn.dataset.id;
+  if (!id) return;
+
+  await deleteDeal(id);
 });
 
 /* ================= START ================= */
