@@ -35,6 +35,23 @@ async function deleteDeal(id) {
   init();
 }
 
+/* ================= EDIT (FRONTEND ONLY) ================= */
+function editDeal(deal) {
+
+  const profit = prompt("Edit Profit:", deal.results?.profit ?? 0);
+  const revenue = prompt("Edit Revenue:", deal.results?.monthlyRevenue ?? 0);
+  const margin = prompt("Edit Margin (%):", deal.results?.margin ?? 0);
+
+  if (profit === null || revenue === null || margin === null) return;
+
+  // update locally (no backend yet)
+  deal.results.profit = Number(profit);
+  deal.results.monthlyRevenue = Number(revenue);
+  deal.results.margin = Number(margin);
+
+  renderDeals(window.__dealsCache);
+}
+
 /* ================= RENDER ================= */
 function renderDeals(deals) {
 
@@ -43,15 +60,18 @@ function renderDeals(deals) {
 
   if (!container) return;
 
+  // cache for edit
+  window.__dealsCache = deals;
+
   if (!deals || deals.length === 0) {
     container.innerHTML = "";
-    empty.style.display = "block";
+    if (empty) empty.style.display = "block";
     return;
   }
 
-  empty.style.display = "none";
+  if (empty) empty.style.display = "none";
 
-  container.innerHTML = deals.map(d => `
+  container.innerHTML = deals.map((d, index) => `
     <div class="deal-card">
 
       <div class="deal-title">
@@ -64,6 +84,10 @@ function renderDeals(deals) {
         <div><strong>Revenue:</strong> ${d.results?.monthlyRevenue ?? 0}</div>
         <div><strong>Margin:</strong> ${d.results?.margin ?? 0}%</div>
       </div>
+
+      <button class="edit-btn" data-index="${index}">
+        Edit
+      </button>
 
       <button class="delete-btn" data-id="${d._id}">
         Delete
@@ -82,10 +106,21 @@ async function init() {
 /* ================= EVENTS ================= */
 document.addEventListener("click", async (e) => {
 
-  const btn = e.target.closest(".delete-btn");
-  if (!btn) return;
+  /* DELETE */
+  const delBtn = e.target.closest(".delete-btn");
+  if (delBtn) {
+    await deleteDeal(delBtn.dataset.id);
+    return;
+  }
 
-  await deleteDeal(btn.dataset.id);
+  /* EDIT */
+  const editBtn = e.target.closest(".edit-btn");
+  if (editBtn) {
+    const index = editBtn.dataset.index;
+    const deal = window.__dealsCache[index];
+    editDeal(deal);
+  }
+
 });
 
 /* START */
