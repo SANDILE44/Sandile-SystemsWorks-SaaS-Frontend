@@ -2,35 +2,19 @@
 
 const $ = id => document.getElementById(id);
 
-let latestData = null; // 🔥 holds latest calculator result
-
-const money = v =>
-  (Number(v) || 0).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-
-const percent = v => {
-  const n = Number(v) || 0;
-  const val = Math.abs(n) <= 1 ? n * 100 : n;
-  return val.toFixed(2) + "%";
-};
-
-let debounceTimer;
-
 /* ================= API ================= */
-async function apiPost(url, body) {
+async function api(url, method = "GET", body = null) {
   const token = localStorage.getItem("token");
   if (!token) return location.replace("login.html");
 
   try {
     const res = await fetch(`${API_BASE}${url}`, {
-      method: "POST",
+      method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify(body)
+      body: body ? JSON.stringify(body) : null
     });
 
     if (res.status === 401) {
@@ -38,197 +22,89 @@ async function apiPost(url, body) {
       return location.replace("login.html");
     }
 
-    if (res.status === 403)
-      return location.replace("payment.html");
-
-    if (!res.ok) return null;
-
-    return await res.json();
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return null;
+    }
 
   } catch (err) {
-    console.error("API error", err);
+    console.error("SavedDeals API error:", err);
     return null;
   }
 }
 
-/* ================= CLASS HELPER ================= */
-function setClass(el, cls) {
-  if (!el) return;
-  el.className = `output-value ${cls || ""}`;
-}
-
-/* ================= UPDATE ================= */
-function update() {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(runRestaurant, 300);
-}
-
-/* ================= MAIN CALC ================= */
-async function runRestaurant() {
-
-  const data = await apiPost("/api/calculators/restaurant/operations", {
-    tables: +$("tables")?.value || 0,
-    coversPerTable: +$("covers")?.value || 0,
-    avgCheck: +$("check")?.value || 0,
-    foodPct: +$("foodPercent")?.value || 0,
-    labor: +$("labor")?.value || 0,
-    fixed: +$("fixed")?.value || 0,
-    days: +$("days")?.value || 0
+/* ================= SAVE ================= */
+async function saveDeal(type, data) {
+  return await api("/api/saved-deals", "POST", {
+    type,
+    inputs: data.inputs,
+    results: data.results
   });
-
-  if (!data) return;
-
-  latestData = data; // 🔥 SAVE FOR BUTTON
-
-  /* ================= UI ================= */
-  $("dailyCovers").textContent = data.dailyCovers ?? 0;
-  $("revenue").textContent = money(data.monthlyRevenue);
-
-  $("foodCost").textContent = money(data.foodCost);
-  $("totalCosts").textContent = money(data.totalCosts);
-
-  const ratioEl = $("ratio");
-  ratioEl.textContent = percent(data.costRatio ?? 0);
-
-  setClass(
-    ratioEl,
-    data.costRatio > 80 ? "profit-negative"
-    : data.costRatio > 60 ? "margin-medium"
-    : "profit-positive"
-  );
-
-  const profitEl = $("profit");
-  profitEl.textContent = money(data.profit);
-  setClass(profitEl, data.profit >= 0 ? "profit-positive" : "profit-negative");
-
-  const marginEl = $("margin");
-  marginEl.textContent = percent(data.margin);
-
-  setClass(
-    marginEl,
-    data.margin < 10 ? "profit-negative"
-    : data.margin < 20 ? "margin-medium"
-    : "margin-strong"
-  );
-
-  $("profitCover").textContent = money(data.profitPerCover);
-  $("monthly").textContent = money(data.monthlyProfit);
-  $("annual").textContent = money(data.annualProfit);
-  $("breakeven").textContent = data.breakevenCovers ?? 0;
-
-  /* ================= DECISION ================= */
-  $("status").textContent = data.decision || "—";
-  $("decisionAdvice").textContent = data.advice || "—";
-
-  $("status").className =
-    data.riskLevel === "High" ? "loss"
-    : data.riskLevel === "Medium" ? "neutral"
-    : "profit";
-
-  /* ================= INSIGHTS ================= */
-  const stepsContainer = $("stepsContainer");
-
-  if (stepsContainer && data.insights) {
-
-    const sectionTitles = {
-      summary: "📊 Summary",
-      profitability: "💰 Profitability",
-      costs: "📉 Costs",
-      operations: "⚙ Operations",
-      growth: "🚀 Growth"
-    };
-
-    stepsContainer.innerHTML = Object.entries(data.insights)
-      .map(([key, items]) => `
-        <div class="insight-group">
-          <div class="insight-header"
-               onclick="this.nextElementSibling.classList.toggle('open')">
-            ${sectionTitles[key] || key}
-          </div>
-
-          <div class="insight-body">
-            ${items.map(i => `
-              <div class="step">
-                <strong>${i.title}</strong>
-                <div>${i.message}</div>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      `).join("");
-  }
 }
 
-/* ================= SAVE DEAL BUTTON ================= */
-$("saveDealBtn")?.addEventListener("click", async () => {
+/* ================= LOAD ================= */
+async function loadDeals() {
+  return await api("/api/saved-deals");
+}
 
-  if (!latestData) {
-    alert("Run calculator first before saving");
+/* ================= RENDER ================= */
+function renderDeals(deals) {
+
+  const container = $("savedDealsContainer");
+  if (!container) {
+    console.error("Missing savedDealsContainer");
     return;
   }
 
-  const payload = {
-    type: "restaurant",
-    inputs: {
-      tables: $("tables").value,
-      covers: $("covers").value,
-      check: $("check").value,
-      foodPercent: $("foodPercent").value,
-      labor: $("labor").value,
-      fixed: $("fixed").value,
-      days: $("days").value
-    },
-    results: {
-      profit: latestData.profit,
-      margin: latestData.margin,
-      monthlyRevenue: latestData.monthlyRevenue
-    }
-  };
-
-  const res = await apiPost("/api/saved-deals", payload);
-
-  if (res) {
-    alert("Deal saved successfully");
-  } else {
-    alert("Failed to save deal");
+  if (!deals || !deals.length) {
+    container.innerHTML = "<p>No saved deals yet.</p>";
+    return;
   }
-});
 
-/* ================= EVENTS ================= */
-document
-  .querySelectorAll(".input-section input")
-  .forEach(i => i.addEventListener("input", update));
+  container.innerHTML = deals.map(d => `
+    <div class="deal-card">
 
-/* ================= RESET ================= */
-$("resetBtn")?.addEventListener("click", () => {
+      <div class="deal-title">
+        ${d.type?.toUpperCase() || "UNKNOWN"} -
+        ${new Date(d.createdAt).toLocaleDateString()}
+      </div>
 
-  document
-    .querySelectorAll(".input-section input")
-    .forEach(i => i.value = "");
+      <div class="deal-body">
+        <div><strong>Profit:</strong> ${d.results?.profit ?? 0}</div>
+        <div><strong>Revenue:</strong> ${d.results?.monthlyRevenue ?? 0}</div>
+        <div><strong>Margin:</strong> ${d.results?.margin ?? 0}%</div>
+      </div>
 
-  latestData = null;
+      <button onclick="SavedDeals.deleteDeal('${d._id}')" class="delete-btn">
+        Delete
+      </button>
 
-  const ids = [
-    "dailyCovers","revenue","foodCost","totalCosts",
-    "ratio","profit","margin","profitCover",
-    "monthly","annual","breakeven"
-  ];
+    </div>
+  `).join("");
+}
 
-  ids.forEach(id => {
-    const el = $(id);
-    if (el) {
-      el.textContent = "—";
-      el.className = "output-value";
-    }
-  });
-
-  $("status").textContent = "—";
-  $("status").className = "";
-  $("decisionAdvice").textContent = "";
-  $("stepsContainer").innerHTML = "";
-});
+/* ================= DELETE ================= */
+async function deleteDeal(id) {
+  await api(`/api/saved-deals/${id}`, "DELETE");
+  initSavedDeals();
+}
 
 /* ================= INIT ================= */
-runRestaurant();
+async function initSavedDeals() {
+  const deals = await loadDeals();
+  renderDeals(deals);
+}
+
+/* ================= EXPORT ================= */
+window.SavedDeals = {
+  saveDeal,
+  initSavedDeals,
+  deleteDeal
+};
+
+/* AUTO LOAD */
+initSavedDeals();
 
 })();
