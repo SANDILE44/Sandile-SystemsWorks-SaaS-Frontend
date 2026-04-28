@@ -1,11 +1,11 @@
 (() => {
 
-const $ = id => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
 /* ================= API ================= */
-async function api(url, method = "GET") {
+async function api(url, method = "GET", body = null) {
 
   const token = localStorage.getItem("token");
   if (!token) return location.replace("login.html");
@@ -15,13 +15,9 @@ async function api(url, method = "GET") {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
-    }
+    },
+    body: body ? JSON.stringify(body) : null
   });
-
-  if (res.status === 401) {
-    localStorage.removeItem("token");
-    return location.replace("login.html");
-  }
 
   if (!res.ok) return null;
 
@@ -40,7 +36,7 @@ async function deleteDeal(id) {
 }
 
 /* ================= RENDER ================= */
-function render(deals) {
+function renderDeals(deals) {
 
   const container = $("savedDealsContainer");
   const empty = $("emptyState");
@@ -59,7 +55,8 @@ function render(deals) {
     <div class="deal-card">
 
       <div class="deal-title">
-        ${d.type?.toUpperCase()} - ${new Date(d.createdAt).toLocaleDateString()}
+        ${(d.type || "UNKNOWN").toUpperCase()} -
+        ${new Date(d.createdAt).toLocaleDateString()}
       </div>
 
       <div class="deal-body">
@@ -68,7 +65,7 @@ function render(deals) {
         <div><strong>Margin:</strong> ${d.results?.margin ?? 0}%</div>
       </div>
 
-      <button onclick="SavedDeals.delete('${d._id}')" class="delete-btn">
+      <button class="delete-btn" data-id="${d._id}">
         Delete
       </button>
 
@@ -79,15 +76,19 @@ function render(deals) {
 /* ================= INIT ================= */
 async function init() {
   const deals = await loadDeals();
-  render(deals);
+  renderDeals(deals);
 }
 
-/* ================= EXPORT ================= */
-window.SavedDeals = {
-  delete: deleteDeal
-};
+/* ================= EVENTS ================= */
+document.addEventListener("click", async (e) => {
+
+  const btn = e.target.closest(".delete-btn");
+  if (!btn) return;
+
+  await deleteDeal(btn.dataset.id);
+});
 
 /* START */
-init();
+document.addEventListener("DOMContentLoaded", init);
 
 })();
