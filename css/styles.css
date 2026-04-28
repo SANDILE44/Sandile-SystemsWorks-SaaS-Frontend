@@ -13,10 +13,6 @@
 }
 
 /* ================= RESET ================= */
-* {
-  box-sizing: border-box;
-}
-
 html,
 body {
   overflow-x: hidden;
@@ -232,15 +228,18 @@ body {
 /* ================= MAIN CONTENT ================= */
 .main-content {
   margin-left: 260px;
-  margin-right: 0;
   width: calc(100% - 260px);
- 
 
   min-height: 100vh;
-  overflow-y: auto;
+
+  /* allow natural page scrolling */
   overflow-x: hidden;
+  overflow-y: visible;
 
   padding: 2rem;
+
+  /* important for long calculator pages */
+  box-sizing: border-box;
 }
 
 /* ================= HEADER ================= */
@@ -322,69 +321,7 @@ body {
   cursor: not-allowed;
 }
 
-/* ================= SECTORS NAV (CLEAN) ================= */
-.sectors-navigation {
-  margin-top: 3rem;
-}
 
-.sectors-navigation h2 {
-  margin-bottom: 0.4rem;
-}
-
-.sectors-navigation p {
-  margin-bottom: 2rem;
-  color: var(--text-muted);
-}
-
-/* 5 columns, no cards */
-.sectors-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 2.5rem;
-}
-
-/* Sector column */
-.sector-group {
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-/* Sector title */
-.sector-group h3 {
-  margin: 0 0 0.8rem;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-main);
-  letter-spacing: 0.3px;
-}
-
-/* List */
-.sector-group ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* Links */
-.sector-group li {
-  margin-bottom: 0.45rem;
-}
-
-.sector-group a {
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition:
-    color 0.15s ease,
-    transform 0.15s ease;
-}
-
-.sector-group a:hover {
-  color: var(--accent);
-  transform: translateX(3px);
-}
 
 /* ================= RESPONSIVE (SECTORS GRID ONLY) ================= */
 @media (max-width: 1300px) {
@@ -404,14 +341,15 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ================= BREADCRUMB (CLEAN SYSTEM) ================= */
 
-/* ================= BREADCRUMB ================= */
 .breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
 
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 
   font-size: 0.85rem;
   font-weight: 600;
@@ -419,13 +357,13 @@ body {
 }
 
 .breadcrumb a {
+  color: var(--accent);
   text-decoration: none;
-  color: var(--text-muted);
   transition: color 0.15s ease;
 }
 
 .breadcrumb a:hover {
-  color: var(--accent);
+  color: #38d9ff;
 }
 
 .breadcrumb span {
@@ -434,12 +372,6 @@ body {
 
 /* ================= MOBILE OVERRIDE (SIMPLE + FINAL) ================= */
 @media (max-width: 768px) {
-  /* Calculator pages: stack columns */
-  .calculator-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.5rem !important;
-  }
 
   .input-section,
   .output-section {
@@ -662,16 +594,7 @@ body {
   }
 }
 
-.breadcrumb {
-  font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 1rem;
-}
 
-.breadcrumb a {
-  color: #00b4d8;
-  text-decoration: none;
-}
 
 
 
@@ -836,4 +759,380 @@ body {
     font-size: 0.78rem;
   }
 
+}
+
+/* ================= INPUTS ================= */
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.input-section input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background-color: #111827;
+  color: #fff;
+  transition: 0.2s ease;
+}
+
+.input-section input:focus {
+  outline: none;
+  border-color: #00b4d8;
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+}
+
+/* ================= SUPER RESET BUTTON ================= */
+
+#resetBtn,
+#resetOperationsBtn,
+#resetShipmentBtn,
+#resetFreightBtn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.85rem 1.2rem;
+
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #000;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* Hover */
+#resetBtn:hover,
+#resetOperationsBtn:hover,
+#resetShipmentBtn:hover,
+#resetFreightBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 10px 22px rgba(0, 180, 216, 0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+/* Active (Pressed) */
+#resetBtn:active,
+#resetOperationsBtn:active,
+#resetShipmentBtn:active,
+#resetFreightBtn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0, 180, 216, 0.2),
+    inset 0 2px 4px rgba(0,0,0,0.25);
+}
+
+/* Focus (keyboard users) */
+#resetBtn:focus-visible,
+#resetOperationsBtn:focus-visible,
+#resetShipmentBtn:focus-visible,
+#resetFreightBtn:focus-visible {
+  outline: 2px solid rgba(0, 180, 216, 0.6);
+  outline-offset: 3px;
+}
+
+/* Disabled state (future-proof) */
+#resetBtn:disabled,
+#resetOperationsBtn:disabled,
+#resetShipmentBtn:disabled,
+#resetFreightBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= STATUS COLORS ================= */
+#log-status.profit {
+  color: #22c55e;
+  font-weight: 800;
+}
+
+#log-status.loss {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+#log-status.neutral {
+  color: #f59e0b;
+  font-weight: 800;
+}
+
+/* ===============================
+   NEW CONSTRUCTION DECISION UI
+   (Risk • Markup • Simulation • Decision)
+================================= */
+
+/* Decision Panel */
+.decision-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.decision-take {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  color: #22c55e;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
+}
+
+.decision-caution {
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
+}
+
+.decision-avoid {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+}
+
+/* Risk Warning */
+.risk-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  color: #f87171;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Markup Recommendation */
+.markup-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  color: #60a5fa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cost Overrun Simulation */
+.simulation-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.08);
+  border-left: 4px solid #a855f7;
+  color: #c084fc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Subtle premium animation */
+.decision-panel,
+.risk-box,
+.markup-box,
+.simulation-box {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.decision-panel:hover,
+.risk-box:hover,
+.markup-box:hover,
+.simulation-box:hover {
+  transform: translateY(-3px);
+}
+
+/* ================= LOGISTICS DECISION ENGINE ================= */
+
+/* Make decision engine rows feel special */
+#log-risk-level,
+#log-safety {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Risk Level classes */
+#log-risk-level.low {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+#log-risk-level.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-risk-level.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Recommended Price */
+#log-recommended-price {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  font-weight: 900;
+}
+
+/* Safety Status classes */
+#log-safety.healthy {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+#log-safety.risk {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-safety.critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Advice Box */
+#log-advice {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+/* Duplicate comaprison buttton*/
+.duplicateBtn{
+   width: 100%;
+  margin-top: 1rem;
+  padding: 0.85rem 1.2rem;
+
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #000;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.duplicateBtn :hover{
+   transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 10px 22px rgba(0, 180, 216, 0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+.duplicateBtn:active{
+    transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0, 180, 216, 0.2),
+    inset 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.duplicateBtn:focus-visible{
+  outline: 2px solid rgba(0, 180, 216, 0.6);
+  outline-offset: 3px;
+}
+.duplicateBtn:disabled{
+    opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+/* SAVE DEALS BUTTON */
+.saveDealBtn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.85rem 1.2rem;
+
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #000;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+
+  transition: all 0.15s ease;
+}
+
+.saveDealBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.saveDealBtn:active {
+  transform: translateY(0);
+}
+
+.saveDealBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

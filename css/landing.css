@@ -54,6 +54,7 @@ a {
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 1rem;
+  justify-content: center;
 }
 .hero-ctas {
   justify-content: center;
@@ -220,6 +221,7 @@ a {
 /* ================= HERO ================= */
 .hero {
   padding: 4.5rem 0 3.5rem;
+  text-align: center;
 }
 .hero-grid {
   display: grid;
@@ -295,9 +297,9 @@ a {
 }
 
 
-//* ══════════════════════════════
+/* ══════════════════════════════
    DEMO SECTION
-══════════════════════════════ *//
+══════════════════════════════ */
 #demo {
   text-align: center;
 }
@@ -445,6 +447,7 @@ a {
 
 /* ── PANELS ── */
 .demo-panel {
+
   display: none;
 }
 
@@ -460,8 +463,8 @@ a {
 
 .demo-panel-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 16px;
   margin-bottom: 28px;
 }
@@ -846,6 +849,7 @@ font-size:0.88rem;
   font-size: 1.05rem;
 }
 .list {
+justify-content: center;
   list-style: none;
   margin-top: 0.9rem;
   display: grid;
@@ -2492,6 +2496,8 @@ details p {
 ================================ */
 
 .hero-proof{
+  text-align: center;
+  align-items: center;
 margin:1.4rem 0 0.8rem;
 padding:1.1rem 1.1rem;
 border-radius:14px;
@@ -2562,12 +2568,12 @@ margin:auto;
 }
 
 .founder-container img{
-width:120px;
-height:120px;
-border-radius:50%;
+height: 500px;
+width: 500px;
+border-radius: 50%;
 object-fit:cover;
 margin:0 auto 20px;
-border:2px solid rgba(0,213,255,0.5);
+border:2px solid rgb(0, 190, 228);
 box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
@@ -2591,4 +2597,12 @@ color:var(--text-muted);
 font-size:0.95rem;
 line-height:1.7;
 margin-bottom:14px;
+}
+
+.price-approx {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 4px;
+  opacity: 0.7;
 }

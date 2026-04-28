@@ -1,430 +1,231 @@
 <!doctype html>
+<html lang="en">
 
-<html lang="en">  
-  <head>  
-    <meta charset="UTF-8" />  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
-    <title>Restaurant Calculators - Sandile SystemsWorks</title> 
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
- 
-  <link rel="stylesheet" href="css/styles.css" />  
-    <link rel="stylesheet" href="css/calculators.css" />  
-  </head>    <body> 
+<title>Restaurant Profitability Calculator - Sandile SystemsWorks</title>
 
- 
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/calculators.css" />
+
 <style>
+
 /* ===============================
 RESTAURANT DECISION ENGINE UI
 =============================== */
 
 #status {
   font-weight: 800;
-  font-size: 0.95rem;
-  background: none;
-  border: none;
-  padding: 0;
-  border-radius: 0;
+  font-size: 1rem;
 }
 
-#status.profit {
-  color: #22c55e;
-}
-
-#status.loss {
-  color: #ef4444;
-}
-
-#status.neutral {
-  color: #f59e0b;
-}
+#status.profit { color: #22c55e; }
+#status.loss { color: #ef4444; }
+#status.neutral { color: #f59e0b; }
 
 #decisionAdvice {
-  margin-top: 10px;
-  padding: 0;
-  border-radius: 0;
+  margin-top: 8px;
   font-size: 0.9rem;
   line-height: 1.5;
-  background: none;
-  border: none;
   color: rgba(255,255,255,0.7);
 }
 
-/* ── RESULT COLORS ── */
-.profit-positive {
-  color: #22c55e;
+/* RESULT COLORS */
+.profit-positive { color: #22c55e; }
+.profit-negative { color: #ef4444; }
+.margin-medium { color: #f59e0b; }
+.margin-strong { color: #22c55e; }
+
+/* STEPS */
+.steps-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.profit-negative {
-  color: #ef4444;
-}
-
-.margin-medium {
-  color: #f59e0b;
-}
-
-.margin-strong {
-  color: #22c55e;
-}
-
-.risk-low {
-  color: #22c55e;
-}
-
-.risk-medium {
-  color: #f59e0b;
-}
-
-.risk-high {
-  color: #ef4444;
-}
-
-.decision-approve {
-  color: #22c55e;
-  font-weight: 800;
-}
-
-.decision-reject {
-  color: #ef4444;
-  font-weight: 800;
-}
-
-.decision-review {
-  color: #f59e0b;
-  font-weight: 800;
-}
-
-
-.steps-container{
-  margin-top:10px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.step{
-  padding:10px 12px;
-  border-radius:6px;
-  font-size:0.85rem;
-  line-height:1.4;
-  background:none;
-  border:none;
+.step {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 </style>
-  
-    <!-- APP LAYOUT -->  
-    <div class="app-shell">  
-      <!-- SIDEBAR -->  
-      <aside class="sidebar">  
-        <div class="sidebar-top">  
-          <div class="sidebar-brand">  
-            <img  
-              src="images/Untitled design.png"  
-              alt="Sandile SystemsWorks"  
-              class="sidebar-logo"  
-            />  
-            <span class="sidebar-name">Sandile SystemsWorks</span>  
-          </div>  <nav class="sidebar-nav">  
-        <a href="dashboard.html">Dashboard</a>  
-        <a href="sector-primary.html">Primary Sector</a>  
-        <a href="sector-secondary.html">Secondary Sector</a>  
-        <a href="sector-tertiary.html" class="active">Tertiary Sector</a>  
-        <a href="sector-quaternary.html">Quaternary Sector</a>  
-        <a href="sector-quinary.html">Quinary Sector</a>  
-      </nav>  
-    </div>  
 
-    <!-- ACCOUNT -->  
-    <div class="sidebar-account">  
-      <button id="accountBtn" class="account-btn">  
-        <span id="accountAvatar" class="account-avatar">U</span>  
-        <span id="accountName" class="account-name">Account</span>  
-      </button>  
+</head>
 
-      <div id="accountMenu" class="account-menu">  
-        <a href="index.html">Home</a>  
-        <button id="logoutBtn">Logout</button>  
-      </div>  
-    </div>  
-  </aside>  
+<body>
 
-  <!-- MAIN CONTENT -->  
-  <main class="main-content">  
-    <!-- MOBILE HAMBURGER -->  
-    <button id="hamburger" class="hamburger" aria-label="Open menu">  
-      <span></span>  
-      <span></span>  
-      <span></span>  
-    </button>  
+<div class="app-shell">
 
-    <div class="breadcrumb">  
-      <a href="dashboard.html">Sectors</a> →  
-      <a href="sector-tertiary.html">Tertiary</a> →  
-      <span>Restaurants</span>  
-    </div>  
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
-   <h1>Restaurant Profitability Decision Engine</h1>
-  <p>Gain actionable insights to optimize revenue, control costs, and make smarter operational decisions.</p>
+  <div class="sidebar-top">
 
-    <div class="calculator-container">
-    <h2>Operational Insights & Profit Analysis</h2>
-    <p>Use this tool to assess revenue, expenses, and profitability, and understand what drives your restaurant’s success.</p>
+    <!-- BRAND -->
+    <div class="sidebar-brand">
+      <img src="images/Untitled design.png" class="sidebar-logo" />
+      <span class="sidebar-name">Sandile SystemsWorks</span>
+    </div>
 
+    <!-- MAIN NAV -->
+    <nav class="sidebar-nav">
 
-      <div class="calculator-grid">  
-        <!-- INPUTS -->  
-        <div class="input-section">  
-          <h3>Restaurant inputs</h3>  
+      <a href="dashboard.html">Dashboard</a>
 
-          <div class="input-group">  
-            <label for="tables">Number of Tables</label>  
-            <input  
-              type="number"  
-              id="tables"  
-              placeholder="Enter how many tables your restaurant has"  
-            />  
-          </div>  
+      <a href="restaurant-tool.html" class="active">
+        Restaurant Tool
+      </a>
 
-          <div class="input-group">  
-            <label for="covers">Covers per Table (Daily)</label>  
-            <input  
-              type="number"  
-              id="covers"  
-              placeholder="Enter average customers served per table per day"  
-            />  
-          </div>  
+      <hr class="sidebar-divider" />
 
-          <div class="input-group">  
-            <label for="check">Average Check per Customer (R)</label>  
-            <input  
-              type="number"  
-              id="check"  
-              placeholder="Enter average spend per customer"  
-            />  
-          </div>  
+      <!-- VALUE FEATURES -->
+      <a href="SaveResturant.html" id="savedDealsBtn">
+        Saved Deals
+      </a>
 
-          <div class="input-group">  
-            <label for="foodPercent">Food Cost (%)</label>  
-            <input  
-              type="number"  
-              id="foodPercent"  
-              placeholder="Enter percentage of revenue spent on food"  
-            />  
-          </div>  
+      <a href="#" id="historyBtn">
+        History
+      </a>
 
-          <div class="input-group">  
-            <label for="labor">Labour Costs (Monthly R)</label>  
-            <input  
-              type="number"  
-              id="labor"  
-              placeholder="Enter total monthly staff wages and salaries"  
-            />  
-          </div>  
+      <a href="#" id="exportBtn">
+        Export Results
+      </a>
 
-          <div class="input-group">  
-            <label for="fixed">Fixed Costs (Monthly R)</label>  
-            <input  
-              type="number"  
-              id="fixed"  
-              placeholder="Enter rent, utilities, and fixed monthly costs"  
-            />  
-          </div>  
+    </nav>
 
-          <div class="input-group">  
-            <label for="days">Operating Days per Month</label>  
-            <input  
-              type="number"  
-              id="days"  
-              placeholder="Enter how many days you operate per month"  
-            />  
-          </div>  
+  </div>
 
-          <button type="button" id="resetBtn">Reset All</button>  
-        </div>  
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+<h1>Restaurant Profitability Decision Engine</h1>
+<p>Understand your revenue, control costs, and make better business decisions.</p>
+
+<div class="calculator-container">
+
+<div class="calculator-grid">
+
+<!-- INPUTS -->
+<div class="input-section">
+
+<h3>Inputs</h3>
+
+<input id="tables" type="number" placeholder="Number of tables" />
+<input id="covers" type="number" placeholder="Covers per table (daily)" />
+<input id="check" type="number" placeholder="Average check (R)" />
+<input id="foodPercent" type="number" placeholder="Food cost (%)" />
+<input id="labor" type="number" placeholder="Labor cost (monthly)" />
+<input id="fixed" type="number" placeholder="Fixed costs (monthly)" />
+<input id="days" type="number" placeholder="Operating days per month" />
+
+<button id="resetBtn">Reset</button>
+
+</div>
 
 <!-- OUTPUTS -->
 <div class="output-section">
-  <h3>Decision Results</h3>
 
-  <h3>Revenue Insights</h3>
-  <div class="output-group">
-    <div class="output-label">Customers Served Daily</div>
-    <div class="output-value" id="dailyCovers">0</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Projected Monthly Revenue</div>
-    <div class="output-value" id="revenue">R0.00</div>
-  </div>
+<h3>Decision</h3>
+<div id="status">—</div>
+<div id="decisionAdvice"></div>
 
-  <h3>Expense Overview</h3>
-  <div class="output-group">
-    <div class="output-label">Food & Ingredient Costs</div>
-    <div class="output-value" id="foodCost">R0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Total Monthly Operating Costs</div>
-    <div class="output-value" id="totalCosts">R0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Cost as a Percentage of Revenue</div>
-    <div class="output-value" id="ratio">0.00%</div>
-  </div>
+<button id="saveDealBtn" class="saveDealBtn">
+  Save Deal
+</button>
 
-  <h3>Profit & Margin Analysis</h3>
-  <div class="output-group">
-    <div class="output-label">Expected Monthly Profit</div>
-    <div class="output-value" id="profit">R0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Profit Margin per Rand Earned</div>
-    <div class="output-value" id="margin">0.00%</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Profit per Customer Served</div>
-    <div class="output-value" id="profitCover">R0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Current Month Profit</div>
-    <div class="output-value" id="monthly">R0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Annual Profit Projection</div>
-    <div class="output-value" id="annual">R0.00</div>
-  </div>
-
-  <h3>Operational Safety Net</h3>
-  <div class="output-group">
-    <div class="output-label">Minimum Daily Customers to Break Even</div>
-    <div class="output-value" id="breakeven">0</div>
-  </div>
-
-  <h3>Strategic Recommendation</h3>
-  <div class="output-group">
-    <div class="output-label">Is Your Restaurant Currently Profitable?</div>
-    <div class="output-value" id="status">—</div>
-  </div>
-
-  <div class="output-group">
-    <div class="output-label">Recommended Action</div>
-    <div class="output-value" id="decisionAdvice"></div>
-  </div>
-
-<h3>Step-by-Step Operational Insights</h3>
+<h3>Key Metrics</h3>
 
 <div class="output-group">
+<div class="output-label">Monthly Revenue</div>
+<div class="output-value" id="revenue">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Total Costs</div>
+<div class="output-value" id="totalCosts">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit</div>
+<div class="output-value" id="profit">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit Margin</div>
+<div class="output-value" id="margin">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Break-even Customers (Daily)</div>
+<div class="output-value" id="breakeven">—</div>
+</div>
+
+<!-- COLLAPSIBLE INSIGHTS -->
+<details style="margin-top:15px;">
+  <summary style="cursor:pointer; font-weight:600;">View Detailed Insights</summary>
+
+  <div style="margin-top:10px;">
+
+    <div class="output-group">
+      <div class="output-label">Daily Customers</div>
+      <div class="output-value" id="dailyCovers">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Food Cost</div>
+      <div class="output-value" id="foodCost">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Cost Ratio</div>
+      <div class="output-value" id="ratio">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Profit per Customer</div>
+      <div class="output-value" id="profitCover">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Monthly Profit</div>
+      <div class="output-value" id="monthly">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Annual Profit</div>
+      <div class="output-value" id="annual">—</div>
+    </div>
+
+  </div>
+</details>
+
+<!-- STEPS -->
+<details style="margin-top:15px;">
+  <summary style="cursor:pointer; font-weight:600;">Step-by-Step Guidance</summary>
+
   <div id="stepsContainer" class="steps-container"></div>
+</details>
+
+
+
 </div>
 
-
-</div> 
-      </div>  
-    </div>  
-
-    <!-- ================================  
-         SECTORS & INDUSTRIES NAVIGATION  
-    ================================ -->  
-    <div class="sectors-navigation">  
-      <h2>Explore All Sectors & Industries</h2>  
-      <p>  
-        Jump to any sector or industry calculators to quickly compare and  
-        analyze multiple business areas.  
-      </p>  
-
-      <div class="sectors-grid">  
-        <!-- Primary Sector -->  
-        <div class="sector-group">  
-          <h3>Primary Sector</h3>  
-          <ul>  
-            <li><a href="industry-agriculture.html">Agriculture</a></li>  
-            <li><a href="industry-forestry.html">Forestry</a></li>  
-            <li><a href="industry-fishing.html">Fishing</a></li>  
-            <li><a href="industry-mining.html">Mining</a></li>  
-            <li><a href="industry-oil-gas.html">Oil & Gas</a></li>  
-            <li>  
-              <a href="industry-renewable-energy.html">Renewable Energy</a>  
-            </li>  
-          </ul>  
-        </div>  
-
-        <!-- Secondary Sector -->  
-        <div class="sector-group">  
-          <h3>Secondary Sector</h3>  
-          <ul>  
-            <li><a href="industry-manufacturing.html">Manufacturing</a></li>  
-            <li><a href="industry-construction.html">Construction</a></li>  
-            <li><a href="industry-automotive.html">Automotive</a></li>  
-            <li><a href="industry-electronics.html">Electronics</a></li>  
-            <li><a href="industry-textiles.html">Textiles</a></li>  
-            <li><a href="industry-food-beverage.html">Food & Beverage</a></li>  
-          </ul>  
-        </div>  
-
-        <!-- Tertiary Sector -->  
-        <div class="sector-group">  
-          <h3>Tertiary Sector</h3>  
-          <ul>  
-            <li><a href="industry-real-estate.html">Real Estate</a></li>  
-            <li><a href="industry-retail.html">Retail</a></li>  
-            <li><a href="industry-restaurants.html">Restaurants</a></li>  
-            <li><a href="industry-hospitality.html">Hospitality</a></li>  
-            <li><a href="industry-logistics.html">Logistics</a></li>  
-            <li><a href="industry-healthcare.html">Healthcare</a></li>  
-            <li><a href="industry-education.html">Education</a></li>  
-            <li><a href="industry-finance.html">Finance</a></li>  
-            <li><a href="industry-marketing.html">Marketing</a></li>  
-            <li><a href="industry-consulting.html">Consulting</a></li>  
-          </ul>  
-        </div>  
-
-        <!-- Quaternary Sector -->  
-        <div class="sector-group">  
-          <h3>Quaternary Sector</h3>  
-          <ul>  
-            <li><a href="industry-software.html">Software</a></li>  
-            <li><a href="industry-saas.html">SaaS</a></li>  
-            <li><a href="industry-it-services.html">IT Services</a></li>  
-            <li><a href="industry-media.html">Media</a></li>  
-            <li><a href="industry-research-development.html">R&D</a></li>  
-            <li>  
-              <a href="industry-telecommunications.html"  
-                >Telecommunications</a  
-              >  
-            </li>  
-          </ul>  
-        </div>  
-
-        <!-- Quinary Sector -->  
-        <div class="sector-group">  
-          <h3>Quinary Sector</h3>  
-          <ul>  
-            <li><a href="industry-government.html">Government</a></li>  
-            <li><a href="industry-ngos.html">NGOs</a></li>  
-            <li>  
-              <a href="industry-social-services.html"  
-                >Social & Community Services</a  
-              >  
-            </li>  
-            <li>  
-              <a href="industry-public-administration.html"  
-                >Public Administration</a  
-              >  
-            </li>  
-          </ul>  
-        </div>  
-      </div>  
-    </div>  
-  </main>  
-
-  <!-- SCRIPTS -->  
-  <script src="js/config.js"></script>  
-  <script src="js/api.js"></script>  
-  <script src="js/guard.js"></script>  
-  <script src="js/auth.js"></script>  
-  <script src="js/restaurants.js"></script>  
-  <script src="js/hamburger.js"></script>  
-  <script src="js/user-display.js"></script>  
 </div>
 
+</div>
 
-  </body>  
-                                                                            </html>  
+</main>
+
+</div>
+
+</body>
+</html>

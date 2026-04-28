@@ -1,476 +1,197 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Consulting Calculators - Sandile SystemsWorks</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/calculators.css" />
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Consulting Calculators - Sandile SystemsWorks</title>
+
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/calculators.css" />
 
 <style>
-/* ========================
-   Dynamic Result Colors
-======================== */
-
-/* Positive values (good/profit/high margin) */
-.positive {
-  color: #28a745;  /* green */
-  font-weight: 600;
-}
-
-/* Negative values (loss/high risk) */
-.negative {
-  color: #dc3545;  /* red */
-  font-weight: 600;
-}
-
-/* Caution / medium risk values */
-.caution {
-  color: #ffc107;  /* yellow / amber */
-  font-weight: 600;
-}
 
 /* ===============================
-CONSULTING STEP-BY-STEP STYLE
+DECISION COLORS
 =============================== */
 
-#consult-steps {
-  list-style: none;           /* remove default bullets */
-  counter-reset: step-counter; /* initialize step counter */
-  padding-left: 0;
-  margin-top: 0.5rem;
+.positive { color:#16a34a; font-weight:600; }
+.negative { color:#dc2626; font-weight:600; }
+.caution { color:#f59e0b; font-weight:600; }
+
+.output-value { font-weight:600; transition:color .25s ease; }
+
+.output-value.positive { color:#22c55e; }
+.output-value.negative { color:#ef4444; }
+.output-value.caution { color:#f59e0b; }
+
+/* DECISION STATUS */
+#decision-status {
+  font-weight:700;
+  letter-spacing:.02em;
 }
 
-#consult-steps li {
-  position: relative;
-  margin-bottom: 1rem;
-  padding-left: 2.5rem;       /* space for step number circle */
-  font-size: 0.95rem;
-  line-height: 1.4;
+#decision-status.positive { color:#22c55e; }
+#decision-status.caution { color:#f59e0b; }
+#decision-status.negative { color:#ef4444; }
+
+/* STEPS */
+.steps-section {
+  margin-top:2rem;
+  padding:1rem;
+  border:1px solid var(--border-soft);
+  border-radius:12px;
 }
 
-/* Step number circle */
-#consult-steps li::before {
-  counter-increment: step-counter;
-  content: counter(step-counter);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: #3b82f6;  /* blue circle, same as Logistics */
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.95rem;
+.steps-section ol {
+  list-style:none;
+  counter-reset:step;
+  padding:0;
 }
 
-/* Optional: italic / gray text inside step */
-#consult-steps li em {
-  font-style: italic;
-  color: #6b7280; /* gray for notes */
+.steps-section li {
+  counter-increment:step;
+  margin-bottom:1rem;
+  padding-left:40px;
+  position:relative;
 }
 
-/* Optional: bold for key points */
-#consult-steps li strong {
-  color: #111827; /* almost black for emphasis */
+.steps-section li::before {
+  content:counter(step);
+  position:absolute;
+  left:0;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  border:1px solid var(--border-soft);
+  text-align:center;
+  line-height:28px;
+  font-weight:700;
 }
 
 </style>
 
-  </head>
-  <body>
+</head>
 
-    <!-- APP LAYOUT -->
-    <div class="app-shell">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-top">
-          <div class="sidebar-brand">
-            <img
-              src="images/Untitled design.png"
-              alt="Sandile SystemsWorks"
-              class="sidebar-logo"
-            />
-               <span class="sidebar-name">Sandile SystemsWorks</span>
-          </div>
+<body>
 
-          <nav class="sidebar-nav">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="sector-primary.html">Primary Sector</a>
-            <a href="sector-secondary.html" >Secondary Sector</a>
-            <a href="sector-tertiary.html" class="active">Tertiary Sector</a>
-            <a href="sector-quaternary.html">Quaternary Sector</a>
-            <a href="sector-quinary.html">Quinary Sector</a>
-          </nav>
-        </div>
+<div class="app-shell">
 
-        <!-- ACCOUNT -->
-        <div class="sidebar-account">
-          <button id="accountBtn" class="account-btn">
-            <span id="accountAvatar" class="account-avatar">U</span>
-            <span id="accountName" class="account-name">Account</span>
-          </button>
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
-          <div id="accountMenu" class="account-menu">
-            <a href="index.html">Home</a>
-            <button id="logoutBtn">Logout</button>
-          </div>
-        </div>
-      </aside>
+<div class="sidebar-top">
 
- <!-- MAIN CONTENT -->
-      <main class="main-content">
-        <!-- MOBILE HAMBURGER -->
-        <button id="hamburger" class="hamburger" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+<div class="sidebar-brand">
+<img src="images/Untitled design.png" class="sidebar-logo" />
+<span class="sidebar-name">Sandile SystemsWorks</span>
+</div>
 
-      <div class="breadcrumb">
-        <a href="dashboard.html">Sectors</a>
-        <span>→</span>
-        <a href="sector-tertiary.html">Tertiary</a>
-        <span>→</span>
-        <span>Consulting</span>
-      </div>
+<nav class="sidebar-nav">
+<a href="dashboard.html">Dashboard</a>
+<a href="sector-primary.html">Primary Sector</a>
+<a href="sector-secondary.html">Secondary Sector</a>
+<a href="sector-tertiary.html" class="active">Tertiary Sector</a>
+<a href="sector-quaternary.html">Quaternary Sector</a>
+<a href="sector-quinary.html">Quinary Sector</a>
+</nav>
 
-      <h1>Consulting Profit & Risk Decision Tools</h1>
-<p>
-Analyze consulting engagements, pricing, costs, and risk before accepting a project.
-</p>
-      
+</div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+<h1>Consulting Calculators</h1>
+
+<p>Analyze consulting engagements, pricing, costs, and profitability before accepting projects.</p>
+
 <div class="calculator-container">
-  <h2>Consulting Engagement Profit & Risk Simulator</h2>
-  <p>
-    Simulate consulting project revenue, costs, and risk to determine if the engagement is worth taking.
-  </p>
 
-        <div class="calculator-grid">
-          <!-- INPUTS -->
-          <div class="input-section">
-            <h3>Inputs</h3>
+<h2>Consulting Engagement Profit & Risk Simulator</h2>
 
-            <div class="input-group">
-              <label for="consult-hours">Total Project Hours</label>
-              <input
-                type="number"
-                id="consult-hours"
-                placeholder="Enter total hours"
-                min="0"
-              />
-            </div>
+<p>Simulate consulting revenue, costs, and risk to determine if the engagement is worth taking.</p>
 
-            <div class="input-group">
-              <label for="consult-rate">Hourly Rate (R)</label>
-              <input
-                type="number"
-                id="consult-rate"
-                placeholder="Rate per hour"
-                min="0"
-              />
-            </div>
+<div class="calculator-grid">
 
-            <div class="input-group">
-              <label for="consult-expenses">Project Expenses (R)</label>
-              <input
-                type="number"
-                id="consult-expenses"
-                placeholder="Travel, materials, etc."
-                min="0"
-              />
-            </div>
+<!-- INPUTS -->
+<div class="input-section">
 
-            <div class="input-group">
-              <label for="consult-labor">Labor Costs (R)</label>
-              <input
-                type="number"
-                id="consult-labor"
-                placeholder="Staff salaries"
-                min="0"
-              />
-            </div>
+<h3>Inputs</h3>
 
-            <div class="input-group">
-              <label for="consult-fixed">Fixed Costs (R)</label>
-              <input
-                type="number"
-                id="consult-fixed"
-                placeholder="Office, admin, software"
-                min="0"
-              />
-            </div>
+<input id="consult-hours" type="number" placeholder="Total project hours" />
+<input id="consult-rate" type="number" placeholder="Hourly rate (R)" />
+<input id="consult-expenses" type="number" placeholder="Project expenses (R)" />
+<input id="consult-labor" type="number" placeholder="Labor costs (R)" />
+<input id="consult-fixed" type="number" placeholder="Fixed costs (R)" />
+<input id="consult-discount" type="number" placeholder="Discount (%)" />
+<input id="consult-overtime-hours" type="number" placeholder="Overtime hours" />
+<input id="consult-overtime-rate" type="number" placeholder="Overtime rate (R)" />
+<input id="consult-variable-costs" type="number" placeholder="Variable costs (R)" />
+<input id="consult-contingency" type="number" placeholder="Contingency (%)" />
 
-            <div class="input-group">
-              <label for="consult-discount">Discount (%)</label>
-              <input
-                type="number"
-                id="consult-discount"
-                placeholder="Any client discount %"
-                min="0"
-                max="100"
-              />
-            </div>
+<button id="resetBtn">Clear Inputs</button>
 
-            <div class="input-group">
-              <label for="consult-overtime-hours">Overtime Hours</label>
-              <input
-                type="number"
-                id="consult-overtime-hours"
-                placeholder="Extra billed hours"
-                min="0"
-              />
-            </div>
+</div>
 
-            <div class="input-group">
-              <label for="consult-overtime-rate"
-                >Overtime Hourly Rate (R)</label
-              >
-              <input
-                type="number"
-                id="consult-overtime-rate"
-                placeholder="Rate per overtime hour"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="consult-variable-costs">Variable Costs (R)</label>
-              <input
-                type="number"
-                id="consult-variable-costs"
-                placeholder="Other variable costs"
-                min="0"
-              />
-            </div>
-
-            <div class="input-group">
-              <label for="consult-contingency">Contingency / Risk (%)</label>
-              <input
-                type="number"
-                id="consult-contingency"
-                placeholder="Percentage for unexpected costs"
-                min="0"
-                max="100"
-              />
-            </div>
-
-            <button type="button" id="resetBtn">Reset All</button>
-          </div>
-
- <!-- OUTPUTS -->
+<!-- OUTPUTS -->
 <div class="output-section">
-  <h2>Results</h2>
 
-  <!-- Revenue Performance -->
-  <h3>Revenue Performance</h3>
-  <div class="output-group">
-    <div class="output-label">Total Revenue</div>
-    <div class="output-value" id="consult-revenue">R0.00</div>
-  </div>
+<h3>Decision Result</h3>
 
-  <div class="output-group">
-    <div class="output-label">Discount Amount</div>
-    <div class="output-value" id="consult-discount-output">R0.00</div>
-  </div>
+<div id="decision-status">—</div>
+<div id="risk-warning"></div>
+<div id="decision-advice"></div>
 
-  <div class="output-group">
-    <div class="output-label">Revenue After Discount</div>
-    <div class="output-value" id="consult-revenue-after-discount">R0.00</div>
-  </div>
+<h3>Revenue Summary</h3>
 
-  <div class="output-group">
-    <div class="output-label">Overtime Revenue</div>
-    <div class="output-value" id="consult-overtime-output">R0.00</div>
-  </div>
+<div id="consult-revenue"></div>
+<div id="consult-revenue-after-discount"></div>
+<div id="consult-overtime-output"></div>
 
+<h3>Cost Summary</h3>
 
-  <!-- Cost Analysis -->
-  <h3>Cost Analysis</h3>
+<div id="consult-contingency-output"></div>
+<div id="consult-cost-hour"></div>
+<div id="consult-costs"></div>
 
-  <div class="output-group">
-    <div class="output-label">Contingency Amount</div>
-    <div class="output-value" id="consult-contingency-output">R0.00</div>
-  </div>
+<h3>Profitability</h3>
 
-  <div class="output-group">
-    <div class="output-label">Cost per Hour</div>
-    <div class="output-value" id="consult-cost-hour">R0.00</div>
-  </div>
+<div id="consult-profit"></div>
+<div id="consult-profit-hour"></div>
+<div id="consult-margin"></div>
+<div id="consult-roi"></div>
 
-  <div class="output-group">
-    <div class="output-label">Total Costs</div>
-    <div class="output-value" id="consult-costs">R0.00</div>
-  </div>
+<h3>Break-even</h3>
 
+<div id="consult-breakeven"></div>
 
-  <!-- Profitability Analysis -->
-  <h3>Profitability Analysis</h3>
-
-  <div class="output-group">
-    <div class="output-label">Profit / Loss</div>
-    <div class="output-value" id="consult-profit">R0.00</div>
-  </div>
-
-  <div class="output-group">
-    <div class="output-label">Profit per Hour</div>
-    <div class="output-value" id="consult-profit-hour">R0.00</div>
-  </div>
-
-  <div class="output-group">
-    <div class="output-label">Profit Margin (%)</div>
-    <div class="output-value" id="consult-margin">0.00%</div>
-  </div>
-
-  <div class="output-group">
-    <div class="output-label">ROI (%)</div>
-    <div class="output-value" id="consult-roi">0.00%</div>
-  </div>
-
-
-  <!-- Break-even Analysis -->
-  <h3>Break-even Analysis</h3>
-
-  <div class="output-group">
-    <div class="output-label">Break-even Hours</div>
-    <div class="output-value" id="consult-breakeven">0.00</div>
-  </div>
-
-
-<!-- Decision Intelligence -->
-<h3>Decision Intelligence</h3>
-
-<div class="output-group">
-  <div class="output-label">Decision</div>
-  <div class="output-value" id="consult-decision">—</div>
+<!-- STEPS -->
+<div class="steps-section">
+<h3>Next Steps</h3>
+<ol id="consult-steps"></ol>
 </div>
 
-<div class="output-group">
-  <div class="output-label">Advice</div>
-  <div class="output-value" id="consult-advice">—</div>
 </div>
-</div> <!-- close output-section (Decision Intelligence) -->
-
-<!-- Step-by-Step Guidance -->
-<div class="output-section">
-  <h3>Step-by-Step Guidance</h3>
-  <ol id="consult-steps" class="steps-list">
-    <!-- JS will populate steps here -->
-  </ol>
-</div>
-  </div>
 
 </div>
+
 </div>
-        </div>
-      </div>
-      <!-- ================================
-   SECTORS & INDUSTRIES NAVIGATION
-================================ -->
-      <div class="sectors-navigation">
-        <h2>Explore All Sectors & Industries</h2>
-        <p>
-          Jump to any sector or industry calculators to quickly compare and
-          analyze multiple business areas.
-        </p>
 
-        <div class="sectors-grid">
-          <!-- Primary Sector -->
-          <div class="sector-group">
-            <h3>Primary Sector</h3>
-            <ul>
-              <li><a href="industry-agriculture.html">Agriculture</a></li>
-              <li><a href="industry-forestry.html">Forestry</a></li>
-              <li><a href="industry-fishing.html">Fishing</a></li>
-              <li><a href="industry-mining.html">Mining</a></li>
-              <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-              <li>
-                <a href="industry-renewable-energy.html">Renewable Energy</a>
-              </li>
-            </ul>
-          </div>
+</main>
 
-          <!-- Secondary Sector -->
-          <div class="sector-group">
-            <h3>Secondary Sector</h3>
-            <ul>
-              <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-              <li><a href="industry-construction.html">Construction</a></li>
-              <li><a href="industry-automotive.html">Automotive</a></li>
-              <li><a href="industry-electronics.html">Electronics</a></li>
-              <li><a href="industry-textiles.html">Textiles</a></li>
-              <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-            </ul>
-          </div>
+</div>
 
-          <!-- Tertiary Sector -->
-          <div class="sector-group">
-            <h3>Tertiary Sector</h3>
-            <ul>
-              <li><a href="industry-real-estate.html">Real Estate</a></li>
-              <li><a href="industry-retail.html">Retail</a></li>
-              <li><a href="industry-restaurants.html">Restaurants</a></li>
-              <li><a href="industry-hospitality.html">Hospitality</a></li>
-              <li><a href="industry-logistics.html">Logistics</a></li>
-              <li><a href="industry-healthcare.html">Healthcare</a></li>
-              <li><a href="industry-education.html">Education</a></li>
-              <li><a href="industry-finance.html">Finance</a></li>
-              <li><a href="industry-marketing.html">Marketing</a></li>
-              <li><a href="industry-consulting.html">Consulting</a></li>
-            </ul>
-          </div>
+<!-- SCRIPTS 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/guard.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/consulting.js"></script>
+<script src="js/hamburger.js"></script>
+<script src="js/user-display.js"></script> -->
 
-          <!-- Quaternary Sector -->
-          <div class="sector-group">
-            <h3>Quaternary Sector</h3>
-            <ul>
-              <li><a href="industry-software.html">Software</a></li>
-              <li><a href="industry-saas.html">SaaS</a></li>
-              <li><a href="industry-it-services.html">IT Services</a></li>
-              <li><a href="industry-media.html">Media</a></li>
-              <li><a href="industry-research-development.html">R&D</a></li>
-              <li>
-                <a href="industry-telecommunications.html"
-                  >Telecommunications</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Quinary Sector -->
-          <div class="sector-group">
-            <h3>Quinary Sector</h3>
-            <ul>
-              <li><a href="industry-government.html">Government</a></li>
-              <li><a href="industry-ngos.html">NGOs</a></li>
-              <li>
-                <a href="industry-social-services.html"
-                  >Social & Community Services</a
-                >
-              </li>
-              <li>
-                <a href="industry-public-administration.html"
-                  >Public Administration</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- ✅ REQUIRED GLOBALS (ORDER MATTERS) -->
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-     <script src="js/consulting.js"></script>
-    <script src="js/hamburger.js"></script>
-      <script src="js/user-display.js"></script>
-
-  </body>
+</body>
 </html>

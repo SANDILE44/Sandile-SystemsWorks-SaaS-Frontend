@@ -1,21 +1,17 @@
-function clampPercent(value, min = 0, max = 100) {
-  value = Number(value) || 0;
-  return Math.min(Math.max(value, min), max);
-}
-
 (() => {
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
+    'R' +
     (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-  const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
+  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
 
   const API_BASE =
-    "https://sandile-systemsworks-saas-backend-2.onrender.com";
+    'https://sandile-systemsworks-saas-backend-2.onrender.com';
 
   let timer;
 
@@ -28,42 +24,33 @@ function clampPercent(value, min = 0, max = 100) {
   }
 
   /* =========================
-     COLOR HELPER
-  ========================= */
-  function applyColor(el, type) {
-    if (!el) return;
-    el.classList.remove("positive", "negative", "caution");
-    if (type) el.classList.add(type);
-  }
-
-  /* =========================
-     MAIN CALCULATION
+     MAIN ENGINE
   ========================= */
   async function runConsulting() {
-    const token = localStorage.getItem("token");
-    if (!token) return location.replace("login.html");
+    const token = localStorage.getItem('token');
+    if (!token) return location.replace('login.html');
 
     const res = await fetch(`${API_BASE}/api/calculators/consulting/project`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        hours: +$("consult-hours").value || 0,
-        rate: +$("consult-rate").value || 0,
-        expenses: +$("consult-expenses").value || 0,
-        labor: +$("consult-labor").value || 0,
-        fixed: +$("consult-fixed").value || 0,
-        discountPct: clampPercent($("consult-discount").value, 0, 100),
-        otHours: +$("consult-overtime-hours").value || 0,
-        otRate: +$("consult-overtime-rate").value || 0,
-        variableCosts: +$("consult-variable-costs").value || 0,
-        contingencyPct: clampPercent($("consult-contingency").value, 0, 50),
+        hours: +$('consult-hours').value || 0,
+        rate: +$('consult-rate').value || 0,
+        expenses: +$('consult-expenses').value || 0,
+        labor: +$('consult-labor').value || 0,
+        fixed: +$('consult-fixed').value || 0,
+        discountPct: Number($('consult-discount').value) || 0,
+        otHours: +$('consult-overtime-hours').value || 0,
+        otRate: +$('consult-overtime-rate').value || 0,
+        variableCosts: +$('consult-variable-costs').value || 0,
+        contingencyPct: Number($('consult-contingency').value) || 0,
       }),
     });
 
-    if (res.status === 403) return location.replace("payment.html");
+    if (res.status === 403) return location.replace('payment.html');
     if (!res.ok) return;
 
     const d = await res.json();
@@ -71,132 +58,128 @@ function clampPercent(value, min = 0, max = 100) {
     /* =========================
        REVENUE
     ========================= */
-    $("consult-revenue").textContent = money(d.totalRevenue);
-    $("consult-discount-output").textContent = money(d.discountAmount);
-    $("consult-revenue-after-discount").textContent = money(d.revenueAfterDiscount);
-    $("consult-overtime-output").textContent = money(d.overtimeRevenue);
+    $('consult-revenue').textContent = money(d.totalRevenue);
+    $('consult-revenue-after-discount').textContent = money(d.revenueAfterDiscount);
+    $('consult-overtime-output').textContent = money(d.overtimeRevenue);
 
     /* =========================
        COSTS
     ========================= */
-    $("consult-contingency-output").textContent = money(d.contingencyAmount);
-    $("consult-costs").textContent = money(d.totalCosts);
-
-    const cph = $("consult-cost-hour");
-    cph.textContent = money(d.costPerHour);
-    applyColor(cph, "caution");
+    $('consult-contingency-output').textContent = money(d.contingencyAmount);
+    $('consult-cost-hour').textContent = money(d.costPerHour);
+    $('consult-costs').textContent = money(d.totalCosts);
 
     /* =========================
-       PROFIT
+       PROFITABILITY
     ========================= */
-    const p = $("consult-profit");
-    p.textContent = money(d.profit);
-    applyColor(p, d.profit > 0 ? "positive" : "negative");
-    $("consult-profit-hour").textContent = money(d.profitPerHour);
+    const profitEl = $('consult-profit');
+    profitEl.textContent = money(d.profit);
+    profitEl.className =
+      'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
+
+    $('consult-profit-hour').textContent = money(d.profitPerHour);
+    $('consult-margin').textContent = percent(d.margin);
+    $('consult-roi').textContent = percent(d.roi);
 
     /* =========================
-       MARGIN
+       BREAK-EVEN
     ========================= */
-    const m = $("consult-margin");
-    m.textContent = percent(d.margin);
-    if (d.margin < 10) applyColor(m, "negative");
-    else if (d.margin < 20) applyColor(m, "caution");
-    else applyColor(m, "positive");
+    $('consult-breakeven').textContent = (d.breakevenHours || 0).toFixed(2);
 
     /* =========================
-       ROI
+       DECISION (FIXED TO HTML IDs)
     ========================= */
-    const r = $("consult-roi");
-    r.textContent = percent(d.roi);
-    if (d.roi < 50) applyColor(r, "negative");
-    else if (d.roi < 100) applyColor(r, "caution");
-    else applyColor(r, "positive");
+    const decisionEl = $('consult-decision');
+    const adviceEl = $('consult-advice');
 
-    /* =========================
-       BREAKEVEN
-    ========================= */
-    $("consult-breakeven").textContent = (d.breakevenHours || 0).toFixed(2);
+    decisionEl.textContent = d.decision || '—';
+    adviceEl.textContent = d.advice || '—';
 
-    /* =========================
-       DECISION & ADVICE
-    ========================= */
-    const decisionEl = $("consult-decision");
-    const adviceEl = $("consult-advice");
-    const stepsEl = $("consult-steps");
-
-    decisionEl.textContent = d.decision || "—";
-    adviceEl.textContent = d.advice || "—";
-
-    switch (d.riskLevel) {
-      case "High":
-        applyColor(decisionEl, "negative");
-        applyColor(adviceEl, "negative");
-        break;
-      case "Medium":
-        applyColor(decisionEl, "caution");
-        applyColor(adviceEl, "caution");
-        break;
-      case "Low":
-        applyColor(decisionEl, "positive");
-        applyColor(adviceEl, "positive");
-        break;
+    if (d.riskLevel === 'High') {
+      decisionEl.className = 'output-value negative';
+      adviceEl.className = 'output-value negative';
+    } else if (d.riskLevel === 'Medium') {
+      decisionEl.className = 'output-value caution';
+      adviceEl.className = 'output-value caution';
+    } else {
+      decisionEl.className = 'output-value positive';
+      adviceEl.className = 'output-value positive';
     }
 
     /* =========================
-       STEP-BY-STEP GUIDANCE
+       STEPS
     ========================= */
-    if (stepsEl) stepsEl.innerHTML = ""; // clear old steps
+    const stepsEl = $('consult-steps');
+    stepsEl.innerHTML = '';
 
-    if (d.steps && d.steps.length) {
-      d.steps.forEach((step, i) => {
-        const container = document.createElement("div");
-        container.classList.add("step-item");
-        container.innerHTML = `
-          <h3>Step ${i + 1}: ${step.step || step.action}</h3>
-          <p>${step.message || `${step.action} — current: ${step.current}, suggested: ${step.suggested} (${step.reason})`}</p>
-        `;
-        stepsEl.appendChild(container);
-      });
-    }
+    (d.steps || []).forEach((s, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>Step ${i + 1}</strong> ${s}`;
+      stepsEl.appendChild(li);
+    });
   }
 
   /* =========================
      INPUT LISTENERS
   ========================= */
   [
-    "consult-hours",
-    "consult-rate",
-    "consult-expenses",
-    "consult-labor",
-    "consult-fixed",
-    "consult-discount",
-    "consult-overtime-hours",
-    "consult-overtime-rate",
-    "consult-variable-costs",
-    "consult-contingency",
-  ].forEach((id) => $(id)?.addEventListener("input", updateConsulting));
+    'consult-hours',
+    'consult-rate',
+    'consult-expenses',
+    'consult-labor',
+    'consult-fixed',
+    'consult-discount',
+    'consult-overtime-hours',
+    'consult-overtime-rate',
+    'consult-variable-costs',
+    'consult-contingency',
+  ].forEach((id) =>
+    $(id)?.addEventListener('input', updateConsulting)
+  );
 
   /* =========================
      RESET
   ========================= */
-  $("resetBtn")?.addEventListener("click", () => {
+  $('resetBtn')?.addEventListener('click', () => {
     [
-      "consult-hours",
-      "consult-rate",
-      "consult-expenses",
-      "consult-labor",
-      "consult-fixed",
-      "consult-discount",
-      "consult-overtime-hours",
-      "consult-overtime-rate",
-      "consult-variable-costs",
-      "consult-contingency",
-    ].forEach((id) => ($(id).value = ""));
-    runConsulting();
+      'consult-hours',
+      'consult-rate',
+      'consult-expenses',
+      'consult-labor',
+      'consult-fixed',
+      'consult-discount',
+      'consult-overtime-hours',
+      'consult-overtime-rate',
+      'consult-variable-costs',
+      'consult-contingency',
+    ].forEach((id) => {
+      const el = $(id);
+      if (el) el.value = '';
+    });
+
+    [
+      'consult-revenue',
+      'consult-revenue-after-discount',
+      'consult-overtime-output',
+      'consult-contingency-output',
+      'consult-cost-hour',
+      'consult-costs',
+      'consult-profit',
+      'consult-profit-hour',
+      'consult-margin',
+      'consult-roi',
+      'consult-breakeven',
+      'consult-decision',
+      'consult-advice',
+      'consult-steps',
+    ].forEach((id) => {
+      const el = $(id);
+      if (el) el.textContent = '';
+    });
   });
 
   /* =========================
-     INITIAL RUN
+     INIT
   ========================= */
   runConsulting();
 })();

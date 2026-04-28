@@ -1,5 +1,4 @@
 (() => {
-
   const $ = (id) => document.getElementById(id);
 
   const money = (v) =>
@@ -8,150 +7,175 @@
       maximumFractionDigits: 2
     });
 
-  const percent = (v) =>
-    (Number(v) || 0).toFixed(2) + "%";
+  const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
   let timer;
 
   /* =========================
-     DEBOUNCE INPUT
+     DEBOUNCE INPUTS
   ========================== */
   function update() {
     clearTimeout(timer);
-    timer = setTimeout(run, 300);
+    timer = setTimeout(run, 250);
   }
 
   /* =========================
-     COLOR HELPER
+     COLOR HANDLER
   ========================== */
-  function applyColor(el, type) {
+  function color(el, type) {
     if (!el) return;
     el.classList.remove("positive", "negative", "caution");
     if (type) el.classList.add(type);
   }
 
   /* =========================
-     MAIN CALCULATION
+     INPUTS (SIMPLIFIED READY)
+  ========================== */
+  function getInputs() {
+    return {
+      units: +$("mfg-units")?.value || 0,
+      price: +$("mfg-price")?.value || 0,
+      material: +$("mfg-material")?.value || 0,
+      labor: +$("mfg-labor")?.value || 0,
+      fixed: +$("mfg-fixed")?.value || 0,
+      operational: +$("mfg-operational")?.value || 0
+    };
+  }
+
+  /* =========================
+     MAIN ENGINE
   ========================== */
   async function run() {
-    const res = await fetch(`${API_BASE}/api/calculators/manufacturing/business`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({
-        units: +$("mfg-units")?.value || 0,
-        price: +$("mfg-price")?.value || 0,
-        material: +$("mfg-material")?.value || 0,
-        labor: +$("mfg-labor")?.value || 0,
-        fixed: +$("mfg-fixed")?.value || 0,
-        operational: +$("mfg-operational")?.value || 0
-      })
-    });
+    try {
+      const res = await fetch(
+        `${API_BASE}/api/calculators/manufacturing/business`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify(getInputs())
+        }
+      );
 
-    if (res.status === 403) return location.replace("payment.html");
-    if (!res.ok) return;
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        return (location.href = "login.html");
+      }
 
-    const d = await res.json();
+      if (res.status === 403) {
+        return (location.href = "payment.html");
+      }
 
-    /* =========================
-       UPDATE VALUES
-    ========================== */
-    $("mfg-units-output").textContent = d.units;
-    $("mfg-revenue").textContent = money(d.revenue);
-    $("mfg-total-costs").textContent = money(d.totalCosts);
-    $("mfg-cost-per-unit").textContent = money(d.costPerUnit);
-    $("mfg-revenue-per-unit").textContent = money(d.revenuePerUnit);
+      if (!res.ok) return;
 
-    const profitUnitEl = $("mfg-profit-per-unit");
-    profitUnitEl.textContent = money(d.profitPerUnit);
-    applyColor(
-      profitUnitEl,
-      d.profitPerUnit < 0 ? "negative" : d.profitPerUnit < 5 ? "caution" : "positive"
-    );
+      const d = await res.json();
 
-    const profitEl = $("mfg-profit");
-    profitEl.textContent = money(d.profit);
-    applyColor(profitEl, d.profit >= 0 ? "positive" : "negative");
+      /* =========================
+         1. DECISION CARD (HERO)
+      ========================== */
+      const statusEl = $("decision-status");
+      const riskEl = $("risk-warning");
+      const adviceEl = $("decision-advice");
 
-    $("mfg-breakeven").textContent = d.breakeven;
+      if (statusEl) {
+        statusEl.textContent = d.status || "—";
 
-    const roiEl = $("mfg-roi");
-    roiEl.textContent = percent(d.roi);
-    applyColor(
-      roiEl,
-      d.roi < 5 ? "negative" : d.roi < 15 ? "caution" : "positive"
-    );
+        color(
+          statusEl,
+          d.status === "LOSS"
+            ? "negative"
+            : d.status === "RISK"
+            ? "caution"
+            : "positive"
+        );
+      }
 
-    const marginEl = $("mfg-margin");
-    marginEl.textContent = percent(d.margin);
-    applyColor(
-      marginEl,
-      d.margin < 10 ? "negative" : d.margin < 20 ? "caution" : "positive"
-    );
+      if (riskEl) riskEl.textContent = d.reason || "";
+      if (adviceEl) adviceEl.textContent = d.action || "";
 
-    $("mfg-monthly-revenue").textContent = money(d.monthlyRevenue);
-    $("mfg-annual-revenue").textContent = money(d.annualRevenue);
+      /* =========================
+         2. CORE SNAPSHOT (ONLY KEY METRICS)
+      ========================== */
+      $("mfg-revenue") && ( $("mfg-revenue").textContent = money(d.revenue) );
+      $("mfg-total-costs") && ( $("mfg-total-costs").textContent = money(d.totalCosts) );
+      $("mfg-profit") && ( $("mfg-profit").textContent = money(d.profit) );
 
-    /* =========================
-       DECISION ENGINE
-    ========================== */
-    const decision = $("decision-status");
-    const risk = $("risk-warning");
-    const advice = $("decision-advice");
+      color(
+        $("mfg-profit"),
+        d.profit >= 0 ? "positive" : "negative"
+      );
 
-    applyColor(decision, null);
+      /* =========================
+         3. UNIT ECONOMICS (SIMPLIFIED VALUE)
+      ========================== */
+      $("mfg-cost-per-unit") &&
+        ( $("mfg-cost-per-unit").textContent = money(d.costPerUnit) );
 
-    if (d.profit <= 0) {
-      decision.textContent = "❌ Loss Making Production";
-      applyColor(decision, "negative");
-      risk.textContent = "Production costs exceed revenue. Current selling price is not sustainable.";
-      advice.textContent = "Increase price or reduce material costs before running production.";
-    } else if (d.margin < 10) {
-      decision.textContent = "⚠ Dangerous Margin";
-      applyColor(decision, "negative");
-      risk.textContent = "Margin is extremely thin. Small cost fluctuations may eliminate profit.";
-      advice.textContent = "Renegotiate supplier prices or adjust selling price before scaling.";
-    } else if (d.margin < 20) {
-      decision.textContent = "🟡 Moderate Production Margin";
-      applyColor(decision, "caution");
-      risk.textContent = "Production is profitable but margin buffer is limited.";
-      advice.textContent = "Monitor material and labor costs closely during production.";
-    } else {
-      decision.textContent = "✅ Strong Production Profitability";
-      applyColor(decision, "positive");
-      risk.textContent = "Healthy production margin with good safety buffer.";
-      advice.textContent = "Scaling production could significantly increase profit.";
-    }
+      $("mfg-profit-per-unit") &&
+        ( $("mfg-profit-per-unit").textContent = money(d.profitPerUnit) );
 
-    /* =========================
-       STEP-BY-STEP GUIDANCE
-    ========================== */
-    const stepsContainer = $("mfg-steps");
-    if (stepsContainer) {
-      stepsContainer.innerHTML = "";
-      d.steps?.forEach(s => {
-  const li = document.createElement("li");
-  li.innerHTML = `<strong>${s.step}</strong><span>${s.message}</span>`;
-  stepsContainer.appendChild(li);
-});
+      /* =========================
+         4. PERFORMANCE (KEEP ONLY MARGIN)
+      ========================== */
+      $("mfg-margin") &&
+        ( $("mfg-margin").textContent = percent(d.margin) );
+
+      color(
+        $("mfg-margin"),
+        d.margin < 10
+          ? "negative"
+          : d.margin < 20
+          ? "caution"
+          : "positive"
+      );
+
+      /* =========================
+         5. BREAK-EVEN (KEEP)
+      ========================== */
+      $("mfg-breakeven") &&
+        ( $("mfg-breakeven").textContent = d.breakeven ?? 0 );
+
+      /* =========================
+         6. NEXT STEPS (CONVERSION LAYER)
+      ========================== */
+      const steps = $("mfg-steps");
+
+      if (steps) {
+        steps.innerHTML = "";
+
+        (d.steps || []).forEach((s) => {
+          const li = document.createElement("li");
+
+          li.innerHTML = `
+            <strong>${s.step}</strong>
+            <span>${s.message}</span>
+          `;
+
+          steps.appendChild(li);
+        });
+      }
+
+    } catch (err) {
+      console.error("Manufacturing engine error:", err);
     }
   }
 
   /* =========================
-     INPUT LISTENERS
+     EVENTS
   ========================== */
-  document.querySelectorAll("input").forEach(i => i.addEventListener("input", update));
+  document
+    .querySelectorAll(".calculator-container input")
+    .forEach((i) => i.addEventListener("input", update));
 
-  /* =========================
-     RESET BUTTON
-  ========================== */
   $("resetBtn")?.addEventListener("click", () => {
-    document.querySelectorAll("input").forEach(i => i.value = "");
+    document
+      .querySelectorAll(".calculator-container input")
+      .forEach((i) => (i.value = ""));
+
     run();
   });
 
   run();
-
 })();

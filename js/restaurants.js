@@ -2,6 +2,8 @@
 
 const $ = id => document.getElementById(id);
 
+let latestData = null; // 🔥 holds latest calculator result
+
 const money = v =>
   (Number(v) || 0).toLocaleString(undefined, {
     minimumFractionDigits: 2,
@@ -61,37 +63,40 @@ function update() {
   debounceTimer = setTimeout(runRestaurant, 300);
 }
 
-/* ================= MAIN ================= */
+/* ================= MAIN CALC ================= */
 async function runRestaurant() {
 
   const data = await apiPost("/api/calculators/restaurant/operations", {
-    tables:        +$("tables")?.value || 0,
-    coversPerTable:+$("covers")?.value || 0,
-    avgCheck:      +$("check")?.value || 0,
-    foodPct:       +$("foodPercent")?.value || 0,
-    labor:         +$("labor")?.value || 0,
-    fixed:         +$("fixed")?.value || 0,
-    days:          +$("days")?.value || 0
+    tables: +$("tables")?.value || 0,
+    coversPerTable: +$("covers")?.value || 0,
+    avgCheck: +$("check")?.value || 0,
+    foodPct: +$("foodPercent")?.value || 0,
+    labor: +$("labor")?.value || 0,
+    fixed: +$("fixed")?.value || 0,
+    days: +$("days")?.value || 0
   });
 
   if (!data) return;
 
-  /* ================= REVENUE ================= */
+  latestData = data; // 🔥 SAVE FOR BUTTON
+
+  /* ================= UI ================= */
   $("dailyCovers").textContent = data.dailyCovers ?? 0;
   $("revenue").textContent = money(data.monthlyRevenue);
 
-  /* ================= COSTS ================= */
   $("foodCost").textContent = money(data.foodCost);
   $("totalCosts").textContent = money(data.totalCosts);
 
   const ratioEl = $("ratio");
   ratioEl.textContent = percent(data.costRatio ?? 0);
 
-  if (data.costRatio > 80) setClass(ratioEl, "profit-negative");
-  else if (data.costRatio > 60) setClass(ratioEl, "margin-medium");
-  else setClass(ratioEl, "profit-positive");
+  setClass(
+    ratioEl,
+    data.costRatio > 80 ? "profit-negative"
+    : data.costRatio > 60 ? "margin-medium"
+    : "profit-positive"
+  );
 
-  /* ================= PROFIT ================= */
   const profitEl = $("profit");
   profitEl.textContent = money(data.profit);
   setClass(profitEl, data.profit >= 0 ? "profit-positive" : "profit-negative");
@@ -99,60 +104,95 @@ async function runRestaurant() {
   const marginEl = $("margin");
   marginEl.textContent = percent(data.margin);
 
-  if (data.margin < 10) setClass(marginEl, "profit-negative");
-  else if (data.margin < 20) setClass(marginEl, "margin-medium");
-  else setClass(marginEl, "margin-strong");
+  setClass(
+    marginEl,
+    data.margin < 10 ? "profit-negative"
+    : data.margin < 20 ? "margin-medium"
+    : "margin-strong"
+  );
 
-  const coverEl = $("profitCover");
-  coverEl.textContent = money(data.profitPerCover);
-
-  if (data.profitPerCover < 0) setClass(coverEl, "profit-negative");
-  else if (data.profitPerCover < 10) setClass(coverEl, "margin-medium");
-  else setClass(coverEl, "profit-positive");
-
+  $("profitCover").textContent = money(data.profitPerCover);
   $("monthly").textContent = money(data.monthlyProfit);
-  $("annual").textContent  = money(data.annualProfit);
-
-  /* ================= BREAKEVEN ================= */
+  $("annual").textContent = money(data.annualProfit);
   $("breakeven").textContent = data.breakevenCovers ?? 0;
 
   /* ================= DECISION ================= */
-  const statusEl = $("status");
-  const adviceEl = $("decisionAdvice");
+  $("status").textContent = data.decision || "—";
+  $("decisionAdvice").textContent = data.advice || "—";
 
-  if (data.profit <= 0) {
-    statusEl.textContent = "❌ Restaurant Losing Money";
-    statusEl.className = "loss";
-    adviceEl.textContent = data.advice || "Costs higher than revenue.";
+  $("status").className =
+    data.riskLevel === "High" ? "loss"
+    : data.riskLevel === "Medium" ? "neutral"
+    : "profit";
 
-  } else if (data.margin < 10) {
-    statusEl.textContent = "⚠ Dangerous Margin";
-    statusEl.className = "loss";
-    adviceEl.textContent = data.advice || "Margin too small.";
-
-  } else if (data.margin < 20) {
-    statusEl.textContent = "🟡 Moderate Profitability";
-    statusEl.className = "neutral";
-    adviceEl.textContent = data.advice || "Profitable but can improve.";
-
-  } else {
-    statusEl.textContent = "🟢 Strong Profitability";
-    statusEl.className = "profit";
-    adviceEl.textContent = data.advice || "Healthy margins.";
-  }
-
-  /* ================= STEPS ================= */
+  /* ================= INSIGHTS ================= */
   const stepsContainer = $("stepsContainer");
 
-  if (stepsContainer && Array.isArray(data.steps)) {
-    stepsContainer.innerHTML = data.steps.map(s => `
-      <div class="step">
-        <strong>${s.step}:</strong>
-        <div>${s.message}</div>
-      </div>
-    `).join("");
+  if (stepsContainer && data.insights) {
+
+    const sectionTitles = {
+      summary: "📊 Summary",
+      profitability: "💰 Profitability",
+      costs: "📉 Costs",
+      operations: "⚙ Operations",
+      growth: "🚀 Growth"
+    };
+
+    stepsContainer.innerHTML = Object.entries(data.insights)
+      .map(([key, items]) => `
+        <div class="insight-group">
+          <div class="insight-header"
+               onclick="this.nextElementSibling.classList.toggle('open')">
+            ${sectionTitles[key] || key}
+          </div>
+
+          <div class="insight-body">
+            ${items.map(i => `
+              <div class="step">
+                <strong>${i.title}</strong>
+                <div>${i.message}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
   }
 }
+
+/* ================= SAVE DEAL BUTTON ================= */
+$("saveDealBtn")?.addEventListener("click", async () => {
+
+  if (!latestData) {
+    alert("Run calculator first before saving");
+    return;
+  }
+
+  const payload = {
+    type: "restaurant",
+    inputs: {
+      tables: $("tables").value,
+      covers: $("covers").value,
+      check: $("check").value,
+      foodPercent: $("foodPercent").value,
+      labor: $("labor").value,
+      fixed: $("fixed").value,
+      days: $("days").value
+    },
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      monthlyRevenue: latestData.monthlyRevenue
+    }
+  };
+
+  const res = await apiPost("/api/saved-deals", payload);
+
+  if (res) {
+    alert("Deal saved successfully");
+  } else {
+    alert("Failed to save deal");
+  }
+});
 
 /* ================= EVENTS ================= */
 document
@@ -165,6 +205,8 @@ $("resetBtn")?.addEventListener("click", () => {
   document
     .querySelectorAll(".input-section input")
     .forEach(i => i.value = "");
+
+  latestData = null;
 
   const ids = [
     "dailyCovers","revenue","foodCost","totalCosts",
@@ -180,17 +222,13 @@ $("resetBtn")?.addEventListener("click", () => {
     }
   });
 
-  if ($("status")) {
-    $("status").textContent = "—";
-    $("status").className = "";
-  }
-
-  if ($("decisionAdvice"))
-    $("decisionAdvice").textContent = "";
-
-  if ($("stepsContainer"))
-    $("stepsContainer").innerHTML = "";
-
+  $("status").textContent = "—";
+  $("status").className = "";
+  $("decisionAdvice").textContent = "";
+  $("stepsContainer").innerHTML = "";
 });
+
+/* ================= INIT ================= */
+runRestaurant();
 
 })();

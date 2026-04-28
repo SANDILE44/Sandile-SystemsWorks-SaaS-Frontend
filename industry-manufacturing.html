@@ -13,133 +13,66 @@
 <style>
 
 /* ===============================
-MANUFACTURING DECISION COLORS
+DECISION COLORS
 =============================== */
 
-.positive {
-color: #16a34a;
-font-weight: 600;
-}
+.positive { color:#16a34a; font-weight:600; }
+.negative { color:#dc2626; font-weight:600; }
+.caution { color:#f59e0b; font-weight:600; }
 
-.negative {
-color: #dc2626;
-font-weight: 600;
-}
+.output-value { font-weight:600; transition:color .25s ease; }
 
-.caution {
-color: #f59e0b;
-font-weight: 600;
-}
-
-.output-value{
-font-weight:600;
-transition:color .25s ease;
-}
-
-
-/* PROFIT / LOSS */
-
-.output-value.positive{
-color:#22c55e;
-}
-
-.output-value.negative{
-color:#ef4444;
-}
-
-
-/* MARGIN + ROI */
-
-.output-value.caution{
-color:#f59e0b;
-}
-
+.output-value.positive { color:#22c55e; }
+.output-value.negative { color:#ef4444; }
+.output-value.caution { color:#f59e0b; }
 
 /* DECISION STATUS */
-
-#decision-status{
-font-weight:700;
-letter-spacing:.02em;
+#decision-status {
+  font-weight:700;
+  letter-spacing:.02em;
 }
 
-#decision-status.positive{
-color:#22c55e;
-}
+#decision-status.positive { color:#22c55e; }
+#decision-status.caution { color:#f59e0b; }
+#decision-status.negative { color:#ef4444; }
 
-#decision-status.caution{
-color:#f59e0b;
-}
-
-#decision-status.negative{
-color:#ef4444;
-}
-
-
-/* ===============================
-STEP-BY-STEP STRUCTURE (LOGISTICS STYLE)
-=============================== */
+/* STEPS */
 .steps-section {
-  margin-top: 2rem;
-  padding: 1rem;
-  border: 1px solid var(--border-soft);
-  border-radius: 12px;
-  background: transparent;
+  margin-top:2rem;
+  padding:1rem;
+  border:1px solid var(--border-soft);
+  border-radius:12px;
 }
 
-.steps-section ol.steps-list {
-  list-style: none;
-  counter-reset: step-counter;
-  padding-left: 0;
-  margin: 0;
+.steps-section ol {
+  list-style:none;
+  counter-reset:step;
+  padding:0;
 }
 
-.steps-section ol.steps-list li {
-  counter-increment: step-counter;
-  margin-bottom: 1.25rem;
-  padding-left: 44px;
-  position: relative;
-  line-height: 1.5;
-  color: var(--text-main);
+.steps-section li {
+  counter-increment:step;
+  margin-bottom:1rem;
+  padding-left:40px;
+  position:relative;
 }
 
-.steps-section ol.steps-list li::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border-soft);
-  color: var(--accent);
-  text-align: center;
-  line-height: 32px;
-  font-weight: 700;
-  font-size: 14px;
+.steps-section li::before {
+  content:counter(step);
+  position:absolute;
+  left:0;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  border:1px solid var(--border-soft);
+  text-align:center;
+  line-height:28px;
+  font-weight:700;
 }
 
-.steps-section ol.steps-list li strong {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.steps-section ol.steps-list li span {
-  display: block;
-  font-weight: 400;
-  color: var(--text-main);
-  opacity: 0.85;
-}
-
-.steps-section ol.steps-list li:hover {
-  border-left: 3px solid var(--accent);
-  padding-left: 41px;
-}
 </style>
 
 </head>
-
 
 <body>
 
@@ -151,13 +84,8 @@ STEP-BY-STEP STRUCTURE (LOGISTICS STYLE)
 <div class="sidebar-top">
 
 <div class="sidebar-brand">
-<img src="images/Untitled design.png"
-alt="Sandile SystemsWorks"
-class="sidebar-logo" />
-
-<span class="sidebar-name">
-Sandile SystemsWorks
-</span>
+<img src="images/Untitled design.png" class="sidebar-logo" />
+<span class="sidebar-name">Sandile SystemsWorks</span>
 </div>
 
 <nav class="sidebar-nav">
@@ -171,227 +99,72 @@ Sandile SystemsWorks
 
 </div>
 
-
-<div class="sidebar-account">
-
-<button id="accountBtn" class="account-btn">
-
-<span id="accountAvatar" class="account-avatar">U</span>
-<span id="accountName" class="account-name">Account</span>
-
-</button>
-
-<div id="accountMenu" class="account-menu">
-<a href="index.html">Home</a>
-<button id="logoutBtn">Logout</button>
-</div>
-
-</div>
-
 </aside>
 
-
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <main class="main-content">
-
-
-<button id="hamburger" class="hamburger" aria-label="Open menu">
-<span></span>
-<span></span>
-<span></span>
-</button>
-
-
-<div class="breadcrumb">
-
-<a href="dashboard.html">Sectors</a>
-<span>→</span>
-
-<a href="sector-secondary.html">Secondary</a>
-<span>→</span>
-
-<span>Manufacturing</span>
-
-</div>
-
 
 <h1>Manufacturing Calculators</h1>
 
-<p>
-Optimize production economics and manufacturing profitability.
-</p>
-
-
+<p>Optimize production economics and manufacturing profitability.</p>
 
 <div class="calculator-container">
 
 <h2>Manufacturing Profitability Calculator</h2>
 
-<p>
-Analyze unit costs, production volume, margins, and ROI.
-</p>
-
+<p>Analyze unit costs, production volume, margins, and ROI.</p>
 
 <div class="calculator-grid">
-
 
 <!-- INPUTS -->
 <div class="input-section">
 
 <h3>Inputs</h3>
 
-<div class="input-group">
-<label for="mfg-units">Units Produced</label>
-<input type="number"
-id="mfg-units"
-placeholder="Enter production volume" />
-</div>
+<input id="mfg-units" type="number" placeholder="Units produced" />
+<input id="mfg-price" type="number" placeholder="Selling price per unit" />
+<input id="mfg-material" type="number" placeholder="Material cost per unit" />
+<input id="mfg-labor" type="number" placeholder="Labor cost" />
+<input id="mfg-fixed" type="number" placeholder="Fixed costs" />
+<input id="mfg-operational" type="number" placeholder="Operational costs" />
 
-<div class="input-group">
-<label for="mfg-price">Selling Price Per Unit</label>
-<input type="number"
-id="mfg-price"
-placeholder="Revenue per unit" />
-</div>
-
-<div class="input-group">
-<label for="mfg-material">Material Cost Per Unit</label>
-<input type="number"
-id="mfg-material"
-placeholder="Raw materials cost" />
-</div>
-
-<div class="input-group">
-<label for="mfg-labor">Labor Costs</label>
-<input type="number"
-id="mfg-labor"
-placeholder="Wages for workforce" />
-</div>
-
-<div class="input-group">
-<label for="mfg-fixed">Fixed Costs</label>
-<input type="number"
-id="mfg-fixed"
-placeholder="Rent, utilities, insurance" />
-</div>
-
-<div class="input-group">
-<label for="mfg-operational">Operational Costs</label>
-<input type="number"
-id="mfg-operational"
-placeholder="Maintenance, overhead" />
-</div>
-
-<button type="button" id="resetBtn">Reset All</button>
+<button id="resetBtn">Clear Inputs</button>
 
 </div>
 
-
-
-<!-- RESULTS -->
+<!-- OUTPUTS -->
 <div class="output-section">
 
-<h3>Production Summary</h3>
+<h3>Decision Result</h3>
 
-<div class="output-group">
-<div class="output-label">Total Units</div>
-<div class="output-value" id="mfg-units-output">0</div>
-</div>
+<div id="decision-status">—</div>
+<div id="risk-warning"></div>
+<div id="decision-advice"></div>
 
-<div class="output-group">
-<div class="output-label">Total Revenue</div>
-<div class="output-value" id="mfg-revenue">0.00</div>
-</div>
+<h3>Summary</h3>
 
-<div class="output-group">
-<div class="output-label">Total Costs</div>
-<div class="output-value" id="mfg-total-costs">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Profit / Loss</div>
-<div class="output-value" id="mfg-profit">0.00</div>
-</div>
-
-
+<div id="mfg-revenue"></div>
+<div id="mfg-total-costs"></div>
+<div id="mfg-profit"></div>
 
 <h3>Unit Economics</h3>
 
-<div class="output-group">
-<div class="output-label">Cost Per Unit</div>
-<div class="output-value" id="mfg-cost-per-unit">0.00</div>
-</div>
+<div id="mfg-cost-per-unit"></div>
+<div id="mfg-profit-per-unit"></div>
 
-<div class="output-group">
-<div class="output-label">Revenue Per Unit</div>
-<div class="output-value" id="mfg-revenue-per-unit">0.00</div>
-</div>
+<h3>Performance</h3>
 
-<div class="output-group">
-<div class="output-label">Profit Per Unit</div>
-<div class="output-value" id="mfg-profit-per-unit">0.00</div>
-</div>
+<div id="mfg-margin"></div>
+<div id="mfg-roi"></div>
 
+<h3>Break-even</h3>
 
+<div id="mfg-breakeven"></div>
 
-<h3>Break-Even Analysis</h3>
-
-<div class="output-group">
-<div class="output-label">Break-even Units</div>
-<div class="output-value" id="mfg-breakeven">0</div>
-</div>
-
-
-
-<h3>Performance Metrics</h3>
-
-<div class="output-group">
-<div class="output-label">ROI (%)</div>
-<div class="output-value" id="mfg-roi">0.00%</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Profit Margin (%)</div>
-<div class="output-value" id="mfg-margin">0.00%</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Monthly Revenue Projection</div>
-<div class="output-value" id="mfg-monthly-revenue">0.00</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Annual Revenue Projection</div>
-<div class="output-value" id="mfg-annual-revenue">0.00</div>
-</div>
-
-
-
-<!-- DECISION ENGINE -->
-
-<h3>Production Decision</h3>
-
-<div class="output-group">
-<div class="output-label">Decision Status</div>
-<div class="output-value" id="decision-status">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Risk Warning</div>
-<div class="output-value" id="risk-warning"></div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Production Advice</div>
-<div class="output-value" id="decision-advice"></div>
-</div>
-
-<!-- Step-by-Step Guidance -->
+<!-- STEPS -->
 <div class="steps-section">
-  <h3>Step-by-Step Production Insights</h3>
-  <ol class="steps-list" id="mfg-steps">
-    <!-- JS will insert <li> steps here -->
-  </ol>
+<h3>Next Steps</h3>
+<ol id="mfg-steps"></ol>
 </div>
 
 </div>
@@ -400,101 +173,9 @@ placeholder="Maintenance, overhead" />
 
 </div>
 
-</div>
+</main>
 
 </div>
 
-           <!-- ================================
-             SECTORS & INDUSTRIES NAVIGATION
-        ================================ -->
-        <div class="sectors-navigation">
-          <h2>Explore All Sectors & Industries</h2>
-          <p>
-            Jump to any sector or industry calculators to quickly compare and
-            analyze multiple business areas.
-          </p>
-
-          <div class="sectors-grid">
-            <div class="sector-group">
-              <h3>Primary Sector</h3>
-              <ul>
-                <li><a href="industry-agriculture.html">Agriculture</a></li>
-                <li><a href="industry-forestry.html">Forestry</a></li>
-                <li><a href="industry-fishing.html">Fishing</a></li>
-                <li><a href="industry-mining.html">Mining</a></li>
-                <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-                <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Secondary Sector</h3>
-              <ul>
-                <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-                <li><a href="industry-construction.html">Construction</a></li>
-                <li><a href="industry-automotive.html">Automotive</a></li>
-                <li><a href="industry-electronics.html">Electronics</a></li>
-                <li><a href="industry-textiles.html">Textiles</a></li>
-                <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Tertiary Sector</h3>
-              <ul>
-                <li><a href="industry-real-estate.html">Real Estate</a></li>
-                <li><a href="industry-retail.html">Retail</a></li>
-                <li><a href="industry-restaurants.html">Restaurants</a></li>
-                <li><a href="industry-hospitality.html">Hospitality</a></li>
-                <li><a href="industry-logistics.html">Logistics</a></li>
-                <li><a href="industry-healthcare.html">Healthcare</a></li>
-                <li><a href="industry-education.html">Education</a></li>
-                <li><a href="industry-finance.html">Finance</a></li>
-                <li><a href="industry-marketing.html">Marketing</a></li>
-                <li><a href="industry-consulting.html">Consulting</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quaternary Sector</h3>
-              <ul>
-                <li><a href="industry-software.html">Software</a></li>
-                <li><a href="industry-saas.html">SaaS</a></li>
-                <li><a href="industry-it-services.html">IT Services</a></li>
-                <li><a href="industry-media.html">Media</a></li>
-                <li><a href="industry-research-development.html">R&D</a></li>
-                <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quinary Sector</h3>
-              <ul>
-                <li><a href="industry-government.html">Government</a></li>
-                <li><a href="industry-ngos.html">NGOs</a></li>
-                <li>
-                  <a href="industry-social-services.html"
-                    >Social & Community Services</a
-                  >
-                </li>
-                <li>
-                  <a href="industry-public-administration.html"
-                    >Public Administration</a
-                  >
-                </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/guard.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/hamburger.js"></script>
-    <script src="js/manufacturing.js"></script>
-      <script src="js/user-display.js"></script>
-
-  </body>
+</body>
 </html>
