@@ -67,10 +67,12 @@ h1 {
   color: #ff6b6b;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .delete-btn:hover {
   background: rgba(255,0,0,0.2);
+  transform: translateY(-2px);
 }
 
 /* ================= EMPTY STATE ================= */
@@ -86,23 +88,118 @@ h1 {
 
 <body>
 
-<!-- MAIN -->
 <div class="saved-wrapper">
 
-<h1>Saved Deals</h1>
+  <h1>Saved Deals</h1>
 
-<div id="savedDealsContainer" class="deals-grid"></div>
+  <div id="savedDealsContainer" class="deals-grid"></div>
 
-<div id="emptyState" class="empty" style="display:none;">
-  No saved deals yet.
+  <div id="emptyState" class="empty" style="display:none;">
+    No saved deals yet.
+  </div>
+
 </div>
 
-</div>
+<script>
+(() => {
 
+const $ = id => document.getElementById(id);
+
+/* ================= API ================= */
+async function api(url, method = "GET", body = null) {
+
+  const token = localStorage.getItem("token");
+  if (!token) return location.replace("login.html");
+
+  try {
+
+    const res = await fetch(`API_BASE${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      return location.replace("login.html");
+    }
+
+    return await res.json();
+
+  } catch (err) {
+    console.error("SavedDeals error:", err);
+    return null;
+  }
+}
+
+/* ================= LOAD DEALS ================= */
+async function loadDeals() {
+  return await api("/api/saved-deals");
+}
+
+/* ================= DELETE DEAL ================= */
+async function deleteDeal(id) {
+  await api(`/api/saved-deals/${id}`, "DELETE");
+  initSavedDeals();
+}
+
+/* ================= RENDER ================= */
+function renderDeals(deals) {
+
+  const container = $("savedDealsContainer");
+  const empty = $("emptyState");
+
+  if (!deals || deals.length === 0) {
+    container.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+
+  container.innerHTML = deals.map(d => `
+    <div class="deal-card">
+      
+      <div class="deal-title">
+        ${d.type.toUpperCase()} - ${new Date(d.createdAt).toLocaleDateString()}
+      </div>
+
+      <div class="deal-body">
+        <div><strong>Profit:</strong> ${d.results?.profit ?? 0}</div>
+        <div><strong>Revenue:</strong> ${d.results?.monthlyRevenue ?? 0}</div>
+        <div><strong>Margin:</strong> ${d.results?.margin ?? 0}%</div>
+      </div>
+
+      <button class="delete-btn" data-id="${d._id}">
+        Delete
+      </button>
+
+    </div>
+  `).join("");
+}
+
+/* ================= INIT ================= */
+async function initSavedDeals() {
+  const deals = await loadDeals();
+  renderDeals(deals);
+}
+
+/* ================= CLICK HANDLER ================= */
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const id = e.target.dataset.id;
+    await deleteDeal(id);
+  }
+});
+
+/* ================= START ================= */
+document.addEventListener("DOMContentLoaded", initSavedDeals);
+
+})();
+</script>
 
 </body>
-
-<script src="js/savedDeals.js"></script>
-<script src="js/restaurant.js"></script>
-
 </html>

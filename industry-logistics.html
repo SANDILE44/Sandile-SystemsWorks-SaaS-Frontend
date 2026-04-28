@@ -11,6 +11,38 @@
   <body>
     <style>
 
+      .tool-panel {
+  display: flex;
+  flex-direction: column;
+    display: flex;
+  flex-direction: column;
+  min-height: auto;
+  overflow: visible;
+}
+
+.tool-panel {
+  min-height: 60vh;
+}
+
+      .calculator-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
+      .calculator-grid {
+   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ===============================  
          TOOL SELECTOR  
       =================================*/  
@@ -40,6 +72,17 @@
   .tool-btn.active {  
     background: #2563eb;  
   }  
+
+  .tool-panel {
+  width: 100%;
+  display: block;
+}
+
+.calculator-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
   .hidden {  
     display: none;  
@@ -216,6 +259,8 @@ line-height: 1.4;
   border-left: 3px solid var(--accent);
   padding-left: 41px; /* adjust to keep text aligned */
 }
+
+
 </style>
     
 
@@ -465,26 +510,21 @@ clear margin visibility and operational risk detection.
     <div class="output-value" id="log-advice">—</div>
   </div>
 
-  
   <!-- STEP-BY-STEP GUIDANCE -->
-  <div class="steps-section">
-    <h3>Step-by-Step Guidance</h3>
-    <ol id="log-steps" class="steps-list">
-      <!-- JS will insert steps here -->
-    </ol>
-  </div>
-
+<div class="steps-section">
+  <h3>Step-by-Step Guidance</h3>
+  <ol id="log-steps" class="steps-list"></ol>
 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+</div> <!-- output-section -->
+</div> <!-- calculator-grid -->
+</div> <!-- operations-panel -->
 
         <!-- ==========================
              PANEL 2: SHIPMENT
         =========================== -->
         <div
-          class="calculator-container advanced-module tool-panel hidden"
+         class="calculator-container tool-panel hidden"
           id="shipment-panel"
         >
           <h2>Shipment Risk & Pricing Simulator</h2>
@@ -703,20 +743,14 @@ clear margin visibility and operational risk detection.
       <!-- JS will insert steps here -->
     </ol>
   </div>
-</div>
-
-            </div>
-          </div>
-        </div>
-
+</div> <!-- output-section -->
+</div> <!-- calculator-grid -->
+</div> <!-- shipment-panel -->
 
 <!-- ==========================
      PANEL 3: FREIGHT
 ========================== -->
-<div
-  class="calculator-container advanced-module tool-panel hidden"
-  id="freight-panel"
->
+<div class="calculator-container tool-panel hidden" id="freight-panel">
   <h2>Freight Import / Export Profit Simulator</h2>
   <p>
     Evaluate international shipments including freight, duties,
@@ -731,215 +765,126 @@ clear margin visibility and operational risk detection.
 
       <div class="input-group">
         <label for="freight-quote">Client Quote Price</label>
-        <input type="number" id="freight-quote"
-        placeholder="Total price charged to client for this shipment" />
+        <input type="number" id="freight-quote" placeholder="Total price charged to client" />
       </div>
 
       <div class="input-group">
         <label for="freight-cargo-value">Cargo Value</label>
-        <input type="number" id="freight-cargo-value"
-        placeholder="Declared value of goods being shipped" />
+        <input type="number" id="freight-cargo-value" placeholder="Declared value of goods" />
       </div>
 
       <div class="input-group">
         <label for="freight-insurance-rate">Insurance Rate (%)</label>
-        <input type="number" id="freight-insurance-rate"
-        placeholder="Insurance % applied to cargo value" />
+        <input type="number" id="freight-insurance-rate" placeholder="Insurance % applied" />
       </div>
 
       <div class="input-group">
         <label for="freight-cost">Freight Cost</label>
-        <input type="number" id="freight-cost"
-        placeholder="Air, sea, or rail freight cost" />
+        <input type="number" id="freight-cost" placeholder="Air/sea/rail freight cost" />
       </div>
 
       <div class="input-group">
         <label for="freight-fuel-surcharge">Fuel Surcharge</label>
-        <input type="number" id="freight-fuel-surcharge"
-        placeholder="Carrier fuel surcharge" />
+        <input type="number" id="freight-fuel-surcharge" placeholder="Carrier fuel surcharge" />
       </div>
 
       <div class="input-group">
         <label for="freight-duty-rate">Import Duty Rate (%)</label>
-        <input type="number" id="freight-duty-rate"
-        placeholder="Import duty % applied to cargo value" />
+        <input type="number" id="freight-duty-rate" placeholder="Duty percentage" />
       </div>
 
       <div class="input-group">
-        <label for="freight-customs-fees">Customs Clearance Fees</label>
-        <input type="number" id="freight-customs-fees"
-        placeholder="Customs broker and documentation costs" />
+        <label for="freight-customs-fees">Customs Fees</label>
+        <input type="number" id="freight-customs-fees" placeholder="Broker and clearance fees" />
       </div>
 
       <div class="input-group">
-        <label for="freight-port-fees">Port / Terminal Fees</label>
-        <input type="number" id="freight-port-fees"
-        placeholder="Port handling and terminal charges" />
+        <label for="freight-port-fees">Port Fees</label>
+        <input type="number" id="freight-port-fees" placeholder="Terminal charges" />
       </div>
 
       <div class="input-group">
         <label for="freight-handling-fees">Handling Charges</label>
-        <input type="number" id="freight-handling-fees"
-        placeholder="Warehouse or cargo handling costs" />
+        <input type="number" id="freight-handling-fees" placeholder="Warehouse handling costs" />
       </div>
 
       <div class="input-group">
         <label for="freight-inland-transport">Inland Transport</label>
-        <input type="number" id="freight-inland-transport"
-        placeholder="Truck or rail transport after arrival" />
+        <input type="number" id="freight-inland-transport" placeholder="Final delivery transport" />
       </div>
 
       <div class="input-group">
         <label for="freight-tolls">Toll Costs</label>
-        <input type="number" id="freight-tolls"
-        placeholder="Highway tolls or route fees" />
+        <input type="number" id="freight-tolls" placeholder="Route tolls" />
       </div>
 
       <div class="input-group">
-        <label for="freight-other-costs">Other Logistics Costs</label>
-        <input type="number" id="freight-other-costs"
-        placeholder="Storage, inspection, or additional logistics fees" />
+        <label for="freight-other-costs">Other Costs</label>
+        <input type="number" id="freight-other-costs" placeholder="Storage, inspection, etc." />
       </div>
 
       <button type="button" id="resetFreightBtn">Reset All</button>
     </div>
-<!-- ==================== FREIGHT OUTPUTS ==================== -->
-<div class="output-section">
 
-  <h3>Freight Results</h3>
+    <!-- OUTPUTS -->
+    <div class="output-section">
 
-  <!-- FINANCIAL METRICS -->
-  <div class="output-group">
-    <div class="output-label">Insurance Cost</div>
-    <div class="output-value" id="freight-insurance-cost">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Duty Cost</div>
-    <div class="output-value" id="freight-duties">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Total Logistics Cost</div>
-    <div class="output-value" id="freight-total-cost">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Estimated Profit</div>
-    <div class="output-value" id="freight-profit">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Profit Margin</div>
-    <div class="output-value" id="freight-margin">0.00%</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Break-even Quote</div>
-    <div class="output-value" id="freight-breakeven">0.00</div>
-  </div>
+      <h3>Freight Results</h3>
 
-  <!-- DECISION SUPPORT -->
-  <div class="output-group">
-    <div class="output-label">Decision</div>
-    <div class="output-value" id="freight-decision">—</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Decision Explanation</div>
-    <div class="output-value" id="freight-reason">—</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Risk Level</div>
-    <div class="output-value" id="freight-risk">—</div>
-  </div>
+      <div class="output-group">
+        <div class="output-label">Insurance Cost</div>
+        <div class="output-value" id="freight-insurance-cost">0.00</div>
+      </div>
 
-  <!-- STEP-BY-STEP GUIDANCE -->
-  <div class="steps-section">
-    <h3>Step-by-Step Guidance</h3>
-    <ol id="freight-steps" class="steps-list">
-      <!-- JS will insert steps here -->
-    </ol>
-  </div>
+      <div class="output-group">
+        <div class="output-label">Duty Cost</div>
+        <div class="output-value" id="freight-duties">0.00</div>
+      </div>
 
-  
+      <div class="output-group">
+        <div class="output-label">Total Logistics Cost</div>
+        <div class="output-value" id="freight-total-cost">0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Estimated Profit</div>
+        <div class="output-value" id="freight-profit">0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Profit Margin</div>
+        <div class="output-value" id="freight-margin">0.00%</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Break-even Quote</div>
+        <div class="output-value" id="freight-breakeven">0.00</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision</div>
+        <div class="output-value" id="freight-decision">—</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Decision Explanation</div>
+        <div class="output-value" id="freight-reason">—</div>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">Risk Level</div>
+        <div class="output-value" id="freight-risk">—</div>
+      </div>
+
+      <div class="steps-section">
+        <h3>Step-by-Step Guidance</h3>
+        <ol id="freight-steps" class="steps-list"></ol>
+      </div>
+
+    </div>
+
   </div>
 </div>
-
-           <!-- ================================
-             SECTORS & INDUSTRIES NAVIGATION
-        ================================ -->
-        <div class="sectors-navigation">
-          <h2>Explore All Sectors & Industries</h2>
-          <p>
-            Jump to any sector or industry calculators to quickly compare and
-            analyze multiple business areas.
-          </p>
-
-          <div class="sectors-grid">
-            <div class="sector-group">
-              <h3>Primary Sector</h3>
-              <ul>
-                <li><a href="industry-agriculture.html">Agriculture</a></li>
-                <li><a href="industry-forestry.html">Forestry</a></li>
-                <li><a href="industry-fishing.html">Fishing</a></li>
-                <li><a href="industry-mining.html">Mining</a></li>
-                <li><a href="industry-oil-gas.html">Oil & Gas</a></li>
-                <li><a href="industry-renewable-energy.html">Renewable Energy</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Secondary Sector</h3>
-              <ul>
-                <li><a href="industry-manufacturing.html">Manufacturing</a></li>
-                <li><a href="industry-construction.html">Construction</a></li>
-                <li><a href="industry-automotive.html">Automotive</a></li>
-                <li><a href="industry-electronics.html">Electronics</a></li>
-                <li><a href="industry-textiles.html">Textiles</a></li>
-                <li><a href="industry-food-beverage.html">Food & Beverage</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Tertiary Sector</h3>
-              <ul>
-                <li><a href="industry-real-estate.html">Real Estate</a></li>
-                <li><a href="industry-retail.html">Retail</a></li>
-                <li><a href="industry-restaurants.html">Restaurants</a></li>
-                <li><a href="industry-hospitality.html">Hospitality</a></li>
-                <li><a href="industry-logistics.html">Logistics</a></li>
-                <li><a href="industry-healthcare.html">Healthcare</a></li>
-                <li><a href="industry-education.html">Education</a></li>
-                <li><a href="industry-finance.html">Finance</a></li>
-                <li><a href="industry-marketing.html">Marketing</a></li>
-                <li><a href="industry-consulting.html">Consulting</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quaternary Sector</h3>
-              <ul>
-                <li><a href="industry-software.html">Software</a></li>
-                <li><a href="industry-saas.html">SaaS</a></li>
-                <li><a href="industry-it-services.html">IT Services</a></li>
-                <li><a href="industry-media.html">Media</a></li>
-                <li><a href="industry-research-development.html">R&D</a></li>
-                <li><a href="industry-telecommunications.html">Telecommunications</a></li>
-              </ul>
-            </div>
-
-            <div class="sector-group">
-              <h3>Quinary Sector</h3>
-              <ul>
-                <li><a href="industry-government.html">Government</a></li>
-                <li><a href="industry-ngos.html">NGOs</a></li>
-                <li>
-                  <a href="industry-social-services.html"
-                    >Social & Community Services</a
-                  >
-                </li>
-                <li>
-                  <a href="industry-public-administration.html"
-                    >Public Administration</a
-                  >
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </main>
@@ -1060,7 +1005,7 @@ clear margin visibility and operational risk detection.
 })();
 </script>
 
-    <!-- YOUR EXISTING SCRIPTS -->
+
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/guard.js"></script>
@@ -1068,6 +1013,7 @@ clear margin visibility and operational risk detection.
     <script src="js/logistics.js"></script>
     <script src="js/hamburger.js"></script>
     <script src="js/user-display.js"></script>
+
   </body>
 </html>
                                                                               
