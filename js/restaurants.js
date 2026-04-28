@@ -23,18 +23,24 @@ async function apiPost(url, body) {
   const token = localStorage.getItem("token");
   if (!token) return location.replace("login.html");
 
-  const res = await fetch(`${API_BASE}${url}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify(body)
-  });
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    });
 
-  if (!res.ok) return null;
+    if (!res.ok) return null;
 
-  return await res.json();
+    return await res.json();
+
+  } catch (err) {
+    console.error("API error:", err);
+    return null;
+  }
 }
 
 /* ================= CLASS HELPERS ================= */
@@ -60,7 +66,7 @@ async function runRestaurant() {
 
   latestData = data;
 
-  /* ================= BASIC OUTPUTS ================= */
+  /* ================= OUTPUTS ================= */
   $("dailyCovers").textContent = data.dailyCovers ?? 0;
   $("revenue").textContent = money(data.monthlyRevenue);
   $("foodCost").textContent = money(data.foodCost);
@@ -77,15 +83,15 @@ async function runRestaurant() {
   const status = $("status");
   const advice = $("decisionAdvice");
 
-  status.textContent = data.decision;
-  advice.textContent = data.advice;
+  status.textContent = data.decision || "—";
+  advice.textContent = data.advice || "";
 
   status.className =
     data.riskLevel === "High" ? "loss"
     : data.riskLevel === "Medium" ? "neutral"
     : "profit";
 
-  /* ================= COLOR RULES ================= */
+  /* ================= COLORS ================= */
   setClass(
     $("profit"),
     data.profit >= 0 ? "profit-positive" : "profit-negative"
@@ -98,11 +104,11 @@ async function runRestaurant() {
     : "margin-strong"
   );
 
-  /* ================= INSIGHTS RENDER ================= */
+  /* ================= INSIGHTS ================= */
   renderInsights(data.insights);
 }
 
-/* ================= INSIGHTS UI ================= */
+/* ================= INSIGHTS ================= */
 function renderInsights(insights) {
 
   const container = $("stepsContainer");
@@ -128,18 +134,12 @@ function renderInsights(insights) {
 
       return `
         <div class="insight-group">
-
           <details>
-            <summary>
-              ${titles[key] || key}
-            </summary>
-
+            <summary>${titles[key] || key}</summary>
             <div style="margin-top:10px;">
               ${content}
             </div>
-
           </details>
-
         </div>
       `;
     })
@@ -152,12 +152,8 @@ function update() {
   debounceTimer = setTimeout(runRestaurant, 300);
 }
 
-document
-  .querySelectorAll(".input-section input")
-  .forEach(i => i.addEventListener("input", update));
-
 /* ================= RESET ================= */
-$("resetBtn")?.addEventListener("click", () => {
+function resetAll() {
 
   document
     .querySelectorAll(".input-section input")
@@ -181,10 +177,10 @@ $("resetBtn")?.addEventListener("click", () => {
   $("status").className = "";
   $("decisionAdvice").textContent = "";
   $("stepsContainer").innerHTML = "";
-});
+}
 
-  /* ================= SAVE DEAL ================= */
-$("saveDealBtn")?.addEventListener("click", async () => {
+/* ================= SAVE DEAL ================= */
+async function saveDeal() {
 
   console.log("SAVE CLICKED");
 
@@ -226,10 +222,21 @@ $("saveDealBtn")?.addEventListener("click", async () => {
     console.error("Save error:", err);
     alert("Error saving deal");
   }
-
-});
+}
 
 /* ================= INIT ================= */
-runRestaurant();
+document.addEventListener("DOMContentLoaded", () => {
+
+  document
+    .querySelectorAll(".input-section input")
+    .forEach(i => i.addEventListener("input", update));
+
+  $("resetBtn")?.addEventListener("click", resetAll);
+
+  $("saveDealBtn")?.addEventListener("click", saveDeal);
+
+  runRestaurant();
+
+});
 
 })();
