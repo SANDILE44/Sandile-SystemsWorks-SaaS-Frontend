@@ -183,6 +183,52 @@ $("resetBtn")?.addEventListener("click", () => {
   $("stepsContainer").innerHTML = "";
 });
 
+  /* ================= SAVE DEAL ================= */
+$("saveDealBtn")?.addEventListener("click", async () => {
+
+  console.log("SAVE CLICKED");
+
+  if (!latestData) {
+    alert("Run calculator first before saving");
+    return;
+  }
+
+  const payload = {
+    type: "restaurant",
+    inputs: {
+      tables: $("tables").value,
+      covers: $("covers").value,
+      check: $("check").value,
+      foodPercent: $("foodPercent").value,
+      labor: $("labor").value,
+      fixed: $("fixed").value,
+      days: $("days").value
+    },
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      monthlyRevenue: latestData.monthlyRevenue
+    }
+  };
+
+  try {
+    const res = await apiPost("/api/saved-deals", payload);
+
+    console.log("SAVE RESPONSE:", res);
+
+    if (res) {
+      alert("Deal saved successfully");
+    } else {
+      alert("Failed to save deal");
+    }
+
+  } catch (err) {
+    console.error("Save error:", err);
+    alert("Error saving deal");
+  }
+
+});
+
 /* ================= INIT ================= */
 runRestaurant();
 
