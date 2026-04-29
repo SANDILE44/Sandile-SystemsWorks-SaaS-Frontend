@@ -247,7 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
     $("consult-variable-costs").value = editDeal.inputs?.variableCosts || "";
     $("consult-contingency").value = editDeal.inputs?.contingency || "";
 
-    runConsulting();
   }
 
   runConsulting();
