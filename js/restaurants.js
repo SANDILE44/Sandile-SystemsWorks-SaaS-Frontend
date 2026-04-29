@@ -2,6 +2,8 @@
 
 const $ = (id) => document.getElementById(id);
 
+const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
+
 let debounceTimer;
 let latestData = null;
 
@@ -19,19 +21,26 @@ const percent = (v) => {
 };
 
 /* ================= API ================= */
-async function apiPost(url, body) {
+async function api(url, method = "GET", body = null) {
+
   const token = localStorage.getItem("token");
   if (!token) return location.replace("login.html");
 
   try {
     const res = await fetch(`${API_BASE}${url}`, {
-      method: "POST",
+      method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify(body)
+      body: body ? JSON.stringify(body) : null
     });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+      return null;
+    }
 
     if (!res.ok) return null;
 
@@ -41,6 +50,11 @@ async function apiPost(url, body) {
     console.error("API error:", err);
     return null;
   }
+}
+
+/* ================= CALCULATOR API ================= */
+async function apiPost(url, body) {
+  return await api(url, "POST", body);
 }
 
 /* ================= CLASS HELPERS ================= */
@@ -66,7 +80,6 @@ async function runRestaurant() {
 
   latestData = data;
 
-  /* ================= OUTPUTS ================= */
   $("dailyCovers").textContent = data.dailyCovers ?? 0;
   $("revenue").textContent = money(data.monthlyRevenue);
   $("foodCost").textContent = money(data.foodCost);
@@ -79,7 +92,6 @@ async function runRestaurant() {
   $("annual").textContent = money(data.annualProfit);
   $("ratio").textContent = percent(data.costRatio);
 
-  /* ================= STATUS ================= */
   const status = $("status");
   const advice = $("decisionAdvice");
 
@@ -91,7 +103,6 @@ async function runRestaurant() {
     : data.riskLevel === "Medium" ? "neutral"
     : "profit";
 
-  /* ================= COLORS ================= */
   setClass(
     $("profit"),
     data.profit >= 0 ? "profit-positive" : "profit-negative"
@@ -104,7 +115,6 @@ async function runRestaurant() {
     : "margin-strong"
   );
 
-  /* ================= INSIGHTS ================= */
   renderInsights(data.insights);
 }
 
@@ -146,17 +156,10 @@ function renderInsights(insights) {
     .join("");
 }
 
-/* ================= EVENTS ================= */
-function update() {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(runRestaurant, 300);
-}
-
 /* ================= RESET ================= */
 function resetAll() {
 
-  document
-    .querySelectorAll(".input-section input")
+  document.querySelectorAll(".input-section input")
     .forEach(i => i.value = "");
 
   latestData = null;
@@ -179,15 +182,15 @@ function resetAll() {
   $("stepsContainer").innerHTML = "";
 }
 
-/* ================= SAVE DEAL ================= */
+/* ================= SAVE / UPDATE DEAL ================= */
 async function saveDeal() {
-
-  console.log("SAVE CLICKED");
 
   if (!latestData) {
     alert("Run calculator first before saving");
     return;
   }
+
+  const editId = localStorage.getItem("editDealId");
 
   const payload = {
     type: "restaurant",
@@ -207,36 +210,52 @@ async function saveDeal() {
     }
   };
 
-  try {
-    const res = await apiPost("/api/saved-deals", payload);
+  const url = editId
+    ? `/api/saved-deals/${editId}`
+    : "/api/saved-deals";
 
-    console.log("SAVE RESPONSE:", res);
+  const method = editId ? "PUT" : "POST";
 
-    if (res) {
-      alert("Deal saved successfully");
-    } else {
-      alert("Failed to save deal");
-    }
+  const res = await api(url, method, payload);
 
-  } catch (err) {
-    console.error("Save error:", err);
-    alert("Error saving deal");
+  if (res) {
+    alert(editId ? "Deal updated" : "Deal saved");
+
+    localStorage.removeItem("editDeal");
+    localStorage.removeItem("editDealId");
+  } else {
+    alert("Failed to save deal");
   }
 }
 
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
-  document
-    .querySelectorAll(".input-section input")
-    .forEach(i => i.addEventListener("input", update));
+  document.querySelectorAll(".input-section input")
+    .forEach(i => i.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runRestaurant, 300);
+    }));
 
   $("resetBtn")?.addEventListener("click", resetAll);
-
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
-  runRestaurant();
+  /* ================= LOAD EDIT MODE ================= */
+  const editDeal = JSON.parse(localStorage.getItem("editDeal"));
 
+  if (editDeal) {
+    $("tables").value = editDeal.inputs?.tables || "";
+    $("covers").value = editDeal.inputs?.covers || "";
+    $("check").value = editDeal.inputs?.check || "";
+    $("foodPercent").value = editDeal.inputs?.foodPercent || "";
+    $("labor").value = editDeal.inputs?.labor || "";
+    $("fixed").value = editDeal.inputs?.fixed || "";
+    $("days").value = editDeal.inputs?.days || "";
+
+    runRestaurant();
+  }
+
+  runRestaurant();
 });
 
 })();
