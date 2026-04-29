@@ -5,7 +5,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Consulting Calculators - Sandile SystemsWorks</title>
+<title>Consulting Profitability Calculator - Sandile SystemsWorks</title>
 
 <link rel="stylesheet" href="css/styles.css" />
 <link rel="stylesheet" href="css/calculators.css" />
@@ -13,61 +13,46 @@
 <style>
 
 /* ===============================
-DECISION COLORS
+CONSULTING DECISION UI
 =============================== */
 
-.positive { color:#16a34a; font-weight:600; }
-.negative { color:#dc2626; font-weight:600; }
-.caution { color:#f59e0b; font-weight:600; }
-
-.output-value { font-weight:600; transition:color .25s ease; }
-
-.output-value.positive { color:#22c55e; }
-.output-value.negative { color:#ef4444; }
-.output-value.caution { color:#f59e0b; }
-
-/* DECISION STATUS */
-#decision-status {
-  font-weight:700;
-  letter-spacing:.02em;
+#status {
+  font-weight: 800;
+  font-size: 1rem;
 }
 
-#decision-status.positive { color:#22c55e; }
-#decision-status.caution { color:#f59e0b; }
-#decision-status.negative { color:#ef4444; }
+#status.profit { color: #22c55e; }
+#status.loss { color: #ef4444; }
+#status.neutral { color: #f59e0b; }
+
+#decisionAdvice {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.7);
+}
+
+/* COLORS */
+.profit-positive { color: #22c55e; }
+.profit-negative { color: #ef4444; }
+.margin-medium { color: #f59e0b; }
+.margin-strong { color: #22c55e; }
 
 /* STEPS */
-.steps-section {
-  margin-top:2rem;
-  padding:1rem;
-  border:1px solid var(--border-soft);
-  border-radius:12px;
+.steps-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.steps-section ol {
-  list-style:none;
-  counter-reset:step;
-  padding:0;
-}
-
-.steps-section li {
-  counter-increment:step;
-  margin-bottom:1rem;
-  padding-left:40px;
-  position:relative;
-}
-
-.steps-section li::before {
-  content:counter(step);
-  position:absolute;
-  left:0;
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  border:1px solid var(--border-soft);
-  text-align:center;
-  line-height:28px;
-  font-weight:700;
+.step {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 </style>
@@ -90,11 +75,13 @@ DECISION COLORS
 
 <nav class="sidebar-nav">
 <a href="dashboard.html">Dashboard</a>
-<a href="sector-primary.html">Primary Sector</a>
-<a href="sector-secondary.html">Secondary Sector</a>
-<a href="sector-tertiary.html" class="active">Tertiary Sector</a>
-<a href="sector-quaternary.html">Quaternary Sector</a>
-<a href="sector-quinary.html">Quinary Sector</a>
+<a href="sector-tertiary.html" class="active">Consulting Tool</a>
+
+<hr class="sidebar-divider" />
+
+<a href="SaveConsulting.html">Saved Deals</a>
+<a href="#">History</a>
+<a href="#">Export Results</a>
 </nav>
 
 </div>
@@ -104,15 +91,10 @@ DECISION COLORS
 <!-- MAIN -->
 <main class="main-content">
 
-<h1>Consulting Calculators</h1>
-
-<p>Analyze consulting engagements, pricing, costs, and profitability before accepting projects.</p>
+<h1>Consulting Profitability Decision Engine</h1>
+<p>Evaluate consulting projects, control costs, and make confident decisions.</p>
 
 <div class="calculator-container">
-
-<h2>Consulting Engagement Profit & Risk Simulator</h2>
-
-<p>Simulate consulting revenue, costs, and risk to determine if the engagement is worth taking.</p>
 
 <div class="calculator-grid">
 
@@ -121,58 +103,142 @@ DECISION COLORS
 
 <h3>Inputs</h3>
 
+<div class="input-group">
+<label>Total project hours</label>
 <input id="consult-hours" type="number" placeholder="Total project hours" />
-<input id="consult-rate" type="number" placeholder="Hourly rate (R)" />
-<input id="consult-expenses" type="number" placeholder="Project expenses (R)" />
-<input id="consult-labor" type="number" placeholder="Labor costs (R)" />
-<input id="consult-fixed" type="number" placeholder="Fixed costs (R)" />
-<input id="consult-discount" type="number" placeholder="Discount (%)" />
-<input id="consult-overtime-hours" type="number" placeholder="Overtime hours" />
-<input id="consult-overtime-rate" type="number" placeholder="Overtime rate (R)" />
-<input id="consult-variable-costs" type="number" placeholder="Variable costs (R)" />
-<input id="consult-contingency" type="number" placeholder="Contingency (%)" />
+</div>
 
-<button id="resetBtn">Clear Inputs</button>
+<div class="input-group">
+<label>Hourly rate (R)</label>
+<input id="consult-rate" type="number" placeholder="Hourly rate (R)" />
+</div>
+
+<div class="input-group">
+<label>Project expenses (R)</label>
+<input id="consult-expenses" type="number" placeholder="Project expenses (R)" />
+</div>
+
+<div class="input-group">
+<label>Labor costs (R)</label>
+<input id="consult-labor" type="number" placeholder="Labor costs (R)" />
+</div>
+
+<div class="input-group">
+<label>Fixed costs (R)</label>
+<input id="consult-fixed" type="number" placeholder="Fixed costs (R)" />
+</div>
+
+<div class="input-group">
+<label>Discount (%)</label>
+<input id="consult-discount" type="number" placeholder="Discount (%)" />
+</div>
+
+<div class="input-group">
+<label>Overtime hours</label>
+<input id="consult-overtime-hours" type="number" placeholder="Overtime hours" />
+</div>
+
+<div class="input-group">
+<label>Overtime rate (R)</label>
+<input id="consult-overtime-rate" type="number" placeholder="Overtime rate (R)" />
+</div>
+
+<div class="input-group">
+<label>Variable costs (R)</label>
+<input id="consult-variable-costs" type="number" placeholder="Variable costs (R)" />
+</div>
+
+<div class="input-group">
+<label>Contingency (%)</label>
+<input id="consult-contingency" type="number" placeholder="Contingency (%)" />
+</div>
+
+<button id="resetBtn">Reset</button>
 
 </div>
 
 <!-- OUTPUTS -->
 <div class="output-section">
 
-<h3>Decision Result</h3>
+<h3>Decision</h3>
+<div id="status">—</div>
+<div id="decisionAdvice"></div>
 
-<div id="decision-status">—</div>
-<div id="risk-warning"></div>
-<div id="decision-advice"></div>
+<button id="saveDealBtn" class="saveDealBtn">
+  Save Deal
+</button>
 
-<h3>Revenue Summary</h3>
+<h3>Key Metrics</h3>
 
-<div id="consult-revenue"></div>
-<div id="consult-revenue-after-discount"></div>
-<div id="consult-overtime-output"></div>
+<div class="output-group">
+<div class="output-label">Total Revenue</div>
+<div class="output-value" id="consult-revenue">—</div>
+</div>
 
-<h3>Cost Summary</h3>
+<div class="output-group">
+<div class="output-label">Revenue After Discount</div>
+<div class="output-value" id="consult-revenue-after-discount">—</div>
+</div>
 
-<div id="consult-contingency-output"></div>
-<div id="consult-cost-hour"></div>
-<div id="consult-costs"></div>
+<div class="output-group">
+<div class="output-label">Total Costs</div>
+<div class="output-value" id="consult-costs">—</div>
+</div>
 
-<h3>Profitability</h3>
+<div class="output-group">
+<div class="output-label">Profit</div>
+<div class="output-value" id="consult-profit">—</div>
+</div>
 
-<div id="consult-profit"></div>
-<div id="consult-profit-hour"></div>
-<div id="consult-margin"></div>
-<div id="consult-roi"></div>
+<div class="output-group">
+<div class="output-label">Profit Margin</div>
+<div class="output-value" id="consult-margin">—</div>
+</div>
 
-<h3>Break-even</h3>
+<div class="output-group">
+<div class="output-label">Break-even Hours</div>
+<div class="output-value" id="consult-breakeven">—</div>
+</div>
 
-<div id="consult-breakeven"></div>
+<!-- INSIGHTS -->
+<details style="margin-top:15px;">
+  <summary style="cursor:pointer; font-weight:600;">View Detailed Insights</summary>
+
+  <div style="margin-top:10px;">
+
+    <div class="output-group">
+      <div class="output-label">Overtime Revenue</div>
+      <div class="output-value" id="consult-overtime-output">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Contingency Cost</div>
+      <div class="output-value" id="consult-contingency-output">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Cost per Hour</div>
+      <div class="output-value" id="consult-cost-hour">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Profit per Hour</div>
+      <div class="output-value" id="consult-profit-hour">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">ROI</div>
+      <div class="output-value" id="consult-roi">—</div>
+    </div>
+
+  </div>
+</details>
 
 <!-- STEPS -->
-<div class="steps-section">
-<h3>Next Steps</h3>
-<ol id="consult-steps"></ol>
-</div>
+<details style="margin-top:15px;">
+  <summary style="cursor:pointer; font-weight:600;">Step-by-Step Guidance</summary>
+  <div id="consult-steps" class="steps-container"></div>
+</details>
 
 </div>
 
@@ -183,7 +249,6 @@ DECISION COLORS
 </main>
 
 </div>
-
 
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
