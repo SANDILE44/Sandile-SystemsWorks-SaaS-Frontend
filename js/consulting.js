@@ -1,185 +1,233 @@
 (() => {
-  const $ = (id) => document.getElementById(id);
 
-  const money = (v) =>
-    'R' +
-    (Number(v) || 0).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+const $ = (id) => document.getElementById(id);
 
-  const percent = (v) => (Number(v) || 0).toFixed(2) + '%';
+const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-  const API_BASE =
-    'https://sandile-systemsworks-saas-backend-2.onrender.com';
+let debounceTimer;
+let latestData = null;
 
-  let timer;
-
-  /* =========================
-     DEBOUNCE
-  ========================= */
-  function updateConsulting() {
-    clearTimeout(timer);
-    timer = setTimeout(runConsulting, 300);
-  }
-
-  /* =========================
-     MAIN ENGINE
-  ========================= */
-  async function runConsulting() {
-    const token = localStorage.getItem('token');
-    if (!token) return location.replace('login.html');
-
-    const res = await fetch(`${API_BASE}/api/calculators/consulting/project`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        hours: +$('consult-hours').value || 0,
-        rate: +$('consult-rate').value || 0,
-        expenses: +$('consult-expenses').value || 0,
-        labor: +$('consult-labor').value || 0,
-        fixed: +$('consult-fixed').value || 0,
-        discountPct: Number($('consult-discount').value) || 0,
-        otHours: +$('consult-overtime-hours').value || 0,
-        otRate: +$('consult-overtime-rate').value || 0,
-        variableCosts: +$('consult-variable-costs').value || 0,
-        contingencyPct: Number($('consult-contingency').value) || 0,
-      }),
-    });
-
-    if (res.status === 403) return location.replace('payment.html');
-    if (!res.ok) return;
-
-    const d = await res.json();
-
-    /* =========================
-       REVENUE
-    ========================= */
-    $('consult-revenue').textContent = money(d.totalRevenue);
-    $('consult-revenue-after-discount').textContent = money(d.revenueAfterDiscount);
-    $('consult-overtime-output').textContent = money(d.overtimeRevenue);
-
-    /* =========================
-       COSTS
-    ========================= */
-    $('consult-contingency-output').textContent = money(d.contingencyAmount);
-    $('consult-cost-hour').textContent = money(d.costPerHour);
-    $('consult-costs').textContent = money(d.totalCosts);
-
-    /* =========================
-       PROFITABILITY
-    ========================= */
-    const profitEl = $('consult-profit');
-    profitEl.textContent = money(d.profit);
-    profitEl.className =
-      'output-value ' + (d.profit >= 0 ? 'positive' : 'negative');
-
-    $('consult-profit-hour').textContent = money(d.profitPerHour);
-    $('consult-margin').textContent = percent(d.margin);
-    $('consult-roi').textContent = percent(d.roi);
-
-    /* =========================
-       BREAK-EVEN
-    ========================= */
-    $('consult-breakeven').textContent = (d.breakevenHours || 0).toFixed(2);
-
-    /* =========================
-       DECISION (FIXED TO HTML IDs)
-    ========================= */
-    const decisionEl = $('consult-decision');
-    const adviceEl = $('consult-advice');
-
-    decisionEl.textContent = d.decision || '—';
-    adviceEl.textContent = d.advice || '—';
-
-    if (d.riskLevel === 'High') {
-      decisionEl.className = 'output-value negative';
-      adviceEl.className = 'output-value negative';
-    } else if (d.riskLevel === 'Medium') {
-      decisionEl.className = 'output-value caution';
-      adviceEl.className = 'output-value caution';
-    } else {
-      decisionEl.className = 'output-value positive';
-      adviceEl.className = 'output-value positive';
-    }
-
-    /* =========================
-       STEPS
-    ========================= */
-    const stepsEl = $('consult-steps');
-    stepsEl.innerHTML = '';
-
-    (d.steps || []).forEach((s, i) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>Step ${i + 1}</strong> ${s}`;
-      stepsEl.appendChild(li);
-    });
-  }
-
-  /* =========================
-     INPUT LISTENERS
-  ========================= */
-  [
-    'consult-hours',
-    'consult-rate',
-    'consult-expenses',
-    'consult-labor',
-    'consult-fixed',
-    'consult-discount',
-    'consult-overtime-hours',
-    'consult-overtime-rate',
-    'consult-variable-costs',
-    'consult-contingency',
-  ].forEach((id) =>
-    $(id)?.addEventListener('input', updateConsulting)
-  );
-
-  /* =========================
-     RESET
-  ========================= */
-  $('resetBtn')?.addEventListener('click', () => {
-    [
-      'consult-hours',
-      'consult-rate',
-      'consult-expenses',
-      'consult-labor',
-      'consult-fixed',
-      'consult-discount',
-      'consult-overtime-hours',
-      'consult-overtime-rate',
-      'consult-variable-costs',
-      'consult-contingency',
-    ].forEach((id) => {
-      const el = $(id);
-      if (el) el.value = '';
-    });
-
-    [
-      'consult-revenue',
-      'consult-revenue-after-discount',
-      'consult-overtime-output',
-      'consult-contingency-output',
-      'consult-cost-hour',
-      'consult-costs',
-      'consult-profit',
-      'consult-profit-hour',
-      'consult-margin',
-      'consult-roi',
-      'consult-breakeven',
-      'consult-decision',
-      'consult-advice',
-      'consult-steps',
-    ].forEach((id) => {
-      const el = $(id);
-      if (el) el.textContent = '';
-    });
+/* ================= FORMATTERS ================= */
+const money = (v) =>
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
 
-  /* =========================
-     INIT
-  ========================= */
+const percent = (v) =>
+  (Number(v) || 0).toFixed(2) + "%";
+
+/* ================= API ================= */
+async function api(url, method = "GET", body = null) {
+
+  const token = localStorage.getItem("token");
+  if (!token) return location.replace("login.html");
+
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+      return null;
+    }
+
+    if (!res.ok) return null;
+
+    return await res.json();
+
+  } catch (err) {
+    console.error("API error:", err);
+    return null;
+  }
+}
+
+async function apiPost(url, body) {
+  return await api(url, "POST", body);
+}
+
+/* ================= MAIN CALC ================= */
+async function runConsulting() {
+
+  const data = await apiPost("/api/calculators/consulting/project", {
+    hours: +$("consult-hours")?.value || 0,
+    rate: +$("consult-rate")?.value || 0,
+    expenses: +$("consult-expenses")?.value || 0,
+    labor: +$("consult-labor")?.value || 0,
+    fixed: +$("consult-fixed")?.value || 0,
+    discountPct: +$("consult-discount")?.value || 0,
+    otHours: +$("consult-overtime-hours")?.value || 0,
+    otRate: +$("consult-overtime-rate")?.value || 0,
+    variableCosts: +$("consult-variable-costs")?.value || 0,
+    contingencyPct: +$("consult-contingency")?.value || 0
+  });
+
+  if (!data) return;
+
+  latestData = data;
+
+  /* ================= REVENUE ================= */
+  $("consult-revenue").textContent = money(data.totalRevenue);
+  $("consult-revenue-after-discount").textContent = money(data.revenueAfterDiscount);
+  $("consult-overtime-output").textContent = money(data.overtimeRevenue);
+
+  /* ================= COSTS ================= */
+  $("consult-contingency-output").textContent = money(data.contingencyAmount);
+  $("consult-cost-hour").textContent = money(data.costPerHour);
+  $("consult-costs").textContent = money(data.totalCosts);
+
+  /* ================= PROFIT ================= */
+  $("consult-profit").textContent = money(data.profit);
+  $("consult-profit-hour").textContent = money(data.profitPerHour);
+  $("consult-margin").textContent = percent(data.margin);
+  $("consult-roi").textContent = percent(data.roi);
+
+  $("consult-breakeven").textContent =
+    (data.breakevenHours || 0).toFixed(2);
+
+  /* ================= DECISION ================= */
+  const decision = $("consult-decision");
+  const advice = $("consult-advice");
+
+  decision.textContent = data.decision || "—";
+  advice.textContent = data.advice || "";
+
+  decision.className =
+    data.riskLevel === "High" ? "negative"
+    : data.riskLevel === "Medium" ? "caution"
+    : "positive";
+
+  /* ================= STEPS ================= */
+  renderSteps(data.steps);
+}
+
+/* ================= STEPS ================= */
+function renderSteps(steps) {
+
+  const container = $("consult-steps");
+  if (!container || !steps) return;
+
+  container.innerHTML = steps.map((s, i) => `
+    <li><strong>Step ${i + 1}:</strong> ${s}</li>
+  `).join("");
+}
+
+/* ================= RESET ================= */
+function resetAll() {
+
+  document.querySelectorAll(".input-section input")
+    .forEach(i => i.value = "");
+
+  latestData = null;
+
+  [
+    "consult-revenue","consult-revenue-after-discount",
+    "consult-overtime-output","consult-contingency-output",
+    "consult-cost-hour","consult-costs",
+    "consult-profit","consult-profit-hour",
+    "consult-margin","consult-roi",
+    "consult-breakeven"
+  ].forEach(id => {
+    const el = $(id);
+    if (el) el.textContent = "—";
+  });
+
+  $("consult-decision").textContent = "—";
+  $("consult-advice").textContent = "";
+  $("consult-steps").innerHTML = "";
+}
+
+/* ================= SAVE / UPDATE ================= */
+async function saveDeal() {
+
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const editId = localStorage.getItem("editDealId");
+
+  const payload = {
+    type: "consulting",
+    inputs: {
+      hours: $("consult-hours").value,
+      rate: $("consult-rate").value,
+      expenses: $("consult-expenses").value,
+      labor: $("consult-labor").value,
+      fixed: $("consult-fixed").value,
+      discount: $("consult-discount").value,
+      otHours: $("consult-overtime-hours").value,
+      otRate: $("consult-overtime-rate").value,
+      variableCosts: $("consult-variable-costs").value,
+      contingency: $("consult-contingency").value
+    },
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      revenue: latestData.totalRevenue
+    }
+  };
+
+  const url = editId
+    ? `/api/saved-deals/${editId}`
+    : "/api/saved-deals";
+
+  const method = editId ? "PUT" : "POST";
+
+  const res = await api(url, method, payload);
+
+  if (res) {
+    alert(editId ? "Deal updated" : "Deal saved");
+
+    localStorage.removeItem("editDeal");
+    localStorage.removeItem("editDealId");
+  } else {
+    alert("Failed to save deal");
+  }
+}
+
+/* ================= EVENTS ================= */
+function update() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(runConsulting, 300);
+}
+
+/* ================= INIT ================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.querySelectorAll(".input-section input")
+    .forEach(i => i.addEventListener("input", update));
+
+  $("resetBtn")?.addEventListener("click", resetAll);
+  $("saveDealBtn")?.addEventListener("click", saveDeal);
+
+  /* ================= LOAD EDIT ================= */
+  const editDeal = JSON.parse(localStorage.getItem("editDeal"));
+
+  if (editDeal && editDeal.type === "consulting") {
+
+    $("consult-hours").value = editDeal.inputs?.hours || "";
+    $("consult-rate").value = editDeal.inputs?.rate || "";
+    $("consult-expenses").value = editDeal.inputs?.expenses || "";
+    $("consult-labor").value = editDeal.inputs?.labor || "";
+    $("consult-fixed").value = editDeal.inputs?.fixed || "";
+    $("consult-discount").value = editDeal.inputs?.discount || "";
+    $("consult-overtime-hours").value = editDeal.inputs?.otHours || "";
+    $("consult-overtime-rate").value = editDeal.inputs?.otRate || "";
+    $("consult-variable-costs").value = editDeal.inputs?.variableCosts || "";
+    $("consult-contingency").value = editDeal.inputs?.contingency || "";
+
+    runConsulting();
+  }
+
   runConsulting();
+});
+
 })();
