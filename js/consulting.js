@@ -53,6 +53,12 @@ async function apiPost(url, body) {
   return await api(url, "POST", body);
 }
 
+/* ================= CLASS HELPER ================= */
+function setClass(el, cls) {
+  if (!el) return;
+  el.className = `output-value ${cls || ""}`;
+}
+
 /* ================= MAIN CALC ================= */
 async function runConsulting() {
 
@@ -73,17 +79,15 @@ async function runConsulting() {
 
   latestData = data;
 
-  /* ================= REVENUE ================= */
+  /* ================= OUTPUTS ================= */
   $("consult-revenue").textContent = money(data.totalRevenue);
   $("consult-revenue-after-discount").textContent = money(data.revenueAfterDiscount);
   $("consult-overtime-output").textContent = money(data.overtimeRevenue);
 
-  /* ================= COSTS ================= */
   $("consult-contingency-output").textContent = money(data.contingencyAmount);
   $("consult-cost-hour").textContent = money(data.costPerHour);
   $("consult-costs").textContent = money(data.totalCosts);
 
-  /* ================= PROFIT ================= */
   $("consult-profit").textContent = money(data.profit);
   $("consult-profit-hour").textContent = money(data.profitPerHour);
   $("consult-margin").textContent = percent(data.margin);
@@ -92,17 +96,30 @@ async function runConsulting() {
   $("consult-breakeven").textContent =
     (data.breakevenHours || 0).toFixed(2);
 
-  /* ================= DECISION ================= */
-  const decision = $("consult-decision");
-  const advice = $("consult-advice");
+  /* ================= STATUS (FIXED) ================= */
+  const status = $("status");
+  const advice = $("decisionAdvice");
 
-  decision.textContent = data.decision || "—";
+  status.textContent = data.decision || "—";
   advice.textContent = data.advice || "";
 
-  decision.className =
-    data.riskLevel === "High" ? "negative"
-    : data.riskLevel === "Medium" ? "caution"
-    : "positive";
+  status.className =
+    data.riskLevel === "High" ? "loss"
+    : data.riskLevel === "Medium" ? "neutral"
+    : "profit";
+
+  /* ================= COLORS ================= */
+  setClass(
+    $("consult-profit"),
+    data.profit >= 0 ? "profit-positive" : "profit-negative"
+  );
+
+  setClass(
+    $("consult-margin"),
+    data.margin < 10 ? "profit-negative"
+    : data.margin < 20 ? "margin-medium"
+    : "margin-strong"
+  );
 
   /* ================= STEPS ================= */
   renderSteps(data.steps);
@@ -115,7 +132,10 @@ function renderSteps(steps) {
   if (!container || !steps) return;
 
   container.innerHTML = steps.map((s, i) => `
-    <li><strong>Step ${i + 1}:</strong> ${s}</li>
+    <div class="step">
+      <strong>Step ${i + 1}</strong>
+      <div>${s}</div>
+    </div>
   `).join("");
 }
 
@@ -136,11 +156,15 @@ function resetAll() {
     "consult-breakeven"
   ].forEach(id => {
     const el = $(id);
-    if (el) el.textContent = "—";
+    if (el) {
+      el.textContent = "—";
+      el.className = "output-value";
+    }
   });
 
-  $("consult-decision").textContent = "—";
-  $("consult-advice").textContent = "";
+  $("status").textContent = "—";
+  $("status").className = "";
+  $("decisionAdvice").textContent = "";
   $("consult-steps").innerHTML = "";
 }
 
@@ -208,7 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
-  /* ================= LOAD EDIT ================= */
   const editDeal = JSON.parse(localStorage.getItem("editDeal"));
 
   if (editDeal && editDeal.type === "consulting") {
