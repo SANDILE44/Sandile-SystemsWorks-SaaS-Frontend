@@ -46,7 +46,7 @@ function editDeal(deal) {
   localStorage.setItem("editDeal", JSON.stringify(deal));
   localStorage.setItem("editDealId", deal._id);
 
-  window.location.href = "consulting-tool.html";
+  window.location.href = "industry-consulting.html";
 }
 
 /* ================= FORMAT ================= */
