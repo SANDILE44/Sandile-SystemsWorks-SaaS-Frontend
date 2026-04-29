@@ -60,7 +60,7 @@ function editDeal(deal) {
   localStorage.setItem("editDealId", deal._id);
 
   // redirect to calculator
-  window.location.href = "restaurant-tool.html";
+  window.location.href = "industry-restaurants.html";
 }
 
 /* ================= FORMAT ================= */
