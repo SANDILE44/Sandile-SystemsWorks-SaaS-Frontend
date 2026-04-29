@@ -103,6 +103,7 @@ CONSULTING DECISION UI
 
 <h3>Inputs</h3>
 
+<!-- CORE INPUTS (always visible) -->
 <div class="input-group">
 <label>Total project hours</label>
 <input id="consult-hours" type="number" placeholder="Total project hours" />
@@ -128,35 +129,45 @@ CONSULTING DECISION UI
 <input id="consult-fixed" type="number" placeholder="Fixed costs (R)" />
 </div>
 
-<div class="input-group">
-<label>Discount (%)</label>
-<input id="consult-discount" type="number" placeholder="Discount (%)" />
-</div>
+<!-- ADVANCED INPUTS (collapsed) -->
+<details style="margin-top:10px;">
+  <summary style="cursor:pointer; font-weight:600;">
+    Advanced Inputs (Optional)
+  </summary>
 
-<div class="input-group">
-<label>Overtime hours</label>
-<input id="consult-overtime-hours" type="number" placeholder="Overtime hours" />
-</div>
+  <div style="margin-top:10px; display:flex; flex-direction:column; gap:10px;">
 
-<div class="input-group">
-<label>Overtime rate (R)</label>
-<input id="consult-overtime-rate" type="number" placeholder="Overtime rate (R)" />
-</div>
+    <div class="input-group">
+    <label>Discount (%)</label>
+    <input id="consult-discount" type="number" placeholder="Discount (%)" />
+    </div>
 
-<div class="input-group">
-<label>Variable costs (R)</label>
-<input id="consult-variable-costs" type="number" placeholder="Variable costs (R)" />
-</div>
+    <div class="input-group">
+    <label>Overtime hours</label>
+    <input id="consult-overtime-hours" type="number" placeholder="Overtime hours" />
+    </div>
 
-<div class="input-group">
-<label>Contingency (%)</label>
-<input id="consult-contingency" type="number" placeholder="Contingency (%)" />
-</div>
+    <div class="input-group">
+    <label>Overtime rate (R)</label>
+    <input id="consult-overtime-rate" type="number" placeholder="Overtime rate (R)" />
+    </div>
+
+    <div class="input-group">
+    <label>Variable costs (R)</label>
+    <input id="consult-variable-costs" type="number" placeholder="Variable costs (R)" />
+    </div>
+
+    <div class="input-group">
+    <label>Contingency (%)</label>
+    <input id="consult-contingency" type="number" placeholder="Contingency (%)" />
+    </div>
+
+  </div>
+</details>
 
 <button id="resetBtn">Reset</button>
 
 </div>
-
 <!-- OUTPUTS -->
 <div class="output-section">
 
