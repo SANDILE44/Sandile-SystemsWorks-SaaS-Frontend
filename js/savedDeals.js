@@ -52,14 +52,14 @@ async function deleteDeal(id) {
   init();
 }
 
-/* ================= EDIT (REAL FLOW) ================= */
+/* ================= EDIT (RESTAURANT ONLY) ================= */
 function editDeal(deal) {
 
-  // store deal for calculator page
+  if (deal.type !== "restaurant") return;
+
   localStorage.setItem("editDeal", JSON.stringify(deal));
   localStorage.setItem("editDealId", deal._id);
 
-  // redirect to calculator
   window.location.href = "industry-restaurants.html";
 }
 
@@ -83,7 +83,7 @@ function renderDeals(deals) {
 
   if (!container) return;
 
-  dealsCache = deals || [];
+  dealsCache = (deals || []).filter(d => d.type === "restaurant");
 
   if (!dealsCache.length) {
     container.innerHTML = "";
@@ -95,7 +95,6 @@ function renderDeals(deals) {
 
   container.innerHTML = dealsCache.map((d, index) => {
 
-    const type = (d.type || "UNKNOWN").toUpperCase();
     const date = d.createdAt
       ? new Date(d.createdAt).toLocaleDateString()
       : "—";
@@ -104,7 +103,7 @@ function renderDeals(deals) {
       <div class="deal-card">
 
         <div class="deal-title">
-          ${type} - ${date}
+          RESTAURANT - ${date}
         </div>
 
         <div class="deal-body">
@@ -143,8 +142,7 @@ document.addEventListener("click", async (e) => {
 
   const editBtn = e.target.closest(".edit-btn");
   if (editBtn) {
-    const index = editBtn.dataset.index;
-    const deal = dealsCache[index];
+    const deal = dealsCache[editBtn.dataset.index];
     if (deal) editDeal(deal);
   }
 
