@@ -13,7 +13,7 @@
 <style>
 
 /* ===============================
-DECISION ENGINE UI (UNIFIED STYLE)
+DECISION ENGINE UI
 =============================== */
 
 #status {
@@ -32,7 +32,7 @@ DECISION ENGINE UI (UNIFIED STYLE)
   color: rgba(255,255,255,0.7);
 }
 
-/* RESULT COLORS */
+/* OUTPUT COLORS */
 .profit-positive { color: #22c55e; }
 .profit-negative { color: #ef4444; }
 .margin-medium { color: #f59e0b; }
@@ -103,32 +103,32 @@ DECISION ENGINE UI (UNIFIED STYLE)
 
 <div class="input-group">
   <label>Units produced</label>
-  <input id="units" type="number" placeholder="Units produced" />
+  <input id="mfg-units" type="number" placeholder="Units produced" />
 </div>
 
 <div class="input-group">
   <label>Selling price per unit</label>
-  <input id="price" type="number" placeholder="Selling price per unit" />
+  <input id="mfg-price" type="number" placeholder="Selling price per unit" />
 </div>
 
 <div class="input-group">
   <label>Material cost per unit</label>
-  <input id="material" type="number" placeholder="Material cost per unit" />
+  <input id="mfg-material" type="number" placeholder="Material cost per unit" />
 </div>
 
 <div class="input-group">
   <label>Labor cost (monthly)</label>
-  <input id="labor" type="number" placeholder="Labor cost (monthly)" />
+  <input id="mfg-labor" type="number" placeholder="Labor cost (monthly)" />
 </div>
 
 <div class="input-group">
   <label>Fixed costs (monthly)</label>
-  <input id="fixed" type="number" placeholder="Fixed costs (monthly)" />
+  <input id="mfg-fixed" type="number" placeholder="Fixed costs (monthly)" />
 </div>
 
 <div class="input-group">
   <label>Operational costs (monthly)</label>
-  <input id="operational" type="number" placeholder="Operational costs (monthly)" />
+  <input id="mfg-operational" type="number" placeholder="Operational costs (monthly)" />
 </div>
 
 <button id="resetBtn">Reset</button>
@@ -143,10 +143,10 @@ DECISION ENGINE UI (UNIFIED STYLE)
 <div id="status">—</div>
 <div id="decisionAdvice"></div>
 
-  <button id="saveDealBtn" class="saveDealBtn">
+<button id="saveDealBtn" class="saveDealBtn">
   Save Deal
 </button>
-  
+
 <h3>Key Metrics</h3>
 
 <div class="output-group">
