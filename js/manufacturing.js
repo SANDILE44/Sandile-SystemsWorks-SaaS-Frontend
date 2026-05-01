@@ -56,13 +56,13 @@ async function apiPost(url, body) {
   return await api(url, "POST", body);
 }
 
-/* ================= CLASS HELPERS (KEEP COLORS) ================= */
+/* ================= CLASS HELPERS ================= */
 function setClass(el, cls) {
   if (!el) return;
   el.className = `output-value ${cls || ""}`;
 }
 
-/* ================= INPUTS (MATCH BACKEND EXACTLY) ================= */
+/* ================= INPUTS ================= */
 function getInputs() {
   return {
     units: +$("mfg-units")?.value || 0,
@@ -134,27 +134,38 @@ async function runManufacturing() {
   /* ================= BREAK EVEN ================= */
   $("breakeven").textContent = data.breakeven ?? 0;
 
-  /* ================= STEPS ================= */
-  renderSteps(data.steps);
+  /* ================= INSIGHTS (NEW DROPDOWN SYSTEM) ================= */
+  renderInsights(data.insights);
 }
 
-/* ================= STEPS ================= */
-function renderSteps(steps) {
+/* ================= DROPDOWN INSIGHTS RENDERER ================= */
+function renderInsights(insights) {
 
   const container = $("stepsContainer");
-  if (!container) return;
+  if (!container || !insights) return;
 
-  if (!Array.isArray(steps)) {
-    container.innerHTML = "";
-    return;
-  }
+  container.innerHTML = Object.entries(insights)
+    .map(([group, items]) => {
 
-  container.innerHTML = steps.map(s => `
-    <div class="step">
-      <strong>${s.step || ""}</strong>
-      <div>${s.message || ""}</div>
-    </div>
-  `).join("");
+      const content = (items || []).map(i => `
+        <div class="step">
+          <strong>${i.title}</strong>
+          <div>${i.message}</div>
+        </div>
+      `).join("");
+
+      return `
+        <details>
+          <summary style="font-weight:700; cursor:pointer;">
+            ${group.toUpperCase()}
+          </summary>
+          <div style="margin-top:10px;">
+            ${content}
+          </div>
+        </details>
+      `;
+    })
+    .join("");
 }
 
 /* ================= RESET ================= */
