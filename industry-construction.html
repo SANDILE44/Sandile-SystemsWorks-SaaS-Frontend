@@ -1,84 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Construction Calculators - Sandile SystemsWorks</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/calculators.css" />
+<title>Construction Profitability Engine</title>
+
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/calculators.css" />
 
 <style>
 
-/* ===============================
-   DECISION TOOL COLOR SYSTEM
-=============================== */
+/* ================= DECISION ENGINE ================= */
 
-.output-value {
-  transition: color 0.25s ease;
-  font-weight: 600;
-}
-
-.output-value.positive { color: #22c55e; }
-.output-value.negative { color: #ef4444; }
-
-/* MARGIN */
-#const-margin.positive { color: #22c55e; font-weight: 700; }
-#const-margin.caution { color: #f59e0b; font-weight: 700; }
-#const-margin.negative { color: #ef4444; font-weight: 700; }
-
-/* ROI */
-#const-roi.positive { color: #22c55e; }
-#const-roi.caution { color: #f59e0b; }
-#const-roi.negative { color: #ef4444; }
-
-/* DECISION STATUS */
 #decision-status {
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: 800;
+  font-size: 1rem;
 }
 
 #decision-status.positive { color: #22c55e; }
 #decision-status.caution { color: #f59e0b; }
 #decision-status.negative { color: #ef4444; }
 
-/* STEPS */
-#const-steps-list {
-  counter-reset: step-counter;
-  list-style: none;
-  padding-left: 0;
-  margin-top: 1rem;
+/* OUTPUT COLORS */
+.output-value {
+  font-weight: 600;
 }
 
-#const-steps-list li {
-  counter-increment: step-counter;
-  position: relative;
-  margin-bottom: 1.25rem;
-  padding-left: 44px;
-  line-height: 1.5;
+.output-value.positive { color: #22c55e; }
+.output-value.negative { color: #ef4444; }
+
+/* DROPDOWN INSIGHTS */
+.insights-container details {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-#const-steps-list li::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border-soft);
-  text-align: center;
-  line-height: 32px;
+.insights-container summary {
+  cursor: pointer;
   font-weight: 700;
 }
 
-#const-steps-list li strong {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 700;
-}
-
-#const-steps-list li span {
-  opacity: 0.85;
+/* STEP BLOCK */
+.step {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.02);
 }
 
 </style>
@@ -89,88 +60,112 @@
 
 <div class="app-shell">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-top">
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
-      <div class="sidebar-brand">
-        <img src="images/Untitled design.png" class="sidebar-logo" />
-        <span class="sidebar-name">Sandile SystemsWorks</span>
-      </div>
+  <div class="sidebar-top">
 
-      <nav class="sidebar-nav">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="sector-primary.html">Primary Sector</a>
-        <a href="sector-secondary.html" class="active">Secondary Sector</a>
-        <a href="sector-tertiary.html">Tertiary Sector</a>
-        <a href="sector-quaternary.html">Quaternary Sector</a>
-        <a href="sector-quinary.html">Quinary Sector</a>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main-content">
-
-    <h1>Construction Calculators</h1>
-    <p>Advanced project profitability and cost intelligence for construction businesses.</p>
-
-    <div class="calculator-container">
-
-      <h2>Construction Project Profitability</h2>
-      <p>Test whether your construction contract is profitable before you start the project.</p>
-
-      <div class="calculator-grid">
-
-        <!-- INPUTS -->
-        <div class="input-section">
-          <h3>Inputs</h3>
-
-          <input type="number" id="const-value" placeholder="Enter total contract value agreed with client" />
-          <input type="number" id="const-material" placeholder="Enter total once-off material cost" />
-          <input type="number" id="const-labor" placeholder="Enter monthly site labor wages" />
-          <input type="number" id="const-equipment" placeholder="Enter monthly machinery & equipment costs" />
-          <input type="number" id="const-fixed" placeholder="Enter monthly overhead & site expenses" />
-          <input type="number" id="const-duration" placeholder="Enter total project duration in months" />
-
-          <button id="resetBtn">Reset All</button>
-        </div>
-
-        <!-- OUTPUTS -->
-        <div class="output-section">
-
-          <h3>Results</h3>
-
-          <div id="const-total-costs" class="output-value">0.00</div>
-          <div id="const-profit" class="output-value">0.00</div>
-          <div id="const-margin" class="output-value">0.00%</div>
-          <div id="const-roi" class="output-value">0.00%</div>
-          <div id="const-breakeven" class="output-value">0.00</div>
-          <div id="const-monthly-profit" class="output-value">0.00</div>
-          <div id="const-annual-profit" class="output-value">0.00</div>
-
-          <h3>Decision Intelligence</h3>
-
-          <div id="decision-status" class="output-value">—</div>
-          <div id="risk-warning" class="output-value"></div>
-          <div id="decision-advice" class="output-value"></div>
-
-        </div>
-
-      </div>
-
-      <!-- STEPS -->
-      <div class="output-section">
-        <h3>Step-by-Step Project Insights</h3>
-        <ol id="const-steps-list"></ol>
-      </div>
-
+    <div class="sidebar-brand">
+      <img src="images/Untitled design.png" class="sidebar-logo" />
+      <span class="sidebar-name">Sandile SystemsWorks</span>
     </div>
 
-  </main>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="sector-secondary.html" class="active">Construction Tool</a>
+      <hr class="sidebar-divider" />
+      <a href="#">Saved Deals</a>
+      <a href="#">History</a>
+      <a href="#">Export</a>
+    </nav>
+
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+<h1>Construction Profitability Engine</h1>
+<p>Project cost, margin and contract intelligence system.</p>
+
+<div class="calculator-container">
+
+<div class="calculator-grid">
+
+<!-- INPUTS -->
+<div class="input-section">
+
+<h3>Inputs</h3>
+
+<div class="input-group">
+  <label>Contract Value</label>
+  <input id="const-value" type="number" />
+</div>
+
+<div class="input-group">
+  <label>Material Cost</label>
+  <input id="const-material" type="number" />
+</div>
+
+<div class="input-group">
+  <label>Labor Cost</label>
+  <input id="const-labor" type="number" />
+</div>
+
+<div class="input-group">
+  <label>Equipment Cost</label>
+  <input id="const-equipment" type="number" />
+</div>
+
+<div class="input-group">
+  <label>Fixed Costs</label>
+  <input id="const-fixed" type="number" />
+</div>
+
+<div class="input-group">
+  <label>Duration (months)</label>
+  <input id="const-duration" type="number" />
+</div>
+
+<button id="resetBtn">Reset</button>
 
 </div>
 
+<!-- OUTPUTS -->
+<div class="output-section">
+
+<h3>Decision</h3>
+
+<div id="decision-status">—</div>
+<div id="decision-advice"></div>
+
+<h3>Key Metrics</h3>
+
+<div id="const-total-costs" class="output-value">—</div>
+<div id="const-profit" class="output-value">—</div>
+<div id="const-margin" class="output-value">—</div>
+<div id="const-roi" class="output-value">—</div>
+
+<h3>Break-even</h3>
+<div id="const-breakeven" class="output-value">—</div>
+
+<div id="const-monthly-profit" class="output-value">—</div>
+<div id="const-annual-profit" class="output-value">—</div>
+
+<!-- DROPDOWN INSIGHTS (NEW STRUCTURE) -->
+<h3>Insights</h3>
+<div id="const-insights" class="insights-container"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
 
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
@@ -178,7 +173,7 @@
 <script src="js/auth.js"></script>
 <script src="js/construction.js"></script>
 <script src="js/hamburger.js"></script>
-<script src="js/user-display.js"></script> 
+<script src="js/user-display.js"></script>
 
 </body>
 </html>
