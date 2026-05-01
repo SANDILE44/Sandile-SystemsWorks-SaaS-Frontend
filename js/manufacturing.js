@@ -1,181 +1,245 @@
 (() => {
-  const $ = (id) => document.getElementById(id);
 
-  const money = (v) =>
-    (Number(v) || 0).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+const $ = (id) => document.getElementById(id);
 
-  const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
+const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-  let timer;
+let debounceTimer;
+let latestData = null;
 
-  /* =========================
-     DEBOUNCE INPUTS
-  ========================== */
-  function update() {
-    clearTimeout(timer);
-    timer = setTimeout(run, 250);
-  }
-
-  /* =========================
-     COLOR HANDLER
-  ========================== */
-  function color(el, type) {
-    if (!el) return;
-    el.classList.remove("positive", "negative", "caution");
-    if (type) el.classList.add(type);
-  }
-
-  /* =========================
-     INPUTS (SIMPLIFIED READY)
-  ========================== */
-  function getInputs() {
-    return {
-      units: +$("mfg-units")?.value || 0,
-      price: +$("mfg-price")?.value || 0,
-      material: +$("mfg-material")?.value || 0,
-      labor: +$("mfg-labor")?.value || 0,
-      fixed: +$("mfg-fixed")?.value || 0,
-      operational: +$("mfg-operational")?.value || 0
-    };
-  }
-
-  /* =========================
-     MAIN ENGINE
-  ========================== */
-  async function run() {
-    try {
-      const res = await fetch(
-        `${API_BASE}/api/calculators/manufacturing/business`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          },
-          body: JSON.stringify(getInputs())
-        }
-      );
-
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-        return (location.href = "login.html");
-      }
-
-      if (res.status === 403) {
-        return (location.href = "payment.html");
-      }
-
-      if (!res.ok) return;
-
-      const d = await res.json();
-
-      /* =========================
-         1. DECISION CARD (HERO)
-      ========================== */
-      const statusEl = $("decision-status");
-      const riskEl = $("risk-warning");
-      const adviceEl = $("decision-advice");
-
-      if (statusEl) {
-        statusEl.textContent = d.status || "—";
-
-        color(
-          statusEl,
-          d.status === "LOSS"
-            ? "negative"
-            : d.status === "RISK"
-            ? "caution"
-            : "positive"
-        );
-      }
-
-      if (riskEl) riskEl.textContent = d.reason || "";
-      if (adviceEl) adviceEl.textContent = d.action || "";
-
-      /* =========================
-         2. CORE SNAPSHOT (ONLY KEY METRICS)
-      ========================== */
-      $("mfg-revenue") && ( $("mfg-revenue").textContent = money(d.revenue) );
-      $("mfg-total-costs") && ( $("mfg-total-costs").textContent = money(d.totalCosts) );
-      $("mfg-profit") && ( $("mfg-profit").textContent = money(d.profit) );
-
-      color(
-        $("mfg-profit"),
-        d.profit >= 0 ? "positive" : "negative"
-      );
-
-      /* =========================
-         3. UNIT ECONOMICS (SIMPLIFIED VALUE)
-      ========================== */
-      $("mfg-cost-per-unit") &&
-        ( $("mfg-cost-per-unit").textContent = money(d.costPerUnit) );
-
-      $("mfg-profit-per-unit") &&
-        ( $("mfg-profit-per-unit").textContent = money(d.profitPerUnit) );
-
-      /* =========================
-         4. PERFORMANCE (KEEP ONLY MARGIN)
-      ========================== */
-      $("mfg-margin") &&
-        ( $("mfg-margin").textContent = percent(d.margin) );
-
-      color(
-        $("mfg-margin"),
-        d.margin < 10
-          ? "negative"
-          : d.margin < 20
-          ? "caution"
-          : "positive"
-      );
-
-      /* =========================
-         5. BREAK-EVEN (KEEP)
-      ========================== */
-      $("mfg-breakeven") &&
-        ( $("mfg-breakeven").textContent = d.breakeven ?? 0 );
-
-      /* =========================
-         6. NEXT STEPS (CONVERSION LAYER)
-      ========================== */
-      const steps = $("mfg-steps");
-
-      if (steps) {
-        steps.innerHTML = "";
-
-        (d.steps || []).forEach((s) => {
-          const li = document.createElement("li");
-
-          li.innerHTML = `
-            <strong>${s.step}</strong>
-            <span>${s.message}</span>
-          `;
-
-          steps.appendChild(li);
-        });
-      }
-
-    } catch (err) {
-      console.error("Manufacturing engine error:", err);
-    }
-  }
-
-  /* =========================
-     EVENTS
-  ========================== */
-  document
-    .querySelectorAll(".calculator-container input")
-    .forEach((i) => i.addEventListener("input", update));
-
-  $("resetBtn")?.addEventListener("click", () => {
-    document
-      .querySelectorAll(".calculator-container input")
-      .forEach((i) => (i.value = ""));
-
-    run();
+/* ================= FORMATTERS ================= */
+const money = (v) =>
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
 
-  run();
+const percent = (v) => {
+  const n = Number(v) || 0;
+  const val = Math.abs(n) <= 1 ? n * 100 : n;
+  return val.toFixed(2) + "%";
+};
+
+/* ================= API ================= */
+async function api(url, method = "GET", body = null) {
+
+  const token = localStorage.getItem("token");
+  if (!token) return location.replace("login.html");
+
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+      return null;
+    }
+
+    if (!res.ok) return null;
+
+    return await res.json();
+
+  } catch (err) {
+    console.error("API error:", err);
+    return null;
+  }
+}
+
+async function apiPost(url, body) {
+  return await api(url, "POST", body);
+}
+
+/* ================= CLASS HELPERS (KEEP YOUR COLORS) ================= */
+function setClass(el, cls) {
+  if (!el) return;
+  el.className = `output-value ${cls || ""}`;
+}
+
+/* ================= INPUTS ================= */
+function getInputs() {
+  return {
+    units: +$("mfg-units")?.value || 0,
+    price: +$("mfg-price")?.value || 0,
+    material: +$("mfg-material")?.value || 0,
+    labor: +$("mfg-labor")?.value || 0,
+    fixed: +$("mfg-fixed")?.value || 0,
+    operational: +$("mfg-operational")?.value || 0
+  };
+}
+
+/* ================= MAIN ENGINE ================= */
+async function runManufacturing() {
+
+  const data = await apiPost(
+    "/api/calculators/manufacturing/business",
+    getInputs()
+  );
+
+  if (!data) return;
+
+  latestData = data;
+
+  /* ================= STATUS (same pattern as restaurant) ================= */
+  const status = $("status");
+  const advice = $("decisionAdvice");
+
+  status.textContent = data.status || "—";
+  advice.textContent = data.action || "";
+
+  status.className =
+    data.status === "LOSS"
+      ? "loss"
+      : data.status === "RISK"
+      ? "neutral"
+      : "profit";
+
+  /* ================= CORE METRICS ================= */
+  $("revenue").textContent = money(data.revenue);
+  $("totalCosts").textContent = money(data.totalCosts);
+  $("profit").textContent = money(data.profit);
+
+  setClass(
+    $("profit"),
+    data.profit >= 0 ? "profit-positive" : "profit-negative"
+  );
+
+  /* ================= UNIT ECONOMICS ================= */
+  $("costPerUnit").textContent = money(data.costPerUnit);
+  $("profitPerUnit").textContent = money(data.profitPerUnit);
+
+  /* ================= PERFORMANCE ================= */
+  $("margin").textContent = percent(data.margin);
+
+  setClass(
+    $("margin"),
+    data.margin < 10
+      ? "profit-negative"
+      : data.margin < 20
+      ? "margin-medium"
+      : "margin-strong"
+  );
+
+  $("roi").textContent = percent(data.roi);
+
+  /* ================= BREAK EVEN ================= */
+  $("breakeven").textContent = data.breakeven ?? 0;
+
+  /* ================= STEPS ================= */
+  renderSteps(data.steps);
+}
+
+/* ================= STEPS ================= */
+function renderSteps(steps) {
+
+  const container = $("stepsContainer");
+  if (!container || !steps) return;
+
+  container.innerHTML = steps.map(s => `
+    <div class="step">
+      <strong>${s.step}</strong>
+      <div>${s.message}</div>
+    </div>
+  `).join("");
+}
+
+/* ================= RESET ================= */
+function resetAll() {
+
+  document.querySelectorAll(".input-section input")
+    .forEach(i => i.value = "");
+
+  latestData = null;
+
+  [
+    "revenue","totalCosts","profit",
+    "costPerUnit","profitPerUnit",
+    "margin","roi","breakeven"
+  ].forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.textContent = "—";
+      el.className = "output-value";
+    }
+  });
+
+  $("status").textContent = "—";
+  $("status").className = "";
+  $("decisionAdvice").textContent = "";
+  $("stepsContainer").innerHTML = "";
+}
+
+/* ================= SAVE DEAL ================= */
+async function saveDeal() {
+
+  if (!latestData) {
+    alert("Run calculator first before saving");
+    return;
+  }
+
+  const editId = localStorage.getItem("editDealId");
+
+  const payload = {
+    type: "manufacturing",
+    inputs: getInputs(),
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      revenue: latestData.revenue
+    }
+  };
+
+  const url = editId
+    ? `/api/saved-deals/${editId}`
+    : "/api/saved-deals";
+
+  const method = editId ? "PUT" : "POST";
+
+  const res = await api(url, method, payload);
+
+  if (res) {
+    alert(editId ? "Deal updated" : "Deal saved");
+
+    localStorage.removeItem("editDeal");
+    localStorage.removeItem("editDealId");
+  } else {
+    alert("Failed to save deal");
+  }
+}
+
+/* ================= INIT ================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.querySelectorAll(".input-section input")
+    .forEach(i => i.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runManufacturing, 300);
+    }));
+
+  $("resetBtn")?.addEventListener("click", resetAll);
+  $("saveDealBtn")?.addEventListener("click", saveDeal);
+
+  /* ================= EDIT MODE ================= */
+  const editDeal = JSON.parse(localStorage.getItem("editDeal"));
+
+  if (editDeal) {
+    $("mfg-units").value = editDeal.inputs?.units || "";
+    $("mfg-price").value = editDeal.inputs?.price || "";
+    $("mfg-material").value = editDeal.inputs?.material || "";
+    $("mfg-labor").value = editDeal.inputs?.labor || "";
+    $("mfg-fixed").value = editDeal.inputs?.fixed || "";
+    $("mfg-operational").value = editDeal.inputs?.operational || "";
+
+    runManufacturing();
+  }
+
+  runManufacturing();
+});
+
 })();
