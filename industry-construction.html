@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +11,7 @@
 
 <style>
 
-/* ===============================
-DECISION UI (CONSULTING STYLE)
-=============================== */
+/* ================= DECISION UI ================= */
 
 #decision-status {
   font-weight: 800;
@@ -40,7 +37,7 @@ DECISION UI (CONSULTING STYLE)
 .output-value.positive { color: #22c55e; }
 .output-value.negative { color: #ef4444; }
 
-/* DROPDOWN INSIGHTS (CONSULTING STYLE) */
+/* INSIGHTS */
 .insights-container details {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
@@ -101,108 +98,99 @@ DECISION UI (CONSULTING STYLE)
 
 <div class="calculator-container">
 
-<div class="calculator-grid">
+  <!-- INPUTS -->
+  <div class="input-section">
 
-<!-- INPUTS (CONSULTING STYLE STRUCTURE) -->
-<div class="input-section">
+    <h3>Inputs</h3>
 
-  <h3>Inputs</h3>
+    <div class="input-group">
+      <label>Contract Value</label>
+      <input id="const-value" type="number" placeholder="Contract Value" />
+    </div>
 
-  <div class="input-group">
-    <label>Contract Value</label>
-    <input id="const-value" type="number" placeholder="Contract Value" />
+    <div class="input-group">
+      <label>Material Cost</label>
+      <input id="const-material" type="number" placeholder="Material Cost" />
+    </div>
+
+    <div class="input-group">
+      <label>Labor Cost (Monthly)</label>
+      <input id="const-labor" type="number" placeholder="Labor Cost (Monthly)" />
+    </div>
+
+    <div class="input-group">
+      <label>Equipment Cost (Monthly)</label>
+      <input id="const-equipment" type="number" placeholder="Equipment Cost (Monthly)" />
+    </div>
+
+    <div class="input-group">
+      <label>Fixed Costs (Monthly)</label>
+      <input id="const-fixed" type="number" placeholder="Fixed Costs (Monthly)" />
+    </div>
+
+    <div class="input-group">
+      <label>Duration (Months)</label>
+      <input id="const-duration" type="number" placeholder="Duration (Months)" />
+    </div>
+
+    <button id="resetBtn">Reset</button>
+
   </div>
 
-  <div class="input-group">
-    <label>Material Cost</label>
-    <input id="const-material" type="number" placeholder="Material Cost" />
+  <!-- OUTPUTS -->
+  <div class="output-section">
+
+    <h3>Decision</h3>
+
+    <div id="decision-status">—</div>
+    <div id="decision-advice"></div>
+
+    <button id="saveDealBtn" class="saveDealBtn">Save Deal</button>
+
+    <h3>Key Metrics</h3>
+
+    <div class="output-group">
+      <div class="output-label">Total Costs</div>
+      <div class="output-value" id="const-total-costs">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Profit</div>
+      <div class="output-value" id="const-profit">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Margin</div>
+      <div class="output-value" id="const-margin">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">ROI</div>
+      <div class="output-value" id="const-roi">—</div>
+    </div>
+
+    <h3>Break-even</h3>
+
+    <div class="output-group">
+      <div class="output-label">Break-even</div>
+      <div class="output-value" id="const-breakeven">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Monthly Profit</div>
+      <div class="output-value" id="const-monthly-profit">—</div>
+    </div>
+
+    <div class="output-group">
+      <div class="output-label">Annual Profit</div>
+      <div class="output-value" id="const-annual-profit">—</div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <h3>Insights</h3>
+    <div class="insights-container" id="const-insights"></div>
+
   </div>
-
-  <div class="input-group">
-    <label>Labor Cost (Monthly)</label>
-    <input id="const-labor" type="number" placeholder="Labor Cost (Monthly)" />
-  </div>
-
-  <div class="input-group">
-    <label>Equipment Cost (Monthly)</label>
-    <input id="const-equipment" type="number" placeholder="Equipment Cost (Monthly)" />
-  </div>
-
-  <div class="input-group">
-    <label>Fixed Costs (Monthly)</label>
-    <input id="const-fixed" type="number" placeholder="Fixed Costs (Monthly)" />
-  </div>
-
-  <div class="input-group">
-    <label>Duration (Months)</label>
-    <input id="const-duration" type="number" placeholder="Duration (Months)" />
-  </div>
-
-  <button id="resetBtn">Reset</button>
-
-</div>
-
-</div>
-
-<!-- OUTPUTS (CONSULTING STYLE LAYOUT) -->
-<div class="output-section">
-
-<h3>Decision</h3>
-
-<div id="decision-status">—</div>
-<div id="decision-advice"></div>
-
-<button id="saveDealBtn" class="saveDealBtn">
-  Save Deal
-</button>
-
-<h3>Key Metrics</h3>
-
-<div class="output-group">
-<div class="output-label">Total Costs</div>
-<div class="output-value" id="const-total-costs">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Profit</div>
-<div class="output-value" id="const-profit">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Margin</div>
-<div class="output-value" id="const-margin">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">ROI</div>
-<div class="output-value" id="const-roi">—</div>
-</div>
-
-<h3>Break-even</h3>
-
-<div class="output-group">
-<div class="output-label">Break-even</div>
-<div class="output-value" id="const-breakeven">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Monthly Profit</div>
-<div class="output-value" id="const-monthly-profit">—</div>
-</div>
-
-<div class="output-group">
-<div class="output-label">Annual Profit</div>
-<div class="output-value" id="const-annual-profit">—</div>
-</div>
-
-<!-- INSIGHTS (CONSULTING DROPDOWN STYLE) -->
-<h3>Insights</h3>
-
-<div class="insights-container" id="const-insights"></div>
-
-</div>
-
-</div>
 
 </div>
 
