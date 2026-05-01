@@ -5,7 +5,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Manufacturing Calculators - Sandile SystemsWorks</title>
+<title>Manufacturing Profitability Calculator - Sandile SystemsWorks</title>
 
 <link rel="stylesheet" href="css/styles.css" />
 <link rel="stylesheet" href="css/calculators.css" />
@@ -13,61 +13,46 @@
 <style>
 
 /* ===============================
-DECISION COLORS
+DECISION ENGINE UI (UNIFIED STYLE)
 =============================== */
 
-.positive { color:#16a34a; font-weight:600; }
-.negative { color:#dc2626; font-weight:600; }
-.caution { color:#f59e0b; font-weight:600; }
-
-.output-value { font-weight:600; transition:color .25s ease; }
-
-.output-value.positive { color:#22c55e; }
-.output-value.negative { color:#ef4444; }
-.output-value.caution { color:#f59e0b; }
-
-/* DECISION STATUS */
-#decision-status {
-  font-weight:700;
-  letter-spacing:.02em;
+#status {
+  font-weight: 800;
+  font-size: 1rem;
 }
 
-#decision-status.positive { color:#22c55e; }
-#decision-status.caution { color:#f59e0b; }
-#decision-status.negative { color:#ef4444; }
+#status.profit { color: #22c55e; }
+#status.loss { color: #ef4444; }
+#status.neutral { color: #f59e0b; }
+
+#decisionAdvice {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.7);
+}
+
+/* RESULT COLORS */
+.profit-positive { color: #22c55e; }
+.profit-negative { color: #ef4444; }
+.margin-medium { color: #f59e0b; }
+.margin-strong { color: #22c55e; }
 
 /* STEPS */
-.steps-section {
-  margin-top:2rem;
-  padding:1rem;
-  border:1px solid var(--border-soft);
-  border-radius:12px;
+.steps-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.steps-section ol {
-  list-style:none;
-  counter-reset:step;
-  padding:0;
-}
-
-.steps-section li {
-  counter-increment:step;
-  margin-bottom:1rem;
-  padding-left:40px;
-  position:relative;
-}
-
-.steps-section li::before {
-  content:counter(step);
-  position:absolute;
-  left:0;
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  border:1px solid var(--border-soft);
-  text-align:center;
-  line-height:28px;
-  font-weight:700;
+.step {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 </style>
@@ -81,38 +66,33 @@ DECISION COLORS
 <!-- SIDEBAR -->
 <aside class="sidebar">
 
-<div class="sidebar-top">
+  <div class="sidebar-top">
 
-<div class="sidebar-brand">
-<img src="images/Untitled design.png" class="sidebar-logo" />
-<span class="sidebar-name">Sandile SystemsWorks</span>
-</div>
+    <div class="sidebar-brand">
+      <img src="images/Untitled design.png" class="sidebar-logo" />
+      <span class="sidebar-name">Sandile SystemsWorks</span>
+    </div>
 
-<nav class="sidebar-nav">
-<a href="dashboard.html">Dashboard</a>
-<a href="sector-primary.html">Primary Sector</a>
-<a href="sector-secondary.html" class="active">Secondary Sector</a>
-<a href="sector-tertiary.html">Tertiary Sector</a>
-<a href="sector-quaternary.html">Quaternary Sector</a>
-<a href="sector-quinary.html">Quinary Sector</a>
-</nav>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="manufacturing.html" class="active">Manufacturing Tool</a>
+      <hr class="sidebar-divider" />
+      <a href="#">Saved Deals</a>
+      <a href="#">History</a>
+      <a href="#">Export Results</a>
+    </nav>
 
-</div>
+  </div>
 
 </aside>
 
 <!-- MAIN -->
 <main class="main-content">
 
-<h1>Manufacturing Calculators</h1>
-
-<p>Optimize production economics and manufacturing profitability.</p>
+<h1>Manufacturing Profitability Decision Engine</h1>
+<p>Analyze production costs, margins, and profitability per unit.</p>
 
 <div class="calculator-container">
-
-<h2>Manufacturing Profitability Calculator</h2>
-
-<p>Analyze unit costs, production volume, margins, and ROI.</p>
 
 <div class="calculator-grid">
 
@@ -121,51 +101,99 @@ DECISION COLORS
 
 <h3>Inputs</h3>
 
-<input id="mfg-units" type="number" placeholder="Units produced" />
-<input id="mfg-price" type="number" placeholder="Selling price per unit" />
-<input id="mfg-material" type="number" placeholder="Material cost per unit" />
-<input id="mfg-labor" type="number" placeholder="Labor cost" />
-<input id="mfg-fixed" type="number" placeholder="Fixed costs" />
-<input id="mfg-operational" type="number" placeholder="Operational costs" />
+<div class="input-group">
+  <label>Units produced</label>
+  <input id="units" type="number" placeholder="Units produced" />
+</div>
 
-<button id="resetBtn">Clear Inputs</button>
+<div class="input-group">
+  <label>Selling price per unit</label>
+  <input id="price" type="number" placeholder="Selling price per unit" />
+</div>
+
+<div class="input-group">
+  <label>Material cost per unit</label>
+  <input id="material" type="number" placeholder="Material cost per unit" />
+</div>
+
+<div class="input-group">
+  <label>Labor cost (monthly)</label>
+  <input id="labor" type="number" placeholder="Labor cost (monthly)" />
+</div>
+
+<div class="input-group">
+  <label>Fixed costs (monthly)</label>
+  <input id="fixed" type="number" placeholder="Fixed costs (monthly)" />
+</div>
+
+<div class="input-group">
+  <label>Operational costs (monthly)</label>
+  <input id="operational" type="number" placeholder="Operational costs (monthly)" />
+</div>
+
+<button id="resetBtn">Reset</button>
 
 </div>
 
 <!-- OUTPUTS -->
 <div class="output-section">
 
-<h3>Decision Result</h3>
+<h3>Decision</h3>
 
-<div id="decision-status">—</div>
-<div id="risk-warning"></div>
-<div id="decision-advice"></div>
+<div id="status">—</div>
+<div id="decisionAdvice"></div>
 
-<h3>Summary</h3>
+<h3>Key Metrics</h3>
 
-<div id="mfg-revenue"></div>
-<div id="mfg-total-costs"></div>
-<div id="mfg-profit"></div>
+<div class="output-group">
+  <div class="output-label">Revenue</div>
+  <div class="output-value" id="revenue">—</div>
+</div>
+
+<div class="output-group">
+  <div class="output-label">Total Costs</div>
+  <div class="output-value" id="totalCosts">—</div>
+</div>
+
+<div class="output-group">
+  <div class="output-label">Profit</div>
+  <div class="output-value" id="profit">—</div>
+</div>
 
 <h3>Unit Economics</h3>
 
-<div id="mfg-cost-per-unit"></div>
-<div id="mfg-profit-per-unit"></div>
+<div class="output-group">
+  <div class="output-label">Cost per Unit</div>
+  <div class="output-value" id="costPerUnit">—</div>
+</div>
+
+<div class="output-group">
+  <div class="output-label">Profit per Unit</div>
+  <div class="output-value" id="profitPerUnit">—</div>
+</div>
 
 <h3>Performance</h3>
 
-<div id="mfg-margin"></div>
-<div id="mfg-roi"></div>
+<div class="output-group">
+  <div class="output-label">Margin</div>
+  <div class="output-value" id="margin">—</div>
+</div>
+
+<div class="output-group">
+  <div class="output-label">ROI</div>
+  <div class="output-value" id="roi">—</div>
+</div>
 
 <h3>Break-even</h3>
 
-<div id="mfg-breakeven"></div>
+<div class="output-group">
+  <div class="output-label">Break-even Units</div>
+  <div class="output-value" id="breakeven">—</div>
+</div>
 
 <!-- STEPS -->
-<div class="steps-section">
-<h3>Next Steps</h3>
-<ol id="mfg-steps"></ol>
-</div>
+<h3>Step-by-Step Guidance</h3>
+<div id="stepsContainer" class="steps-container"></div>
 
 </div>
 
