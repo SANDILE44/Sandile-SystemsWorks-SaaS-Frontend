@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +12,9 @@
 
 <style>
 
-/* ================= DECISION ENGINE ================= */
+/* ===============================
+DECISION UI (CONSULTING STYLE)
+=============================== */
 
 #decision-status {
   font-weight: 800;
@@ -22,7 +25,14 @@
 #decision-status.caution { color: #f59e0b; }
 #decision-status.negative { color: #ef4444; }
 
-/* OUTPUT COLORS */
+#decision-advice {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.7);
+}
+
+/* OUTPUTS */
 .output-value {
   font-weight: 600;
 }
@@ -30,7 +40,7 @@
 .output-value.positive { color: #22c55e; }
 .output-value.negative { color: #ef4444; }
 
-/* DROPDOWN INSIGHTS */
+/* DROPDOWN INSIGHTS (CONSULTING STYLE) */
 .insights-container details {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
@@ -74,7 +84,7 @@
       <a href="dashboard.html">Dashboard</a>
       <a href="sector-secondary.html" class="active">Construction Tool</a>
       <hr class="sidebar-divider" />
-      <a href="#">Saved Deals</a>
+      <a href="SaveConstruction.html">Saved Deals</a>
       <a href="#">History</a>
       <a href="#">Export</a>
     </nav>
@@ -86,53 +96,53 @@
 <!-- MAIN -->
 <main class="main-content">
 
-<h1>Construction Profitability Engine</h1>
+<h1>Construction Profitability Decision Engine</h1>
 <p>Project cost, margin and contract intelligence system.</p>
 
 <div class="calculator-container">
 
 <div class="calculator-grid">
 
-<!-- INPUTS -->
+<!-- INPUTS (CONSULTING STYLE) -->
 <div class="input-section">
 
 <h3>Inputs</h3>
 
 <div class="input-group">
-  <label>Contract Value</label>
-  <input id="const-value" type="number" />
+<label>Contract Value</label>
+<input id="const-value" type="number" />
 </div>
 
 <div class="input-group">
-  <label>Material Cost</label>
-  <input id="const-material" type="number" />
+<label>Material Cost</label>
+<input id="const-material" type="number" />
 </div>
 
 <div class="input-group">
-  <label>Labor Cost</label>
-  <input id="const-labor" type="number" />
+<label>Labor Cost (Monthly)</label>
+<input id="const-labor" type="number" />
 </div>
 
 <div class="input-group">
-  <label>Equipment Cost</label>
-  <input id="const-equipment" type="number" />
+<label>Equipment Cost (Monthly)</label>
+<input id="const-equipment" type="number" />
 </div>
 
 <div class="input-group">
-  <label>Fixed Costs</label>
-  <input id="const-fixed" type="number" />
+<label>Fixed Costs (Monthly)</label>
+<input id="const-fixed" type="number" />
 </div>
 
 <div class="input-group">
-  <label>Duration (months)</label>
-  <input id="const-duration" type="number" />
+<label>Duration (Months)</label>
+<input id="const-duration" type="number" />
 </div>
 
 <button id="resetBtn">Reset</button>
 
 </div>
 
-<!-- OUTPUTS -->
+<!-- OUTPUTS (CONSULTING STYLE LAYOUT) -->
 <div class="output-section">
 
 <h3>Decision</h3>
@@ -140,22 +150,53 @@
 <div id="decision-status">—</div>
 <div id="decision-advice"></div>
 
+<button id="saveDealBtn" class="saveDealBtn">
+  Save Deal
+</button>
+
 <h3>Key Metrics</h3>
 
-<div id="const-total-costs" class="output-value">—</div>
-<div id="const-profit" class="output-value">—</div>
-<div id="const-margin" class="output-value">—</div>
-<div id="const-roi" class="output-value">—</div>
+<div class="output-group">
+<div class="output-label">Total Costs</div>
+<div class="output-value" id="const-total-costs">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Profit</div>
+<div class="output-value" id="const-profit">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Margin</div>
+<div class="output-value" id="const-margin">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">ROI</div>
+<div class="output-value" id="const-roi">—</div>
+</div>
 
 <h3>Break-even</h3>
-<div id="const-breakeven" class="output-value">—</div>
 
-<div id="const-monthly-profit" class="output-value">—</div>
-<div id="const-annual-profit" class="output-value">—</div>
+<div class="output-group">
+<div class="output-label">Break-even</div>
+<div class="output-value" id="const-breakeven">—</div>
+</div>
 
-<!-- DROPDOWN INSIGHTS (NEW STRUCTURE) -->
+<div class="output-group">
+<div class="output-label">Monthly Profit</div>
+<div class="output-value" id="const-monthly-profit">—</div>
+</div>
+
+<div class="output-group">
+<div class="output-label">Annual Profit</div>
+<div class="output-value" id="const-annual-profit">—</div>
+</div>
+
+<!-- INSIGHTS (CONSULTING DROPDOWN STYLE) -->
 <h3>Insights</h3>
-<div id="const-insights" class="insights-container"></div>
+
+<div class="insights-container" id="const-insights"></div>
 
 </div>
 
