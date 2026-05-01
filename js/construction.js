@@ -6,11 +6,11 @@
   const API_BASE =
     "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-  /* ===============================
-     HELPERS
-  ================================ */
   const $ = (id) => document.getElementById(id);
 
+  /* ===============================
+     FORMATTERS
+  ================================ */
   const money = (v) =>
     (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -20,9 +20,11 @@
   const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
   /* ===============================
-     DEBOUNCE ENGINE
+     STATE
   ================================ */
   let timer;
+  let latestData = null;
+
   const debounce = () => {
     clearTimeout(timer);
     timer = setTimeout(run, 300);
@@ -55,10 +57,12 @@
      MAIN ENGINE
   ================================ */
   async function run() {
+
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) return location.replace("login.html");
 
     try {
+
       const res = await fetch(
         `${API_BASE}/api/calculators/construction/project`,
         {
@@ -75,6 +79,7 @@
       if (!res.ok) return;
 
       const d = await res.json();
+      latestData = d;
 
       /* ===============================
          CORE OUTPUTS
@@ -87,7 +92,6 @@
 
       const marginEl = $("const-margin");
       marginEl.textContent = percent(d.margin);
-
       color(
         marginEl,
         d.margin < 10 ? "negative" :
@@ -96,64 +100,119 @@
 
       const roiEl = $("const-roi");
       roiEl.textContent = percent(d.roi);
-
       color(
         roiEl,
         d.roi < 0 ? "negative" :
         d.roi < 10 ? "caution" : "positive"
       );
 
-      $("const-breakeven").textContent = money(d.breakEvenRevenue ?? d.breakeven ?? 0);
-      $("const-monthly-profit").textContent = money(d.monthlyProfit ?? 0);
-      $("const-annual-profit").textContent = money(d.annualProfit ?? 0);
+      $("const-breakeven").textContent = money(d.breakEven);
+      $("const-monthly-profit").textContent = money(d.monthlyProfit);
+      $("const-annual-profit").textContent = money(d.annualProfit);
 
       /* ===============================
-         DECISION ENGINE (SELL LAYER)
+         DECISION ENGINE
       ================================ */
       const statusEl = $("decision-status");
       const riskEl = $("risk-warning");
       const adviceEl = $("decision-advice");
 
-      const risk = d.riskLevel || "Low";
-
       statusEl.textContent = d.decision || "—";
 
-      if (risk === "High") {
+      if (d.riskLevel === "High") {
         color(statusEl, "negative");
-        riskEl.textContent = "High risk: profit instability likely.";
-        adviceEl.textContent = "Renegotiate pricing or reduce costs.";
-      } else if (risk === "Medium") {
+        riskEl.textContent = "High risk project";
+        adviceEl.textContent = d.advice || "Renegotiate contract.";
+      } else if (d.riskLevel === "Medium") {
         color(statusEl, "caution");
-        riskEl.textContent = "Medium risk: limited buffer.";
-        adviceEl.textContent = "Monitor labor + material costs closely.";
+        riskEl.textContent = "Medium risk project";
+        adviceEl.textContent = d.advice || "Optimize costs.";
       } else {
         color(statusEl, "positive");
-        riskEl.textContent = "Low risk: healthy project margin.";
-        adviceEl.textContent = "Safe to proceed.";
+        riskEl.textContent = "Low risk project";
+        adviceEl.textContent = d.advice || "Safe to proceed.";
       }
 
       /* ===============================
-         STEP INSIGHTS
+         STEP LIST (HIDDEN UNTIL USER OPENS UI LATER)
       ================================ */
       const steps = $("const-steps-list");
       steps.innerHTML = "";
 
-      if (d.steps?.length) {
-        d.steps.forEach((s, i) => {
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <strong>${i + 1}. ${s.step}</strong>
-            <span>${s.message}</span>
-          `;
-          steps.appendChild(li);
-        });
-      } else {
-        steps.innerHTML = "<li>No insights available.</li>";
-      }
+      (d.steps || []).forEach((s, i) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>${i + 1}. ${s.step}</strong>
+          <span>${s.message}</span>
+        `;
+        steps.appendChild(li);
+      });
 
     } catch (err) {
       console.error("Construction engine error:", err);
     }
+  }
+
+  /* ===============================
+     SAVE DEAL (CONSTRUCTION)
+  ================================ */
+  async function saveDeal() {
+
+    if (!latestData) return alert("Run calculator first");
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const editId = localStorage.getItem("editDealId");
+
+    const payload = {
+      type: "construction",
+      inputs: getInputs(),
+      results: {
+        profit: latestData.profit,
+        margin: latestData.margin,
+        revenue: latestData.value
+      }
+    };
+
+    const url = editId
+      ? `/api/saved-deals/${editId}`
+      : `/api/saved-deals`;
+
+    const method = editId ? "PUT" : "POST";
+
+    try {
+      const res = await fetch(`${API_BASE}${url}`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Save failed");
+
+      alert(editId ? "Deal updated" : "Deal saved");
+
+      localStorage.removeItem("editDeal");
+      localStorage.removeItem("editDealId");
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save deal");
+    }
+  }
+
+  /* ===============================
+     RESET
+  ================================ */
+  function resetAll() {
+    document.querySelectorAll(".input-section input")
+      .forEach(i => i.value = "");
+
+    latestData = null;
+    run();
   }
 
   /* ===============================
@@ -168,30 +227,17 @@
     "const-duration",
   ].forEach((id) => $(id)?.addEventListener("input", debounce));
 
-  /* RESET */
-  $("resetBtn")?.addEventListener("click", () => {
-    [
-      "const-value",
-      "const-material",
-      "const-labor",
-      "const-equipment",
-      "const-fixed",
-      "const-duration",
-    ].forEach((id) => {
-      const el = $(id);
-      if (el) el.value = "";
-    });
+  $("resetBtn")?.addEventListener("click", resetAll);
+  $("saveDealBtn")?.addEventListener("click", saveDeal);
 
-    run();
-  });
-
-  /* LOGOUT */
   $("logoutBtn")?.addEventListener("click", () => {
     localStorage.removeItem("token");
     location.replace("login.html");
   });
 
-  /* INIT */
+  /* ===============================
+     INIT
+  ================================ */
   run();
 
 })();
