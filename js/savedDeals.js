@@ -5,9 +5,22 @@ const $ = (id) => document.getElementById(id);
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
 let dealsCache = [];
+let pageType = null;
+
+/* ================= DETECT PAGE TYPE ================= */
+function detectType() {
+
+  const path = window.location.pathname;
+
+  if (path.includes("restaurant")) return "restaurant";
+  if (path.includes("consulting")) return "consulting";
+  if (path.includes("manufacturing")) return "manufacturing";
+
+  return null;
+}
 
 /* ================= API ================= */
-async function api(url, method = "GET", body = null) {
+async function api(url, method = "GET") {
 
   const token = localStorage.getItem("token");
   if (!token) {
@@ -15,35 +28,28 @@ async function api(url, method = "GET", body = null) {
     return null;
   }
 
-  try {
-    const res = await fetch(`${API_BASE}${url}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: body ? JSON.stringify(body) : null
-    });
-
-    if (res.status === 401) {
-      localStorage.removeItem("token");
-      location.replace("login.html");
-      return null;
+  const res = await fetch(`${API_BASE}${url}`, {
+    method,
+    headers: {
+      "Authorization": `Bearer ${token}`
     }
+  });
 
-    if (!res.ok) return null;
+  if (!res.ok) return null;
 
-    return await res.json();
-
-  } catch (err) {
-    console.error("API error:", err);
-    return null;
-  }
+  return await res.json();
 }
 
 /* ================= LOAD ================= */
 async function loadDeals() {
-  return await api("/api/saved-deals");
+  const all = await api("/api/saved-deals");
+
+  if (!all) return [];
+
+  // 🔥 FILTER BY CURRENT PAGE TYPE
+  return pageType
+    ? all.filter(d => d.type === pageType)
+    : all;
 }
 
 /* ================= DELETE ================= */
@@ -52,26 +58,35 @@ async function deleteDeal(id) {
   init();
 }
 
-/* ================= EDIT (RESTAURANT ONLY) ================= */
+/* ================= EDIT ================= */
 function editDeal(deal) {
-
-  if (deal.type !== "restaurant") return;
 
   localStorage.setItem("editDeal", JSON.stringify(deal));
   localStorage.setItem("editDealId", deal._id);
 
-  window.location.href = "industry-restaurants.html";
+  // 🔥 ROUTE BASED ON TYPE
+  if (deal.type === "restaurant") {
+    window.location.href = "industry-restaurants.html";
+  }
+
+  else if (deal.type === "consulting") {
+    window.location.href = "industry-consulting.html";
+  }
+
+  else if (deal.type === "manufacturing") {
+    window.location.href = "industry-manufacturing.html";
+  }
 }
 
 /* ================= FORMAT ================= */
-function formatMoney(v) {
+function money(v) {
   return (Number(v) || 0).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
 }
 
-function formatPercent(v) {
+function percent(v) {
   return `${(Number(v) || 0).toFixed(2)}%`;
 }
 
@@ -83,7 +98,7 @@ function renderDeals(deals) {
 
   if (!container) return;
 
-  dealsCache = (deals || []).filter(d => d.type === "restaurant");
+  dealsCache = deals || [];
 
   if (!dealsCache.length) {
     container.innerHTML = "";
@@ -99,26 +114,30 @@ function renderDeals(deals) {
       ? new Date(d.createdAt).toLocaleDateString()
       : "—";
 
+    const type = (d.type || "UNKNOWN").toUpperCase();
+
     return `
       <div class="deal-card">
 
         <div class="deal-title">
-          RESTAURANT - ${date}
+          ${type} - ${date}
         </div>
 
         <div class="deal-body">
-          <div><strong>Profit:</strong> ${formatMoney(d.results?.profit)}</div>
-          <div><strong>Revenue:</strong> ${formatMoney(d.results?.monthlyRevenue)}</div>
-          <div><strong>Margin:</strong> ${formatPercent(d.results?.margin)}</div>
+          <div><strong>Profit:</strong> ${money(d.results?.profit)}</div>
+          <div><strong>Revenue:</strong> ${money(d.results?.revenue || d.results?.monthlyRevenue)}</div>
+          <div><strong>Margin:</strong> ${percent(d.results?.margin)}</div>
         </div>
 
-        <button class="edit-btn" data-index="${index}">
-          Edit
-        </button>
+        <div class="deal-actions">
+          <button class="edit-btn" data-index="${index}">
+            Edit
+          </button>
 
-        <button class="delete-btn" data-id="${d._id}">
-          Delete
-        </button>
+          <button class="delete-btn" data-id="${d._id}">
+            Delete
+          </button>
+        </div>
 
       </div>
     `;
@@ -127,6 +146,9 @@ function renderDeals(deals) {
 
 /* ================= INIT ================= */
 async function init() {
+
+  pageType = detectType();
+
   const deals = await loadDeals();
   renderDeals(deals);
 }
@@ -134,15 +156,15 @@ async function init() {
 /* ================= EVENTS ================= */
 document.addEventListener("click", async (e) => {
 
-  const delBtn = e.target.closest(".delete-btn");
-  if (delBtn) {
-    await deleteDeal(delBtn.dataset.id);
+  const del = e.target.closest(".delete-btn");
+  if (del) {
+    await deleteDeal(del.dataset.id);
     return;
   }
 
-  const editBtn = e.target.closest(".edit-btn");
-  if (editBtn) {
-    const deal = dealsCache[editBtn.dataset.index];
+  const edit = e.target.closest(".edit-btn");
+  if (edit) {
+    const deal = dealsCache[edit.dataset.index];
     if (deal) editDeal(deal);
   }
 
