@@ -134,11 +134,11 @@ async function runManufacturing() {
   /* ================= BREAK EVEN ================= */
   $("breakeven").textContent = data.breakeven ?? 0;
 
-  /* ================= INSIGHTS (NEW DROPDOWN SYSTEM) ================= */
+  /* ================= DROPDOWN INSIGHTS ================= */
   renderInsights(data.insights);
 }
 
-/* ================= DROPDOWN INSIGHTS RENDERER ================= */
+/* ================= DROPDOWN SYSTEM ================= */
 function renderInsights(insights) {
 
   const container = $("stepsContainer");
@@ -156,10 +156,10 @@ function renderInsights(insights) {
 
       return `
         <details>
-          <summary style="font-weight:700; cursor:pointer;">
+          <summary style="font-weight:700; cursor:pointer; padding:6px 0;">
             ${group.toUpperCase()}
           </summary>
-          <div style="margin-top:10px;">
+          <div style="margin-top:8px;">
             ${content}
           </div>
         </details>
@@ -245,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
-  /* ================= EDIT MODE ================= */
   const editDeal = JSON.parse(localStorage.getItem("editDeal"));
 
   if (editDeal) {
