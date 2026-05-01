@@ -31,7 +31,6 @@ async function api(url, method = "GET") {
 async function loadDeals() {
   const all = await api("/api/saved-deals");
 
-  // 🔥 FILTER ONLY CONSULTING
   return (all || []).filter(d => d.type === "consulting");
 }
 
@@ -67,11 +66,11 @@ function renderDeals(deals) {
 
   if (!dealsCache.length) {
     container.innerHTML = "";
-    empty.style.display = "block";
+    if (empty) empty.style.display = "block";
     return;
   }
 
-  empty.style.display = "none";
+  if (empty) empty.style.display = "none";
 
   container.innerHTML = dealsCache.map((d, index) => {
 
