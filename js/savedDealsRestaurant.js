@@ -5,19 +5,6 @@ const $ = (id) => document.getElementById(id);
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
 let dealsCache = [];
-let pageType = null;
-
-/* ================= DETECT PAGE TYPE ================= */
-function detectType() {
-
-  const path = window.location.pathname;
-
-  if (path.includes("restaurant")) return "restaurant";
-  if (path.includes("consulting")) return "consulting";
-  if (path.includes("manufacturing")) return "manufacturing";
-
-  return null;
-}
 
 /* ================= API ================= */
 async function api(url, method = "GET") {
@@ -28,28 +15,39 @@ async function api(url, method = "GET") {
     return null;
   }
 
-  const res = await fetch(`${API_BASE}${url}`, {
-    method,
-    headers: {
-      "Authorization": `Bearer ${token}`
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+      return null;
     }
-  });
 
-  if (!res.ok) return null;
+    if (!res.ok) return null;
 
-  return await res.json();
+    return await res.json();
+
+  } catch (err) {
+    console.error("API error:", err);
+    return null;
+  }
 }
 
 /* ================= LOAD ================= */
 async function loadDeals() {
   const all = await api("/api/saved-deals");
 
-  if (!all) return [];
+  if (!Array.isArray(all)) return [];
 
-  // 🔥 FILTER BY CURRENT PAGE TYPE
-  return pageType
-    ? all.filter(d => d.type === pageType)
-    : all;
+  // 🍽️ ONLY RESTAURANT DEALS
+  return all.filter(d => d.type === "restaurant");
 }
 
 /* ================= DELETE ================= */
@@ -64,18 +62,7 @@ function editDeal(deal) {
   localStorage.setItem("editDeal", JSON.stringify(deal));
   localStorage.setItem("editDealId", deal._id);
 
-  // 🔥 ROUTE BASED ON TYPE
-  if (deal.type === "restaurant") {
-    window.location.href = "industry-restaurants.html";
-  }
-
-  else if (deal.type === "consulting") {
-    window.location.href = "industry-consulting.html";
-  }
-
-  else if (deal.type === "manufacturing") {
-    window.location.href = "industry-manufacturing.html";
-  }
+  window.location.href = "restaurant.html";
 }
 
 /* ================= FORMAT ================= */
@@ -86,17 +73,11 @@ function money(v) {
   });
 }
 
-function percent(v) {
-  return `${(Number(v) || 0).toFixed(2)}%`;
-}
-
 /* ================= RENDER ================= */
 function renderDeals(deals) {
 
   const container = $("savedDealsContainer");
   const empty = $("emptyState");
-
-  if (!container) return;
 
   dealsCache = deals || [];
 
@@ -114,22 +95,23 @@ function renderDeals(deals) {
       ? new Date(d.createdAt).toLocaleDateString()
       : "—";
 
-    const type = (d.type || "UNKNOWN").toUpperCase();
-
     return `
       <div class="deal-card">
 
         <div class="deal-title">
-          ${type} - ${date}
+          RESTAURANT - ${date}
         </div>
 
         <div class="deal-body">
+
           <div><strong>Profit:</strong> ${money(d.results?.profit)}</div>
-          <div><strong>Revenue:</strong> ${money(d.results?.revenue || d.results?.monthlyRevenue)}</div>
-          <div><strong>Margin:</strong> ${percent(d.results?.margin)}</div>
+          <div><strong>Revenue:</strong> ${money(d.results?.revenue)}</div>
+          <div><strong>Margin:</strong> ${(d.results?.margin || 0).toFixed(2)}%</div>
+
         </div>
 
         <div class="deal-actions">
+
           <button class="edit-btn" data-index="${index}">
             Edit
           </button>
@@ -137,6 +119,7 @@ function renderDeals(deals) {
           <button class="delete-btn" data-id="${d._id}">
             Delete
           </button>
+
         </div>
 
       </div>
@@ -146,9 +129,6 @@ function renderDeals(deals) {
 
 /* ================= INIT ================= */
 async function init() {
-
-  pageType = detectType();
-
   const deals = await loadDeals();
   renderDeals(deals);
 }
