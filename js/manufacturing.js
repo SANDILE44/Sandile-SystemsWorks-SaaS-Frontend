@@ -56,13 +56,13 @@ async function apiPost(url, body) {
   return await api(url, "POST", body);
 }
 
-/* ================= CLASS HELPERS (KEEP YOUR COLORS) ================= */
+/* ================= CLASS HELPERS (KEEP COLORS) ================= */
 function setClass(el, cls) {
   if (!el) return;
   el.className = `output-value ${cls || ""}`;
 }
 
-/* ================= INPUTS ================= */
+/* ================= INPUTS (MATCH BACKEND EXACTLY) ================= */
 function getInputs() {
   return {
     units: +$("mfg-units")?.value || 0,
@@ -86,19 +86,22 @@ async function runManufacturing() {
 
   latestData = data;
 
-  /* ================= STATUS (same pattern as restaurant) ================= */
+  /* ================= STATUS ================= */
   const status = $("status");
   const advice = $("decisionAdvice");
 
   status.textContent = data.status || "—";
   advice.textContent = data.action || "";
 
-  status.className =
+  status.classList.remove("profit", "loss", "neutral");
+
+  status.classList.add(
     data.status === "LOSS"
       ? "loss"
       : data.status === "RISK"
       ? "neutral"
-      : "profit";
+      : "profit"
+  );
 
   /* ================= CORE METRICS ================= */
   $("revenue").textContent = money(data.revenue);
@@ -139,12 +142,17 @@ async function runManufacturing() {
 function renderSteps(steps) {
 
   const container = $("stepsContainer");
-  if (!container || !steps) return;
+  if (!container) return;
+
+  if (!Array.isArray(steps)) {
+    container.innerHTML = "";
+    return;
+  }
 
   container.innerHTML = steps.map(s => `
     <div class="step">
-      <strong>${s.step}</strong>
-      <div>${s.message}</div>
+      <strong>${s.step || ""}</strong>
+      <div>${s.message || ""}</div>
     </div>
   `).join("");
 }
@@ -170,7 +178,8 @@ function resetAll() {
   });
 
   $("status").textContent = "—";
-  $("status").className = "";
+  $("status").classList.remove("profit", "loss", "neutral");
+
   $("decisionAdvice").textContent = "";
   $("stepsContainer").innerHTML = "";
 }
