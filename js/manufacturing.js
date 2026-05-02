@@ -15,51 +15,14 @@ const money = (v) =>
   });
 
 const percent = (v) => {
-  const n = Number(v) || 0;
-  const val = Math.abs(n) <= 1 ? n * 100 : n;
-  return val.toFixed(2) + "%";
+  if (!isFinite(v)) return "0.00%";
+  return (Number(v) || 0).toFixed(2) + "%";
 };
 
-/* ================= API ================= */
-async function api(url, method = "GET", body = null) {
-
-  const token = localStorage.getItem("token");
-  if (!token) return location.replace("login.html");
-
-  try {
-    const res = await fetch(`${API_BASE}${url}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: body ? JSON.stringify(body) : null
-    });
-
-    if (res.status === 401) {
-      localStorage.removeItem("token");
-      location.replace("login.html");
-      return null;
-    }
-
-    if (!res.ok) return null;
-
-    return await res.json();
-
-  } catch (err) {
-    console.error("API error:", err);
-    return null;
-  }
-}
-
-async function apiPost(url, body) {
-  return await api(url, "POST", body);
-}
-
-/* ================= CLASS HELPERS ================= */
-function setClass(el, cls) {
-  if (!el) return;
-  el.className = `output-value ${cls || ""}`;
+/* ================= SAFE DIVISION ================= */
+function safeDivide(a, b) {
+  if (!b || !isFinite(a) || !isFinite(b)) return 0;
+  return a / b;
 }
 
 /* ================= INPUTS ================= */
@@ -75,102 +38,109 @@ function getInputs() {
 }
 
 /* ================= MAIN ENGINE ================= */
-async function runManufacturing() {
+function runManufacturing() {
 
-  const data = await apiPost(
-    "/api/calculators/manufacturing/business",
-    getInputs()
-  );
+  const {
+    units,
+    price,
+    material,
+    labor,
+    fixed,
+    operational
+  } = getInputs();
 
-  if (!data) return;
+  /* ===== REVENUE ===== */
+  const revenue = units * price;
 
-  latestData = data;
+  /* ===== COSTS ===== */
+  const materialTotal = units * material;
 
-  /* ================= STATUS ================= */
+  // Treat these as TOTAL for production period (NOT per unit)
+  const totalCosts =
+    materialTotal +
+    labor +
+    fixed +
+    operational;
+
+  /* ===== PROFIT ===== */
+  const profit = revenue - totalCosts;
+
+  /* ===== UNIT ECONOMICS ===== */
+  const costPerUnit = safeDivide(totalCosts, units);
+  const profitPerUnit = safeDivide(profit, units);
+
+  /* ===== PERFORMANCE ===== */
+  const margin = safeDivide(profit, revenue) * 100;
+  const roi = safeDivide(profit, totalCosts) * 100;
+
+  /* ===== BREAK EVEN ===== */
+  const breakEvenUnits = price > material
+    ? Math.ceil((labor + fixed + operational) / (price - material))
+    : 0;
+
+  /* ===== DECISION ===== */
+  let status = "PROFIT";
+  let action = "Production is profitable.";
+
+  if (profit <= 0) {
+    status = "LOSS";
+    action = "Increase price or reduce production costs immediately.";
+  } else if (margin < 10) {
+    status = "RISK";
+    action = "Margins are weak. Improve efficiency.";
+  }
+
+  latestData = {
+    revenue,
+    totalCosts,
+    profit,
+    costPerUnit,
+    profitPerUnit,
+    margin,
+    roi,
+    breakEvenUnits,
+    status,
+    action
+  };
+
+  /* ================= RENDER ================= */
+  render(latestData);
+}
+
+/* ================= RENDER ================= */
+function render(d) {
+
+  $("revenue").textContent = money(d.revenue);
+  $("totalCosts").textContent = money(d.totalCosts);
+  $("profit").textContent = money(d.profit);
+
+  $("costPerUnit").textContent = money(d.costPerUnit);
+  $("profitPerUnit").textContent = money(d.profitPerUnit);
+
+  $("margin").textContent = percent(d.margin);
+  $("roi").textContent = percent(d.roi);
+
+  $("breakeven").textContent = d.breakEvenUnits;
+
   const status = $("status");
   const advice = $("decisionAdvice");
 
-  status.textContent = data.status || "—";
-  advice.textContent = data.action || "";
+  status.textContent = d.status;
+  advice.textContent = d.action;
 
   status.classList.remove("profit", "loss", "neutral");
 
   status.classList.add(
-    data.status === "LOSS"
+    d.status === "LOSS"
       ? "loss"
-      : data.status === "RISK"
+      : d.status === "RISK"
       ? "neutral"
       : "profit"
   );
-
-  /* ================= CORE METRICS ================= */
-  $("revenue").textContent = money(data.revenue);
-  $("totalCosts").textContent = money(data.totalCosts);
-  $("profit").textContent = money(data.profit);
-
-  setClass(
-    $("profit"),
-    data.profit >= 0 ? "profit-positive" : "profit-negative"
-  );
-
-  /* ================= UNIT ECONOMICS ================= */
-  $("costPerUnit").textContent = money(data.costPerUnit);
-  $("profitPerUnit").textContent = money(data.profitPerUnit);
-
-  /* ================= PERFORMANCE ================= */
-  $("margin").textContent = percent(data.margin);
-
-  setClass(
-    $("margin"),
-    data.margin < 10
-      ? "profit-negative"
-      : data.margin < 20
-      ? "margin-medium"
-      : "margin-strong"
-  );
-
-  $("roi").textContent = percent(data.roi);
-
-  /* ================= BREAK EVEN ================= */
-  $("breakeven").textContent = data.breakeven ?? 0;
-
-  /* ================= DROPDOWN INSIGHTS ================= */
-  renderInsights(data.insights);
-}
-
-/* ================= DROPDOWN SYSTEM ================= */
-function renderInsights(insights) {
-
-  const container = $("stepsContainer");
-  if (!container || !insights) return;
-
-  container.innerHTML = Object.entries(insights)
-    .map(([group, items]) => {
-
-      const content = (items || []).map(i => `
-        <div class="step">
-          <strong>${i.title}</strong>
-          <div>${i.message}</div>
-        </div>
-      `).join("");
-
-      return `
-        <details>
-          <summary style="font-weight:700; cursor:pointer; padding:6px 0;">
-            ${group.toUpperCase()}
-          </summary>
-          <div style="margin-top:8px;">
-            ${content}
-          </div>
-        </details>
-      `;
-    })
-    .join("");
 }
 
 /* ================= RESET ================= */
 function resetAll() {
-
   document.querySelectorAll(".input-section input")
     .forEach(i => i.value = "");
 
@@ -182,28 +152,17 @@ function resetAll() {
     "margin","roi","breakeven"
   ].forEach(id => {
     const el = $(id);
-    if (el) {
-      el.textContent = "—";
-      el.className = "output-value";
-    }
+    if (el) el.textContent = "—";
   });
 
   $("status").textContent = "—";
-  $("status").classList.remove("profit", "loss", "neutral");
-
   $("decisionAdvice").textContent = "";
-  $("stepsContainer").innerHTML = "";
 }
 
-/* ================= SAVE DEAL ================= */
+/* ================= SAVE ================= */
 async function saveDeal() {
 
-  if (!latestData) {
-    alert("Run calculator first before saving");
-    return;
-  }
-
-  const editId = localStorage.getItem("editDealId");
+  if (!latestData) return alert("Run first");
 
   const payload = {
     type: "manufacturing",
@@ -215,25 +174,21 @@ async function saveDeal() {
     }
   };
 
-  const url = editId
-    ? `/api/saved-deals/${editId}`
-    : "/api/saved-deals";
+  const token = localStorage.getItem("token");
 
-  const method = editId ? "PUT" : "POST";
+  await fetch(`${API_BASE}/api/saved-deals`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(payload)
+  });
 
-  const res = await api(url, method, payload);
-
-  if (res) {
-    alert(editId ? "Deal updated" : "Deal saved");
-
-    localStorage.removeItem("editDeal");
-    localStorage.removeItem("editDealId");
-  } else {
-    alert("Failed to save deal");
-  }
+  alert("Deal saved");
 }
 
-/* ================= INIT ================= */
+/* ================= EVENTS ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".input-section input")
@@ -244,19 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
-
-  const editDeal = JSON.parse(localStorage.getItem("editDeal"));
-
-  if (editDeal) {
-    $("mfg-units").value = editDeal.inputs?.units || "";
-    $("mfg-price").value = editDeal.inputs?.price || "";
-    $("mfg-material").value = editDeal.inputs?.material || "";
-    $("mfg-labor").value = editDeal.inputs?.labor || "";
-    $("mfg-fixed").value = editDeal.inputs?.fixed || "";
-    $("mfg-operational").value = editDeal.inputs?.operational || "";
-
-    runManufacturing();
-  }
 
   runManufacturing();
 });
