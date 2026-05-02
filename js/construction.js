@@ -3,6 +3,9 @@
   const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
   const $ = (id) => document.getElementById(id);
 
+  let debounceTimer;
+  let latestData = null;
+
   /* ================= FORMATTERS ================= */
   const money = (v) =>
     (Number(v) || 0).toLocaleString(undefined, {
@@ -14,15 +17,6 @@
     const n = Number(v);
     if (!isFinite(n)) return "0.00%";
     return n.toFixed(2) + "%";
-  };
-
-  /* ================= STATE ================= */
-  let timer;
-  let latestData = null;
-
-  const debounce = () => {
-    clearTimeout(timer);
-    timer = setTimeout(run, 300);
   };
 
   /* ================= INPUTS ================= */
@@ -37,14 +31,39 @@
     };
   }
 
-  /* ================= COLOR ENGINE ================= */
-  function color(el, type) {
+  /* ================= COLOR HANDLER ================= */
+  function setStatusColor(el, riskLevel) {
     if (!el) return;
+
     el.classList.remove("positive", "negative", "caution");
-    if (type) el.classList.add(type);
+
+    if (riskLevel === "High") el.classList.add("negative");
+    else if (riskLevel === "Medium") el.classList.add("caution");
+    else el.classList.add("positive");
   }
 
-  /* ================= MAIN ENGINE ================= */
+  /* ================= LOAD EDIT DATA ================= */
+  function loadEditDeal() {
+    const edit = localStorage.getItem("editDeal");
+    if (!edit) return;
+
+    try {
+      const deal = JSON.parse(edit);
+      const i = deal.inputs || {};
+
+      $("const-value").value = i.value || 0;
+      $("const-material").value = i.material || 0;
+      $("const-labor").value = i.laborMonthly || 0;
+      $("const-equipment").value = i.equipmentMonthly || 0;
+      $("const-fixed").value = i.fixedMonthly || 0;
+      $("const-duration").value = i.months || 0;
+
+    } catch (err) {
+      console.error("Failed loading edit deal:", err);
+    }
+  }
+
+  /* ================= RUN ENGINE ================= */
   async function run() {
 
     const token = localStorage.getItem("token");
@@ -52,25 +71,21 @@
 
     try {
 
-      const res = await fetch(
-        `${API_BASE}/api/calculators/construction/project`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify(getInputs())
-        }
-      );
+      const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(getInputs())
+      });
 
-      if (res.status === 403) return location.replace("payment.html");
       if (!res.ok) return;
 
       const d = await res.json();
       latestData = d;
 
-      /* ================= CORE OUTPUTS ================= */
+      /* ================= OUTPUTS ================= */
       $("const-total-costs").textContent = money(d.totalCosts);
       $("const-profit").textContent = money(d.profit);
       $("const-margin").textContent = percent(d.margin);
@@ -87,25 +102,17 @@
       statusEl.textContent = d.decision || "—";
       adviceEl.textContent = d.advice || "";
 
-      statusEl.classList.remove("positive", "negative", "caution");
+      setStatusColor(statusEl, d.riskLevel);
 
-      if (d.riskLevel === "High") {
-        statusEl.classList.add("negative");
-      } else if (d.riskLevel === "Medium") {
-        statusEl.classList.add("caution");
-      } else {
-        statusEl.classList.add("positive");
-      }
-
-      /* ================= INSIGHTS (NEW STRUCTURE) ================= */
+      /* ================= INSIGHTS ================= */
       renderInsights(d.insights || {});
 
     } catch (err) {
-      console.error("Construction engine error:", err);
+      console.error("Construction error:", err);
     }
   }
 
-  /* ================= DROPDOWN RENDER ================= */
+  /* ================= INSIGHTS ================= */
   function renderInsights(insights) {
 
     const container = $("const-insights");
@@ -123,17 +130,17 @@
       const body = document.createElement("div");
       body.style.marginTop = "10px";
 
-      (items || []).forEach((i, index) => {
+      (items || []).forEach((i, idx) => {
 
-        const block = document.createElement("div");
-        block.className = "step";
+        const div = document.createElement("div");
+        div.className = "step";
 
-        block.innerHTML = `
-          <strong>${index + 1}. ${i.title}</strong>
+        div.innerHTML = `
+          <strong>${idx + 1}. ${i.title}</strong>
           <div>${i.message}</div>
         `;
 
-        body.appendChild(block);
+        body.appendChild(div);
       });
 
       details.appendChild(summary);
@@ -143,7 +150,7 @@
     });
   }
 
-  /* ================= SAVE DEAL ================= */
+  /* ================= SAVE / UPDATE DEAL ================= */
   async function saveDeal() {
 
     if (!latestData) return alert("Run calculator first");
@@ -167,27 +174,21 @@
 
     const method = editId ? "PUT" : "POST";
 
-    try {
-      const res = await fetch(`${API_BASE}${url}`, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
+    const res = await fetch(`${API_BASE}${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
 
-      if (!res.ok) throw new Error("Save failed");
+    if (!res.ok) return alert("Save failed");
 
-      alert(editId ? "Deal updated" : "Deal saved");
+    alert(editId ? "Deal updated" : "Deal saved");
 
-      localStorage.removeItem("editDeal");
-      localStorage.removeItem("editDealId");
-
-    } catch (err) {
-      console.error(err);
-      alert("Failed to save deal");
-    }
+    localStorage.removeItem("editDeal");
+    localStorage.removeItem("editDealId");
   }
 
   /* ================= RESET ================= */
@@ -197,6 +198,10 @@
       .forEach(i => i.value = "");
 
     latestData = null;
+
+    $("decision-status").textContent = "—";
+    $("decision-advice").textContent = "";
+    $("const-insights").innerHTML = "";
 
     [
       "const-total-costs",
@@ -210,10 +215,6 @@
       const el = $(id);
       if (el) el.textContent = "—";
     });
-
-    $("decision-status").textContent = "—";
-    $("decision-advice").textContent = "";
-    $("const-insights").innerHTML = "";
   }
 
   /* ================= EVENTS ================= */
@@ -225,13 +226,17 @@
     "const-fixed",
     "const-duration"
   ].forEach(id => {
-    $(id)?.addEventListener("input", debounce);
+    $(id)?.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(run, 300);
+    });
   });
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
   /* ================= INIT ================= */
+  loadEditDeal();
   run();
 
 })();
