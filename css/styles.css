@@ -1043,62 +1043,9 @@ label {
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
 }
-/* Duplicate comaprison buttton*/
-.duplicateBtn{
-   width: 100%;
-  margin-top: 1rem;
-  padding: 0.85rem 1.2rem;
 
-  border-radius: 12px;
-  border: 1px solid rgba(0, 180, 216, 0.4);
-
-  background: linear-gradient(135deg, #00b4d8, #0096c7);
-  color: #000;
-
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 16px rgba(0, 180, 216, 0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.2);
-
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
-}
-
-.duplicateBtn :hover{
-   transform: translateY(-2px);
-  filter: brightness(1.05);
-
-  box-shadow:
-    0 10px 22px rgba(0, 180, 216, 0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.3);
-}
-
-.duplicateBtn:active{
-    transform: translateY(0);
-  box-shadow:
-    0 4px 10px rgba(0, 180, 216, 0.2),
-    inset 0 2px 4px rgba(0,0,0,0.25);
-}
-
-.duplicateBtn:focus-visible{
-  outline: 2px solid rgba(0, 180, 216, 0.6);
-  outline-offset: 3px;
-}
-.duplicateBtn:disabled{
-    opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-
-/* SAVE DEALS BUTTON */
+/* SAVE DEALS and EXPORT BUTTON */
+.exportBtn,
 .saveDealBtn {
   width: 100%;
   margin-top: 1rem;
@@ -1123,17 +1070,22 @@ label {
   transition: all 0.15s ease;
 }
 
+/* HOVER */
+.exportBtn:hover,
 .saveDealBtn:hover {
   transform: translateY(-2px);
   filter: brightness(1.05);
 }
 
+/* ACTIVE */
+.exportBtn:active,
 .saveDealBtn:active {
   transform: translateY(0);
 }
 
+/* DISABLED */
+.exportBtn:disabled,
 .saveDealBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
