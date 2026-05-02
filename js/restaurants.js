@@ -52,6 +52,19 @@ async function api(url, method = "GET", body = null) {
   }
 }
 
+  /* ================= HELPERS ================= */
+  function getInputs() {
+  return {
+    tables: $("tables")?.value || 0,
+    covers: $("covers")?.value || 0,
+    check: $("check")?.value || 0,
+    foodPercent: $("foodPercent")?.value || 0,
+    labor: $("labor")?.value || 0,
+    fixed: $("fixed")?.value || 0,
+    days: $("days")?.value || 0
+  };
+}
+
 /* ================= CALCULATOR API ================= */
 async function apiPost(url, body) {
   return await api(url, "POST", body);
@@ -228,6 +241,114 @@ async function saveDeal() {
   }
 }
 
+  /* ================= Export csv ================= */
+  function exportCSV() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const i = getInputs();
+
+  const rows = [
+    ["Field", "Value"],
+
+    ["Tables", i.tables],
+    ["Covers Per Table", i.covers],
+    ["Avg Check", i.check],
+    ["Food %", i.foodPercent],
+    ["Labor", i.labor],
+    ["Fixed", i.fixed],
+    ["Days", i.days],
+
+    ["Monthly Revenue", latestData.monthlyRevenue],
+    ["Food Cost", latestData.foodCost],
+    ["Total Costs", latestData.totalCosts],
+    ["Profit", latestData.profit],
+    ["Margin", latestData.margin],
+    ["Breakeven Covers", latestData.breakevenCovers],
+    ["Profit Per Cover", latestData.profitPerCover],
+    ["Monthly Profit", latestData.monthlyProfit],
+    ["Annual Profit", latestData.annualProfit],
+
+    ["Decision", latestData.decision],
+    ["Advice", latestData.advice]
+  ];
+
+  const csv = rows.map(r => r.join(",")).join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "restaurant-report.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+  /* ================= Export report ================= */
+  function exportReport() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const i = getInputs();
+
+  const html = `
+  <html>
+  <head>
+    <title>Restaurant Report</title>
+    <style>
+      body { font-family: Arial; padding: 30px; }
+      h1 { margin-bottom: 10px; }
+      .box { border: 1px solid #ddd; padding: 10px; margin-top: 10px; }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Restaurant Operations Report</h1>
+    <p>${new Date().toLocaleString()}</p>
+
+    <div class="box">
+      <h3>Inputs</h3>
+      <div>Tables: ${i.tables}</div>
+      <div>Covers: ${i.covers}</div>
+      <div>Avg Check: ${i.check}</div>
+      <div>Food %: ${i.foodPercent}</div>
+      <div>Labor: ${i.labor}</div>
+      <div>Fixed: ${i.fixed}</div>
+      <div>Days: ${i.days}</div>
+    </div>
+
+    <div class="box">
+      <h3>Results</h3>
+      <div>Revenue: ${money(latestData.monthlyRevenue)}</div>
+      <div>Costs: ${money(latestData.totalCosts)}</div>
+      <div>Profit: ${money(latestData.profit)}</div>
+      <div>Margin: ${latestData.margin}%</div>
+      <div>Breakeven Covers: ${latestData.breakevenCovers}</div>
+      <div>Monthly Profit: ${money(latestData.monthlyProfit)}</div>
+      <div>Annual Profit: ${money(latestData.annualProfit)}</div>
+    </div>
+
+    <div class="box">
+      <h3>Decision</h3>
+      <strong>${latestData.decision}</strong>
+      <p>${latestData.advice}</p>
+    </div>
+
+  </body>
+  </html>
+  `;
+
+  const w = window.open("", "_blank");
+  w.document.write(html);
+  w.document.close();
+}
+
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -239,6 +360,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
+  function exportReport() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const i = getInputs();
+
+  const html = `
+  <html>
+  <head>
+    <title>Restaurant Report</title>
+    <style>
+      body { font-family: Arial; padding: 30px; }
+      h1 { margin-bottom: 10px; }
+      .box { border: 1px solid #ddd; padding: 10px; margin-top: 10px; }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Restaurant Operations Report</h1>
+    <p>${new Date().toLocaleString()}</p>
+
+    <div class="box">
+      <h3>Inputs</h3>
+      <div>Tables: ${i.tables}</div>
+      <div>Covers: ${i.covers}</div>
+      <div>Avg Check: ${i.check}</div>
+      <div>Food %: ${i.foodPercent}</div>
+      <div>Labor: ${i.labor}</div>
+      <div>Fixed: ${i.fixed}</div>
+      <div>Days: ${i.days}</div>
+    </div>
+
+    <div class="box">
+      <h3>Results</h3>
+      <div>Revenue: ${money(latestData.monthlyRevenue)}</div>
+      <div>Costs: ${money(latestData.totalCosts)}</div>
+      <div>Profit: ${money(latestData.profit)}</div>
+      <div>Margin: ${latestData.margin}%</div>
+      <div>Breakeven Covers: ${latestData.breakevenCovers}</div>
+      <div>Monthly Profit: ${money(latestData.monthlyProfit)}</div>
+      <div>Annual Profit: ${money(latestData.annualProfit)}</div>
+    </div>
+
+    <div class="box">
+      <h3>Decision</h3>
+      <strong>${latestData.decision}</strong>
+      <p>${latestData.advice}</p>
+    </div>
+
+  </body>
+  </html>
+  `;
+
+  const w = window.open("", "_blank");
+  w.document.write(html);
+  w.document.close();
+}
 
   /* ================= LOAD EDIT MODE ================= */
   const editDeal = JSON.parse(localStorage.getItem("editDeal"));
