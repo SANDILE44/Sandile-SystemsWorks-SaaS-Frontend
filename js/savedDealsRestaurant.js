@@ -62,7 +62,7 @@ function editDeal(deal) {
   localStorage.setItem("editDeal", JSON.stringify(deal));
   localStorage.setItem("editDealId", deal._id);
 
-  window.location.href = "restaurant.html";
+  window.location.href = "industry-restaurant.html";
 }
 
 /* ================= FORMAT ================= */
