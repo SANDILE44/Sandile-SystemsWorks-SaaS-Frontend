@@ -16,15 +16,11 @@ const money = (v) =>
 
 const percent = (v) => {
   const n = Number(v);
-  if (!isFinite(n)) return "0.00%";
-  return n.toFixed(2) + "%";
+  return isFinite(n) ? n.toFixed(2) + "%" : "0.00%";
 };
 
 /* ================= SAFE DIVISION ================= */
-function safeDivide(a, b) {
-  if (!isFinite(a) || !isFinite(b) || b === 0) return 0;
-  return a / b;
-}
+const safeDivide = (a, b) => (!b || !isFinite(a / b)) ? 0 : a / b;
 
 /* ================= INPUTS ================= */
 function getInputs() {
@@ -41,78 +37,52 @@ function getInputs() {
 /* ================= ENGINE ================= */
 function runManufacturing() {
 
-  const {
-    units,
-    price,
-    material,
-    labor,
-    fixed,
-    operational
-  } = getInputs();
+  const i = getInputs();
 
-  /* ================= GUARD ================= */
-  if (units <= 0 || price <= 0) {
+  if (i.units <= 0 || i.price <= 0) {
     renderEmpty();
     return;
   }
 
-  /* ================= REVENUE ================= */
-  const revenue = units * price;
+  const revenue = i.units * i.price;
+  const materialTotal = i.units * i.material;
 
-  /* ================= COST STRUCTURE ================= */
-  const materialTotal = units * material;
-
-  const totalFixedCosts =
-    labor +
-    fixed +
-    operational;
-
-  const totalCosts = materialTotal + totalFixedCosts;
-
-  /* ================= PROFIT ================= */
+  const totalCosts = materialTotal + i.labor + i.fixed + i.operational;
   const profit = revenue - totalCosts;
 
-  /* ================= UNIT ECONOMICS ================= */
-  const costPerUnit = safeDivide(totalCosts, units);
-  const profitPerUnit = safeDivide(profit, units);
-
-  /* ================= PERFORMANCE ================= */
   const margin = safeDivide(profit, revenue) * 100;
   const roi = safeDivide(profit, totalCosts) * 100;
 
-  /* ================= BREAK EVEN ================= */
-  const contributionPerUnit = price - material;
+  const costPerUnit = safeDivide(totalCosts, i.units);
+  const profitPerUnit = safeDivide(profit, i.units);
 
   const breakEvenUnits =
-    contributionPerUnit > 0
-      ? Math.ceil(totalFixedCosts / contributionPerUnit)
+    (i.price - i.material) > 0
+      ? Math.ceil((i.labor + i.fixed + i.operational) / (i.price - i.material))
       : 0;
 
-  /* ================= STATUS ================= */
   let status = "PROFIT";
   let action = "Healthy operation.";
 
   if (profit <= 0) {
     status = "LOSS";
-    action = "Costs exceed revenue — adjust pricing or reduce costs.";
-  } 
-  else if (margin < 10) {
+    action = "Costs exceed revenue — adjust pricing or costs.";
+  } else if (margin < 10) {
     status = "RISK";
-    action = "Low margin — optimize production efficiency.";
-  } 
-  else if (margin < 20) {
-    status = "STABLE";
-    action = "Moderate profitability — room for improvement.";
+    action = "Low margin — high risk operation.";
+  } else if (margin < 20) {
+    status = "NEUTRAL";
+    action = "Moderate performance — optimize.";
   }
 
   latestData = {
     revenue,
     totalCosts,
     profit,
-    costPerUnit,
-    profitPerUnit,
     margin,
     roi,
+    costPerUnit,
+    profitPerUnit,
     breakEvenUnits,
     status,
     action
@@ -142,25 +112,18 @@ function render(d) {
   status.textContent = d.status;
   advice.textContent = d.action;
 
+  /* ================= CLEAN CLASS SYSTEM ================= */
   status.classList.remove("profit", "loss", "neutral");
 
-  status.classList.add(
-    d.status === "LOSS"
-      ? "loss"
-      : d.status === "RISK"
-      ? "neutral"
-      : "profit"
-  );
+  if (d.status === "PROFIT") status.classList.add("profit");
+  else if (d.status === "LOSS") status.classList.add("loss");
+  else status.classList.add("neutral");
 }
 
-/* ================= EMPTY STATE ================= */
+/* ================= EMPTY ================= */
 function renderEmpty() {
-
   ["revenue","totalCosts","profit","costPerUnit","profitPerUnit","margin","roi","breakeven"]
-    .forEach(id => {
-      const el = $(id);
-      if (el) el.textContent = "—";
-    });
+    .forEach(id => $(id) && ($(id).textContent = "—"));
 
   $("status").textContent = "—";
   $("decisionAdvice").textContent = "";
@@ -168,10 +131,7 @@ function renderEmpty() {
 
 /* ================= RESET ================= */
 function resetAll() {
-
-  document.querySelectorAll(".input-section input")
-    .forEach(i => i.value = "");
-
+  document.querySelectorAll(".input-section input").forEach(i => i.value = "");
   latestData = null;
   renderEmpty();
 }
@@ -206,17 +166,46 @@ async function saveDeal() {
   alert("Deal saved");
 }
 
+/* ================= EDIT HYDRATION (FIXED) ================= */
+function hydrateEdit() {
+
+  const edit = localStorage.getItem("editDeal");
+  if (!edit) return;
+
+  try {
+    const d = JSON.parse(edit);
+    const i = d.inputs || {};
+
+    $("mfg-units").value = i.units || 0;
+    $("mfg-price").value = i.price || 0;
+    $("mfg-material").value = i.material || 0;
+    $("mfg-labor").value = i.labor || 0;
+    $("mfg-fixed").value = i.fixed || 0;
+    $("mfg-operational").value = i.operational || 0;
+
+    localStorage.removeItem("editDeal");
+
+    setTimeout(runManufacturing, 100);
+
+  } catch (e) {
+    console.error("Edit load failed:", e);
+  }
+}
+
 /* ================= EVENTS ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.querySelectorAll(".input-section input")
-    .forEach(i => i.addEventListener("input", () => {
+  document.querySelectorAll(".input-section input").forEach(i => {
+    i.addEventListener("input", () => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(runManufacturing, 250);
-    }));
+    });
+  });
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
+
+  hydrateEdit();   // ⭐ THIS FIXES YOUR ISSUE
 
   runManufacturing();
 });
