@@ -168,6 +168,101 @@ function resetAll() {
   $("consult-steps").innerHTML = "";
 }
 
+  /* ================= EXPORT CSV ================= */
+function exportCSV() {
+  if (!latestData) return alert("Run calculator first");
+
+  const i = {
+    hours: $("consult-hours").value,
+    rate: $("consult-rate").value,
+    expenses: $("consult-expenses").value,
+    labor: $("consult-labor").value,
+    fixed: $("consult-fixed").value,
+    discount: $("consult-discount").value,
+    otHours: $("consult-overtime-hours").value,
+    otRate: $("consult-overtime-rate").value,
+    variableCosts: $("consult-variable-costs").value,
+    contingency: $("consult-contingency").value
+  };
+
+  const rows = [
+    ["Field", "Value"],
+
+    ["Hours", i.hours],
+    ["Rate", i.rate],
+    ["Expenses", i.expenses],
+    ["Labor", i.labor],
+    ["Fixed", i.fixed],
+    ["Discount %", i.discount],
+    ["Overtime Hours", i.otHours],
+    ["Overtime Rate", i.otRate],
+    ["Variable Costs", i.variableCosts],
+    ["Contingency %", i.contingency],
+
+    ["Total Revenue", latestData.totalRevenue],
+    ["Revenue After Discount", latestData.revenueAfterDiscount],
+    ["Profit", latestData.profit],
+    ["Margin %", latestData.margin],
+    ["ROI %", latestData.roi],
+    ["Break-even Hours", latestData.breakevenHours]
+  ];
+
+  const csv = rows.map(r => r.join(",")).join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "consulting-report.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+  /* ================= EXPORT REPORT ================= */
+function exportReport() {
+  if (!latestData) return alert("Run calculator first");
+
+  const html = `
+  <html>
+  <head>
+    <title>Consulting Report</title>
+    <style>
+      body { font-family: Arial; padding: 30px; }
+      h1 { margin-bottom: 10px; }
+      .box { border: 1px solid #ddd; padding: 10px; margin-top: 10px; }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Consulting Project Report</h1>
+    <p>${new Date().toLocaleString()}</p>
+
+    <div class="box">
+      <strong>Revenue:</strong> ${latestData.totalRevenue}<br/>
+      <strong>After Discount:</strong> ${latestData.revenueAfterDiscount}<br/>
+      <strong>Profit:</strong> ${latestData.profit}<br/>
+      <strong>Margin:</strong> ${latestData.margin}%<br/>
+      <strong>ROI:</strong> ${latestData.roi}%<br/>
+      <strong>Break-even Hours:</strong> ${latestData.breakevenHours}
+    </div>
+
+    <div class="box">
+      <strong>Decision:</strong> ${latestData.decision}<br/>
+      <strong>Advice:</strong> ${latestData.advice}
+    </div>
+
+  </body>
+  </html>
+  `;
+
+  const w = window.open("", "_blank");
+  w.document.write(html);
+  w.document.close();
+}
+
 /* ================= SAVE / UPDATE ================= */
 async function saveDeal() {
 
@@ -231,6 +326,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
+  $("exportCsvBtn")?.addEventListener("click", exportCSV);
+$("exportReportBtn")?.addEventListener("click", exportReport);
 
   const editDeal = JSON.parse(localStorage.getItem("editDeal"));
 
