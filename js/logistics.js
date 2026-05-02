@@ -1,275 +1,267 @@
 (() => {
 
-/* ===============================
-   HELPERS
-=============================== */
-const $ = id => document.getElementById(id);
+/* =====================================================
+   CORE
+===================================================== */
 
-const money = v => (Number(v) || 0).toLocaleString(undefined, {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-});
+const $ = (id) => document.getElementById(id);
+const API_BASE = window.API_BASE || "";
+
+/* ===============================
+   FORMATTERS
+=============================== */
+const money = v =>
+  (Number(v) || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
 const percent = v => {
   const n = Number(v) || 0;
   return (Math.abs(n) <= 1 ? n * 100 : n).toFixed(2) + "%";
 };
 
-/* ===============================
-   API POST HELPER
-=============================== */
+/* =====================================================
+   API
+===================================================== */
+
 async function apiPost(url, body) {
   const token = localStorage.getItem("token");
-  if (!token) { location.replace("login.html"); return null; }
+  if (!token) return location.replace("login.html");
 
-  try {
-    const res = await fetch(`${API_BASE}${url}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(body)
-    });
+  const res = await fetch(`${API_BASE}${url}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(body)
+  });
 
-    if (res.status === 401) {
-      localStorage.removeItem("token");
-      location.replace("login.html");
-      return null;
-    }
+  if (res.status === 401) return location.replace("login.html");
+  if (res.status === 403) return location.replace("payment.html");
+  if (!res.ok) return null;
 
-    if (res.status === 403) {
-      location.replace("payment.html");
-      return null;
-    }
-
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (err) {
-    console.error("API error", err);
-    return null;
-  }
+  return res.json();
 }
 
-/* ===============================
-   CLASS HELPER
-=============================== */
-function setClass(el, extra) {
+/* =====================================================
+   UI HELPERS
+===================================================== */
+
+function setText(id, value) {
+  const el = $(id);
+  if (el) el.textContent = value ?? "—";
+}
+
+function setClass(el, cls) {
   if (!el) return;
-  el.className = `output-value ${extra || ""}`;
+  el.className = `output-value ${cls || ""}`;
 }
 
-/* ===============================
-   STEP RENDERER
-=============================== */
-function renderSteps(containerId, steps) {
-  const container = $(containerId);
-  if (!container) return;
+function renderSteps(containerId, steps = []) {
+  const el = $(containerId);
+  if (!el) return;
 
-  if (!Array.isArray(steps) || steps.length === 0) {
-    container.innerHTML = "";
-    return;
-  }
-
-  container.innerHTML = steps.map(s => {
-    const step = s.step || "";
-    const message = s.message || "";
-    return `<li><strong>${step}:</strong> ${message}</li>`;
-  }).join("");
+  el.innerHTML = steps.map(s => `
+    <li>
+      <strong>${s.step}</strong>
+      ${s.message}
+    </li>
+  `).join("");
 }
 
-/* ===============================
-   DEBOUNCE
-=============================== */
-const debounceTimers = {};
+/* =====================================================
+   DEBOUNCE SYSTEM
+===================================================== */
+
+const timers = {};
 function debounce(key, fn, delay = 300) {
-  clearTimeout(debounceTimers[key]);
-  debounceTimers[key] = setTimeout(fn, delay);
+  clearTimeout(timers[key]);
+  timers[key] = setTimeout(fn, delay);
 }
 
-/* ===============================
-   MONTHLY OPERATIONS
-=============================== */
-function updateMonthly() { debounce("monthly", runMonthly); }
+/* =====================================================
+   SAVE SYSTEM (EDITABLE DEALS)
+===================================================== */
+
+function getSavedDeals(type) {
+  return JSON.parse(localStorage.getItem(`deals_${type}`) || "[]");
+}
+
+function saveDeal(type, payload) {
+  const deals = getSavedDeals(type);
+
+  const deal = {
+    id: Date.now(),
+    date: new Date().toISOString(),
+    ...payload
+  };
+
+  deals.push(deal);
+  localStorage.setItem(`deals_${type}`, JSON.stringify(deals));
+
+  return deal;
+}
+
+function updateDeal(type, id, payload) {
+  let deals = getSavedDeals(type);
+
+  deals = deals.map(d =>
+    d.id === id ? { ...d, ...payload, updatedAt: new Date().toISOString() } : d
+  );
+
+  localStorage.setItem(`deals_${type}`, JSON.stringify(deals));
+}
+
+/* =====================================================
+   MONTHLY ENGINE
+===================================================== */
 
 async function runMonthly() {
-  const data = await apiPost("/api/calculators/logistics/business", {
-    shipments:   +$("log-shipments")?.value   || 0,
-    revenuePer:  +$("log-revenue")?.value     || 0,
-    fuel:        +$("log-fuel")?.value        || 0,
-    labor:       +$("log-labor")?.value       || 0,
-    maintenance: +$("log-maintenance")?.value || 0,
-    fixed:       +$("log-fixed")?.value       || 0
-  });
-  if (!data) return;
 
-  const map = {
-    "log-shipments-output":    data.shipments ?? 0,
-    "log-total-revenue":       money(data.totalRevenue),
-    "log-total-costs":         money(data.totalCosts),
-    "log-profit":              money(data.profit),
-    "log-per-shipment":        money(data.costPerShipment),
-    "log-revenue-per-shipment":money(data.revenuePer),
-    "log-profit-per-shipment": money(data.profitPerShipment),
-    "log-margin":              percent(data.margin),
-    "log-roi":                 percent(data.roi),
-    "log-breakeven-shipments": data.breakEvenShipments ?? 0,
-    "log-annual-profit":       money(data.annualProfit),
-    "log-fuel-pct":            percent(data.fuelPercent),
-    "log-labor-pct":           percent(data.laborPercent),
-    "log-maintenance-pct":     percent(data.maintenancePercent),
-    "log-fixed-pct":           percent(data.fixedPercent),
-    "log-status":              data.status || "—",
-    "log-risk-level":          data.riskLevel || "—",
-    "log-recommended-price":   money(data.recommendedPricePerShipment),
-    "log-safety":              data.safetyStatus || "—",
-    "log-advice":              data.advice || "—"
+  const inputs = {
+    shipments: +$("log-shipments")?.value || 0,
+    revenuePer: +$("log-revenue")?.value || 0,
+    fuel: +$("log-fuel")?.value || 0,
+    labor: +$("log-labor")?.value || 0,
+    maintenance: +$("log-maintenance")?.value || 0,
+    fixed: +$("log-fixed")?.value || 0
   };
 
-  Object.entries(map).forEach(([id, value]) => {
-    const el = $(id);
-    if (el) el.textContent = value;
-  });
+  const data = await apiPost("/api/calculators/logistics/business", inputs);
+  if (!data) return;
 
-  const risk = (data.riskLevel || "").toLowerCase();
-  setClass($("log-risk-level"),
-    risk === "low" ? "risk-low" :
-    risk === "medium" ? "risk-medium" : "risk-high"
+  /* ================= UI MAP ================= */
+  setText("log-total-revenue", money(data.totalRevenue));
+  setText("log-total-costs", money(data.totalCosts));
+  setText("log-profit", money(data.profit));
+  setText("log-per-shipment", money(data.costPerShipment));
+  setText("log-profit-per-shipment", money(data.profitPerShipment));
+  setText("log-margin", percent(data.margin));
+  setText("log-annual-profit", money(data.annualProfit));
+  setText("log-risk-level", data.riskLevel);
+  setText("log-safety", data.safetyStatus);
+
+  /* ================= COLORS (KEEP YOUR STYLE) ================= */
+  setClass($("log-profit"),
+    data.profit >= 0 ? "profit-positive" : "profit-negative"
   );
-  setClass($("log-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
+
+  setClass($("log-risk-level"),
+    data.riskLevel === "Low" ? "risk-low" :
+    data.riskLevel === "Medium" ? "risk-medium" : "risk-high"
+  );
 
   renderSteps("log-steps", data.steps);
+
+  /* ================= SAVE (EDITABLE) ================= */
+  $("saveOperationsBtn")?.onclick = () => {
+    saveDeal("operations", {
+      inputs,
+      results: {
+        profit: data.profit,
+        margin: data.margin
+      }
+    });
+  };
 }
 
-/* ===============================
-   SHIPMENT
-=============================== */
-async function runShipment() {
-  const data = await apiPost("/api/calculators/logistics/shipment", {
-    quote:         +$("ship-quote")?.value         || 0,
-    minMargin:     +$("ship-min-margin")?.value    || 0,
-    buffer:        +$("ship-buffer")?.value        || 0,
-    distance:      +$("ship-distance")?.value      || 0,
-    fuelPerKm:     +$("ship-fuel-km")?.value       || 0,
-    vehiclePerKm:  +$("ship-vehicle-km")?.value    || 0,
-    loadFactor:    +$("ship-load-factor")?.value   || 100,
-    drivingHours:  +$("ship-driving-hours")?.value || 0,
-    waitHours:     +$("ship-wait-hours")?.value    || 0,
-    driverRate:    +$("ship-driver-rate")?.value   || 0,
-    tolls:         +$("ship-tolls")?.value         || 0,
-    permits:       +$("ship-permits")?.value       || 0,
-    otherFees:     +$("ship-other-fees")?.value    || 0,
-    cargoValue:    +$("ship-cargo-value")?.value   || 0,
-    insuranceRate: +$("ship-insurance")?.value     || 0,
-    duties:        +$("ship-duties")?.value        || 0,
-    handling:      +$("ship-handling")?.value      || 0,
-    passThrough:   +$("ship-pass-through")?.value  || 0
-  });
-  if (!data) return;
+/* =====================================================
+   SHIPMENT ENGINE
+===================================================== */
 
-  const map = {
-    "ship-total-cost": money(data.totalCost),
-    "ship-profit":     money(data.profit),
-    "ship-margin":     percent(data.margin),
-    "ship-min-quote":  money(data.recommendedMinQuote),
-    "ship-decision":   data.decision || "—",
-    "ship-reason":     data.reason || "—"
+async function runShipment() {
+
+  const inputs = {
+    quote: +$("ship-quote")?.value || 0,
+    distance: +$("ship-distance")?.value || 0
   };
 
-  Object.entries(map).forEach(([id, value]) => {
-    const el = $(id);
-    if (el) el.textContent = value;
-  });
+  const data = await apiPost("/api/calculators/logistics/shipment", inputs);
+  if (!data) return;
 
-  const decision = (data.decision || "").toUpperCase();
-  setClass($("ship-decision"),
-    decision === "APPROVE" ? "decision-approve" :
-    decision === "REJECT"  ? "decision-reject"  : "decision-review"
+  setText("ship-total-cost", money(data.totalCost));
+  setText("ship-profit", money(data.profit));
+  setText("ship-margin", percent(data.margin));
+  setText("ship-decision", data.decision);
+
+  setClass($("ship-profit"),
+    data.profit >= 0 ? "profit-positive" : "profit-negative"
   );
-  setClass($("ship-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
 
-  const margin = Number(data.margin) || 0;
   setClass($("ship-margin"),
-    margin >= 20 ? "margin-strong" :
-    margin >= 10 ? "margin-medium" : "margin-low"
+    data.margin >= 20 ? "margin-strong" :
+    data.margin >= 10 ? "margin-medium" : "margin-low"
+  );
+
+  setClass($("ship-decision"),
+    data.decision === "APPROVE" ? "decision-approve" :
+    data.decision === "REJECT" ? "decision-reject" : "decision-review"
   );
 
   renderSteps("ship-steps", data.steps);
+
+  $("saveShipmentBtn")?.onclick = () => {
+    saveDeal("shipment", { inputs, results: data });
+  };
 }
 
-/* ===============================
-   FREIGHT
-=============================== */
-async function runFreight() {
-  const data = await apiPost("/api/calculators/logistics/freight", {
-    quote:           +$("freight-quote")?.value           || 0,
-    cargoValue:      +$("freight-cargo-value")?.value     || 0,
-    insuranceRate:   +$("freight-insurance-rate")?.value  || 0,
-    freightCost:     +$("freight-cost")?.value            || 0,
-    fuelSurcharge:   +$("freight-fuel-surcharge")?.value  || 0,
-    dutyRate:        +$("freight-duty-rate")?.value       || 0,
-    customsFees:     +$("freight-customs-fees")?.value    || 0,
-    portFees:        +$("freight-port-fees")?.value       || 0,
-    handlingFees:    +$("freight-handling-fees")?.value   || 0,
-    inlandTransport: +$("freight-inland-transport")?.value|| 0,
-    tollCosts:       +$("freight-tolls")?.value           || 0,
-    otherCosts:      +$("freight-other-costs")?.value     || 0
-  });
-  if (!data) return;
+/* =====================================================
+   FREIGHT ENGINE
+===================================================== */
 
-  const map = {
-    "freight-insurance-cost": money(data.insuranceCost),
-    "freight-duties":         money(data.duties),
-    "freight-total-cost":     money(data.totalCost),
-    "freight-profit":         money(data.profit),
-    "freight-margin":         percent(data.margin),
-    "freight-breakeven":      money(data.breakEvenQuote),
-    "freight-decision":       data.decision || "—",
-    "freight-reason":         data.reason || "—",
-    "freight-risk":           data.riskLevel || "—"
+async function runFreight() {
+
+  const inputs = {
+    quote: +$("freight-quote")?.value || 0
   };
 
-  Object.entries(map).forEach(([id, value]) => {
-    const el = $(id);
-    if (el) el.textContent = value;
-  });
+  const data = await apiPost("/api/calculators/logistics/freight", inputs);
+  if (!data) return;
 
-  const decision = (data.decision || "").toUpperCase();
-  setClass($("freight-decision"),
-    decision === "APPROVE" ? "decision-approve" :
-    decision === "REJECT"  ? "decision-reject"  : "decision-review"
+  setText("freight-total-cost", money(data.totalCost));
+  setText("freight-profit", money(data.profit));
+  setText("freight-margin", percent(data.margin));
+  setText("freight-risk", data.riskLevel);
+
+  setClass($("freight-profit"),
+    data.profit >= 0 ? "profit-positive" : "profit-negative"
   );
-  setClass($("freight-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
 
-  const margin = Number(data.margin) || 0;
   setClass($("freight-margin"),
-    margin >= 20 ? "margin-strong" :
-    margin >= 10 ? "margin-medium" : "margin-low"
+    data.margin >= 20 ? "margin-strong" :
+    data.margin >= 10 ? "margin-medium" : "margin-low"
   );
 
-  const risk = (data.riskLevel || "").toLowerCase();
   setClass($("freight-risk"),
-    risk === "low"    ? "freight-risk-low"    :
-    risk === "medium" ? "freight-risk-medium" : "freight-risk-high"
+    data.riskLevel === "Low" ? "freight-risk-low" :
+    data.riskLevel === "Medium" ? "freight-risk-medium" : "freight-risk-high"
   );
 
   renderSteps("freight-steps", data.steps);
+
+  $("saveFreightBtn")?.onclick = () => {
+    saveDeal("freight", { inputs, results: data });
+  };
 }
 
-/* ===============================
-   EVENT BINDING
-=============================== */
-function bindEvents() {
+/* =====================================================
+   EVENT BINDING (CLEAN + SCALABLE)
+===================================================== */
+
+function bind() {
+
   document.querySelectorAll("#operations-panel input")
-    .forEach(i => i.addEventListener("input", updateMonthly));
+    .forEach(i => i.addEventListener("input", () => debounce("m", runMonthly)));
 
   document.querySelectorAll("#shipment-panel input")
-    .forEach(i => i.addEventListener("input", () => debounce("shipment", runShipment)));
+    .forEach(i => i.addEventListener("input", () => debounce("s", runShipment)));
 
   document.querySelectorAll("#freight-panel input")
-    .forEach(i => i.addEventListener("input", () => debounce("freight", runFreight)));
+    .forEach(i => i.addEventListener("input", () => debounce("f", runFreight)));
 }
 
-bindEvents();
+bind();
 
 })();
