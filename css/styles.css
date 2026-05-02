@@ -1137,30 +1137,3 @@ label {
   cursor: not-allowed;
 }
 
-/* =========================
-   DROPDOWN SECTIONS FIX
-========================= */
-
-.dropdown-section {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
-}
-
-.dropdown-section summary {
-  cursor: pointer;
-  font-weight: 600;
-  color: #e5e7eb;
-  padding: 8px 0;
-}
-
-.dropdown-section summary:hover {
-  color: #60a5fa;
-}
-
-/* smooth spacing when opened */
-.dropdown-section[open] {
-  padding-bottom: 14px;
-}
