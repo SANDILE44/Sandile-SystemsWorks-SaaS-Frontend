@@ -46,7 +46,7 @@
     localStorage.setItem("editDeal", JSON.stringify(deal));
     localStorage.setItem("editDealId", deal._id);
 
-    window.location.href = "construction.html";
+    window.location.href = "industry-construction.html";
   }
 
   /* ================= FORMAT ================= */
