@@ -1,27 +1,22 @@
 (() => {
 
-  /* ===============================
-     API BASE
-  ================================ */
-  const API_BASE =
-    "https://sandile-systemsworks-saas-backend-2.onrender.com";
-
+  const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
   const $ = (id) => document.getElementById(id);
 
-  /* ===============================
-     FORMATTERS
-  ================================ */
+  /* ================= FORMATTERS ================= */
   const money = (v) =>
     (Number(v) || 0).toLocaleString(undefined, {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
 
-  const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
+  const percent = (v) => {
+    const n = Number(v);
+    if (!isFinite(n)) return "0.00%";
+    return n.toFixed(2) + "%";
+  };
 
-  /* ===============================
-     STATE
-  ================================ */
+  /* ================= STATE ================= */
   let timer;
   let latestData = null;
 
@@ -30,18 +25,7 @@
     timer = setTimeout(run, 300);
   };
 
-  /* ===============================
-     COLOR ENGINE
-  ================================ */
-  function color(el, type) {
-    if (!el) return;
-    el.classList.remove("positive", "negative", "caution");
-    if (type) el.classList.add(type);
-  }
-
-  /* ===============================
-     INPUTS
-  ================================ */
+  /* ================= INPUTS ================= */
   function getInputs() {
     return {
       value: +$("const-value")?.value || 0,
@@ -49,13 +33,18 @@
       laborMonthly: +$("const-labor")?.value || 0,
       equipmentMonthly: +$("const-equipment")?.value || 0,
       fixedMonthly: +$("const-fixed")?.value || 0,
-      months: +$("const-duration")?.value || 0,
+      months: +$("const-duration")?.value || 0
     };
   }
 
-  /* ===============================
-     MAIN ENGINE
-  ================================ */
+  /* ================= COLOR ENGINE ================= */
+  function color(el, type) {
+    if (!el) return;
+    el.classList.remove("positive", "negative", "caution");
+    if (type) el.classList.add(type);
+  }
+
+  /* ================= MAIN ENGINE ================= */
   async function run() {
 
     const token = localStorage.getItem("token");
@@ -69,9 +58,9 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify(getInputs()),
+          body: JSON.stringify(getInputs())
         }
       );
 
@@ -81,88 +70,85 @@
       const d = await res.json();
       latestData = d;
 
-      /* ===============================
-         CORE OUTPUTS
-      ================================ */
+      /* ================= CORE OUTPUTS ================= */
       $("const-total-costs").textContent = money(d.totalCosts);
+      $("const-profit").textContent = money(d.profit);
+      $("const-margin").textContent = percent(d.margin);
+      $("const-roi").textContent = percent(d.roi);
 
-      const profitEl = $("const-profit");
-      profitEl.textContent = money(d.profit);
-      color(profitEl, d.profit >= 0 ? "positive" : "negative");
-
-      const marginEl = $("const-margin");
-      marginEl.textContent = percent(d.margin);
-      color(
-        marginEl,
-        d.margin < 10 ? "negative" :
-        d.margin < 20 ? "caution" : "positive"
-      );
-
-      const roiEl = $("const-roi");
-      roiEl.textContent = percent(d.roi);
-      color(
-        roiEl,
-        d.roi < 0 ? "negative" :
-        d.roi < 10 ? "caution" : "positive"
-      );
-
-      $("const-breakeven").textContent = money(d.breakEven);
+      $("const-breakeven").textContent = money(d.breakEvenValue);
       $("const-monthly-profit").textContent = money(d.monthlyProfit);
       $("const-annual-profit").textContent = money(d.annualProfit);
 
-      /* ===============================
-         DECISION ENGINE
-      ================================ */
+      /* ================= DECISION ================= */
       const statusEl = $("decision-status");
-      const riskEl = $("risk-warning");
       const adviceEl = $("decision-advice");
 
       statusEl.textContent = d.decision || "—";
+      adviceEl.textContent = d.advice || "";
+
+      statusEl.classList.remove("positive", "negative", "caution");
 
       if (d.riskLevel === "High") {
-        color(statusEl, "negative");
-        riskEl.textContent = "High risk project";
-        adviceEl.textContent = d.advice || "Renegotiate contract.";
+        statusEl.classList.add("negative");
       } else if (d.riskLevel === "Medium") {
-        color(statusEl, "caution");
-        riskEl.textContent = "Medium risk project";
-        adviceEl.textContent = d.advice || "Optimize costs.";
+        statusEl.classList.add("caution");
       } else {
-        color(statusEl, "positive");
-        riskEl.textContent = "Low risk project";
-        adviceEl.textContent = d.advice || "Safe to proceed.";
+        statusEl.classList.add("positive");
       }
 
-      /* ===============================
-         STEP LIST (HIDDEN UNTIL USER OPENS UI LATER)
-      ================================ */
-      const steps = $("const-steps-list");
-      steps.innerHTML = "";
-
-      (d.steps || []).forEach((s, i) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <strong>${i + 1}. ${s.step}</strong>
-          <span>${s.message}</span>
-        `;
-        steps.appendChild(li);
-      });
+      /* ================= INSIGHTS (NEW STRUCTURE) ================= */
+      renderInsights(d.insights || {});
 
     } catch (err) {
       console.error("Construction engine error:", err);
     }
   }
 
-  /* ===============================
-     SAVE DEAL (CONSTRUCTION)
-  ================================ */
+  /* ================= DROPDOWN RENDER ================= */
+  function renderInsights(insights) {
+
+    const container = $("const-insights");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    Object.entries(insights).forEach(([group, items]) => {
+
+      const details = document.createElement("details");
+
+      const summary = document.createElement("summary");
+      summary.textContent = group.toUpperCase();
+
+      const body = document.createElement("div");
+      body.style.marginTop = "10px";
+
+      (items || []).forEach((i, index) => {
+
+        const block = document.createElement("div");
+        block.className = "step";
+
+        block.innerHTML = `
+          <strong>${index + 1}. ${i.title}</strong>
+          <div>${i.message}</div>
+        `;
+
+        body.appendChild(block);
+      });
+
+      details.appendChild(summary);
+      details.appendChild(body);
+
+      container.appendChild(details);
+    });
+  }
+
+  /* ================= SAVE DEAL ================= */
   async function saveDeal() {
 
     if (!latestData) return alert("Run calculator first");
 
     const token = localStorage.getItem("token");
-    if (!token) return;
-
     const editId = localStorage.getItem("editDealId");
 
     const payload = {
@@ -186,9 +172,9 @@
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) throw new Error("Save failed");
@@ -204,40 +190,48 @@
     }
   }
 
-  /* ===============================
-     RESET
-  ================================ */
+  /* ================= RESET ================= */
   function resetAll() {
+
     document.querySelectorAll(".input-section input")
       .forEach(i => i.value = "");
 
     latestData = null;
-    run();
+
+    [
+      "const-total-costs",
+      "const-profit",
+      "const-margin",
+      "const-roi",
+      "const-breakeven",
+      "const-monthly-profit",
+      "const-annual-profit"
+    ].forEach(id => {
+      const el = $(id);
+      if (el) el.textContent = "—";
+    });
+
+    $("decision-status").textContent = "—";
+    $("decision-advice").textContent = "";
+    $("const-insights").innerHTML = "";
   }
 
-  /* ===============================
-     EVENTS
-  ================================ */
+  /* ================= EVENTS ================= */
   [
     "const-value",
     "const-material",
     "const-labor",
     "const-equipment",
     "const-fixed",
-    "const-duration",
-  ].forEach((id) => $(id)?.addEventListener("input", debounce));
+    "const-duration"
+  ].forEach(id => {
+    $(id)?.addEventListener("input", debounce);
+  });
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
-  $("logoutBtn")?.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    location.replace("login.html");
-  });
-
-  /* ===============================
-     INIT
-  ================================ */
+  /* ================= INIT ================= */
   run();
 
 })();
