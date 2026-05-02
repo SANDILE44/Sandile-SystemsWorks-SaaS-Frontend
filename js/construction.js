@@ -236,49 +236,130 @@
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
 
- /* ================= EXPORT ================= */
-function exportResults() {
+ /* ================= EXPORT CSV ================= */
+function exportCSV() {
   if (!latestData) {
     alert("Run calculator first");
     return;
   }
 
-  const inputs = getInputs();
+  const i = getInputs();
 
-  const data = {
-    type: "Construction Project",
-    date: new Date().toLocaleString(),
-    inputs,
-    results: {
-      totalCosts: latestData.totalCosts,
-      profit: latestData.profit,
-      margin: latestData.margin,
-      roi: latestData.roi,
-      breakEven: latestData.breakEvenValue,
-      monthlyProfit: latestData.monthlyProfit,
-      annualProfit: latestData.annualProfit,
-      decision: latestData.decision,
-      advice: latestData.advice
-    }
-  };
+  const rows = [
+    ["Field", "Value"],
 
-  const blob = new Blob(
-    [JSON.stringify(data, null, 2)],
-    { type: "application/json" }
-  );
+    ["Contract Value", i.value],
+    ["Material Cost", i.material],
+    ["Labor Monthly", i.laborMonthly],
+    ["Equipment Monthly", i.equipmentMonthly],
+    ["Fixed Monthly", i.fixedMonthly],
+    ["Duration (Months)", i.months],
 
+    ["Total Costs", latestData.totalCosts],
+    ["Profit", latestData.profit],
+    ["Margin (%)", latestData.margin],
+    ["ROI (%)", latestData.roi],
+    ["Break-even", latestData.breakEvenValue],
+    ["Monthly Profit", latestData.monthlyProfit],
+    ["Annual Profit", latestData.annualProfit],
+
+    ["Decision", latestData.decision],
+    ["Advice", latestData.advice]
+  ];
+
+  const csvContent = rows
+    .map(row => row.join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = "construction-result.json";
+  a.download = "construction-results.csv";
   a.click();
 
   URL.revokeObjectURL(url);
 }
+ /* ================= EXPORT Reports================= */
+  function exportReport() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
 
+  const i = getInputs();
+
+  const html = `
+  <html>
+  <head>
+    <title>Construction Report</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 30px;
+        color: #111;
+      }
+      h1 { margin-bottom: 5px; }
+      .section { margin-top: 25px; }
+      .box {
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-top: 10px;
+      }
+      .strong { font-weight: bold; }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Construction Project Report</h1>
+    <div>${new Date().toLocaleString()}</div>
+
+    <div class="section">
+      <h2>Decision</h2>
+      <div class="box">
+        <div class="strong">${latestData.decision}</div>
+        <div>${latestData.advice}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Inputs</h2>
+      <div class="box">
+        <div>Contract Value: ${i.value}</div>
+        <div>Material: ${i.material}</div>
+        <div>Labor: ${i.laborMonthly}</div>
+        <div>Equipment: ${i.equipmentMonthly}</div>
+        <div>Fixed: ${i.fixedMonthly}</div>
+        <div>Duration: ${i.months}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Results</h2>
+      <div class="box">
+        <div>Total Costs: ${latestData.totalCosts}</div>
+        <div>Profit: ${latestData.profit}</div>
+        <div>Margin: ${latestData.margin}%</div>
+        <div>ROI: ${latestData.roi}%</div>
+        <div>Break-even: ${latestData.breakEvenValue}</div>
+        <div>Monthly Profit: ${latestData.monthlyProfit}</div>
+        <div>Annual Profit: ${latestData.annualProfit}</div>
+      </div>
+    </div>
+
+  </body>
+  </html>
+  `;
+
+  const w = window.open("", "_blank");
+  w.document.write(html);
+  w.document.close();
+}
 /* ================= EVENTS ================= */
-$("exportBtn")?.addEventListener("click", exportResults);
+$("exportCsvBtn")?.addEventListener("click", exportCSV);
+$("exportReportBtn")?.addEventListener("click", exportReport);
 
   /* ================= INIT ================= */
   loadEditDeal();
