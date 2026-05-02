@@ -192,6 +192,100 @@ function hydrateEdit() {
   }
 }
 
+  /* ================= EXPORT CSV ================= */
+function exportManufacturingCSV() {
+
+  if (!latestData) {
+    alert("Run calculation first");
+    return;
+  }
+
+  const i = getInputs();
+  const d = latestData;
+
+  const rows = [
+    ["Field", "Value"],
+
+    ["Units", i.units],
+    ["Price", i.price],
+    ["Material Cost", i.material],
+    ["Labor", i.labor],
+    ["Fixed", i.fixed],
+    ["Operational", i.operational],
+
+    ["Revenue", d.revenue],
+    ["Total Costs", d.totalCosts],
+    ["Profit", d.profit],
+    ["Margin %", d.margin],
+    ["ROI %", d.roi],
+    ["Break-even Units", d.breakEvenUnits],
+
+    ["Status", d.status],
+    ["Action", d.action]
+  ];
+
+  const csv = rows.map(r => r.join(",")).join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "manufacturing-report.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+    /* ================= EXPORT Report ================= */
+  function exportManufacturingReport() {
+
+  if (!latestData) {
+    alert("Run calculation first");
+    return;
+  }
+
+  const i = getInputs();
+  const d = latestData;
+
+  const html = `
+  <html>
+  <head>
+    <title>Manufacturing Report</title>
+    <style>
+      body { font-family: Arial; padding: 30px; }
+      .box { border: 1px solid #ddd; padding: 10px; margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+
+    <h1>Manufacturing Report</h1>
+    <div>${new Date().toLocaleString()}</div>
+
+    <div class="box">
+      <h3>Inputs</h3>
+      <div>Units: ${i.units}</div>
+      <div>Price: ${i.price}</div>
+      <div>Material: ${i.material}</div>
+    </div>
+
+    <div class="box">
+      <h3>Results</h3>
+      <div>Revenue: ${d.revenue}</div>
+      <div>Profit: ${d.profit}</div>
+      <div>Margin: ${d.margin}%</div>
+      <div>ROI: ${d.roi}%</div>
+      <div>Status: ${d.status}</div>
+    </div>
+
+  </body>
+  </html>
+  `;
+
+  const w = window.open("", "_blank");
+  w.document.write(html);
+  w.document.close();
+}
 /* ================= EVENTS ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -204,6 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
+  $("exportCsvBtn")?.addEventListener("click", exportManufacturingCSV);
+$("exportReportBtn")?.addEventListener("click", exportManufacturingReport);
 
   hydrateEdit();   // ⭐ THIS FIXES YOUR ISSUE
 
