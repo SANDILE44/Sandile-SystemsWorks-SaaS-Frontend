@@ -235,6 +235,51 @@
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
 
+
+ /* ================= EXPORT ================= */
+function exportResults() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const inputs = getInputs();
+
+  const data = {
+    type: "Construction Project",
+    date: new Date().toLocaleString(),
+    inputs,
+    results: {
+      totalCosts: latestData.totalCosts,
+      profit: latestData.profit,
+      margin: latestData.margin,
+      roi: latestData.roi,
+      breakEven: latestData.breakEvenValue,
+      monthlyProfit: latestData.monthlyProfit,
+      annualProfit: latestData.annualProfit,
+      decision: latestData.decision,
+      advice: latestData.advice
+    }
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(data, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "construction-result.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+/* ================= EVENTS ================= */
+$("exportBtn")?.addEventListener("click", exportResults);
+
   /* ================= INIT ================= */
   loadEditDeal();
   run();
