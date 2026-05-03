@@ -26,9 +26,9 @@ async function loadShare() {
 
   try {
     // Debugging: Log the exact URL being called
-    console.log(`Fetching from: ${API_BASE}/api/shared-deals/${id}`);
+    console.log(`Fetching from: ${API_BASE}/api/share/${id}`);
 
-    const res = await fetch(`${API_BASE}/api/shared-deals/${id}`);
+    const res = await fetch(`${API_BASE}/api/share/${id}`);
     
     if (res.status === 404) {
       contentEl.innerHTML = `<p class="error">Link not found. Please check the URL.</p>`;
