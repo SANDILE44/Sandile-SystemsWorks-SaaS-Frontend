@@ -395,7 +395,7 @@ async function shareDeal() {
   const data = await res.json();
 
   // ✅ FIX: Using a hardcoded link to your GitHub Pages for the share viewer
-  const link = `https://sandile44.github.io/share.html?id=${data.id}`;
+const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
 
   await navigator.clipboard.writeText(link);
 
