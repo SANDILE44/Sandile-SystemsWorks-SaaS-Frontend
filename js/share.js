@@ -1,10 +1,8 @@
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-/* ================= HELPERS ================= */
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-// Neutral number formatter (adds commas/decimals but no symbols)
 const formatNum = (v) => 
   (Number(v) || 0).toLocaleString(undefined, { 
     minimumFractionDigits: 2, 
@@ -13,64 +11,37 @@ const formatNum = (v) =>
 
 const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
-/* ================= CORE LOGIC ================= */
 async function loadShare() {
   const contentEl = document.getElementById("content");
   
   if (!id) {
-    contentEl.innerHTML = `<p class="error">No share ID provided.</p>`;
+    contentEl.innerHTML = `<h2>No ID provided</h2>`;
     return;
   }
 
-  contentEl.innerHTML = `<p>Loading shared deal...</p>`;
-
   try {
-    // Debugging: Log the exact URL being called
-    console.log(`Fetching from: ${API_BASE}/api/share/${id}`);
-
+    // Note: Path changed to /api/share to match your server.js
     const res = await fetch(`${API_BASE}/api/share/${id}`);
     
-    if (res.status === 404) {
-      contentEl.innerHTML = `<p class="error">Link not found. Please check the URL.</p>`;
+    if (!res.ok) {
+      contentEl.innerHTML = `<h2>Deal not found</h2>`;
       return;
     }
 
-    if (!res.ok) throw new Error("Server error");
-
     const deal = await res.json();
-    document.getElementById("title").textContent = deal.meta?.title || "Shared Deal";
-    renderDeal(deal);
+    document.getElementById("title").textContent = deal.meta?.title || "Shared Project Results";
 
-  } catch (err) {
-    console.error("Fetch error:", err);
-    contentEl.innerHTML = `<p class="error">Connection failed.</p>`;
-  }
-}
-
-function renderDeal(deal) {
-  const el = document.getElementById("content");
-  const { results, type } = deal;
-
-  if (type === "construction") {
-    el.innerHTML = `
-      <div class="card">
-        <div class="badge">Construction Project</div>
-        <div class="grid">
-          <div class="stat">
-            <label>Net Profit</label>
-            <div class="value">${formatNum(results.profit)}</div>
-          </div>
-          <div class="stat">
-            <label>Margin</label>
-            <div class="value">${percent(results.margin)}</div>
-          </div>
-          <div class="stat">
-            <label>ROI</label>
-            <div class="value">${percent(results.roi)}</div>
-          </div>
+    if (deal.type === "construction") {
+      contentEl.innerHTML = `
+        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 400px;">
+          <p><strong>Profit:</strong> ${formatNum(deal.results.profit)}</p>
+          <p><strong>Margin:</strong> ${percent(deal.results.margin)}</p>
+          <p><strong>ROI:</strong> ${percent(deal.results.roi)}</p>
         </div>
-      </div>
-    `;
+      `;
+    }
+  } catch (err) {
+    contentEl.innerHTML = `<h2>Error loading data</h2>`;
   }
 }
 
