@@ -1,70 +1,113 @@
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-const formatNum = (num) => {
-    return new Intl.NumberFormat('en-ZA', { minimumFractionDigits: 2 }).format(num || 0);
-};
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-const percent = (num) => {
-    return (num || 0).toFixed(2) + '%';
-};
+const formatNum = (v) => 
+  (Number(v) || 0).toLocaleString(undefined, { 
+    minimumFractionDigits: 2, 
+    maximumFractionDigits: 2 
+  });
+
+const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
 
 async function loadShare() {
-    const contentEl = document.getElementById("content");
-    const titleEl = document.getElementById("title");
-    
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+  const contentEl = document.getElementById("content");
+  
+  if (!id) {
+    contentEl.innerHTML = `<h2 style="color: #ef4444; text-align: center;">No ID provided</h2>`;
+    return;
+  }
 
-    if (!id) {
-        contentEl.innerHTML = "<p style='color:red; text-align:center;'>Error: No ID found</p>";
-        return;
+  try {
+    const res = await fetch(`${API_BASE}/api/share/${id}`);
+    
+    if (!res.ok) {
+      contentEl.innerHTML = `<h2 style="color: #ef4444; text-align: center;">Deal not found or expired</h2>`;
+      return;
     }
 
-    try {
-        const response = await fetch(`${API_BASE}/api/share/${id}`);
-        if (!response.ok) {
-            contentEl.innerHTML = "<p style='text-align:center;'>Project not found.</p>";
-            return;
-        }
+    const deal = await res.json();
+    
+    // Set Page Title
+    document.getElementById("title").textContent = deal.title || "Project Analysis Results";
 
-        const deal = await response.json();
-        const data = deal.results || deal;
+    // Standard styling for the shared card
+    let html = `
+      <div style="border: 1px solid #ddd; padding: 30px; border-radius: 12px; max-width: 500px; margin: 40px auto; background: white; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+        <h3 style="margin-top: 0; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+            ${deal.type} Analysis
+        </h3>
+        
+        <div style="margin: 24px 0;">
+            <p style="font-size: 1.25rem; margin-bottom: 8px;"><strong>Net Profit:</strong> 
+               <span style="color: ${deal.results.profit >= 0 ? '#10b981' : '#ef4444'}">
+                 R ${formatNum(deal.results.profit)}
+               </span>
+            </p>
+            <p style="color: #475569; margin: 4px 0;"><strong>Profit Margin:</strong> ${percent(deal.results.margin)}</p>
+            <p style="color: #475569; margin: 4px 0;"><strong>ROI:</strong> ${percent(deal.results.roi)}</p>
+        </div>
+    `;
 
-        // 1. Update the Header Title
-        titleEl.textContent = deal.title || "Project Analysis";
-
-        // 2. Inject using YOUR EXACT CSS CLASSES from share.html
-        contentEl.innerHTML = `
-            <div class="data-grid">
-                <div class="data-card">
-                    <span class="label">Net Profit</span>
-                    <span class="value" style="color: #22c55e;">R ${formatNum(data.profit)}</span>
-                </div>
-                
-                <div class="data-card">
-                    <span class="label">Margin</span>
-                    <span class="value" style="color: var(--accent);">${percent(data.margin)}</span>
-                </div>
-
-                <div class="data-card">
-                    <span class="label">ROI</span>
-                    <span class="value" style="color: #ffffff;">${percent(data.roi)}</span>
-                </div>
-            </div>
-
-            <div class="decision-panel" style="background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.2); color: var(--accent);">
-                <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; opacity: 0.8;">Decision Engine</div>
-                <div style="font-size: 1.3rem; font-weight: 800;">${data.decision || 'Complete'}</div>
-                <p style="color: var(--text-muted); font-weight: 400; font-style: italic; margin-top: 10px; font-size: 0.85rem;">
-                    "${data.advice || 'Analysis complete.'}"
-                </p>
+    // --- CONSULTING SPECIFIC ---
+    if (deal.type === "consulting") {
+        html += `
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                <p style="margin-top: 0;"><strong>Decision:</strong> ${deal.results.status || 'N/A'}</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
             </div>
         `;
-
-    } catch (error) {
-        console.error("Error:", error);
-        contentEl.innerHTML = "<p style='text-align:center;'>Connection error. Please refresh.</p>";
     }
+
+    // --- CONSTRUCTION SPECIFIC ---
+    if (deal.type === "construction") {
+        html += `
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <p style="margin: 0;"><strong>Break-even:</strong> R ${formatNum(deal.results.breakEven)}</p>
+            </div>
+        `;
+    }
+
+    // --- MANUFACTURING SPECIFIC ---
+    if (deal.type === "manufacturing") {
+        html += `
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981;">
+                <p style="margin-top: 0;"><strong>Break-even Units:</strong> ${deal.results.breakEvenUnits || 0}</p>
+                <p style="margin-bottom: 10px;"><strong>Cost per Unit:</strong> R ${formatNum(deal.results.costPerUnit)}</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <p style="margin-bottom: 4px;"><strong>Status:</strong> ${deal.results.status || 'N/A'}</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
+            </div>
+        `;
+    }
+
+    // --- RESTAURANT SPECIFIC ---
+    if (deal.type === "restaurant") {
+        html += `
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #f43f5e;">
+                <p style="margin-top: 0;"><strong>Daily Covers:</strong> ${deal.results.dailyCovers || 0}</p>
+                <p><strong>Breakeven Covers:</strong> ${deal.results.breakEven || deal.results.breakevenCovers || 0}</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <p style="margin-bottom: 4px;"><strong>Decision:</strong> ${deal.results.status || 'N/A'}</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
+            </div>
+        `;
+    }
+
+    html += `
+        <p style="text-align: center; margin-top: 30px; font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+            Generated by Sandile SystemsWorks SaaS • ${new Date().toLocaleDateString()}
+        </p>
+      </div>
+    `;
+
+    contentEl.innerHTML = html;
+
+  } catch (err) {
+    console.error("Load Share Error:", err);
+    contentEl.innerHTML = `<h2 style="text-align: center;">Error loading shared data</h2>`;
+  }
 }
 
 loadShare();
