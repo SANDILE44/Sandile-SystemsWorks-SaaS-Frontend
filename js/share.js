@@ -16,62 +16,54 @@ async function loadShare() {
     const id = params.get("id");
 
     if (!id) {
-        contentEl.innerHTML = "<p style='color:red;'>Error: No ID found</p>";
+        contentEl.innerHTML = "<p style='color:red; text-align:center;'>Error: No ID found</p>";
         return;
     }
 
     try {
         const response = await fetch(`${API_BASE}/api/share/${id}`);
         if (!response.ok) {
-            contentEl.innerHTML = "<p>Project not found.</p>";
+            contentEl.innerHTML = "<p style='text-align:center;'>Project not found.</p>";
             return;
         }
 
         const deal = await response.json();
         const data = deal.results || deal;
 
+        // 1. Update the Header Title
         titleEl.textContent = deal.title || "Project Analysis";
 
-        // THE COMPACT "BOX" UI
+        // 2. Inject using YOUR EXACT CSS CLASSES from share.html
         contentEl.innerHTML = `
-            <div style="max-width: 450px; margin: 0 auto;">
+            <div class="data-grid">
+                <div class="data-card">
+                    <span class="label">Net Profit</span>
+                    <span class="value" style="color: #22c55e;">R ${formatNum(data.profit)}</span>
+                </div>
                 
-                <!-- Main Stats Box -->
-                <div style="background: #0f172a; border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
-                        <span style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Net Profit</span>
-                        <span style="color: #22c55e; font-weight: 800; font-size: 1.25rem;">R ${formatNum(data.profit)}</span>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
-                        <span style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Margin</span>
-                        <span style="color: #00b4d8; font-weight: 800; font-size: 1.25rem;">${percent(data.margin)}</span>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">ROI</span>
-                        <span style="color: #ffffff; font-weight: 800; font-size: 1.25rem;">${percent(data.roi)}</span>
-                    </div>
-
+                <div class="data-card">
+                    <span class="label">Margin</span>
+                    <span class="value" style="color: var(--accent);">${percent(data.margin)}</span>
                 </div>
 
-                <!-- Decision Badge -->
-                <div style="margin-top: 15px; background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.3); padding: 15px; border-radius: 16px; text-align: center;">
-                    <div style="color: #00b4d8; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                        ${data.decision || 'Final Recommendation'}
-                    </div>
-                    <p style="color: #94a3b8; margin-top: 8px; font-size: 0.85rem; line-height: 1.4; font-style: italic;">
-                        "${data.advice || 'Analysis complete.'}"
-                    </p>
+                <div class="data-card">
+                    <span class="label">ROI</span>
+                    <span class="value" style="color: #ffffff;">${percent(data.roi)}</span>
                 </div>
+            </div>
 
+            <div class="decision-panel" style="background: rgba(0, 180, 216, 0.08); border: 1px solid rgba(0, 180, 216, 0.2); color: var(--accent);">
+                <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; opacity: 0.8;">Decision Engine</div>
+                <div style="font-size: 1.3rem; font-weight: 800;">${data.decision || 'Complete'}</div>
+                <p style="color: var(--text-muted); font-weight: 400; font-style: italic; margin-top: 10px; font-size: 0.85rem;">
+                    "${data.advice || 'Analysis complete.'}"
+                </p>
             </div>
         `;
 
     } catch (error) {
         console.error("Error:", error);
-        contentEl.innerHTML = "<p>Connection error. Refreshing might help.</p>";
+        contentEl.innerHTML = "<p style='text-align:center;'>Connection error. Please refresh.</p>";
     }
 }
 
