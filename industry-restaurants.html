@@ -99,18 +99,6 @@ RESTAURANT DECISION ENGINE UI
       </a>
 
     </nav>
-
-  <!-- ACCOUNT -->
-    <div class="sidebar-account">
-      <button id="accountBtn" class="account-btn">
-        <span id="accountAvatar" class="account-avatar">U</span>
-        <span id="accountName" class="account-name">Account</span>
-      </button>
-
-      <div id="accountMenu" class="account-menu" aria-hidden="true">
-        <a href="index.html">Home</a>
-        <button id="logoutBtn">Logout</button>
-      </div>
   </div>
 
 </aside>
@@ -176,11 +164,13 @@ RESTAURANT DECISION ENGINE UI
 <div id="status">—</div>
 <div id="decisionAdvice"></div>
 
-<button id="saveDealBtn" class="saveDealBtn">
-  Save Deal
-</button>
-      <button id="exportCsvBtn" class="exportBtn">Export CSV</button>
-    <button id="exportReportBtn" class="exportBtn">Export Report</button>
+<button id="saveDealBtn" class="saveDealBtn">Save Deal</button>
+<button id="shareBtn" class="saveDealBtn" style="background: var(--accent); color: white;">Share Deal</button>
+<div style="display: flex; gap: 10px; margin-top: 10px;">
+    <button id="exportCsvBtn" class="exportBtn" style="flex: 1;">Export CSV</button>
+    <button id="exportReportBtn" class="exportBtn" style="flex: 1;">Export Report</button>
+</div>
+
 
 <h3>Key Metrics</h3>
 
