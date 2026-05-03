@@ -1,53 +1,23 @@
-const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
-
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-const formatNum = (v) => 
-  (Number(v) || 0).toLocaleString(undefined, { 
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2 
-  });
-
-const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
-
-async function loadShare() {
+function renderDeal(deal) {
   const contentEl = document.getElementById("content");
   
-  if (!id) {
-    contentEl.innerHTML = `<h2>No ID provided</h2>`;
-    return;
-  }
-
-try {
-    const res = await fetch(`${API_BASE}/api/share/${id}`);
+  contentEl.innerHTML = `
+    <div class="data-grid">
+      <div class="data-card">
+        <span class="label">Project Margin</span>
+        <span class="value" style="color: var(--accent)">${percent(deal.results.margin)}</span>
+      </div>
+      <div class="data-card">
+        <span class="label">Net Profit</span>
+        <span class="value" style="color: #22c55e">R${formatNum(deal.results.profit)}</span>
+      </div>
+    </div>
     
-    if (!res.ok) {
-      contentEl.innerHTML = `<h2>Deal not found</h2>`;
-      return;
-    }
-
-    const deal = await res.json();
-    console.log("Received Deal Data:", deal); // 👈 THIS IS THE KEY: Check this in your browser console!
-
-    document.getElementById("title").textContent = deal.title || "Shared Project Results";
-
-    // Add a check to make sure deal.results exists before trying to read it
-    if (deal.results) {
-      contentEl.innerHTML = `
-        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 400px; background: white;">
-          <p><strong>Profit:</strong> ${formatNum(deal.results.profit)}</p>
-          <p><strong>Margin:</strong> ${percent(deal.results.margin)}</p>
-          <p><strong>ROI:</strong> ${percent(deal.results.roi)}</p>
-        </div>
-      `;
-    } else {
-      contentEl.innerHTML = `<h2>Data structure error: No results found.</h2>`;
-    }
-  } catch (err) {
-    console.error("Fetch error:", err);
-    contentEl.innerHTML = `<h2>Error connecting to server</h2>`;
-  }
+    <div class="decision-panel" style="background: rgba(0, 180, 216, 0.1); border: 1px solid var(--accent); color: var(--accent);">
+       ${deal.results.decision}
+       <p style="font-size: 0.85rem; font-weight: 400; margin-top: 10px; color: var(--text-main)">
+         "${deal.results.advice}"
+       </p>
+    </div>
+  `;
 }
-
-loadShare();
