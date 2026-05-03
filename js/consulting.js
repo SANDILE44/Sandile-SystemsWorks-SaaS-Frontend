@@ -220,7 +220,7 @@
     if (!res.ok) return alert("Failed to create share link");
 
     const data = await res.json();
-    const link = `https://sandile44.github.io/share.html?id=${data.id}`;
+    const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
 
     await navigator.clipboard.writeText(link);
     alert("Share link copied to clipboard!");
