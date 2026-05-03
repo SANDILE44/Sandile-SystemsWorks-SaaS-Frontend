@@ -199,7 +199,7 @@
 
     const res = await api("/api/share", "POST", payload);
     if (res && res.id) {
-      const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${res.id}`;
+      const link = `https://sandile44.github.io/share.html?id=${res.id}`;
       await navigator.clipboard.writeText(link);
       alert("Share link copied to clipboard!");
     }
