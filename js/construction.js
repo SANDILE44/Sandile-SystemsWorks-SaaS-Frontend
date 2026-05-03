@@ -374,7 +374,8 @@ async function shareDeal() {
     title: "Construction Project"
   };
 
-  const res = await fetch(`${API_BASE}/api/share`, {
+  // ✅ FIX: Changed from /api/shared-deals to /api/share
+  const res = await fetch(`${API_BASE}/api/share`, { 
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -384,18 +385,23 @@ async function shareDeal() {
   });
 
   if (!res.ok) {
+    // If it still fails, let's see why in the console
+    const errorData = await res.json().catch(() => ({}));
+    console.error("Share Error details:", errorData);
     alert("Failed to create share link");
     return;
   }
 
   const data = await res.json();
 
-  const link = `${window.location.origin}/share.html?id=${data.id}`;
+  // ✅ FIX: Using a hardcoded link to your GitHub Pages for the share viewer
+  const link = `https://sandile44.github.io/share.html?id=${data.id}`;
 
   await navigator.clipboard.writeText(link);
 
-  alert("Share link copied!");
+  alert("Share link copied to clipboard!");
 }
+  
 /* ================= EVENTS ================= */
 $("exportCsvBtn")?.addEventListener("click", exportCSV);
 $("exportReportBtn")?.addEventListener("click", exportReport);
