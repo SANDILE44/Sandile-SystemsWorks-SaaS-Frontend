@@ -1,67 +1,78 @@
+// 1. Point to your backend
 const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
 
-// 1. Move helpers to the TOP so they are ready immediately
-const formatNum = (v) => (Number(v) || 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
-const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
+// 2. Helper functions (Must be at the top)
+const formatNum = (num) => {
+    return new Intl.NumberFormat('en-ZA', { minimumFractionDigits: 2 }).format(num || 0);
+};
 
+const percent = (num) => {
+    return (num || 0).toFixed(2) + '%';
+};
+
+// 3. The Main Loader
 async function loadShare() {
-  const contentEl = document.getElementById("content");
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+    const contentEl = document.getElementById("content");
+    const titleEl = document.getElementById("title");
+    
+    // Get ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-  if (!id) {
-    contentEl.innerHTML = "<h2 style='text-align:center;'>Error: No ID provided</h2>";
-    return;
-  }
-
-  try {
-    // Ensure no double slashes in URL
-    const cleanBase = API_BASE.replace(/\/$/, ""); 
-    const res = await fetch(`${cleanBase}/api/share/${id}`);
-
-    if (!res.ok) {
-      contentEl.innerHTML = "<h2 style='text-align:center;'>Project Not Found</h2>";
-      return;
+    if (!id) {
+        contentEl.innerHTML = "<p style='color:red;'>Error: No ID found in link.</p>";
+        return;
     }
 
-    const deal = await res.json();
-    
-    // SAFETY: Use optional chaining (?.) so it doesn't crash if results is missing
-    const results = deal.results || {}; 
+    try {
+        // Fetch from Render
+        const response = await fetch(`${API_BASE}/api/share/${id}`);
+        
+        if (!response.ok) {
+            contentEl.innerHTML = "<p>Project data not found. It may have expired.</p>";
+            return;
+        }
 
-    // Update Title
-    document.getElementById("title").textContent = deal.title || "Project Analysis";
+        const deal = await response.json();
+        
+        // Handle data structure safely
+        const data = deal.results || deal;
 
-    // Inject themed HTML
-    contentEl.innerHTML = `
-      <div class="data-grid">
-        <div class="data-card">
-          <span class="label">Net Profit</span>
-          <span class="value" style="color: #22c55e;">R ${formatNum(results.profit)}</span>
-        </div>
-        <div class="data-card">
-          <span class="label">Margin</span>
-          <span class="value" style="color: var(--accent);">${percent(results.margin)}</span>
-        </div>
-        <div class="data-card">
-          <span class="label">ROI</span>
-          <span class="value" style="color: #ffffff;">${percent(results.roi)}</span>
-        </div>
-      </div>
+        // Update the Page Title
+        titleEl.textContent = deal.title || "Project Analysis";
 
-      <div class="decision-panel" style="background: rgba(0, 180, 216, 0.1); border: 1px solid var(--accent); color: var(--accent);">
-        <div style="font-size: 1.4rem;">${results.decision || "Pending"}</div>
-        <p style="color: var(--text-main); font-weight: 400; font-style: italic; margin-top: 10px;">
-          "${results.advice || "No advice provided."}"
-        </p>
-      </div>
-    `;
+        // INJECT THE THEMED BOX (Dark background, visible numbers)
+        contentEl.innerHTML = `
+            <div style="background: #0f172a; border: 1px solid rgba(255,255,255,0.1); padding: 2rem; border-radius: 20px;">
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                    <span style="color: #94a3b8; font-weight: 600;">Net Profit</span>
+                    <span style="color: #22c55e; font-weight: 800; font-size: 1.4rem;">R ${formatNum(data.profit)}</span>
+                </div>
 
-  } catch (err) {
-    console.error("Critical Error:", err);
-    contentEl.innerHTML = "<h2 style='text-align:center;'>Server Connection Error</h2>";
-  }
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                    <span style="color: #94a3b8; font-weight: 600;">Margin</span>
+                    <span style="color: #00b4d8; font-weight: 800; font-size: 1.4rem;">${percent(data.margin)}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #94a3b8; font-weight: 600;">ROI</span>
+                    <span style="color: #ffffff; font-weight: 800; font-size: 1.4rem;">${percent(data.roi)}</span>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 20px; background: rgba(0, 180, 216, 0.1); border: 1px solid #00b4d8; padding: 20px; border-radius: 16px; text-align: center;">
+                <h3 style="color: #00b4d8; margin: 0; text-transform: uppercase; font-size: 1rem;">${data.decision || 'Analysis Complete'}</h3>
+                <p style="color: #e5e7eb; margin-top: 10px; font-style: italic; font-size: 0.9rem;">"${data.advice || 'Proceed with calculated caution.'}"</p>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Error loading deal:", error);
+        contentEl.innerHTML = "<p>Connection error. Please refresh the page.</p>";
+    }
 }
 
-// 2. Final trigger
+// 4. Run it!
 loadShare();
