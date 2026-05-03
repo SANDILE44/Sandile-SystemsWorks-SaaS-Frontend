@@ -1,16 +1,3 @@
-const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
-
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-const formatNum = (v) => 
-  (Number(v) || 0).toLocaleString(undefined, { 
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2 
-  });
-
-const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
-
 async function loadShare() {
   const contentEl = document.getElementById("content");
   
@@ -28,76 +15,84 @@ async function loadShare() {
     }
 
     const deal = await res.json();
-    
-    // Set Page Title
-    document.getElementById("title").textContent = deal.title || "Project Analysis Results";
+    document.getElementById("title").textContent = deal.title || "Project Analysis";
 
-    // Standard styling for the shared card
+    // --- STYLING UPDATES ---
+    // Background: Dark Slate (#1e293b)
+    // Width: Tightened to 400px
     let html = `
-      <div style="border: 1px solid #ddd; padding: 30px; border-radius: 12px; max-width: 500px; margin: 40px auto; background: white; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
-        <h3 style="margin-top: 0; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+      <div style="
+        background: #1e293b; 
+        color: #f8fafc; 
+        border: 1px solid #334155; 
+        padding: 25px; 
+        border-radius: 16px; 
+        max-width: 400px; 
+        margin: 40px auto; 
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        font-family: 'Inter', sans-serif;
+      ">
+        <h3 style="margin-top: 0; color: #3b82f6; border-bottom: 1px solid #334155; padding-bottom: 12px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em;">
             ${deal.type} Analysis
         </h3>
         
-        <div style="margin: 24px 0;">
-            <p style="font-size: 1.25rem; margin-bottom: 8px;"><strong>Net Profit:</strong> 
-               <span style="color: ${deal.results.profit >= 0 ? '#10b981' : '#ef4444'}">
+        <div style="margin: 20px 0;">
+            <p style="font-size: 1rem; color: #94a3b8; margin-bottom: 4px;">Net Profit</p>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0; color: ${deal.results.profit >= 0 ? '#10b981' : '#ef4444'}">
                  R ${formatNum(deal.results.profit)}
-               </span>
             </p>
-            <p style="color: #475569; margin: 4px 0;"><strong>Profit Margin:</strong> ${percent(deal.results.margin)}</p>
-            <p style="color: #475569; margin: 4px 0;"><strong>ROI:</strong> ${percent(deal.results.roi)}</p>
+            
+            <div style="display: flex; gap: 20px; margin-top: 15px;">
+                <div>
+                    <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">Margin</p>
+                    <p style="margin: 0; font-weight: 600;">${percent(deal.results.margin)}</p>
+                </div>
+                <div>
+                    <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">ROI</p>
+                    <p style="margin: 0; font-weight: 600;">${percent(deal.results.roi)}</p>
+                </div>
+            </div>
         </div>
     `;
 
-    // --- CONSULTING SPECIFIC ---
+    // --- SPECIFIC DETAILS BOXES (Styled for Dark Mode) ---
+    const detailStyle = `background: #0f172a; padding: 15px; border-radius: 10px; border-left: 4px solid`;
+
     if (deal.type === "consulting") {
         html += `
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                <p style="margin-top: 0;"><strong>Decision:</strong> ${deal.results.status || 'N/A'}</p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
-            </div>
-        `;
+            <div style="${detailStyle} #3b82f6;">
+                <p style="margin: 0; font-size: 0.85rem;"><strong>Decision:</strong> ${deal.results.status || 'N/A'}</p>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 5px; line-height: 1.4;">${deal.results.action || ''}</p>
+            </div>`;
     }
 
-    // --- CONSTRUCTION SPECIFIC ---
     if (deal.type === "construction") {
         html += `
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                <p style="margin: 0;"><strong>Break-even:</strong> R ${formatNum(deal.results.breakEven)}</p>
-            </div>
-        `;
+            <div style="${detailStyle} #f59e0b;">
+                <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">Break-even</p>
+                <p style="margin: 0; font-weight: bold;">R ${formatNum(deal.results.breakEven)}</p>
+            </div>`;
     }
 
-    // --- MANUFACTURING SPECIFIC ---
     if (deal.type === "manufacturing") {
         html += `
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981;">
-                <p style="margin-top: 0;"><strong>Break-even Units:</strong> ${deal.results.breakEvenUnits || 0}</p>
-                <p style="margin-bottom: 10px;"><strong>Cost per Unit:</strong> R ${formatNum(deal.results.costPerUnit)}</p>
-                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
-                <p style="margin-bottom: 4px;"><strong>Status:</strong> ${deal.results.status || 'N/A'}</p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
-            </div>
-        `;
+            <div style="${detailStyle} #10b981;">
+                <p style="margin: 0; font-size: 0.85rem;"><strong>Break-even:</strong> ${deal.results.breakEvenUnits || 0} Units</p>
+                <p style="margin: 5px 0 0; font-size: 0.85rem; color: #94a3b8;">Cost/Unit: R ${formatNum(deal.results.costPerUnit)}</p>
+            </div>`;
     }
 
-    // --- RESTAURANT SPECIFIC ---
     if (deal.type === "restaurant") {
         html += `
-            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #f43f5e;">
-                <p style="margin-top: 0;"><strong>Daily Covers:</strong> ${deal.results.dailyCovers || 0}</p>
-                <p><strong>Breakeven Covers:</strong> ${deal.results.breakEven || deal.results.breakevenCovers || 0}</p>
-                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
-                <p style="margin-bottom: 4px;"><strong>Decision:</strong> ${deal.results.status || 'N/A'}</p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">${deal.results.action || ''}</p>
-            </div>
-        `;
+            <div style="${detailStyle} #f43f5e;">
+                <p style="margin: 0; font-size: 0.85rem;"><strong>Daily Covers:</strong> ${deal.results.dailyCovers || 0}</p>
+                <p style="margin: 5px 0 0; font-size: 0.85rem; color: #94a3b8;">Break-even: ${deal.results.breakEven || deal.results.breakevenCovers || 0}</p>
+            </div>`;
     }
 
     html += `
-        <p style="text-align: center; margin-top: 30px; font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px;">
-            Generated by Sandile SystemsWorks SaaS • ${new Date().toLocaleDateString()}
+        <p style="text-align: center; margin-top: 25px; font-size: 0.7rem; color: #475569; border-top: 1px solid #334155; padding-top: 15px;">
+            Verified by Sandile SystemsWorks SaaS<br>${new Date().toLocaleDateString()}
         </p>
       </div>
     `;
@@ -106,8 +101,6 @@ async function loadShare() {
 
   } catch (err) {
     console.error("Load Share Error:", err);
-    contentEl.innerHTML = `<h2 style="text-align: center;">Error loading shared data</h2>`;
+    contentEl.innerHTML = `<h2 style="text-align: center; color: white;">Error loading analysis</h2>`;
   }
 }
-
-loadShare();
