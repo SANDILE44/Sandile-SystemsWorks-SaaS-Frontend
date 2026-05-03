@@ -374,7 +374,7 @@ async function shareDeal() {
     title: "Construction Project"
   };
 
-  const res = await fetch(`${API_BASE}/api/shared-deals`, {
+  const res = await fetch(`${API_BASE}/api/share`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
