@@ -357,9 +357,49 @@ function exportCSV() {
   w.document.write(html);
   w.document.close();
 }
+/* ================= SHARE LINK ================= */
+async function shareDeal() {
+  if (!latestData) {
+    alert("Run calculator first");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  const payload = {
+    type: "construction",
+    inputs: getInputs(),
+    results: latestData,
+    permissions: { mode: "view" },
+    title: "Construction Project"
+  };
+
+  const res = await fetch(`${API_BASE}/api/shared-deals`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    alert("Failed to create share link");
+    return;
+  }
+
+  const data = await res.json();
+
+  const link = `${window.location.origin}/share.html?id=${data.id}`;
+
+  await navigator.clipboard.writeText(link);
+
+  alert("Share link copied!");
+}
 /* ================= EVENTS ================= */
 $("exportCsvBtn")?.addEventListener("click", exportCSV);
 $("exportReportBtn")?.addEventListener("click", exportReport);
+  $("shareBtn")?.addEventListener("click", shareDeal);
 
   /* ================= INIT ================= */
   loadEditDeal();
