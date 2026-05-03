@@ -1,31 +1,36 @@
 function renderDeal(deal) {
   const contentEl = document.getElementById("content");
-  
-  // We force a Dark Background for the data box to match your 'SystemsWorks' theme
+  const titleEl = document.getElementById("title");
+
+  // 1. Update the Header Title
+  titleEl.textContent = deal.title || "Project Insight Report";
+
+  // 2. Use the CLASSES defined in your HTML <style> tag
+  // This ensures the numbers are visible and themed correctly
   contentEl.innerHTML = `
-    <div style="background: #0f172a; padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+    <div class="data-grid">
+      <div class="data-card">
+        <span class="label">Net Profit</span>
+        <span class="value" style="color: #22c55e;">R ${formatNum(deal.results.profit)}</span>
+      </div>
       
-      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-        <span style="color: #94a3b8; font-weight: 600;">Net Profit</span>
-        <span style="color: #22c55e; font-size: 1.5rem; font-weight: 800;">R ${formatNum(deal.results.profit)}</span>
+      <div class="data-card">
+        <span class="label">Margin</span>
+        <span class="value" style="color: var(--accent);">${percent(deal.results.margin)}</span>
       </div>
 
-      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-        <span style="color: #94a3b8; font-weight: 600;">Margin</span>
-        <span style="color: #00b4d8; font-size: 1.5rem; font-weight: 800;">${percent(deal.results.margin)}</span>
+      <div class="data-card">
+        <span class="label">ROI</span>
+        <span class="value" style="color: #ffffff;">${percent(deal.results.roi)}</span>
       </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="color: #94a3b8; font-weight: 600;">ROI</span>
-        <span style="color: #ffffff; font-size: 1.5rem; font-weight: 800;">${percent(deal.results.roi)}</span>
-      </div>
-
     </div>
 
-    <!-- The Decision Box -->
-    <div style="margin-top: 20px; padding: 20px; background: rgba(0, 180, 216, 0.1); border: 1px solid #00b4d8; border-radius: 16px; text-align: center;">
-      <h3 style="color: #00b4d8; margin: 0; font-size: 1.2rem; text-transform: uppercase;">${deal.results.decision}</h3>
-      <p style="color: #e5e7eb; margin-top: 10px; font-style: italic;">"${deal.results.advice}"</p>
+    <div class="decision-panel" style="background: rgba(0, 180, 216, 0.1); border: 1px solid var(--accent); color: var(--accent);">
+      <div style="text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; margin-bottom: 5px;">Decision Engine Result</div>
+      <div style="font-size: 1.4rem;">${deal.results.decision}</div>
+      <p style="color: var(--text-main); font-weight: 400; font-style: italic; margin-top: 10px; font-size: 0.9rem;">
+        "${deal.results.advice}"
+      </p>
     </div>
   `;
 }
