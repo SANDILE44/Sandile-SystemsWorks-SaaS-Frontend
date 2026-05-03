@@ -1,36 +1,67 @@
-function renderDeal(deal) {
+const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
+
+// 1. Move helpers to the TOP so they are ready immediately
+const formatNum = (v) => (Number(v) || 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
+const percent = (v) => (Number(v) || 0).toFixed(2) + "%";
+
+async function loadShare() {
   const contentEl = document.getElementById("content");
-  const titleEl = document.getElementById("title");
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
 
-  // 1. Update the Header Title
-  titleEl.textContent = deal.title || "Project Insight Report";
+  if (!id) {
+    contentEl.innerHTML = "<h2 style='text-align:center;'>Error: No ID provided</h2>";
+    return;
+  }
 
-  // 2. Use the CLASSES defined in your HTML <style> tag
-  // This ensures the numbers are visible and themed correctly
-  contentEl.innerHTML = `
-    <div class="data-grid">
-      <div class="data-card">
-        <span class="label">Net Profit</span>
-        <span class="value" style="color: #22c55e;">R ${formatNum(deal.results.profit)}</span>
+  try {
+    // Ensure no double slashes in URL
+    const cleanBase = API_BASE.replace(/\/$/, ""); 
+    const res = await fetch(`${cleanBase}/api/share/${id}`);
+
+    if (!res.ok) {
+      contentEl.innerHTML = "<h2 style='text-align:center;'>Project Not Found</h2>";
+      return;
+    }
+
+    const deal = await res.json();
+    
+    // SAFETY: Use optional chaining (?.) so it doesn't crash if results is missing
+    const results = deal.results || {}; 
+
+    // Update Title
+    document.getElementById("title").textContent = deal.title || "Project Analysis";
+
+    // Inject themed HTML
+    contentEl.innerHTML = `
+      <div class="data-grid">
+        <div class="data-card">
+          <span class="label">Net Profit</span>
+          <span class="value" style="color: #22c55e;">R ${formatNum(results.profit)}</span>
+        </div>
+        <div class="data-card">
+          <span class="label">Margin</span>
+          <span class="value" style="color: var(--accent);">${percent(results.margin)}</span>
+        </div>
+        <div class="data-card">
+          <span class="label">ROI</span>
+          <span class="value" style="color: #ffffff;">${percent(results.roi)}</span>
+        </div>
       </div>
-      
-      <div class="data-card">
-        <span class="label">Margin</span>
-        <span class="value" style="color: var(--accent);">${percent(deal.results.margin)}</span>
-      </div>
 
-      <div class="data-card">
-        <span class="label">ROI</span>
-        <span class="value" style="color: #ffffff;">${percent(deal.results.roi)}</span>
+      <div class="decision-panel" style="background: rgba(0, 180, 216, 0.1); border: 1px solid var(--accent); color: var(--accent);">
+        <div style="font-size: 1.4rem;">${results.decision || "Pending"}</div>
+        <p style="color: var(--text-main); font-weight: 400; font-style: italic; margin-top: 10px;">
+          "${results.advice || "No advice provided."}"
+        </p>
       </div>
-    </div>
+    `;
 
-    <div class="decision-panel" style="background: rgba(0, 180, 216, 0.1); border: 1px solid var(--accent); color: var(--accent);">
-      <div style="text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; margin-bottom: 5px;">Decision Engine Result</div>
-      <div style="font-size: 1.4rem;">${deal.results.decision}</div>
-      <p style="color: var(--text-main); font-weight: 400; font-style: italic; margin-top: 10px; font-size: 0.9rem;">
-        "${deal.results.advice}"
-      </p>
-    </div>
-  `;
+  } catch (err) {
+    console.error("Critical Error:", err);
+    contentEl.innerHTML = "<h2 style='text-align:center;'>Server Connection Error</h2>";
+  }
 }
+
+// 2. Final trigger
+loadShare();
