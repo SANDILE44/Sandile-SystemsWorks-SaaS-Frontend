@@ -1,9 +1,16 @@
 /* ================= WRAPPER ================= */
 
 .saved-wrapper {
-  margin-left: 260px;
+  margin-left: 260px; /* keep if you have sidebar */
   padding: 2rem;
-  color: #e5e7eb;
+
+  display: flex;
+  justify-content: center;
+}
+
+.saved-content {
+  width: 100%;
+  max-width: 1200px; /* controls centering */
 }
 
 h1 {
