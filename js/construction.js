@@ -151,29 +151,33 @@
   }
 
   /* ================= SAVE / UPDATE DEAL ================= */
-  async function saveDeal() {
+async function saveDeal() {
+  if (!latestData) return alert("Run calculator first");
 
-    if (!latestData) return alert("Run calculator first");
+  const token = localStorage.getItem("token");
+  const editId = localStorage.getItem("editDealId");
+  
+  // Grab the client name from your input field
+  const clientName = $("client-name-input")?.value || "Untitled Project";
 
-    const token = localStorage.getItem("token");
-    const editId = localStorage.getItem("editDealId");
+  const payload = {
+    type: "construction",
+    clientName: clientName, // Added this
+    inputs: getInputs(),
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      revenue: latestData.value,
+      // Adding status/decision so it shows up in history immediately
+      status: latestData.decision,
+      riskLevel: latestData.riskLevel 
+    }
+  };
 
-    const payload = {
-      type: "construction",
-      inputs: getInputs(),
-      results: {
-        profit: latestData.profit,
-        margin: latestData.margin,
-        revenue: latestData.value
-      }
-    };
+  const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
+  const method = editId ? "PUT" : "POST";
 
-    const url = editId
-      ? `/api/saved-deals/${editId}`
-      : `/api/saved-deals`;
-
-    const method = editId ? "PUT" : "POST";
-
+  try {
     const res = await fetch(`${API_BASE}${url}`, {
       method,
       headers: {
@@ -183,13 +187,21 @@
       body: JSON.stringify(payload)
     });
 
-    if (!res.ok) return alert("Save failed");
+    if (!res.ok) throw new Error("Server responded with error");
 
-    alert(editId ? "Deal updated" : "Deal saved");
+    alert(editId ? `Successfully updated: ${clientName}` : `Project saved: ${clientName}`);
 
-    localStorage.removeItem("editDeal");
-    localStorage.removeItem("editDealId");
+    // Only clear edit data if we are actually in edit mode
+    if (editId) {
+      localStorage.removeItem("editDeal");
+      localStorage.removeItem("editDealId");
+    }
+    
+  } catch (err) {
+    console.error("Save failed:", err);
+    alert("Could not save deal. Please check your connection.");
   }
+}
 
   /* ================= RESET ================= */
   function resetAll() {
@@ -357,6 +369,7 @@ function exportCSV() {
   w.document.write(html);
   w.document.close();
 }
+  
 /* ================= SHARE LINK ================= */
 async function shareDeal() {
   if (!latestData) {
@@ -365,43 +378,50 @@ async function shareDeal() {
   }
 
   const token = localStorage.getItem("token");
+  const clientName = $("client-name-input")?.value || "Construction Project";
 
   const payload = {
     type: "construction",
+    clientName: clientName, // Pass the client name to the share data
     inputs: getInputs(),
     results: latestData,
     permissions: { mode: "view" },
-    title: "Construction Project"
+    title: clientName // This sets the title on the shared page
   };
 
-  // ✅ FIX: Changed from /api/shared-deals to /api/share
-  const res = await fetch(`${API_BASE}/api/share`, { 
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const res = await fetch(`${API_BASE}/api/share`, { 
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
 
-  if (!res.ok) {
-    // If it still fails, let's see why in the console
-    const errorData = await res.json().catch(() => ({}));
-    console.error("Share Error details:", errorData);
-    alert("Failed to create share link");
-    return;
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      console.error("Share Error details:", errorData);
+      alert("Failed to create share link");
+      return;
+    }
+
+    const data = await res.json();
+
+    // Generate the professional link
+    const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
+
+    // Copy to clipboard
+    await navigator.clipboard.writeText(link);
+
+    // Dynamic alert message
+    alert(`Success! Share link for "${clientName}" copied to clipboard.`);
+    
+  } catch (err) {
+    console.error("Share process failed:", err);
+    alert("An error occurred while generating the link.");
   }
-
-  const data = await res.json();
-
-  // ✅ FIX: Using a hardcoded link to your GitHub Pages for the share viewer
-  const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
-
-  await navigator.clipboard.writeText(link);
-
-  alert("Share link copied to clipboard!");
 }
-  
 /* ================= EVENTS ================= */
 $("exportCsvBtn")?.addEventListener("click", exportCSV);
 $("exportReportBtn")?.addEventListener("click", exportReport);
