@@ -72,7 +72,7 @@ async function loadShare() {
 
       <hr style="margin:10px 0; border:0; border-top:1px solid #1e293b;">
 
-      <p><strong>Break-even:</strong> R ${formatNum(r.breakEven)}</p>
+      <p><strong>Break-even:</strong> R ${formatNum(r.breakEvenValue)}</p>
       <p><strong>Total Costs:</strong> R ${formatNum(r.totalCosts)}</p>
 
       <p><strong>Monthly Profit:</strong> R ${formatNum(r.monthlyProfit)}</p>
