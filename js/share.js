@@ -67,7 +67,7 @@ async function loadShare() {
   html += `
     <div style="background:#010433; padding:15px; border-radius:8px; border-left:4px solid #f59e0b;">
 
-      <p><strong>Decision:</strong> ${r.status}</p>
+      <p><strong>Decision:</strong> ${r.decision-status}</p>
       <p><strong>Risk Level:</strong> ${r.riskLevel}</p>
 
       <hr style="margin:10px 0; border:0; border-top:1px solid #1e293b;">
