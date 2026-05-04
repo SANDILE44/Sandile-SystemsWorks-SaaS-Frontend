@@ -1,20 +1,27 @@
 /* ================= WRAPPER ================= */
 
 .saved-wrapper {
-  margin-left: 260px; /* keep if you have sidebar */
   padding: 2rem;
 
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+
+  min-height: 100vh;
+  background: transparent;
 }
 
+/* Inner container to control width */
 .saved-content {
   width: 100%;
-  max-width: 1200px; /* controls centering */
+  max-width: 1200px;
 }
 
+/* Title */
 h1 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: #e5e7eb;
+  font-size: 1.4rem;
 }
 
 /* ================= GRID ================= */
@@ -23,6 +30,8 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
+
+  width: 100%;
 }
 
 /* ================= DEAL CARD ================= */
@@ -48,18 +57,18 @@ h1 {
 
   transition: all 0.25s ease;
 
-  animation: fadeInUp 0.4s ease;
+  animation: fadeInUp 0.35s ease;
 }
 
-/* Hover effect */
+/* Hover */
 .deal-card:hover {
   transform: translateY(-4px);
   box-shadow:
     0 18px 45px rgba(0, 0, 0, 0.55),
-    0 0 25px rgba(0, 180, 216, 0.15);
+    0 0 25px rgba(0, 180, 216, 0.12);
 }
 
-/* ================= STATUS COLORS ================= */
+/* ================= STATUS ================= */
 
 .deal-card.positive {
   border-left-color: #22c55e;
@@ -73,94 +82,42 @@ h1 {
   border-left-color: #ef4444;
 }
 
-/* ================= HEADER ================= */
-
-.deal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.8rem;
-}
+/* ================= TITLE ================= */
 
 .deal-title {
-  font-size: 0.95rem;
   font-weight: 800;
+  color: #00b4d8;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: #00b4d8;
-}
-
-.deal-date {
-  font-size: 0.75rem;
-  color: rgba(229, 231, 235, 0.6);
-  margin-top: 3px;
-}
-
-/* Tag */
-.deal-tag {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-
-  padding: 4px 10px;
-  border-radius: 999px;
-
-  background: rgba(0, 180, 216, 0.12);
-  color: #00b4d8;
-
-  border: 1px solid rgba(0, 180, 216, 0.25);
 }
 
 /* ================= BODY ================= */
 
 .deal-body {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
-  padding: 0.8rem;
-
-  border: 1px solid rgba(255, 255, 255, 0.05);
-
   font-size: 0.85rem;
   line-height: 1.6;
-  opacity: 0.95;
-}
+  color: #e5e7eb;
+  opacity: 0.9;
 
-/* Grid inside card */
-.deal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+
+  padding: 0.8rem;
   margin-top: 0.5rem;
-}
-
-/* Labels */
-.label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: rgba(229, 231, 235, 0.6);
-}
-
-/* Revenue highlight */
-.deal-revenue {
-  margin-top: 0.7rem;
-  padding-top: 0.7rem;
-
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-
-  font-size: 0.85rem;
-  font-weight: 600;
 }
 
 /* ================= ACTIONS ================= */
 
 .deal-actions {
-  margin-top: 1rem;
   display: flex;
   gap: 10px;
+  margin-top: 1rem;
 }
 
-/* Edit button */
+/* EDIT */
 .edit-btn {
   flex: 1;
   padding: 0.6rem;
@@ -184,7 +141,7 @@ h1 {
   filter: brightness(1.1);
 }
 
-/* Delete button */
+/* DELETE */
 .delete-btn {
   flex: 1;
   padding: 0.6rem;
@@ -192,7 +149,7 @@ h1 {
   border-radius: 10px;
   border: 1px solid rgba(255, 0, 0, 0.3);
 
-  background: rgba(255, 0, 0, 0.1);
+  background: rgba(255, 0, 0, 0.08);
   color: #ff6b6b;
 
   font-weight: 700;
@@ -209,12 +166,13 @@ h1 {
   transform: translateY(-1px);
 }
 
-/* ================= EMPTY STATE ================= */
+/* ================= EMPTY ================= */
 
 .empty {
   padding: 2rem;
   text-align: center;
   opacity: 0.6;
+  color: #e5e7eb;
 }
 
 /* ================= ANIMATION ================= */
