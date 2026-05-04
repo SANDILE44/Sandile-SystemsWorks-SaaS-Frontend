@@ -782,81 +782,6 @@ label {
   box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
-/* ================= SUPER RESET BUTTON ================= */
-
-#resetBtn,
-#resetOperationsBtn,
-#resetShipmentBtn,
-#resetFreightBtn {
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.85rem 1.2rem;
-
-  border-radius: 12px;
-  border: 1px solid rgba(0, 180, 216, 0.4);
-
-  background: linear-gradient(135deg, #00b4d8, #0096c7);
-  color: #000;
-
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 16px rgba(0, 180, 216, 0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.2);
-
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
-}
-
-/* Hover */
-#resetBtn:hover,
-#resetOperationsBtn:hover,
-#resetShipmentBtn:hover,
-#resetFreightBtn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-
-  box-shadow:
-    0 10px 22px rgba(0, 180, 216, 0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.3);
-}
-
-/* Active (Pressed) */
-#resetBtn:active,
-#resetOperationsBtn:active,
-#resetShipmentBtn:active,
-#resetFreightBtn:active {
-  transform: translateY(0);
-  box-shadow:
-    0 4px 10px rgba(0, 180, 216, 0.2),
-    inset 0 2px 4px rgba(0,0,0,0.25);
-}
-
-/* Focus (keyboard users) */
-#resetBtn:focus-visible,
-#resetOperationsBtn:focus-visible,
-#resetShipmentBtn:focus-visible,
-#resetFreightBtn:focus-visible {
-  outline: 2px solid rgba(0, 180, 216, 0.6);
-  outline-offset: 3px;
-}
-
-/* Disabled state (future-proof) */
-#resetBtn:disabled,
-#resetOperationsBtn:disabled,
-#resetShipmentBtn:disabled,
-#resetFreightBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
 /* ================= STATUS COLORS ================= */
 #log-status.profit {
   color: #22c55e;
@@ -1164,4 +1089,42 @@ label {
   width: 14px;
   height: 14px;
   opacity: 0.5;
+}
+
+.reset-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.85rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    /* A more subtle "danger" or "neutral" look */
+    background: rgba(255, 255, 255, 0.03); 
+    border: 1px solid rgba(239, 68, 68, 0.2); /* Subtle red hint */
+    color: #f87171; /* Soft red text */
+    
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+    transform: translateY(-1px);
+}
+
+/* Make the icon spin slightly on hover for that "Genius" feel */
+.reset-btn:hover i {
+    transform: rotate(-90deg);
+    transition: transform 0.4s ease;
 }
