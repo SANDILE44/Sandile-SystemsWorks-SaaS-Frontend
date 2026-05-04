@@ -49,32 +49,26 @@
 
     try {
       const deal = JSON.parse(edit);
-      const i = deal.inputs || {};
+      // ✅ FIX: Ensures we look in .inputs if it exists, or the root if not
+      const i = deal.inputs || deal; 
 
-      // 1. Set the Client Name back into the input field
+      // Restore Name
       if (deal.clientName && $("client-name-input")) {
         $("client-name-input").value = deal.clientName;
       }
 
-      // 2. Set the numeric inputs
-      $("const-value").value = i.value || 0;
-      $("const-material").value = i.material || 0;
-      $("const-labor").value = i.laborMonthly || 0;
-      $("const-equipment").value = i.equipmentMonthly || 0;
-      $("const-fixed").value = i.fixedMonthly || 0;
-      $("const-duration").value = i.months || 0;
+      // Restore Numbers
+      if ($("const-value")) $("const-value").value = i.value || 0;
+      if ($("const-material")) $("const-material").value = i.material || 0;
+      if ($("const-labor")) $("const-labor").value = i.laborMonthly || 0;
+      if ($("const-equipment")) $("const-equipment").value = i.equipmentMonthly || 0;
+      if ($("const-fixed")) $("const-fixed").value = i.fixedMonthly || 0;
+      if ($("const-duration")) $("const-duration").value = i.months || 0;
 
     } catch (err) {
       console.error("Failed loading edit deal:", err);
     }
   }
-
-  // 6. Cleanup logic for Edit Mode (Inside saveDeal)
-    if (editId) {
-      localStorage.removeItem("editDeal");
-      localStorage.removeItem("editDealId"); 
-      localStorage.removeItem("editId"); 
-    }
 
   /* ================= RUN ENGINE ================= */
   async function run() {
@@ -218,6 +212,17 @@ async function saveDeal() {
     // Optional: Clear the input after saving a NEW deal so it's ready for the next one
     if (!editId) {
        document.getElementById("client-name-input").value = "";
+    }
+
+    // ✅ FIX: Keep this INSIDE the saveDeal function at the end
+    if (editId) {
+      localStorage.removeItem("editDeal");
+      localStorage.removeItem("editId"); 
+      localStorage.removeItem("editDealId"); 
+    }
+
+    if (!editId && $("client-name-input")) {
+       $("client-name-input").value = "";
     }
 
   } catch (err) {
