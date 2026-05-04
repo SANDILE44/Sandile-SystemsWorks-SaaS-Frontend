@@ -60,14 +60,33 @@ async function loadShare() {
         `;
     }
 
-    // --- CONSTRUCTION SPECIFIC ---
-    if (deal.type === "construction") {
-        html += `
-            <div style="background: #010433; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                <p style="margin: 0;"><strong>Break-even:</strong> R ${formatNum(deal.results.breakEven)}</p>
-            </div>
-        `;
-    }
+ if (deal.type === "construction") {
+
+  const r = deal.results;
+
+  html += `
+    <div style="background:#010433; padding:15px; border-radius:8px; border-left:4px solid #f59e0b;">
+
+      <p><strong>Decision:</strong> ${r.status}</p>
+      <p><strong>Risk Level:</strong> ${r.riskLevel}</p>
+
+      <hr style="margin:10px 0; border:0; border-top:1px solid #1e293b;">
+
+      <p><strong>Break-even:</strong> R ${formatNum(r.breakEven)}</p>
+      <p><strong>Total Costs:</strong> R ${formatNum(r.totalCosts)}</p>
+
+      <p><strong>Monthly Profit:</strong> R ${formatNum(r.monthlyProfit)}</p>
+      <p><strong>Annual Profit:</strong> R ${formatNum(r.annualProfit)}</p>
+
+      <hr style="margin:10px 0; border:0; border-top:1px solid #1e293b;">
+
+      <p style="font-size:0.9rem; color:#94a3b8;">
+        ${r.advice || ""}
+      </p>
+
+    </div>
+  `;
+}
 
     // --- MANUFACTURING SPECIFIC ---
     if (deal.type === "manufacturing") {
