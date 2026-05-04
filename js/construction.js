@@ -31,7 +31,7 @@
     };
   }
 
-  /* ================= COLOR HANDLER ================= */
+  /* ================= COLOR ================= */
   function setStatusColor(el, riskLevel) {
     if (!el) return;
 
@@ -42,31 +42,28 @@
     else el.classList.add("positive");
   }
 
-/* ================= LOAD EDIT DATA ================= */
+  /* ================= LOAD EDIT ================= */
   function loadEditDeal() {
     const edit = localStorage.getItem("editDeal");
     if (!edit) return;
 
     try {
       const deal = JSON.parse(edit);
-      // ✅ FIX: Ensures we look in .inputs if it exists, or the root if not
-      const i = deal.inputs || deal; 
+      const i = deal.inputs || deal;
 
-      // Restore Name
       if (deal.clientName && $("client-name-input")) {
         $("client-name-input").value = deal.clientName;
       }
 
-      // Restore Numbers
-      if ($("const-value")) $("const-value").value = i.value || 0;
-      if ($("const-material")) $("const-material").value = i.material || 0;
-      if ($("const-labor")) $("const-labor").value = i.laborMonthly || 0;
-      if ($("const-equipment")) $("const-equipment").value = i.equipmentMonthly || 0;
-      if ($("const-fixed")) $("const-fixed").value = i.fixedMonthly || 0;
-      if ($("const-duration")) $("const-duration").value = i.months || 0;
+      $("const-value") && ($("const-value").value = i.value || 0);
+      $("const-material") && ($("const-material").value = i.material || 0);
+      $("const-labor") && ($("const-labor").value = i.laborMonthly || 0);
+      $("const-equipment") && ($("const-equipment").value = i.equipmentMonthly || 0);
+      $("const-fixed") && ($("const-fixed").value = i.fixedMonthly || 0);
+      $("const-duration") && ($("const-duration").value = i.months || 0);
 
     } catch (err) {
-      console.error("Failed loading edit deal:", err);
+      console.error("Load error:", err);
     }
   }
 
@@ -92,7 +89,6 @@
       const d = await res.json();
       latestData = d;
 
-      /* ================= OUTPUTS ================= */
       $("const-total-costs").textContent = money(d.totalCosts);
       $("const-profit").textContent = money(d.profit);
       $("const-margin").textContent = percent(d.margin);
@@ -102,7 +98,6 @@
       $("const-monthly-profit").textContent = money(d.monthlyProfit);
       $("const-annual-profit").textContent = money(d.annualProfit);
 
-      /* ================= DECISION ================= */
       const statusEl = $("decision-status");
       const adviceEl = $("decision-advice");
 
@@ -111,15 +106,14 @@
 
       setStatusColor(statusEl, d.riskLevel);
 
-      /* ================= INSIGHTS ================= */
       renderInsights(d.insights || {});
 
     } catch (err) {
-      console.error("Construction error:", err);
+      console.error("Run error:", err);
     }
   }
 
-  /* ================= INSIGHTS ================= */
+  /* ================= INSIGHTS (FIXED SINGLE VERSION) ================= */
   function renderInsights(insights) {
 
     const container = $("const-insights");
@@ -127,15 +121,22 @@
 
     container.innerHTML = "";
 
+    const main = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = "INSIGHTS";
+
+    const inner = document.createElement("div");
+    inner.style.marginTop = "10px";
+
     Object.entries(insights).forEach(([group, items]) => {
 
-      const details = document.createElement("details");
+      const groupBox = document.createElement("details");
+      const groupTitle = document.createElement("summary");
 
-      const summary = document.createElement("summary");
-      summary.textContent = group.toUpperCase();
+      groupTitle.textContent = group.toUpperCase();
 
       const body = document.createElement("div");
-      body.style.marginTop = "10px";
+      body.style.marginTop = "8px";
 
       (items || []).forEach((i, idx) => {
 
@@ -150,86 +151,76 @@
         body.appendChild(div);
       });
 
-      details.appendChild(summary);
-      details.appendChild(body);
-
-      container.appendChild(details);
-    });
-  }
-
-  /* ================= SAVE / UPDATE DEAL ================= */
-async function saveDeal() {
-  // 1. Safety Check: Don't save empty math
-  if (!latestData) return alert("Run calculator first");
-
-  const token = localStorage.getItem("token");
-  const editId = localStorage.getItem("editDealId");
-
-  // 2. Grab the Project/Client name from the input field
-  // We use the ID we added to the HTML earlier
-  const clientNameValue = document.getElementById("client-name-input")?.value || "Untitled Project";
-
-  // 3. Build the Payload (Keeping all your existing logic)
-  const payload = {
-    type: "construction",
-    clientName: clientNameValue, // This is what your History script looks for
-    inputs: getInputs(),
-    results: {
-      profit: latestData.profit,
-      margin: latestData.margin,
-      revenue: latestData.value, // Maps to your d.results?.revenue
-      status: latestData.decision,
-      riskLevel: latestData.riskLevel 
-    }
-  };
-
-  // 4. Determine if we are creating NEW or updating OLD
-  const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
-  const method = editId ? "PUT" : "POST";
-
-  try {
-    const res = await fetch(`${API_BASE}${url}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
+      groupBox.appendChild(groupTitle);
+      groupBox.appendChild(body);
+      inner.appendChild(groupBox);
     });
 
-    if (!res.ok) throw new Error("Server responded with error");
-
-    // 5. User Feedback
-    alert(editId ? `Successfully updated: ${clientNameValue}` : `Project saved: ${clientNameValue}`);
-
-    // 6. Cleanup logic for Edit Mode
-    if (editId) {
-      localStorage.removeItem("editDeal");
-      localStorage.removeItem("editId"); // Standard cleanup
-      localStorage.removeItem("editDealId"); // Your specific cleanup
-    }
-
-    // Optional: Clear the input after saving a NEW deal so it's ready for the next one
-    if (!editId) {
-       document.getElementById("client-name-input").value = "";
-    }
-
-    // ✅ FIX: Keep this INSIDE the saveDeal function at the end
-    if (editId) {
-      localStorage.removeItem("editDeal");
-      localStorage.removeItem("editId"); 
-      localStorage.removeItem("editDealId"); 
-    }
-
-    if (!editId && $("client-name-input")) {
-       $("client-name-input").value = "";
-    }
-
-  } catch (err) {
-    console.error("Save failed:", err);
-    alert("Could not save deal. Please check your connection to Sandile SystemsWorks backend.");
+    main.appendChild(summary);
+    main.appendChild(inner);
+    container.appendChild(main);
   }
-}
+
+  /* ================= SAVE / UPDATE ================= */
+  async function saveDeal() {
+
+    if (!latestData) return alert("Run calculator first");
+
+    const token = localStorage.getItem("token");
+    const editId = localStorage.getItem("editDealId");
+
+    const clientNameValue =
+      $("client-name-input")?.value || "Untitled Project";
+
+    const payload = {
+      type: "construction",
+      clientName: clientNameValue,
+      inputs: getInputs(),
+      results: {
+        profit: latestData.profit,
+        margin: latestData.margin,
+        revenue: latestData.value,
+        status: latestData.decision,
+        riskLevel: latestData.riskLevel
+      }
+    };
+
+    const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
+    const method = editId ? "PUT" : "POST";
+
+    try {
+
+      const res = await fetch(`${API_BASE}${url}`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error("Save failed");
+
+      alert(editId
+        ? `Updated: ${clientNameValue}`
+        : `Saved: ${clientNameValue}`
+      );
+
+      if (editId) {
+        localStorage.removeItem("editDeal");
+        localStorage.removeItem("editDealId");
+        localStorage.removeItem("editId");
+      }
+
+      if ($("client-name-input")) {
+        $("client-name-input").value = "";
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Save failed");
+    }
+  }
 
   /* ================= RESET ================= */
   function resetAll() {
@@ -274,186 +265,6 @@ async function saveDeal() {
 
   $("resetBtn")?.addEventListener("click", resetAll);
   $("saveDealBtn")?.addEventListener("click", saveDeal);
-
-
- /* ================= EXPORT CSV ================= */
-function exportCSV() {
-  if (!latestData) {
-    alert("Run calculator first");
-    return;
-  }
-
-  const i = getInputs();
-
-  const rows = [
-    ["Field", "Value"],
-
-    ["Contract Value", i.value],
-    ["Material Cost", i.material],
-    ["Labor Monthly", i.laborMonthly],
-    ["Equipment Monthly", i.equipmentMonthly],
-    ["Fixed Monthly", i.fixedMonthly],
-    ["Duration (Months)", i.months],
-
-    ["Total Costs", latestData.totalCosts],
-    ["Profit", latestData.profit],
-    ["Margin (%)", latestData.margin],
-    ["ROI (%)", latestData.roi],
-    ["Break-even", latestData.breakEvenValue],
-    ["Monthly Profit", latestData.monthlyProfit],
-    ["Annual Profit", latestData.annualProfit],
-
-    ["Decision", latestData.decision],
-    ["Advice", latestData.advice]
-  ];
-
-  const csvContent = rows
-    .map(row => row.join(","))
-    .join("\n");
-
-  const blob = new Blob([csvContent], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "construction-results.csv";
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
- /* ================= EXPORT Reports================= */
-  function exportReport() {
-  if (!latestData) {
-    alert("Run calculator first");
-    return;
-  }
-
-  const i = getInputs();
-
-  const html = `
-  <html>
-  <head>
-    <title>Construction Report</title>
-    <style>
-      body {
-        font-family: Arial;
-        padding: 30px;
-        color: #111;
-      }
-      h1 { margin-bottom: 5px; }
-      .section { margin-top: 25px; }
-      .box {
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-top: 10px;
-      }
-      .strong { font-weight: bold; }
-    </style>
-  </head>
-
-  <body>
-
-    <h1>Construction Project Report</h1>
-    <div>${new Date().toLocaleString()}</div>
-
-    <div class="section">
-      <h2>Decision</h2>
-      <div class="box">
-        <div class="strong">${latestData.decision}</div>
-        <div>${latestData.advice}</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Inputs</h2>
-      <div class="box">
-        <div>Contract Value: ${i.value}</div>
-        <div>Material: ${i.material}</div>
-        <div>Labor: ${i.laborMonthly}</div>
-        <div>Equipment: ${i.equipmentMonthly}</div>
-        <div>Fixed: ${i.fixedMonthly}</div>
-        <div>Duration: ${i.months}</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Results</h2>
-      <div class="box">
-        <div>Total Costs: ${latestData.totalCosts}</div>
-        <div>Profit: ${latestData.profit}</div>
-        <div>Margin: ${latestData.margin}%</div>
-        <div>ROI: ${latestData.roi}%</div>
-        <div>Break-even: ${latestData.breakEvenValue}</div>
-        <div>Monthly Profit: ${latestData.monthlyProfit}</div>
-        <div>Annual Profit: ${latestData.annualProfit}</div>
-      </div>
-    </div>
-
-  </body>
-  </html>
-  `;
-
-  const w = window.open("", "_blank");
-  w.document.write(html);
-  w.document.close();
-}
-  
-/* ================= SHARE LINK ================= */
-async function shareDeal() {
-  if (!latestData) {
-    alert("Run calculator first");
-    return;
-  }
-
-  const token = localStorage.getItem("token");
-  const clientName = $("client-name-input")?.value || "Construction Project";
-
-  const payload = {
-    type: "construction",
-    clientName: clientName, // Pass the client name to the share data
-    inputs: getInputs(),
-    results: latestData,
-    permissions: { mode: "view" },
-    title: clientName // This sets the title on the shared page
-  };
-
-  try {
-    const res = await fetch(`${API_BASE}/api/share`, { 
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      console.error("Share Error details:", errorData);
-      alert("Failed to create share link");
-      return;
-    }
-
-    const data = await res.json();
-
-    // Generate the professional link
-    const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
-
-    // Copy to clipboard
-    await navigator.clipboard.writeText(link);
-
-    // Dynamic alert message
-    alert(`Success! Share link for "${clientName}" copied to clipboard.`);
-    
-  } catch (err) {
-    console.error("Share process failed:", err);
-    alert("An error occurred while generating the link.");
-  }
-}
-/* ================= EVENTS ================= */
-$("exportCsvBtn")?.addEventListener("click", exportCSV);
-$("exportReportBtn")?.addEventListener("click", exportReport);
-  $("shareBtn")?.addEventListener("click", shareDeal);
 
   /* ================= INIT ================= */
   loadEditDeal();
