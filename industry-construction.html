@@ -70,24 +70,55 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
   <div class="sidebar-top">
-
+    <!-- Brand -->
     <div class="sidebar-brand">
-      <img src="images/Untitled design.png" class="sidebar-logo" />
-      <span class="sidebar-name">Sandile SystemsWorks</span>
+      <img src="images/Untitled design.png" class="sidebar-logo" alt="Logo" />
+      <span class="sidebar-name">SystemsWorks</span>
     </div>
 
+    <!-- Navigation -->
     <nav class="sidebar-nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="sector-secondary.html" class="active">Construction Tool</a>
-      <hr class="sidebar-divider" />
-      <a href="SaveConstruction.html">Saved Deals</a>
-
+      <a href="dashboard.html" class="nav-link">
+        <i data-lucide="layout-grid"></i>
+        <span>Dashboard</span>
+      </a>
       
-    </nav>      
+      <a href="sector-secondary.html" class="nav-link active">
+        <i data-lucide="hard-hat"></i>
+        <span>Construction Tool</span>
+      </a>
+
+      <hr class="sidebar-divider" />
+
+      <a href="SaveConstruction.html" class="nav-link">
+        <i data-lucide="bookmark"></i>
+        <span>Saved Deals</span>
+      </a>
+    </nav>
   </div>
 
+  <!-- ACCOUNT SECTION (Now at the bottom for better UX) -->
+  <div class="sidebar-bottom">
+    <div class="sidebar-account">
+      <button id="accountBtn" class="account-btn">
+        <div id="accountAvatar" class="account-avatar">S</div>
+        <div class="account-info">
+          <span id="accountName" class="account-name">Sandile</span>
+          <i data-lucide="chevron-up" class="chevron"></i>
+        </div>
+      </button>
+
+      <div id="accountMenu" class="account-menu">
+        <a href="index.html">
+          <i data-lucide="home"></i> Home
+        </a>
+        <button id="logoutBtn">
+          <i data-lucide="log-out"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
 </aside>
 
 <!-- MAIN -->
@@ -228,6 +259,13 @@
 <script src="js/construction.js"></script>
 <script src="js/hamburger.js"></script>
 <script src="js/user-display.js"></script>
+
+  <!-- LUCIDE-->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  // This command tells Lucide to turn your text tags into beautiful icons
+  lucide.createIcons();
+</script>
 
 </body>
 </html>
