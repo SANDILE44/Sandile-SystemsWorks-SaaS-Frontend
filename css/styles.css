@@ -1036,52 +1036,59 @@ label {
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* SAVE DEALS and EXPORT BUTTON */
-.exportBtn,
-.saveDealBtn {
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.85rem 1.2rem;
-
-  border-radius: 12px;
-  border: 1px solid rgba(0, 180, 216, 0.4);
-
-  background: linear-gradient(135deg, #00b4d8, #0096c7);
-  color: #000;
-
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 16px rgba(0, 180, 216, 0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.2);
-
-  transition: all 0.15s ease;
+/* Layout Wrappers */
+.action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-/* HOVER */
-.exportBtn:hover,
-.saveDealBtn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+.export-group {
+    display: flex; 
+    gap: 10px;
 }
 
-/* ACTIVE */
-.exportBtn:active,
-.saveDealBtn:active {
-  transform: translateY(0);
+/* Base Button Styling */
+.saveDealBtn, .exportBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* DISABLED */
-.exportBtn:disabled,
-.saveDealBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.saveDealBtn i, .exportBtn i {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
 }
 
+/* Themes */
+.share-theme {
+    background: var(--accent) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.share-theme:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+}
+
+/* Refined Export Buttons */
+.exportBtn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-soft);
+    color: var(--text-muted);
+}
+
+.exportBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
 
 /* Sidebar Nav Links */
 .nav-link {
