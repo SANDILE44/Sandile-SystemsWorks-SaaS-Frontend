@@ -42,7 +42,7 @@
     else el.classList.add("positive");
   }
 
-  /* ================= LOAD EDIT DATA ================= */
+/* ================= LOAD EDIT DATA ================= */
   function loadEditDeal() {
     const edit = localStorage.getItem("editDeal");
     if (!edit) return;
@@ -51,6 +51,12 @@
       const deal = JSON.parse(edit);
       const i = deal.inputs || {};
 
+      // 1. Set the Client Name back into the input field
+      if (deal.clientName && $("client-name-input")) {
+        $("client-name-input").value = deal.clientName;
+      }
+
+      // 2. Set the numeric inputs
       $("const-value").value = i.value || 0;
       $("const-material").value = i.material || 0;
       $("const-labor").value = i.laborMonthly || 0;
@@ -62,6 +68,13 @@
       console.error("Failed loading edit deal:", err);
     }
   }
+
+  // 6. Cleanup logic for Edit Mode (Inside saveDeal)
+    if (editId) {
+      localStorage.removeItem("editDeal");
+      localStorage.removeItem("editDealId"); 
+      localStorage.removeItem("editId"); 
+    }
 
   /* ================= RUN ENGINE ================= */
   async function run() {
@@ -152,28 +165,31 @@
 
   /* ================= SAVE / UPDATE DEAL ================= */
 async function saveDeal() {
+  // 1. Safety Check: Don't save empty math
   if (!latestData) return alert("Run calculator first");
 
   const token = localStorage.getItem("token");
   const editId = localStorage.getItem("editDealId");
-  
-  // Grab the client name from your input field
-  const clientName = $("client-name-input")?.value || "Untitled Project";
 
+  // 2. Grab the Project/Client name from the input field
+  // We use the ID we added to the HTML earlier
+  const clientNameValue = document.getElementById("client-name-input")?.value || "Untitled Project";
+
+  // 3. Build the Payload (Keeping all your existing logic)
   const payload = {
     type: "construction",
-    clientName: clientName, // Added this
+    clientName: clientNameValue, // This is what your History script looks for
     inputs: getInputs(),
     results: {
       profit: latestData.profit,
       margin: latestData.margin,
-      revenue: latestData.value,
-      // Adding status/decision so it shows up in history immediately
+      revenue: latestData.value, // Maps to your d.results?.revenue
       status: latestData.decision,
       riskLevel: latestData.riskLevel 
     }
   };
 
+  // 4. Determine if we are creating NEW or updating OLD
   const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
   const method = editId ? "PUT" : "POST";
 
@@ -182,24 +198,31 @@ async function saveDeal() {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(payload)
     });
 
     if (!res.ok) throw new Error("Server responded with error");
 
-    alert(editId ? `Successfully updated: ${clientName}` : `Project saved: ${clientName}`);
+    // 5. User Feedback
+    alert(editId ? `Successfully updated: ${clientNameValue}` : `Project saved: ${clientNameValue}`);
 
-    // Only clear edit data if we are actually in edit mode
+    // 6. Cleanup logic for Edit Mode
     if (editId) {
       localStorage.removeItem("editDeal");
-      localStorage.removeItem("editDealId");
+      localStorage.removeItem("editId"); // Standard cleanup
+      localStorage.removeItem("editDealId"); // Your specific cleanup
     }
-    
+
+    // Optional: Clear the input after saving a NEW deal so it's ready for the next one
+    if (!editId) {
+       document.getElementById("client-name-input").value = "";
+    }
+
   } catch (err) {
     console.error("Save failed:", err);
-    alert("Could not save deal. Please check your connection.");
+    alert("Could not save deal. Please check your connection to Sandile SystemsWorks backend.");
   }
 }
 
