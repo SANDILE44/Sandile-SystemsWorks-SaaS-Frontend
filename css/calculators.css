@@ -1,208 +1,414 @@
 /* =========================================================
-   SANDILE SYSTEMSWORKS - PREMIUM UI CORE
+   calculators.css (FIX SCROLL + FIXED SIDEBAR)
 ========================================================= */
 
-:root {
-  --bg-deep: #020617;
-  --bg-card: #070e24;
-  --accent: #3b82f6; /* Modern Blue */
-  --accent-glow: rgba(59, 130, 246, 0.3);
-  --text-main: #f8fafc;
-  --text-dim: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
-  --glass: rgba(255, 255, 255, 0.03);
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-}
-
-/* ================= RESET & BASE ================= */
+/* ================= GLOBAL SAFETY ================= */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  background-color: var(--bg-deep);
-  color: var(--text-main);
-  line-height: 1.6;
+
+/* ================= HEADINGS ================= */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00b4d8;
 }
 
-/* ================= TYPOGRAPHY ================= */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
-  font-weight: 700;
+h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #00b4d8;
 }
 
-h1 { font-size: 2.2rem; background: linear-gradient(to right, #fff, var(--text-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-h3 { font-size: 1.1rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.2rem; opacity: 0.9; }
+h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
 
-/* ================= PREMIUM CALCULATOR CONTAINER ================= */
+p,
+li {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: #ccc;
+}
+
+/* ================= BREADCRUMB ================= */
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+  color: #00b4d8;
+  text-decoration: none;
+}
+
+/* ================= CALCULATOR ================= */
 .calculator-container {
-  background: var(--bg-card);
-  padding: 2rem;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-/* The subtle background glow effect */
-.calculator-container::before {
-  content: "";
-  position: absolute;
-  top: -100px;
-  right: -100px;
-  width: 300px;
-  height: 300px;
-  background: var(--accent-glow);
-  filter: blur(100px);
-  border-radius: 50%;
-  z-index: 0;
-  pointer-events: none;
+  background-color: #020617;
+  padding: 1.8rem;
+  border-radius: 14px;
+  margin-top: 1.5rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
 }
 
 .calculator-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
-  position: relative;
-  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
 }
 
-/* ================= INPUT SECTION ================= */
-.input-section, .output-section {
-  background: var(--glass);
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+.input-section,
+.output-section {
+  background-color: #030922;
+  padding: 1.5rem;
+  border-radius: 14px;
 }
 
+/* ================= INPUTS ================= */
 .input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
-.input-group label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-dim);
-  margin-bottom: 0.6rem;
-  display: block;
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #aaa;
 }
 
 .input-section input {
-  width: 100%;
-  padding: 0.9rem 1.2rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.6);
-  color: #fff;
-  font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background-color: #111827;
+  color: #fff;
+  transition: 0.2s ease;
 }
 
 .input-section input:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: rgba(15, 23, 42, 0.9);
-  box-shadow: 0 0 0 4px var(--accent-glow);
-  transform: translateY(-1px);
+  outline: none;
+  border-color: #00b4d8;
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
-/* ================= PREMIUM BUTTONS ================= */
-#resetBtn, .saveDealBtn, .exportBtn {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  transition: all 0.2s ease;
-  border: none;
+/* ================= SUPER RESET BUTTON ================= */
+
+#resetBtn,
+#resetOperationsBtn,
+#resetShipmentBtn,
+#resetFreightBtn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.85rem 1.2rem;
+
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #000;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
-#resetBtn {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
-  border: 1px solid var(--border);
+/* Hover */
+#resetBtn:hover,
+#resetOperationsBtn:hover,
+#resetShipmentBtn:hover,
+#resetFreightBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 10px 22px rgba(0, 180, 216, 0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
 }
 
-#resetBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--text-dim);
+/* Active (Pressed) */
+#resetBtn:active,
+#resetOperationsBtn:active,
+#resetShipmentBtn:active,
+#resetFreightBtn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0, 180, 216, 0.2),
+    inset 0 2px 4px rgba(0,0,0,0.25);
 }
 
-.saveDealBtn {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 15px var(--accent-glow);
+/* Focus (keyboard users) */
+#resetBtn:focus-visible,
+#resetOperationsBtn:focus-visible,
+#resetShipmentBtn:focus-visible,
+#resetFreightBtn:focus-visible {
+  outline: 2px solid rgba(0, 180, 216, 0.6);
+  outline-offset: 3px;
 }
 
-.saveDealBtn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--accent-glow);
+/* Disabled state (future-proof) */
+#resetBtn:disabled,
+#resetOperationsBtn:disabled,
+#resetShipmentBtn:disabled,
+#resetFreightBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
-
-/* ================= OUTPUT METRICS ================= */
+/* ================= OUTPUTS ================= */
 .output-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #1e293b;
 }
 
 .output-label {
-  color: var(--text-dim);
-  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .output-value {
-  font-size: 1.1rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right;
 }
 
-/* ================= DECISION CARDS ================= */
-#decision-status {
-  padding: 1.5rem;
-  border-radius: 16px;
-  font-size: 1.2rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
+/* ================= STATUS COLORS ================= */
+#log-status.profit {
+  color: #22c55e;
+  font-weight: 800;
 }
 
-#decision-status.positive { 
-  background: rgba(16, 185, 129, 0.1); 
-  color: var(--success); 
-  border-color: rgba(16, 185, 129, 0.2);
+#log-status.loss {
+  color: #ef4444;
+  font-weight: 800;
 }
 
-#decision-status.negative { 
-  background: rgba(239, 68, 68, 0.1); 
-  color: var(--danger); 
-  border-color: rgba(239, 68, 68, 0.2);
+#log-status.neutral {
+  color: #f59e0b;
+  font-weight: 800;
 }
 
+/* ===============================
+   NEW CONSTRUCTION DECISION UI
+   (Risk • Markup • Simulation • Decision)
+================================= */
+
+/* Decision Panel */
+.decision-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.decision-take {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  color: #22c55e;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
+}
+
+.decision-caution {
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
+}
+
+.decision-avoid {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+}
+
+/* Risk Warning */
+.risk-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  color: #f87171;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Markup Recommendation */
+.markup-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  color: #60a5fa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cost Overrun Simulation */
+.simulation-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.08);
+  border-left: 4px solid #a855f7;
+  color: #c084fc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Subtle premium animation */
+.decision-panel,
+.risk-box,
+.markup-box,
+.simulation-box {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.decision-panel:hover,
+.risk-box:hover,
+.markup-box:hover,
+.simulation-box:hover {
+  transform: translateY(-3px);
+}
+
+/* ================= LOGISTICS DECISION ENGINE ================= */
+
+/* Make decision engine rows feel special */
+#log-risk-level,
+#log-safety {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Risk Level classes */
+#log-risk-level.low {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+#log-risk-level.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-risk-level.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Recommended Price */
+#log-recommended-price {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  font-weight: 900;
+}
+
+/* Safety Status classes */
+#log-safety.healthy {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+#log-safety.risk {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+#log-safety.critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Advice Box */
+#log-advice {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ================= SECTOR GRID ================= */
+.sectors-navigation {
+  margin-top: 4rem;
+}
+
+.sectors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.sector-group {
+  flex: 1 1 200px;
+}
+
+.sector-group h3 {
+  margin-bottom: 0.8rem;
+}
+
+.sector-group ul {
+  list-style: none;
+}
+
+.sector-group a {
+  color: #94a3b8;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.4rem;
+  transition: 0.2s;
+}
+
+.sector-group a:hover {
+  color: #00b4d8;
+}
 /* ================= RESPONSIVE ================= */
-@media (max-width: 900px) {
-  .calculator-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .calculator-container {
-    padding: 1.2rem;
-  }
-}
-
+@media (max-width: 768px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+                     }
