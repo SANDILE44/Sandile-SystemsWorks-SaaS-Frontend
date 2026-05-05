@@ -187,3 +187,67 @@ h1 {
     transform: translateY(0);
   }
 }
+
+/* ================= SEARCH UI ================= */
+.search-wrapper {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.search-input-container {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+}
+
+.search-input-container input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.8rem; /* Space for icon */
+  background: var(--bg-main);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.search-input-container input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(0, 180, 216, 0.05);
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.15);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.search-input-container input:focus + .search-icon {
+  color: var(--accent);
+}
+
+.industry-meta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .search-input-container {
+    max-width: 100%;
+  }
+}
