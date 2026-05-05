@@ -137,30 +137,30 @@ gtag('config', 'G-V1M5L4408K');
   <p>Welcome, <span id="usernameDisplay">User</span>. Use industry decision tools to analyze profit, cost structure, margins and risk before making business decisions.</p>
 </header>
 
-    <!-- DASHBOARD STATUS -->
-    <section class="dashboard-stats">
-      <div class="stat">
-        <div class="stat-label">Access</div>
-        <div class="stat-value" id="statAccess">—</div>
-      </div>
+<!-- DASHBOARD STATUS: These IDs connect directly to your app.js render functions -->
+<section class="dashboard-stats">
+  <div class="stat-card">
+    <div class="stat-label">Access Status</div>
+    <div class="stat-value" id="statAccess">Checking...</div>
+  </div>
 
-      <div class="stat">
-        <div class="stat-label">Billing</div>
-        <div class="stat-value" id="statBilling">—</div>
-      </div>
+  <div class="stat-card">
+    <div class="stat-label">Subscription Details</div>
+    <div class="stat-value" id="statBilling">—</div>
+  </div>
 
-      <div class="stat">
-        <div class="stat-label">Last login</div>
-        <div class="stat-value" id="statLogin">—</div>
-      </div>
-    </section>
+  <div class="stat-card">
+    <div class="stat-label">Session Active Since</div>
+    <div class="stat-value" id="statLogin">—</div>
+  </div>
+</section>
 
-  <!-- PAY / UPGRADE -->
-    <section id="payBox" class="pay-box">
-      <p class="price-text">Business Access — R12,499 / month</p>
-      <button id="payBtn" class="btn btn-primary">Upgrade Now</button>
-    </section>
-
+<!-- PAY / UPGRADE BOX: 
+     Now acts as a dynamic container. 
+     app.js will fill this with either "Upgrade" or "Renew" logic. -->
+<section id="payBox" class="pay-container" style="display: none;">
+    <!-- JavaScript will inject the Upgrade UI here only if needed -->
+</section>
 
 <!-- MOST USED DECISION TOOLS -->
 <section class="dashboard-tools">
