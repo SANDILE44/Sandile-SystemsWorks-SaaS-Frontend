@@ -1,103 +1,103 @@
 /* =========================================================
-   calculators.css (FIX SCROLL + FIXED SIDEBAR)
+   calculators.css (FIX SCROLL + FIXED SIDEBAR)
 ========================================================= */
 
 /* ================= GLOBAL SAFETY ================= */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 
 /* ================= HEADINGS ================= */
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #00b4d8;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00b4d8;
 }
 
 h2 {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-  color: #00b4d8;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #00b4d8;
 }
 
 h3 {
-  font-size: 1.3rem;
-  margin-bottom: 0.8rem;
-  color: #fff;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
 }
 
 p,
 li {
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: #ccc;
 }
 
 /* ================= BREADCRUMB ================= */
 .breadcrumb {
-  font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
 }
 
 .breadcrumb a {
-  color: #00b4d8;
-  text-decoration: none;
+  color: #00b4d8;
+  text-decoration: none;
 }
 
 /* ================= CALCULATOR ================= */
 .calculator-container {
-  background-color: #020617;
-  padding: 1.8rem;
-  border-radius: 14px;
-  margin-top: 1.5rem;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  background-color: #020617;
+  padding: 1.8rem;
+  border-radius: 14px;
+  margin-top: 1.5rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
 }
 
 .calculator-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .input-section,
 .output-section {
-  background-color: #030922;
-  padding: 1.5rem;
-  border-radius: 14px;
+  background-color: #030922;
+  padding: 1.5rem;
+  border-radius: 14px;
 }
 
 /* ================= INPUTS ================= */
 .input-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 
 label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #aaa;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #aaa;
 }
 
 .input-section input {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-  background-color: #111827;
-  color: #fff;
-  transition: 0.2s ease;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background-color: #111827;
+  color: #fff;
+  transition: 0.2s ease;
 }
 
 .input-section input:focus {
-  outline: none;
-  border-color: #00b4d8;
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+  outline: none;
+  border-color: #00b4d8;
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
 /* ================= SUPER RESET BUTTON ================= */
@@ -106,30 +106,30 @@ label {
 #resetOperationsBtn,
 #resetShipmentBtn,
 #resetFreightBtn {
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.85rem 1.2rem;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.85rem 1.2rem;
 
-  border-radius: 12px;
-  border: 1px solid rgba(0, 180, 216, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
 
-  background: linear-gradient(135deg, #00b4d8, #0096c7);
-  color: #000;
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #000;
 
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
 
-  cursor: pointer;
+  cursor: pointer;
 
-  box-shadow:
-    0 6px 16px rgba(0, 180, 216, 0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.2);
+  box-shadow:
+    0 6px 16px rgba(0, 180, 216, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
 
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 /* Hover */
@@ -137,12 +137,12 @@ label {
 #resetOperationsBtn:hover,
 #resetShipmentBtn:hover,
 #resetFreightBtn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+  transform: translateY(-2px);
+  filter: brightness(1.05);
 
-  box-shadow:
-    0 10px 22px rgba(0, 180, 216, 0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.3);
+  box-shadow:
+    0 10px 22px rgba(0, 180, 216, 0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
 }
 
 /* Active (Pressed) */
@@ -150,10 +150,10 @@ label {
 #resetOperationsBtn:active,
 #resetShipmentBtn:active,
 #resetFreightBtn:active {
-  transform: translateY(0);
-  box-shadow:
-    0 4px 10px rgba(0, 180, 216, 0.2),
-    inset 0 2px 4px rgba(0,0,0,0.25);
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0, 180, 216, 0.2),
+    inset 0 2px 4px rgba(0,0,0,0.25);
 }
 
 /* Focus (keyboard users) */
@@ -161,8 +161,8 @@ label {
 #resetOperationsBtn:focus-visible,
 #resetShipmentBtn:focus-visible,
 #resetFreightBtn:focus-visible {
-  outline: 2px solid rgba(0, 180, 216, 0.6);
-  outline-offset: 3px;
+  outline: 2px solid rgba(0, 180, 216, 0.6);
+  outline-offset: 3px;
 }
 
 /* Disabled state (future-proof) */
@@ -170,117 +170,117 @@ label {
 #resetOperationsBtn:disabled,
 #resetShipmentBtn:disabled,
 #resetFreightBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 /* ================= OUTPUTS ================= */
 .output-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #1e293b;
 }
 
 .output-label {
-  color: #94a3b8;
-  font-weight: 600;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .output-value {
-  font-weight: 700;
-  text-align: right;
+  font-weight: 700;
+  text-align: right;
 }
 
 /* ================= STATUS COLORS ================= */
 #log-status.profit {
-  color: #22c55e;
-  font-weight: 800;
+  color: #22c55e;
+  font-weight: 800;
 }
 
 #log-status.loss {
-  color: #ef4444;
-  font-weight: 800;
+  color: #ef4444;
+  font-weight: 800;
 }
 
 #log-status.neutral {
-  color: #f59e0b;
-  font-weight: 800;
+  color: #f59e0b;
+  font-weight: 800;
 }
 
 /* ===============================
-   NEW CONSTRUCTION DECISION UI
-   (Risk • Markup • Simulation • Decision)
+   NEW CONSTRUCTION DECISION UI
+   (Risk • Markup • Simulation • Decision)
 ================================= */
 
 /* Decision Panel */
 .decision-panel {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 15px;
-  text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(6px);
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
 }
 
 .decision-take {
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.6);
-  color: #22c55e;
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  color: #22c55e;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.15);
 }
 
 .decision-caution {
-  background: rgba(250, 204, 21, 0.12);
-  border: 1px solid rgba(250, 204, 21, 0.6);
-  color: #facc15;
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.15);
 }
 
 .decision-avoid {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.6);
-  color: #ef4444;
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
 }
 
 /* Risk Warning */
 .risk-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(239, 68, 68, 0.08);
-  border-left: 4px solid #ef4444;
-  color: #f87171;
-  font-size: 14px;
-  line-height: 1.5;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  color: #f87171;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Markup Recommendation */
 .markup-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(59, 130, 246, 0.08);
-  border-left: 4px solid #3b82f6;
-  color: #60a5fa;
-  font-size: 14px;
-  line-height: 1.5;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  color: #60a5fa;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Cost Overrun Simulation */
 .simulation-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(168, 85, 247, 0.08);
-  border-left: 4px solid #a855f7;
-  color: #c084fc;
-  font-size: 14px;
-  line-height: 1.5;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.08);
+  border-left: 4px solid #a855f7;
+  color: #c084fc;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Subtle premium animation */
@@ -288,14 +288,14 @@ label {
 .risk-box,
 .markup-box,
 .simulation-box {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .decision-panel:hover,
 .risk-box:hover,
 .markup-box:hover,
 .simulation-box:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px);
 }
 
 /* ================= LOGISTICS DECISION ENGINE ================= */
@@ -303,112 +303,115 @@ label {
 /* Make decision engine rows feel special */
 #log-risk-level,
 #log-safety {
-  display: inline-flex;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* Risk Level classes */
 #log-risk-level.low {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
 }
 
 #log-risk-level.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
 }
 
 #log-risk-level.high {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* Recommended Price */
 #log-recommended-price {
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  color: #60a5fa;
-  font-weight: 900;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  font-weight: 900;
 }
 
 /* Safety Status classes */
 #log-safety.healthy {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
 }
 
 #log-safety.risk {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.35);
 }
 
 #log-safety.critical {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* Advice Box */
 #log-advice {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.9);
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* ================= SECTOR GRID ================= */
 .sectors-navigation {
-  margin-top: 4rem;
+  margin-top: 4rem;
 }
 
 .sectors-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .sector-group {
-  flex: 1 1 200px;
+  flex: 1 1 200px;
 }
 
 .sector-group h3 {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
 }
 
 .sector-group ul {
-  list-style: none;
+  list-style: none;
 }
 
 .sector-group a {
-  color: #94a3b8;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 0.4rem;
-  transition: 0.2s;
+  color: #94a3b8;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.4rem;
+  transition: 0.2s;
 }
 
 .sector-group a:hover {
-  color: #00b4d8;
+  color: #00b4d8;
 }
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-  .calculator-grid {
-    grid-template-columns: 1fr;
-  }
-                     }
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+                     }
+
+
+
