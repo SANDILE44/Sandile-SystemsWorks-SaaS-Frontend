@@ -1,20 +1,16 @@
-<!doctype html>
+<!DOCTYPE html> <!-- FIX: This prevents 'Quirks Mode' -->
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saved Construction Deals - Sandile SystemsWorks</title>
-
-  <!-- Reusing your core styles -->
   <link rel="stylesheet" href="css/styles.css" />
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
 
-  <!-- GLOBAL LOADER OVERLAY -->
   <div id="loader" class="loader-overlay">
     <div class="loader-content">
       <div class="spinner"></div>
@@ -23,12 +19,11 @@
   </div>
 
   <div class="app-shell">
-
-    <!-- SIDEBAR (Synced with Calculator Page) -->
     <aside class="sidebar">
+      <!-- Sidebar content remains the same -->
       <div class="sidebar-top">
         <div class="sidebar-brand">
-          <img src="images/Untitled design.png" class="sidebar-logo" />
+          <img src="images/Untitled design.png" class="sidebar-logo" alt="Logo" />
           <span class="sidebar-name">Sandile SystemsWorks</span>
         </div>
 
@@ -51,7 +46,7 @@
 
       <div class="sidebar-bottom">
         <div class="sidebar-account">
-          <button id="accountBtn" class="account-btn">
+          <button id="accountBtn" class="account-btn" type="button">
             <span id="accountAvatar" class="account-avatar">U</span>
             <div class="account-info">
               <span id="accountName" class="account-name">Account</span>
@@ -61,20 +56,15 @@
 
           <div id="accountMenu" class="account-menu">
             <a href="index.html"><i data-lucide="home"></i> Home</a>
-            <button id="logoutBtn"><i data-lucide="log-out"></i> Logout</button>
+            <button id="logoutBtn" type="button"><i data-lucide="log-out"></i> Logout</button>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
     <main class="main-content">
-      
-      <!-- MOBILE HAMBURGER -->
       <button id="hamburger" class="hamburger" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
 
       <div class="saved-container">
@@ -82,13 +72,14 @@
           <h1>Saved Construction Deals</h1>
           <p>Review and manage your analyzed construction projects.</p>
 
-          <!-- SEARCH SECTION -->
           <div class="search-wrapper">
             <div class="search-input-container">
               <i data-lucide="search" class="search-icon"></i>
+              <!-- FIX: Added 'name' and 'type="search"' for browser compatibility -->
               <input 
                 id="searchInput" 
-                type="text" 
+                name="projectSearch" 
+                type="search" 
                 placeholder="Search by client, value, or status..." 
                 autocomplete="off" 
               />
@@ -97,39 +88,23 @@
           </div>
         </div>
 
-        <!-- GRID FOR SAVED CARDS -->
         <div id="savedDealsContainer" class="deals-grid"></div>
 
-        <!-- EMPTY STATE -->
         <div id="emptyState" class="empty" style="display:none;">
-          <i data-lucide="folder-open" style="width: 48px; height: 48px; opacity: 0.2; margin-bottom: 1rem;"></i>
+          <i data-lucide="folder-open"></i>
           <p>No construction deals found.</p>
         </div>
       </div>
     </main>
-
   </div>
 
+  <!-- Scripts -->
   <script src="js/config.js"></script>
-<!-- 1. SECURITY FIRST: Stop unauthorized users before the page even paints -->
-<script src="js/guard.js"></script>
-
-<!-- 2. AUTH & USER DATA: Initialize the connection to your backend/Firebase -->
-<script src="js/auth.js"></script>
-
-<!-- 3. UI FOUNDATION: Make sure the Sidebar and Account buttons work immediately -->
-<script src="js/hamburger.js"></script>
-<script src="js/user-display.js"></script>
-
-<!-- 4. PAGE LOGIC: Finally, fetch and render the saved deals -->
-<!-- Ensure this file ONLY contains fetching logic, not calculation logic -->
-<script src="js/savedDealsConstruction.js"></script>
-  
-  <script>
-    // Initialize Icons
-    lucide.createIcons();
-  </script>
-
+  <script src="js/guard.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/hamburger.js"></script>
+  <script src="js/user-display.js"></script>
+  <script src="js/savedDealsConstruction.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
-
 </html>
