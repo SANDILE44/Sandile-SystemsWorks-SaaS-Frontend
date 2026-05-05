@@ -2,26 +2,39 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saved Construction Deals - Sandile SystemsWorks</title>
 
-<title>Saved Construction Deals - Sandile SystemsWorks</title>
-
-<link rel="stylesheet" href="css/styles.css" />
-<link rel="stylesheet" href="css/globalLoader.css" />
-<link rel="stylesheet" href="css/save.css" />
-
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/globalLoader.css" />
+  <link rel="stylesheet" href="css/save.css" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
 
-<!-- MAIN WRAPPER -->
 <div class="saved-wrapper">
-
-  <!-- CENTERED CONTENT CONTAINER -->
   <div class="saved-content">
 
-    <h1>Saved Construction Deals</h1>
+    <div class="page-header">
+      <h1>Saved Construction Deals</h1>
+      
+      <!-- NEW SEARCH SECTION -->
+      <div class="search-wrapper">
+        <div class="search-input-container">
+          <i data-lucide="search" class="search-icon"></i>
+          <input 
+            id="searchInput" 
+            type="text" 
+            placeholder="Search by client name or project value..." 
+            autocomplete="off"
+          />
+        </div>
+        <div id="searchMeta" class="industry-meta">Showing all projects</div>
+      </div>
+    </div>
 
     <!-- GRID -->
     <div id="savedDealsContainer" class="deals-grid"></div>
@@ -32,10 +45,13 @@
     </div>
 
   </div>
-
 </div>
 
 <script src="js/savedDealsConstruction.js"></script>
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+</script>
 
 </body>
 </html>
