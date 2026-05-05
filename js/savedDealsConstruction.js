@@ -3,7 +3,7 @@
   const API_BASE = "https://sandile-systemsworks-saas-backend-2.onrender.com";
   let dealsCache = [];
 
-  /* ================= UI UTILS (Add these) ================= */
+  /* ================= UI UTILS ================= */
   const showLoader = () => {
     const loader = $("loader");
     const container = $("savedDealsContainer");
@@ -39,11 +39,11 @@
     }
   }
 
-  /* ================= LOAD (Updated to use loader) ================= */
+  /* ================= LOAD DEALS ================= */
   async function loadDeals() {
-    showLoader(); // Turn spinner ON
+    showLoader();
     const all = await api("/api/saved-deals");
-    hideLoader(); // Turn spinner OFF
+    hideLoader();
     return (all || []).filter(d => d.type === "construction");
   }
 
@@ -54,9 +54,9 @@
     );
 
     if (confirmDelete) {
-      showLoader(); // Show loader while deleting
+      showLoader();
       await api(`/api/saved-deals/${id}`, "DELETE");
-      await init(); // This will trigger hideLoader via loadDeals
+      await init(); 
     }
   }
 
@@ -91,22 +91,45 @@
     return `${datePart} • ${timePart}`;
   }
 
+  /* ================= SEARCH LOGIC ================= */
+  function handleSearch(e) {
+    const term = e.target.value.toLowerCase();
+    
+    // Filter the original dealsCache
+    const filtered = dealsCache.filter(d => {
+      const name = (d.clientName || "").toLowerCase();
+      const revenue = (d.results?.revenue || d.results?.value || 0).toString();
+      const status = (d.results?.status || "").toLowerCase();
+      
+      return name.includes(term) || revenue.includes(term) || status.includes(term);
+    });
+
+    // Render the filtered list without updating the main cache
+    renderDeals(filtered, false); 
+  }
+
   /* ================= RENDER ================= */
-  function renderDeals(deals) {
+  function renderDeals(deals, updateCache = true) {
     const container = $("savedDealsContainer");
     const empty = $("emptyState");
 
-    dealsCache = deals || [];
+    if (updateCache) {
+      dealsCache = deals || [];
+    }
 
-    if (!dealsCache.length) {
-      container.innerHTML = "";
-      if (empty) empty.style.display = "block";
+    if (!deals.length) {
+      container.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; opacity: 0.6;">
+            <p>No matching projects found.</p>
+        </div>
+      `;
+      if (empty && updateCache) empty.style.display = "block";
       return;
     }
 
     if (empty) empty.style.display = "none";
 
-    container.innerHTML = dealsCache.map((d, index) => {
+    container.innerHTML = deals.map((d, index) => {
       const clientDisplay = d.clientName || "Untitled Project";
       const fullTimestamp = formatFullDate(d.createdAt);
       const marginVal = d.results?.margin || 0;
@@ -141,7 +164,7 @@
             </div>
           </div>
           <div class="deal-actions">
-            <button class="edit-btn" data-index="${index}">Edit / Open</button>
+            <button class="edit-btn" data-id="${d._id}">Edit / Open</button>
             <button class="delete-btn" data-id="${d._id}">Delete</button>
           </div>
         </div>
@@ -153,6 +176,9 @@
   async function init() {
     const deals = await loadDeals();
     renderDeals(deals);
+    
+    // Ensure Lucide icons are refreshed for new content
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /* ================= EVENTS ================= */
@@ -165,10 +191,15 @@
 
     const edit = e.target.closest(".edit-btn");
     if (edit) {
-      const deal = dealsCache[edit.dataset.index];
+      // Find the deal by ID to ensure accuracy even when filtered
+      const deal = dealsCache.find(dc => dc._id === edit.dataset.id);
       if (deal) editDeal(deal);
     }
   });
 
+  // Listen for search input
+  $("searchInput")?.addEventListener("input", handleSearch);
+
+  // Initialize on load
   document.addEventListener("DOMContentLoaded", init);
 })();
