@@ -580,45 +580,48 @@ function exportToCsv() {
 
 }
 
+/* ================= EXPORT REPORT (PRINT) ================= */
+function exportReport() {
+    if (!latestData) return alert("Run the engine first to generate data.");
 
+    // 1. Fill in the print-only details
+    const projectName = $("client-name-input")?.value || "Standard Construction Project";
+    const dateStr = new Date().toLocaleDateString('en-ZA', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    if ($("print-project-name")) $("print-project-name").textContent = projectName;
+    if ($("print-date")) $("print-date").textContent = dateStr;
+
+    // 2. Trigger the Print Dialog
+    window.print();
+}
 
   
 
   /* ================= EVENTS ================= */
-
   [
-
     "const-value",
-
     "const-material",
-
     "const-labor",
-
     "const-equipment",
-
     "const-fixed",
-
     "const-duration"
-
   ].forEach(id => {
-
     $(id)?.addEventListener("input", () => {
-
       clearTimeout(debounceTimer);
-
       debounceTimer = setTimeout(run, 300);
-
     });
-
   });
 
 
 
   $("resetBtn")?.addEventListener("click", resetAll);
-
   $("saveDealBtn")?.addEventListener("click", saveDeal);
-
   $("exportCsvBtn")?.addEventListener("click", exportToCsv);
+  $("exportReportBtn")?.addEventListener("click", exportReport);
 
 
 
