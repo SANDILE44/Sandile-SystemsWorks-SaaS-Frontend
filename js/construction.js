@@ -85,56 +85,41 @@
   }
 
 
-
-  /* ================= LOAD EDIT ================= */
-
+/* ================= LOAD EDIT (FIXED) ================= */
   function loadEditDeal() {
-
     const edit = localStorage.getItem("editDeal");
-
     if (!edit) return;
 
-
-
     try {
-
       const deal = JSON.parse(edit);
-
+      
+      // The database often nests inputs inside an 'inputs' object
+      // This line says: "Use deal.inputs if it exists, otherwise use the deal itself"
       const i = deal.inputs || deal;
 
-
-
-      if (deal.clientName && $("client-name-input")) {
-
-        $("client-name-input").value = deal.clientName;
-
+      // 1. Set the Project/Client Name
+      const nameInput = $("client-name-input");
+      if (nameInput) {
+        nameInput.value = deal.clientName || deal.name || "";
       }
 
+      // 2. Map the numbers back to the inputs
+      // We use || 0 as a fallback so the field isn't empty
+      if ($("const-value")) $("const-value").value = i.value || i.contractValue || 0;
+      if ($("const-material")) $("const-material").value = i.material || i.materialCost || 0;
+      if ($("const-labor")) $("const-labor").value = i.laborMonthly || i.laborCost || 0;
+      if ($("const-equipment")) $("const-equipment").value = i.equipmentMonthly || i.equipmentCost || 0;
+      if ($("const-fixed")) $("const-fixed").value = i.fixedMonthly || i.fixedCosts || 0;
+      if ($("const-duration")) $("const-duration").value = i.months || i.duration || 0;
 
-
-      $("const-value") && ($("const-value").value = i.value || 0);
-
-      $("const-material") && ($("const-material").value = i.material || 0);
-
-      $("const-labor") && ($("const-labor").value = i.laborMonthly || 0);
-
-      $("const-equipment") && ($("const-equipment").value = i.equipmentMonthly || 0);
-
-      $("const-fixed") && ($("const-fixed").value = i.fixedMonthly || 0);
-
-      $("const-duration") && ($("const-duration").value = i.months || 0);
-
-
+      // 3. IMPORTANT: Trigger the engine to run once data is loaded
+      // This ensures the charts and "Decision" update immediately
+      setTimeout(run, 100);
 
     } catch (err) {
-
       console.error("Load error:", err);
-
     }
-
   }
-
-
 
   /* ================= RUN ENGINE ================= */
 
