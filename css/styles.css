@@ -35,21 +35,6 @@ body {
 }
 
 /* ================= SIDEBAR ================= */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 260px;
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-
-  background: var(--bg-main);
-  border-right: 1px solid var(--border-soft);
-  padding: 1rem;
-}
 
 /* Brand */
 .sidebar-brand {
@@ -219,19 +204,12 @@ body {
 }
 /* ================= MAIN CONTENT ================= */
 .main-content {
-  margin-left: 260px;
+  margin-left: 260px; /* Space for the sidebar */
   width: calc(100% - 260px);
-
   min-height: 100vh;
-
-  /* allow natural page scrolling */
-  overflow-x: hidden;
-  overflow-y: visible;
-
   padding: 2rem;
-
-  /* important for long calculator pages */
   box-sizing: border-box;
+  transition: margin 0.3s ease;
 }
 
 /* ================= HEADER ================= */
@@ -637,11 +615,6 @@ body {
     border-radius: 2px;
   }
 
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-    padding: 1rem;
-  }
 
   /* ================= SIDEBAR ================= */
 
@@ -668,6 +641,13 @@ body {
     overflow: hidden;
     background: var(--bg-main);
   }
+
+  .sidebar-divider {
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: 1rem 0;
+  width: 100%;
+}
 
   .sidebar.mobile-open {
     transform: translateX(0);
@@ -710,6 +690,29 @@ body {
     font-size: 0.82rem;
     border-radius: 9px;
   }
+
+  /* ================= MOBILE OVERRIDE ================= */
+@media (max-width: 768px) {
+  .sidebar {
+    left: auto;
+    right: 0; /* Align to right for your hamburger logic */
+    transform: translateX(100%); /* Hide off-screen */
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0); /* Slide in */
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .hamburger {
+    display: flex; /* Show the button on mobile */
+  }
+}
 
   /* ================= ACCOUNT ================= */
 
