@@ -3,11 +3,12 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saved Construction Deals - Sandile SystemsWorks</title>
 
+  <!-- Reusing your core styles -->
   <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/save.css" />
+  <link rel="stylesheet" href="css/save.css" />
   <link rel="stylesheet" href="css/globalLoader.css" />
 
   <!-- Lucide Icons -->
@@ -17,50 +18,115 @@
 <body>
 
   <!-- GLOBAL LOADER OVERLAY -->
-<div id="loader" class="loader-overlay">
-  <div class="loader-content">
-    <div class="spinner"></div>
-    <p class="loader-text">Fetching Projects...</p>
+  <div id="loader" class="loader-overlay">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <p class="loader-text">Fetching Projects...</p>
+    </div>
   </div>
-</div>
 
-<div class="saved-wrapper">
-  <div class="saved-content">
+  <div class="app-shell">
 
-    <div class="page-header">
-      <h1>Saved Construction Deals</h1>
-      
-      <!-- NEW SEARCH SECTION -->
-      <div class="search-wrapper">
-        <div class="search-input-container">
-          <i data-lucide="search" class="search-icon"></i>
-          <input 
-            id="searchInput" 
-            type="text" 
-            placeholder="Search by client name or project value..." 
-            autocomplete="off"
-          />
+    <!-- SIDEBAR (Synced with Calculator Page) -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <img src="images/Untitled design.png" class="sidebar-logo" />
+          <span class="sidebar-name">Sandile SystemsWorks</span>
         </div>
-        <div id="searchMeta" class="industry-meta">Showing all projects</div>
+
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="nav-link">
+            <i data-lucide="layout-grid"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="sector-secondary.html" class="nav-link">
+            <i data-lucide="hard-hat"></i>
+            <span>Construction Tool</span>
+          </a>
+          <hr class="sidebar-divider" />
+          <a href="SaveConstruction.html" class="nav-link active">
+            <i data-lucide="bookmark"></i>
+            <span>Saved Deals</span>
+          </a>
+        </nav>
       </div>
-    </div>
 
-    <!-- GRID -->
-    <div id="savedDealsContainer" class="deals-grid"></div>
+      <div class="sidebar-bottom">
+        <div class="sidebar-account">
+          <button id="accountBtn" class="account-btn">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <div class="account-info">
+              <span id="accountName" class="account-name">Account</span>
+              <i data-lucide="chevron-up" class="chevron"></i>
+            </div>
+          </button>
 
-    <!-- EMPTY STATE -->
-    <div id="emptyState" class="empty" style="display:none;">
-      No Construction deals yet.
-    </div>
+          <div id="accountMenu" class="account-menu">
+            <a href="index.html"><i data-lucide="home"></i> Home</a>
+            <button id="logoutBtn"><i data-lucide="log-out"></i> Logout</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+      
+      <!-- MOBILE HAMBURGER -->
+      <button id="hamburger" class="hamburger" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="saved-container">
+        <div class="page-header">
+          <h1>Saved Construction Deals</h1>
+          <p>Review and manage your analyzed construction projects.</p>
+
+          <!-- SEARCH SECTION -->
+          <div class="search-wrapper">
+            <div class="search-input-container">
+              <i data-lucide="search" class="search-icon"></i>
+              <input 
+                id="searchInput" 
+                type="text" 
+                placeholder="Search by client, value, or status..." 
+                autocomplete="off" 
+              />
+            </div>
+            <div id="searchMeta" class="industry-meta">Showing all projects</div>
+          </div>
+        </div>
+
+        <!-- GRID FOR SAVED CARDS -->
+        <div id="savedDealsContainer" class="deals-grid"></div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="empty" style="display:none;">
+          <i data-lucide="folder-open" style="width: 48px; height: 48px; opacity: 0.2; margin-bottom: 1rem;"></i>
+          <p>No construction deals found.</p>
+        </div>
+      </div>
+    </main>
 
   </div>
-</div>
 
-<script src="js/savedDealsConstruction.js"></script>
-<script>
-  // Initialize Lucide icons
-  lucide.createIcons();
-</script>
+  <!-- SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/savedDealsConstruction.js"></script>
+  <script src="js/hamburger.js"></script>
+  <script src="js/user-display.js"></script>
+
+  <script>
+    // Initialize Icons
+    lucide.createIcons();
+  </script>
 
 </body>
+
 </html>
