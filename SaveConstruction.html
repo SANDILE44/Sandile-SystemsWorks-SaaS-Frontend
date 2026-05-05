@@ -110,9 +110,20 @@
 
   </div>
 
-  <script src="js/hamburger.js"></script>
+<!-- 1. SECURITY FIRST: Stop unauthorized users before the page even paints -->
+<script src="js/guard.js"></script>
+
+<!-- 2. AUTH & USER DATA: Initialize the connection to your backend/Firebase -->
+<script src="js/auth.js"></script>
+
+<!-- 3. UI FOUNDATION: Make sure the Sidebar and Account buttons work immediately -->
+<script src="js/hamburger.js"></script>
 <script src="js/user-display.js"></script>
-  <script src="js/savedDealsConstruction.js"></script>
+
+<!-- 4. PAGE LOGIC: Finally, fetch and render the saved deals -->
+<!-- Ensure this file ONLY contains fetching logic, not calculation logic -->
+<script src="js/savedDealsConstruction.js"></script>
+  
   <script>
     // Initialize Icons
     lucide.createIcons();
