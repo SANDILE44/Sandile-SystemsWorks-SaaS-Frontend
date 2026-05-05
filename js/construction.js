@@ -123,93 +123,62 @@
 
   /* ================= RUN ENGINE ================= */
 
-  async function run() {
-
-
-
+async function run() {
     const token = localStorage.getItem("token");
-
-    if (!token) return location.replace("login.html");
-
-
-
-    try {
-
-
-
-      const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
-
-        method: "POST",
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${token}`
-
-        },
-
-        body: JSON.stringify(getInputs())
-
-      });
-
-
-
-      if (!res.ok) return;
-
-
-
-      const d = await res.json();
-
-      latestData = d;
-
-
-
-      $("const-total-costs").textContent = money(d.totalCosts);
-
-      $("const-profit").textContent = money(d.profit);
-
-      $("const-margin").textContent = percent(d.margin);
-
-      $("const-roi").textContent = percent(d.roi);
-
-
-
-      $("const-breakeven").textContent = money(d.breakEvenValue);
-
-      $("const-monthly-profit").textContent = money(d.monthlyProfit);
-
-      $("const-annual-profit").textContent = money(d.annualProfit);
-
-
-
-      const statusEl = $("decision-status");
-
-      const adviceEl = $("decision-advice");
-
-
-
-      statusEl.textContent = d.decision || "—";
-
-      adviceEl.textContent = d.advice || "";
-
-
-
-      setStatusColor(statusEl, d.riskLevel);
-
-
-
-      renderInsights(d.insights || {});
-
-
-
-    } catch (err) {
-
-      console.error("Run error:", err);
-
+    if (!token) {
+        console.warn("No token found. Redirecting...");
+        return; // Temporarily stop the redirect to see if the UI stays
     }
 
-  }
+    const inputs = getInputs();
+
+    // GUARD: Don't call the API if the contract value is 0
+    // This prevents the "nothing happens" feeling on load
+    if (inputs.value === 0) {
+        console.log("Waiting for input...");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(inputs)
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.error("API Error:", errorData);
+            return;
+        }
+
+        const d = await res.json();
+        latestData = d;
+
+        // UI Updates
+        $("const-total-costs").textContent = money(d.totalCosts);
+        $("const-profit").textContent = money(d.profit);
+        $("const-margin").textContent = percent(d.margin);
+        $("const-roi").textContent = percent(d.roi);
+        $("const-breakeven").textContent = money(d.breakEvenValue);
+        $("const-monthly-profit").textContent = money(d.monthlyProfit);
+        $("const-annual-profit").textContent = money(d.annualProfit);
+
+        const statusEl = $("decision-status");
+        statusEl.textContent = d.decision || "—";
+        setStatusColor(statusEl, d.riskLevel);
+        
+        if($("decision-advice")) $("decision-advice").textContent = d.advice || "";
+
+        renderInsights(d.insights || {});
+
+    } catch (err) {
+        console.error("Connection failed. Is the Render server awake?", err);
+    }
+}
 
 
 
