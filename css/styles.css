@@ -35,6 +35,23 @@ body {
 }
 
 /* ================= SIDEBAR ================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: auto;
+
+  width: 260px;
+  height: 100vh;
+
+  background: var(--bg-main);
+  border-right: 1px solid var(--border-soft);
+  padding: 1.2rem;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 1100;
+}
 
 /* Brand */
 .sidebar-brand {
@@ -72,22 +89,29 @@ body {
   gap: 0.4rem;
 }
 
-.sidebar-nav a {
+.sidebar-nav a,
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
   padding: 0.65rem 0.9rem;
   border-radius: 10px;
+
   font-weight: 600;
   text-decoration: none;
+
   color: var(--text-muted);
+  transition: all 0.2s ease;
 }
 
 .sidebar-nav a:hover,
-.sidebar-nav a.active {
+.sidebar-nav a.active,
+.nav-link:hover,
+.nav-link.active {
   background: rgba(0, 180, 216, 0.12);
   color: var(--accent);
 }
-
-
-
 
 /* ================= ACCOUNT ================= */
 .sidebar-account {
@@ -97,15 +121,16 @@ body {
 
 
 .account-avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--accent);
   color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
+  font-weight: 800;
+  flex-shrink: 0;
 }
 
 .account-menu {
@@ -224,11 +249,6 @@ body {
 }
 
 
-
-/* ================= PAY BOX ================= */
-.pay-box {
-  margin-bottom: 2rem;
-}
 
 .status.active {
   color: #00ff7f;
@@ -692,27 +712,6 @@ body {
   }
 
   /* ================= MOBILE OVERRIDE ================= */
-@media (max-width: 768px) {
-  .sidebar {
-    left: auto;
-    right: 0; /* Align to right for your hamburger logic */
-    transform: translateX(100%); /* Hide off-screen */
-  }
-
-  .sidebar.mobile-open {
-    transform: translateX(0); /* Slide in */
-  }
-
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-    padding: 1rem;
-  }
-  
-  .hamburger {
-    display: flex; /* Show the button on mobile */
-  }
-}
 
   /* ================= ACCOUNT ================= */
 
@@ -1067,18 +1066,6 @@ label {
 
 .account-btn:hover {
   background: rgba(255, 255, 255, 0.05);
-}
-
-.account-avatar {
-  width: 32px;
-  height: 32px;
-  background: #007bff;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
 }
 
 .account-info {
