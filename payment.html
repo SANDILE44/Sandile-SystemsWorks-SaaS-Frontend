@@ -14,7 +14,7 @@
       --accent:  #00d5ff;
       --accent2: #0098b8;
       --text:    #e8f0f8;
-      --muted:   #4a6a85;
+      --muted:    #4a6a85;
       --border:  rgba(0,213,255,0.13);
       --green:   #00e87a;
       --yellow:  #ffb800;
@@ -35,7 +35,6 @@
         radial-gradient(ellipse 500px 400px at 85% 90%, rgba(0,120,200,0.05) 0%, transparent 65%);
     }
 
-    /* CARD */
     .pay-card {
       width: min(480px, 100%);
       background: var(--card);
@@ -65,7 +64,6 @@
       background: linear-gradient(90deg, transparent, rgba(0,213,255,0.4), transparent);
     }
 
-    /* LOGO */
     .pay-logo {
       height: 48px;
       object-fit: contain;
@@ -74,7 +72,6 @@
       margin-bottom: 1.6rem;
     }
 
-    /* ICON */
     .pay-icon {
       width: 72px;
       height: 72px;
@@ -88,7 +85,6 @@
       margin: 0 auto 1.6rem;
     }
 
-    /* HEADINGS */
     .pay-title {
       font-family: 'Syne', sans-serif;
       font-size: 1.7rem;
@@ -105,7 +101,6 @@
       margin-bottom: 2rem;
     }
 
-    /* PRICE BOX */
     .price-box {
       background: rgba(0,213,255,0.04);
       border: 1px solid rgba(0,213,255,0.12);
@@ -130,16 +125,13 @@
     }
 
     .price-note {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
       margin-top: 6px;
     }
 
-    .price-note strong {
-      color: var(--green);
-    }
+    .price-note strong { color: var(--green); }
 
-    /* FEATURES */
     .pay-features {
       list-style: none;
       margin-bottom: 1.8rem;
@@ -166,7 +158,6 @@
       flex-shrink: 0;
     }
 
-    /* PAY BUTTON */
     .btn-pay {
       width: 100%;
       padding: 1rem 1.2rem;
@@ -189,15 +180,6 @@
       box-shadow: 0 12px 36px rgba(0,213,255,0.35);
     }
 
-    .btn-pay:active { transform: translateY(0); }
-
-    .btn-pay:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* SUCCESS STATE */
     .status-active {
       background: rgba(0,232,122,0.07);
       border: 1px solid rgba(0,232,122,0.2);
@@ -206,19 +188,6 @@
       margin-bottom: 1.4rem;
     }
 
-    .status-active p:first-child {
-      color: var(--green);
-      font-weight: 800;
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-
-    .status-active p:last-child {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-
-    /* BACK LINK */
     .back-link {
       display: inline-block;
       margin-top: 1.4rem;
@@ -230,7 +199,16 @@
 
     .back-link:hover { color: var(--accent); }
 
-    /* LOADER */
+    .secure-notice {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
     .loader-overlay {
       position: fixed;
       inset: 0;
@@ -255,21 +233,7 @@
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loader-overlay p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    @media (max-width: 520px) {
-      .pay-card { padding: 2.2rem 1.4rem; border-radius: 20px; }
-      .pay-title { font-size: 1.45rem; }
-      .price-amount { font-size: 2rem; }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -281,10 +245,13 @@
       <!-- JS renders content here -->
     </div>
 
+    <div class="secure-notice">
+      🔒 Secure encrypted payment via Paystack
+    </div>
+
     <a href="dashboard.html" class="back-link">← Back to dashboard</a>
   </div>
 
-  <!-- GLOBAL LOADER -->
   <div id="global-loader" class="loader-overlay hidden">
     <div class="loader-spinner"></div>
     <p>Please wait…</p>
@@ -302,43 +269,48 @@
       const payBox = document.getElementById('payBox');
       if (!payBox) return;
 
-      if (profile.user?.hasPaid) {
+      // Matches your Backend: subscriptions.calculators.status
+      const subStatus = profile.user?.subscriptions?.calculators?.status;
+      const isSubscribed = subStatus === 'active';
+
+      if (isSubscribed) {
         payBox.innerHTML = `
           <div class="status-active">
-            <p>✅ Active Subscription</p>
-            <p>Redirecting you back to the dashboard...</p>
+            <p style="color:var(--green); font-weight:800; margin-bottom:4px;">✅ Active Subscription</p>
+            <p style="color:var(--muted); font-size:0.85rem;">Redirecting you back to your workspace...</p>
           </div>
         `;
-        setTimeout(() => (window.location.href = 'dashboard.html'), 1200);
+        setTimeout(() => (window.location.href = 'dashboard.html'), 1500);
         return;
       }
 
       payBox.innerHTML = `
-        <div class="pay-icon">⚠️</div>
-        <h1 class="pay-title">Subscription Required</h1>
-        <p class="pay-sub">Your free trial has ended. Subscribe to continue making smarter business decisions.</p>
+        <div class="pay-icon">💎</div>
+        <h1 class="pay-title">Professional Access</h1>
+        <p class="pay-sub">Your trial has ended. Secure full access to the Decision Engine to protect your business margins.</p>
 
         <div class="price-box">
           <div class="price-amount">R12,499 <span>/ month</span></div>
-          <p class="price-note"><strong>3 days free</strong> · Full access · Cancel anytime</p>
+          <p class="price-note"><strong>7 days free</strong> · Full access · Cancel anytime</p>
         </div>
 
         <ul class="pay-features">
-          <li>All 5 sectors — logistics, construction, manufacturing & more</li>
-          <li>20+ industry decision tools</li>
-          <li>Full ROI, margin & break-even analysis</li>
-          <li>Risk assessment & annual projections</li>
-          <li>Unlimited calculations</li>
-          <li>Continuous updates with new tools</li>
+          <li>Full Construction Profitability Engine</li>
+          <li>Unlimited Saved Decisions & Deals</li>
+          <li>Advanced Risk & ROI Analytics</li>
+          <li>Export Professional PDF Reports</li>
+          <li>Priority 24/7 WhatsApp Support</li>
         </ul>
 
-        <button type="button" class="btn-pay" id="payBtn">Pay R12,499 / month</button>
+        <button type="button" class="btn-pay" id="payBtn">Start 7-Day Free Trial</button>
       `;
 
       document.getElementById('payBtn').addEventListener('click', async () => {
         const btn = document.getElementById('payBtn');
+        const loader = document.getElementById('global-loader');
+        
         btn.disabled = true;
-        btn.textContent = 'Redirecting...';
+        loader.classList.remove('hidden');
 
         try {
           const token = window.auth.getToken();
@@ -346,8 +318,8 @@
           window.location.href = data.checkoutUrl;
         } catch (e) {
           btn.disabled = false;
-          btn.textContent = 'Pay R12,499 / month';
-          alert(e.message || 'Checkout failed. Please try again.');
+          loader.classList.add('hidden');
+          alert(e.message || 'Checkout failed. Please check your connection.');
         }
       });
     })();
