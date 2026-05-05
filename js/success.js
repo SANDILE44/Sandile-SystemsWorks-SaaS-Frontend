@@ -1,4 +1,8 @@
-// js/success.js
+/* ============================================================
+   Sandile SystemsWorks – Success Page Logic
+   Handles the transition from Yoco back to the Dashboard
+   ============================================================ */
+
 (async function () {
   const statusText = document.getElementById("statusText");
   const smallText = document.getElementById("smallText");
@@ -9,34 +13,47 @@
   }
 
   try {
-    // Must be logged in to confirm payment
+    // 1. Check for Login Token
     const token = localStorage.getItem("token");
     if (!token) {
       setStatus(
-        "You are not logged in.",
-        "Please login, then return to dashboard. If you paid, contact support with your email.",
+        "Authentication Required",
+        "You are not logged in. Please login to activate your premium features."
       );
       return;
     }
 
-    // Confirm payment in backend (mark hasPaid=true)
-    // Uses apiFetch from js/api.js
-    await apiFetch("/api/payments/confirm", {
-      method: "POST",
-      token,
-    });
+    // 2. Extract checkoutId from the URL (Yoco appends this automatically)
+    const urlParams = new URLSearchParams(window.location.search);
+    const checkoutId = urlParams.get("checkoutId");
 
-    setStatus("Payment confirmed ✅", "Redirecting you to dashboard…");
+    if (!checkoutId) {
+      setStatus(
+        "Missing Transaction ID",
+        "We couldn't find the payment record. If you were charged, please contact support."
+      );
+      return;
+    }
 
+    setStatus("Verifying payment...", "Connecting to Yoco Secure Servers...");
+
+    // 3. Confirm payment in backend (using the secure api.js helper)
+    // This now passes the checkoutId so the server can double-check the money
+    await window.api.confirmPaymentRequest(token, checkoutId);
+
+    // 4. Success UI
+    setStatus("Payment Confirmed ✅", "Welcome to the Premium Suite. Redirecting...");
+
+    // 5. Cleanup and Redirect
     setTimeout(() => {
       window.location.href = "dashboard.html";
-    }, 1800);
+    }, 2000);
+
   } catch (err) {
+    console.error("Verification Error:", err);
     setStatus(
-      "We couldn’t confirm the payment.",
-      err && err.message
-        ? err.message
-        : "Please go to dashboard and try again.",
+      "Verification Failed",
+      err.message || "Something went wrong. Please check your dashboard in a few minutes."
     );
   }
 })();
