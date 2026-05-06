@@ -91,38 +91,82 @@ gtag('config', 'G-V1M5L4408K');
 <body>
 <div class="app-shell">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-top">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  
+  <!-- TOP -->
+  <div class="sidebar-top">
 
-      <div class="sidebar-brand">
-        <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="sidebar-logo" />
-        <span class="sidebar-name">Sandile SystemsWorks</span>
-      </div>
-
-      <nav class="sidebar-nav">
-        <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="sector-primary.html">Primary Sector</a>
-        <a href="sector-secondary.html">Secondary Sector</a>
-        <a href="sector-tertiary.html">Tertiary Sector</a>
-        <a href="sector-quaternary.html">Quaternary Sector</a>
-        <a href="sector-quinary.html">Quinary Sector</a>
-      </nav>
+    <!-- BRAND -->
+    <div class="sidebar-brand">
+      <img src="images/Untitled design.png" alt="Sandile SystemsWorks" class="sidebar-logo" />
+      <span class="sidebar-name">Sandile SystemsWorks</span>
     </div>
 
-    <!-- ACCOUNT -->
+    <!-- NAV -->
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-link active">
+        <i data-lucide="layout-grid"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="sector-primary.html" class="nav-link">
+        <i data-lucide="leaf"></i>
+        <span>Primary Sector</span>
+      </a>
+
+      <a href="sector-secondary.html" class="nav-link">
+        <i data-lucide="factory"></i>
+        <span>Secondary Sector</span>
+      </a>
+
+      <a href="sector-tertiary.html" class="nav-link">
+        <i data-lucide="briefcase"></i>
+        <span>Tertiary Sector</span>
+      </a>
+
+      <a href="sector-quaternary.html" class="nav-link">
+        <i data-lucide="cpu"></i>
+        <span>Quaternary Sector</span>
+      </a>
+
+      <a href="sector-quinary.html" class="nav-link">
+        <i data-lucide="users"></i>
+        <span>Quinary Sector</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- BOTTOM / ACCOUNT -->
+  <div class="sidebar-bottom">
     <div class="sidebar-account">
+
       <button id="accountBtn" class="account-btn">
         <span id="accountAvatar" class="account-avatar">U</span>
-        <span id="accountName" class="account-name">Account</span>
+
+        <div class="account-info">
+          <span id="accountName" class="account-name">Account</span>
+          <i data-lucide="chevron-up" class="chevron"></i>
+        </div>
       </button>
 
-      <div id="accountMenu" class="account-menu" aria-hidden="true">
-        <a href="index.html">Home</a>
-        <button id="logoutBtn">Logout</button>
+      <div id="accountMenu" class="account-menu">
+        <a href="index.html">
+          <i data-lucide="home"></i>
+          Home
+        </a>
+
+        <button id="logoutBtn">
+          <i data-lucide="log-out"></i>
+          Logout
+        </button>
       </div>
+
     </div>
-  </aside>
+  </div>
+
+</aside>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
