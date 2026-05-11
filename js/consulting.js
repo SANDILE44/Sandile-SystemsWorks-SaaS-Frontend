@@ -152,78 +152,105 @@
     URL.revokeObjectURL(url);
   }
 
-  /* ================= EXPORT REPORT ================= */
+  /* ================= EXPORT REPORT (PRINT) ================= */
   function exportReport() {
     if (!latestData) return alert("Run calculator first");
 
-    const i = getInputs();
-    const html = `
-      <html>
-      <head>
-        <title>Consulting Project Report</title>
-        <style>
-          body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
-          .header { border-bottom: 2px solid #eee; margin-bottom: 20px; }
-          .decision-box { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
-          .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-          .metric-item { padding: 10px; border-bottom: 1px solid #eee; }
-          .bold { font-weight: bold; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>Consulting Project Analysis</h1>
-          <p>Generated on: ${new Date().toLocaleString()}</p>
-        </div>
-        <div class="decision-box">
-          <h2>Decision: ${latestData.decision}</h2>
-          <p>${latestData.advice}</p>
-        </div>
-        <div class="metrics">
-          <div class="metric-item"><span class="bold">Total Revenue:</span> R ${money(latestData.totalRevenue)}</div>
-          <div class="metric-item"><span class="bold">Total Costs:</span> R ${money(latestData.totalCosts)}</div>
-          <div class="metric-item"><span class="bold">Net Profit:</span> R ${money(latestData.profit)}</div>
-          <div class="metric-item"><span class="bold">Profit Margin:</span> ${percent(latestData.margin)}</div>
-          <div class="metric-item"><span class="bold">ROI:</span> ${percent(latestData.roi)}</div>
-          <div class="metric-item"><span class="bold">Break-even:</span> ${latestData.breakevenHours} Hours</div>
-        </div>
-      </body>
-      </html>
-    `;
+    // 1. Fill in the print-only details
+    const projectName = "Consulting Project Analysis";
+    const dateStr = new Date().toLocaleDateString('en-ZA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
 
-    const w = window.open("", "_blank");
-    w.document.write(html);
-    w.document.close();
+    if ($("print-project-name")) $("print-project-name").textContent = projectName;
+    if ($("print-date")) $("print-date").textContent = dateStr;
+
+    // 2. Trigger the Print Dialog
+    window.print();
   }
 
-  /* ================= SHARE LINK ================= */
+  /* ================= SHARE DEAL (FIXED FOR GITHUB PAGES & SCHEMA) ================= */
   async function shareDeal() {
     if (!latestData) return alert("Run calculator first");
 
     const token = localStorage.getItem("token");
+    const projectName = "Consulting Project Analysis";
+
+    // 1. Construct the payload to match the backend SharedDealSchema
     const payload = {
+      // Generate a random unique ID for the shareId field
+      shareId: "share_" + Math.random().toString(36).substring(2, 9),
       type: "consulting",
       inputs: getInputs(),
-      results: latestData,
-      title: "Consulting Project Analysis"
+      results: {
+        profit: latestData.profit,
+        margin: latestData.margin,
+        roi: latestData.roi,
+        status: latestData.decision,
+        action: latestData.advice,
+        totalRevenue: latestData.totalRevenue,
+        totalCosts: latestData.totalCosts,
+        profitPerHour: latestData.profitPerHour,
+        breakevenHours: latestData.breakevenHours
+      },
+      meta: {
+        title: projectName,
+        createdBy: "Sandile"
+      },
+      permissions: {
+        mode: "view",
+        isPublic: true
+      }
     };
 
-    const res = await fetch(`${API_BASE}/api/share`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const res = await fetch(`${API_BASE}/api/share`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
 
-    if (!res.ok) return alert("Failed to create share link");
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Server Response Error:", errorText);
+        throw new Error(`Server error: ${res.status}`);
+      }
 
-    const data = await res.json();
-    const link = `https://sandile44.github.io/Sandile-SystemsWorks-SaaS-Frontend/share.html?id=${data.id}`;
+      const data = await res.json();
 
-    await navigator.clipboard.writeText(link);
-    alert("Share link copied to clipboard!");
+      // 2. Identify the final ID from the server response
+      const finalId = data.shareId || data.id || data._id;
+
+      // 3. Build the URL including the specific repository path for GitHub Pages
+      const repoPath = "/Sandile-SystemsWorks-SaaS-Frontend";
+      const shareUrl = `${window.location.origin}${repoPath}/share.html?id=${finalId}`;
+
+      const shareMessage =
+        `💼 Consulting Project Analysis: ${projectName}\n` +
+        `View full analysis results here:\n${shareUrl}\n\n` +
+        `Generated by Sandile SystemsWorks`;
+
+      // 4. Trigger the native share menu or clipboard fallback
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Consulting Analysis Report',
+          text: shareMessage,
+          url: shareUrl
+        });
+      } else {
+        await navigator.clipboard.writeText(shareMessage);
+        alert("Analysis link and summary copied to clipboard!");
+      }
+
+    } catch (err) {
+      console.error('Sharing Error:', err);
+      alert("Action failed. Please check the console for details.");
+    }
   }
 
   /* ================= SAVE / UPDATE ================= */
