@@ -157,7 +157,7 @@ async function runMonthly() {
 
   /* ================= SAVE (EDITABLE) ================= */
   $("saveOperationsBtn")?.onclick = () => {
-    saveDeal("operations", {
+    saveDeal("logistics-operations", {
       inputs,
       results: {
         profit: data.profit,
@@ -203,7 +203,7 @@ async function runShipment() {
   renderSteps("ship-steps", data.steps);
 
   $("saveShipmentBtn")?.onclick = () => {
-    saveDeal("shipment", { inputs, results: data });
+    saveDeal("logistics-shipment", { inputs, results: data });
   };
 }
 
@@ -242,7 +242,7 @@ async function runFreight() {
   renderSteps("freight-steps", data.steps);
 
   $("saveFreightBtn")?.onclick = () => {
-    saveDeal("freight", { inputs, results: data });
+    saveDeal("logistics-freight", { inputs, results: data });
   };
 }
 

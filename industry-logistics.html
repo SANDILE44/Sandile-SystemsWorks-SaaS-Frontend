@@ -278,15 +278,18 @@ line-height: 1.4;
 </div>
 
 <nav class="sidebar-nav">
-<a href="dashboard.html">Dashboard</a>
-<a href="industry-logistics.html" class="active">Logistic Engine</a>
-
-<hr class="sidebar-divider" />
-
-<a href="SaveLogistics.html">Saved Deals</a>
-<a href="#">History</a>
-<a href="#">Export Results</a>
-</nav>
+          <a href="dashboard.html" class="nav-link">
+            <i data-lucide="layout-grid"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="industry-logistics.html" class="nav-link active">
+            <i data-lucide="truck"></i>
+            <span>Logistic Engine</span>
+          </a>
+          <a href="SaveLogistics.html" class="nav-link">
+            <i data-lucide="bookmark"></i>
+            <span>Saved Deals</span>
+          </a>
 
 </div>
 
@@ -505,6 +508,34 @@ clear margin visibility and operational risk detection.
   <h3>Step-by-Step Guidance</h3>
   <ol id="log-steps" class="steps-list"></ol>
 </div>
+
+<!-- PRIMARY ACTIONS -->
+<br>
+<div class="action-stack">
+  <button id="saveOperationsBtn" class="saveDealBtn">
+    <i data-lucide="save"></i>
+    <span>Save Deal</span>
+  </button>
+
+  <button id="shareOperationsBtn" class="saveDealBtn share-theme">
+    <i data-lucide="share-2"></i>
+    <span>Share Deal</span>
+  </button>
+</div>
+
+<!-- SECONDARY EXPORTS -->
+<div class="export-group">
+  <button id="exportOperationsCsvBtn" class="exportBtn">
+    <i data-lucide="file-spreadsheet"></i>
+    <span>Export CSV</span>
+  </button>
+
+  <button id="exportOperationsReportBtn" class="exportBtn">
+    <i data-lucide="file-text"></i>
+    <span>Export Report</span>
+  </button>
+</div>
+<br>
 
 </div> <!-- output-section -->
 </div> <!-- calculator-grid -->
@@ -733,6 +764,35 @@ clear margin visibility and operational risk detection.
       <!-- JS will insert steps here -->
     </ol>
   </div>
+
+<!-- PRIMARY ACTIONS -->
+<br>
+<div class="action-stack">
+  <button id="saveShipmentBtn" class="saveDealBtn">
+    <i data-lucide="save"></i>
+    <span>Save Deal</span>
+  </button>
+
+  <button id="shareShipmentBtn" class="saveDealBtn share-theme">
+    <i data-lucide="share-2"></i>
+    <span>Share Deal</span>
+  </button>
+</div>
+
+<!-- SECONDARY EXPORTS -->
+<div class="export-group">
+  <button id="exportShipmentCsvBtn" class="exportBtn">
+    <i data-lucide="file-spreadsheet"></i>
+    <span>Export CSV</span>
+  </button>
+
+  <button id="exportShipmentReportBtn" class="exportBtn">
+    <i data-lucide="file-text"></i>
+    <span>Export Report</span>
+  </button>
+</div>
+<br>
+
 </div> <!-- output-section -->
 </div> <!-- calculator-grid -->
 </div> <!-- shipment-panel -->

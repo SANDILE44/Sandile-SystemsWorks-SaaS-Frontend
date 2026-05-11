@@ -158,13 +158,33 @@ DECISION ENGINE UI
 <div id="status">—</div>
 <div id="decisionAdvice"></div>
 
-<button id="saveDealBtn" class="saveDealBtn">Save Deal</button>
-<button id="shareBtn" class="saveDealBtn" style="background: var(--accent); color: white;">Share Deal</button>
-<div style="display: flex; gap: 10px; margin-top: 10px;">
-    <button id="exportCsvBtn" class="exportBtn" style="flex: 1;">Export CSV</button>
-    <button id="exportReportBtn" class="exportBtn" style="flex: 1;">Export Report</button>
+<!-- PRIMARY ACTIONS -->
+    <br>
+<div class="action-stack">
+    <button id="saveDealBtn" class="saveDealBtn">
+        <i data-lucide="save"></i>
+        <span>Save Deal</span>
+    </button>
+
+    <button id="shareBtn" class="saveDealBtn share-theme">
+        <i data-lucide="share-2"></i>
+        <span>Share Deal</span>
+    </button>
 </div>
 
+<!-- SECONDARY EXPORTS -->
+<div class="export-group">
+    <button id="exportCsvBtn" class="exportBtn">
+        <i data-lucide="file-spreadsheet"></i>
+        <span>Export CSV</span>
+    </button>
+    
+    <button id="exportReportBtn" class="exportBtn">
+        <i data-lucide="file-text"></i>
+        <span>Export Report</span>
+    </button>
+</div>
+    <br>
 <h3>Key Metrics</h3>
 
 <div class="output-group">
