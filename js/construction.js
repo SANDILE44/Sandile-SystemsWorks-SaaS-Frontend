@@ -611,7 +611,7 @@ async function shareDeal() {
         const finalId = data.shareId || data.id || data._id;
 
         // 3. Build the URL including the specific repository path for GitHub Pages
-        const repoPath = "/Sandile-SystemsWorks-SaaS-Frontend";
+        const repoPath = "/https://sandile-systemsworks.vercel.app";
         const shareUrl = `${window.location.origin}${repoPath}/share.html?id=${finalId}`;
 
         const shareMessage = 
