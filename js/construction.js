@@ -122,32 +122,34 @@
   }
 
   /* ================= RUN ENGINE ================= */
-
 async function run() {
     const token = localStorage.getItem("token");
+
     if (!token) {
         console.warn("No token found. Redirecting...");
-        return; // Temporarily stop the redirect to see if the UI stays
+        return;
     }
 
     const inputs = getInputs();
 
-    // GUARD: Don't call the API if the contract value is 0
-    // This prevents the "nothing happens" feeling on load
+    // Prevent empty execution on load
     if (inputs.value === 0) {
         console.log("Waiting for input...");
         return;
     }
 
     try {
-        const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(inputs)
-        });
+        const res = await fetch(
+            `${API_BASE}/api/calculators/construction/project`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(inputs)
+            }
+        );
 
         if (!res.ok) {
             const errorData = await res.json();
@@ -158,30 +160,54 @@ async function run() {
         const d = await res.json();
         latestData = d;
 
-        // UI Updates
+        /* ================= CORE METRICS ================= */
+
         $("const-total-costs").textContent = money(d.totalCosts);
-        $("const-profit").textContent = money(d.profit);
-        $("const-margin").textContent = percent(d.margin);
-        $("const-roi").textContent = percent(d.roi);
+
+        // PROFIT (IMPORTANT SIGNAL)
+        const profitEl = $("const-profit");
+        profitEl.textContent = money(d.profit);
+        profitEl.className = "output-value " + (d.profit >= 0 ? "positive" : "negative");
+
+        // MARGIN (DECISION SIGNAL)
+        const marginEl = $("const-margin");
+        marginEl.textContent = percent(d.margin);
+        marginEl.className = "output-value " + (d.margin >= 0 ? "positive" : "negative");
+
+        // ROI (INVESTOR SIGNAL)
+        const roiEl = $("const-roi");
+        if (roiEl) {
+            roiEl.textContent = percent(d.roi);
+            roiEl.className = "output-value " + (d.roi >= 0 ? "positive" : "negative");
+        }
+
+        /* ================= SUPPORT METRICS (NO COLOR) ================= */
+
         $("const-breakeven").textContent = money(d.breakEvenValue);
         $("const-monthly-profit").textContent = money(d.monthlyProfit);
         $("const-annual-profit").textContent = money(d.annualProfit);
 
+        /* ================= DECISION ================= */
+
         const statusEl = $("decision-status");
         statusEl.textContent = d.decision || "—";
         setStatusColor(statusEl, d.riskLevel);
-        
-        if($("decision-advice")) $("decision-advice").textContent = d.advice || "";
+
+        if ($("decision-advice")) {
+            $("decision-advice").textContent = d.advice || "";
+        }
+
+        /* ================= INSIGHTS ================= */
 
         renderInsights(d.insights || {});
 
     } catch (err) {
-        console.error("Connection failed. Is the Render server awake?", err);
+        console.error(
+            "Connection failed. Is the Render server awake?",
+            err
+        );
     }
 }
-
-
-
   /* ================= INSIGHTS (FIXED SINGLE VERSION) ================= */
 
   function renderInsights(insights) {
