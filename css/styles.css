@@ -1392,3 +1392,18 @@ h1 {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
+/* Logo report background */
+.print-logo-wrap {
+    background: #000;
+    padding: 12px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.print-logo {
+    width: 90px;
+    height: auto;
+    display: block;
+}
