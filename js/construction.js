@@ -122,34 +122,32 @@
   }
 
   /* ================= RUN ENGINE ================= */
+
 async function run() {
     const token = localStorage.getItem("token");
-
     if (!token) {
         console.warn("No token found. Redirecting...");
-        return;
+        return; // Temporarily stop the redirect to see if the UI stays
     }
 
     const inputs = getInputs();
 
-    // Prevent empty execution on load
+    // GUARD: Don't call the API if the contract value is 0
+    // This prevents the "nothing happens" feeling on load
     if (inputs.value === 0) {
         console.log("Waiting for input...");
         return;
     }
 
     try {
-        const res = await fetch(
-            `${API_BASE}/api/calculators/construction/project`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(inputs)
-            }
-        );
+        const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(inputs)
+        });
 
         if (!res.ok) {
             const errorData = await res.json();
@@ -160,54 +158,30 @@ async function run() {
         const d = await res.json();
         latestData = d;
 
-        /* ================= CORE METRICS ================= */
-
+        // UI Updates
         $("const-total-costs").textContent = money(d.totalCosts);
-
-        // PROFIT (IMPORTANT SIGNAL)
-        const profitEl = $("const-profit");
-        profitEl.textContent = money(d.profit);
-        profitEl.className = "output-value " + (d.profit >= 0 ? "positive" : "negative");
-
-        // MARGIN (DECISION SIGNAL)
-        const marginEl = $("const-margin");
-        marginEl.textContent = percent(d.margin);
-        marginEl.className = "output-value " + (d.margin >= 0 ? "positive" : "negative");
-
-        // ROI (INVESTOR SIGNAL)
-        const roiEl = $("const-roi");
-        if (roiEl) {
-            roiEl.textContent = percent(d.roi);
-            roiEl.className = "output-value " + (d.roi >= 0 ? "positive" : "negative");
-        }
-
-        /* ================= SUPPORT METRICS (NO COLOR) ================= */
-
+        $("const-profit").textContent = money(d.profit);
+        $("const-margin").textContent = percent(d.margin);
+        $("const-roi").textContent = percent(d.roi);
         $("const-breakeven").textContent = money(d.breakEvenValue);
         $("const-monthly-profit").textContent = money(d.monthlyProfit);
         $("const-annual-profit").textContent = money(d.annualProfit);
 
-        /* ================= DECISION ================= */
-
         const statusEl = $("decision-status");
         statusEl.textContent = d.decision || "—";
         setStatusColor(statusEl, d.riskLevel);
-
-        if ($("decision-advice")) {
-            $("decision-advice").textContent = d.advice || "";
-        }
-
-        /* ================= INSIGHTS ================= */
+        
+        if($("decision-advice")) $("decision-advice").textContent = d.advice || "";
 
         renderInsights(d.insights || {});
 
     } catch (err) {
-        console.error(
-            "Connection failed. Is the Render server awake?",
-            err
-        );
+        console.error("Connection failed. Is the Render server awake?", err);
     }
 }
+
+
+
   /* ================= INSIGHTS (FIXED SINGLE VERSION) ================= */
 
   function renderInsights(insights) {
@@ -306,93 +280,123 @@ async function run() {
 
   /* ================= SAVE / UPDATE ================= */
 
-async function saveDeal() {
+  async function saveDeal() {
 
-  if (!latestData) {
-    return alert("Run calculator first");
-  }
 
-  const token = localStorage.getItem("token");
 
-  // SAFELY validate edit mode
-  const rawEditId = localStorage.getItem("editDealId");
+    if (!latestData) return alert("Run calculator first");
 
-  const editId =
-    rawEditId &&
-    rawEditId !== "undefined" &&
-    rawEditId !== "null"
-      ? rawEditId
-      : null;
 
-  const clientNameValue =
-    $("client-name-input")?.value?.trim() || "Untitled Project";
 
-  const payload = {
-    type: "construction",
+    const token = localStorage.getItem("token");
 
-    clientName: clientNameValue,
+    const editId = localStorage.getItem("editDealId");
 
-    inputs: getInputs(),
 
-    results: {
-      profit: latestData.profit,
-      margin: latestData.margin,
-      revenue: latestData.value,
-      status: latestData.decision,
-      riskLevel: latestData.riskLevel
-    }
-  };
 
-  // CREATE vs UPDATE
-  const url = editId
-    ? `/api/saved-deals/${editId}`
-    : `/api/saved-deals`;
+    const clientNameValue =
 
-  const method = editId ? "PUT" : "POST";
+      $("client-name-input")?.value || "Untitled Project";
 
-  try {
 
-    const res = await fetch(`${API_BASE}${url}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
 
-    if (!res.ok) {
+    const payload = {
 
-      const errorText = await res.text();
+      type: "construction",
 
-      console.error("Save API Error:", errorText);
+      clientName: clientNameValue,
 
-      throw new Error("Save failed");
-    }
+      inputs: getInputs(),
 
-    alert(
-      editId
+      results: {
+
+        profit: latestData.profit,
+
+        margin: latestData.margin,
+
+        revenue: latestData.value,
+
+        status: latestData.decision,
+
+        riskLevel: latestData.riskLevel
+
+      }
+
+    };
+
+
+
+    const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
+
+    const method = editId ? "PUT" : "POST";
+
+
+
+    try {
+
+
+
+      const res = await fetch(`${API_BASE}${url}`, {
+
+        method,
+
+        headers: {
+
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${token}`
+
+        },
+
+        body: JSON.stringify(payload)
+
+      });
+
+
+
+      if (!res.ok) throw new Error("Save failed");
+
+
+
+      alert(editId
+
         ? `Updated: ${clientNameValue}`
+
         : `Saved: ${clientNameValue}`
-    );
 
-    // CLEAR edit session completely
-    localStorage.removeItem("editDeal");
-    localStorage.removeItem("editDealId");
-    localStorage.removeItem("editId");
+      );
 
-    // OPTIONAL: clear project name field
-    if ($("client-name-input")) {
-      $("client-name-input").value = "";
+
+
+      if (editId) {
+
+        localStorage.removeItem("editDeal");
+
+        localStorage.removeItem("editDealId");
+
+        localStorage.removeItem("editId");
+
+      }
+
+
+
+      if ($("client-name-input")) {
+
+        $("client-name-input").value = "";
+
+      }
+
+
+
+    } catch (err) {
+
+      console.error(err);
+
+      alert("Save failed");
+
     }
 
-  } catch (err) {
-
-    console.error("Save Error:", err);
-
-    alert("Unable to save project right now. Please try again.");
   }
-}
 
 
 
@@ -607,8 +611,9 @@ async function shareDeal() {
         const finalId = data.shareId || data.id || data._id;
 
         // 3. Build the URL including the specific repository path for GitHub Pages
-    const shareUrl = `${window.location.origin}/share.html?id=${finalId}`;
-      
+        const repoPath = "/Sandile-SystemsWorks-SaaS-Frontend";
+        const shareUrl = `${window.location.origin}${repoPath}/share.html?id=${finalId}`;
+
         const shareMessage = 
             `🏗️ Project Intelligence Report: ${projectName}\n` +
             `View full analysis results here:\n${shareUrl}\n\n` +

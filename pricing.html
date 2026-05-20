@@ -1,620 +1,249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pricing - Sandile SystemsWorks</title>
-    <link rel="stylesheet" href="css/landing.css" />
-
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V1M5L4408K"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-V1M5L4408K');
-</script>
-
-  </head>
-
-  <body class="pricing-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | Sandile SystemsWorks</title>
+    
+     <link rel="stylesheet" href="css/landing.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
-      /* =========================================
-   PRICING PAGE — HERO (ISOLATED & FINAL)
-   Applies ONLY to Pricing page
-========================================= */
+        :root {
+            --bg-main: #020617;
+            --accent: #00b4d8;
+            --border-soft: rgba(255, 255, 255, 0.06);
+        }
 
-      .pricing-page .hero {
-        padding: 4.5rem 0 3.5rem;
-      }
+        body {
+            background-color: var(--bg-main);
+            color: #e5e7eb;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
 
-      /* Center the hero container */
-      .pricing-page .hero-center {
-        text-align: center;
-        max-width: 760px;
-        margin-left: auto;
-        margin-right: auto;
-      }
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-soft);
+        }
 
-      /* Eyebrow */
-      .pricing-page .hero-center .eyebrow {
-        display: inline-block;
-        margin: 0 auto 0.7rem;
-        text-align: center;
-        color: var(--accent);
-        letter-spacing: 1.4px;
-        font-weight: 900;
-        font-size: 0.85rem;
-      }
+        .pricing-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-      /* Headline */
-      .pricing-page .hero-center h1 {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        line-height: 1.08;
-      }
+        .pricing-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+        }
 
-      /* Subhead */
-      .pricing-page .hero-center .subhead {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 62ch;
-      }
-
-      /* Trustline */
-      .pricing-page .hero-center .trustline {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-      }
-
-      /* Dot stays inline */
-      .pricing-page .hero-center .trustline .dot {
-        flex-shrink: 0;
-      }
-
-      /* =========================================
-   PRICING PAGE — FORCE HERO TITLE CENTER
-========================================= */
-
-      .pricing-page .hero-center h1 {
-        text-align: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      /* =========================================
-   SAFETY OVERRIDES (kills global leaks)
-========================================= */
-
-      /* Neutralize global .subhead rules */
-      .pricing-page .subhead {
-        text-align: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      /* Neutralize hero-grid rules if any exist */
-      .pricing-page .hero-grid {
-        display: block !important;
-      }
+        .cyan-glow {
+            box-shadow: 0 0 40px rgba(0, 180, 216, 0.1);
+        }
     </style>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="header-inner">
-          <div class="brand">
-            <img
-              src="images/Untitled design.png"
-              alt="Logo"
-              class="brand-logo"
-            />
-            <span class="brand-name">Sandile SystemsWorks</span>
-          </div>
+</head>
+<body class="antialiased">
 
-          <nav class="nav" id="mainNav">
-            <a href="index.html">Home</a>
-            <a href="product.html">Product</a>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html" aria-current="page">Pricing</a>
-            <a href="company.html">Company</a>
-            <a href="contact.html">Contact</a>
+<!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 top-0 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo & Name -->
+                <div class="flex items-center gap-3">
+                    <img src="images/Untitled design.png" alt="Logo" class="h-8 w-auto">
+                    <span class="text-lg font-bold tracking-tighter text-white uppercase italic">
+                        Sandile <span class="text-[#00b4d8]">SystemsWorks</span>
+                    </span>
+                </div>
+          
+                <!-- Desktop Navigation Links -->
+                <div class="hidden lg:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                    <a href="index.html" class="text-white hover:text-[#00b4d8] transition">Platform</a>
+                    <a href="product.html" class="hover:text-[#00b4d8] transition">Product</a>
+                    <a href="pricing.html" class="hover:text-[#00b4d8] transition">Pricing</a>
+                    <a href="features.html" class="hover:text-[#00b4d8] transition">Features</a>
+                    <a href="login.html" class="hover:text-white transition">Sign In</a>
+                    <a href="signup.html" class="bg-[#00b4d8] text-black px-6 py-2.5 rounded-sm premium-btn">Start Trial</a>
+                </div>
 
-            <div class="nav-mobile-actions">
-              <a href="login.html" class="nav-link-muted">Sign in</a>
-              <a href="signup.html" class="btn btn-primary btn-block"
-                >Start free trial</a
-              >
+                <!-- Mobile Menu Toggle Button -->
+                <div class="flex lg:hidden">
+                    <button id="mobile-menu-btn" type="button" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Toggle menu">
+                        <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
-          </nav>
-
-          <button
-            class="nav-toggle"
-            id="navToggle"
-            aria-expanded="false"
-            aria-label="Toggle menu"
-          >
-            <span></span><span></span><span></span>
-          </button>
-
-          <div class="header-actions">
-            <a href="login.html" class="link-muted">Sign in</a>
-            <a href="signup.html" class="btn btn-primary">Start free trial</a>
-          </div>
         </div>
-      </div>
-    </header>
 
-    <div class="nav-overlay" id="navOverlay"></div>
+        <!-- Mobile Dropdown Panel -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/5 bg-[#020617]/95 backdrop-blur-lg px-6 py-8 space-y-6 text-center text-xs font-bold uppercase tracking-[0.2em]">
+            <a href="index.html" class="block text-white py-2 hover:text-[#00b4d8] transition">Platform</a>
+            <a href="product.html" class="block text-gray-400 py-2 hover:text-[#00b4d8] transition">Product</a>
+            <a href="pricing.html" class="block text-gray-400 py-2 hover:text-[#00b4d8] transition">Pricing</a>
+            <a href="features.html" class="block text-gray-400 py-2 hover:text-[#00b4d8] transition">Features</a>
+            <hr class="border-white/5 my-4">
+            <a href="login.html" class="block text-gray-400 py-2 hover:text-white transition">Sign In</a>
+            <a href="signup.html" class="block bg-[#00b4d8] text-black py-4 rounded-sm tracking-widest font-black transition">Start Trial</a>
+        </div>
+    </nav>
 
-    <!-- MAIN -->
-    <main>
-      <!-- HERO -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-center">
-            <p class="eyebrow">PRICING</p>
-            <h1>Start on Tier 1. Upgrade when you need more.</h1>
-            <p class="subhead">
-              Sandile SystemsWorks is built for business owners, managers, and
-              teams who want fast, standardized decision results — without
-              spreadsheets.
+
+<!-- PRICING HEADER -->
+    <section class="pt-40 pb-20 text-center">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="inline-flex items-center gap-3 mb-6 px-4 py-1.5 border border-[#00b4d8]/20 bg-[#00b4d8]/5 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+                <span class="text-[#00b4d8] text-[9px] font-black uppercase tracking-[0.4em]">Limited Early Adopter Access</span>
+            </div>
+            <h1 class="text-5xl lg:text-8xl font-black text-white uppercase tracking-tighter italic mb-6">
+                Lock in <span class="text-[#00b4d8]">The Logic</span>.
+            </h1>
+            <p class="text-slate-500 uppercase tracking-[0.4em] text-[10px] font-bold">
+                Stop the bleed before the next contract is signed.
             </p>
-
-            <!-- Clear promise line -->
-            <div class="trustline">
-              <span class="dot"></span>
-              ✅ 7 days free trial on Basic tier (R12,499/month)
-            </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      <!-- FEATURES (SUMMARY) -->
-      <section class="section section-soft" id="features">
-        <div class="container">
-          <div class="section-head">
-            <h2>Everything you need to make confident decisions — fast.</h2>
-            <p>
-              Decision calculators, dashboards, and sector coverage built for
-              real workflows. Standardized outputs so you can compare decisions
-              quickly.
-            </p>
-          </div>
+ <!-- SINGLE FOCUSED PRICING CARD -->
+    <section class="pb-32">
+        <div class="max-w-2xl mx-auto px-6">
+            <div class="pricing-card glass p-12 rounded-2xl border-[#00b4d8]/30 cyan-glow relative overflow-hidden">
+                <!-- SAVINGS BADGE -->
+                <div class="absolute top-0 right-0 bg-[#00b4d8] text-black text-[10px] font-black px-12 py-2 rotate-45 translate-x-10 translate-y-4 uppercase tracking-widest">
+                    Save R5,500
+                </div>
 
-          <div class="cards">
-            <div class="card">
-              <h3>Sector-based calculators</h3>
-              <p>
-                Navigate by sector and industry to access calculators that match
-                how businesses actually operate.
-              </p>
+                <div class="flex flex-col items-center text-center">
+                    <h3 class="text-[#00b4d8] text-sm font-black uppercase tracking-[0.5em] mb-6">Early Adopter Access</h3>
+                    
+                    <div class="flex items-baseline gap-4 mb-2">
+                        <span class="text-slate-600 text-2xl line-through font-bold tracking-tighter">R12,499</span>
+                        <span class="text-7xl font-black text-white tracking-tighter">R6,999</span>
+                    </div>
+                    <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest mb-10">Per Month • Locked-in Forever</p>
+
+                    <div class="w-full space-y-6 mb-12 text-left border-y border-white/5 py-10">
+                        <div class="flex items-start gap-4">
+                            <i data-lucide="message-square" class="w-5 h-5 text-[#00b4d8] shrink-0"></i>
+                            <div>
+                                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-1">Direct Founder Onboarding</h4>
+                                <p class="text-slate-400 text-[11px] font-light">Skip the forms. We’ll set up your logic environment together via WhatsApp.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i data-lucide="zap" class="w-5 h-5 text-[#00b4d8] shrink-0"></i>
+                            <div>
+                                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-1">Full Predictive Engine</h4>
+                                <p class="text-slate-400 text-[11px] font-light">Unlimited project analysis with the ZonLogics core engine.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-[#00b4d8] shrink-0"></i>
+                            <div>
+                                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-1">RiskMonitor™ Alerts</h4>
+                                <p class="text-slate-400 text-[11px] font-light">Instant triggers for material spikes and labor inefficiencies.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WHATSAPP CTA -->
+                    <a href="https://wa.me/27833062796?text=I'm%20interested%20in%20the%20Early%20Adopter%20Rate%20for%20SystemsWorks" 
+                       class="flex items-center justify-center gap-3 w-full bg-[#00b4d8] text-black text-center py-6 text-xs font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all active:scale-[0.98]">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        Claim via WhatsApp
+                    </a>
+                    <p class="mt-4 text-slate-600 text-[9px] uppercase font-bold tracking-widest italic">Message now to secure 1 of 5 remaining spots.</p>
+                </div>
             </div>
-
-            <div class="card">
-              <h3>Instant profitability insights</h3>
-              <p>
-                Get Profit/Loss, Margin %, ROI %, Cost Ratio, and Break-even —
-                instantly.
-              </p>
-            </div>
-
-            <div class="card">
-              <h3>Advanced metrics & projections</h3>
-              <p>
-                Deeper visibility like profit per cost category plus monthly and
-                annual projections for planning.
-              </p>
-            </div>
-
-            <div class="card">
-              <h3>Guided workflow</h3>
-              <p>
-                Simple inputs → clear outputs. Designed so you can act without
-                needing finance expertise.
-              </p>
-            </div>
-
-            <div class="card">
-              <h3>Standardized outputs</h3>
-              <p>
-                A consistent layout across calculators helps teams compare
-                decisions faster.
-              </p>
-            </div>
-
-            <div class="card">
-              <h3>Secure access control</h3>
-              <p>
-                Login + subscription access control so your product stays
-                premium and protected.
-              </p>
-            </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      <!-- CALCULATOR TYPES -->
-      <section class="section" id="decision-types">
-        <div class="container">
-          <div class="section-head">
-            <h2>Decision calculators you’re building</h2>
-            <p>
-              SystemsWorks supports these decision types across sectors. Exact
-              calculator sets vary by industry and role.
-            </p>
-          </div>
+    <!-- EXPANDED FAQ / SALES CLOSER -->
+    <section class="py-24 border-t border-white/5 bg-black/20">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-white text-3xl font-black mb-16 italic uppercase tracking-tighter text-center">Engineered for <span class="text-[#00b4d8]">Trust</span></h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">Why is the price locked?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">As a Systems Architect, I value early feedback from industrial leaders. In exchange for your early adoption, your rate will <strong>never</strong> increase, even when the platform moves to R12,499.</p>
+                </div>
 
-          <div class="split">
-            <div class="split-card">
-              <h3>Pricing decisions</h3>
-              <ul class="list">
-                <li>Target margin pricing</li>
-                <li>Cost-to-price planning</li>
-                <li>Service & product pricing</li>
-              </ul>
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">Can it handle material spikes?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">Yes. The core logic is built for volatility. If your steel or fuel costs rise by 15%, the engine instantly re-calculates your new break-even point.</p>
+                </div>
+                
+
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">Is there a setup fee?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">Zero. You gain instant access to the cloud environment the moment your 7-day trial begins.</p>
+                </div>
+
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">What if I need custom logic?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">For massive infrastructure projects requiring bespoke schemas, you can consult the founder directly for a custom implementation.</p>
+                </div>
+
+             
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">Why WhatsApp for Onboarding?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">Industrial systems are high-stakes. I personally verify your business requirements to ensure the **Sandile SystemsWorks** engine is calibrated correctly for your specific trade before you pay a cent.</p>
+                </div>
+
+                <div class="glass p-8 rounded-lg border-white/5">
+                    <h4 class="text-[#00b4d8] text-[10px] font-black uppercase tracking-widest mb-3">Is the R6,999 really permanent?</h4>
+                    <p class="text-slate-400 text-[12px] leading-relaxed font-light">Yes. Once you message and secure your spot, your subscription is legally locked at the early adopter rate for the life of your account.</p>
+                </div>
+
             </div>
 
-            <div class="split-card">
-              <h3>Profit analysis</h3>
-              <ul class="list">
-                <li>Project profitability</li>
-                <li>Service margin analysis</li>
-                <li>Cost ratio + break-even</li>
-              </ul>
-            </div>
-
-            <div class="split-card">
-              <h3>ROI planning</h3>
-              <ul class="list">
-                <li>ROI % evaluation</li>
-                <li>Investment comparisons</li>
-                <li>Projection-based decisions</li>
-              </ul>
-            </div>
-          </div>
+            <!--<div class="mt-20 text-center">
+                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-[0.5em] mb-8">Not ready to commit? run the numbers first.</p>
+                <a href="https://youtu.be/yjAVIe_rZYM?si=gvC8y15gM2j476U5" class="text-white border-b border-[#00b4d8] pb-1 text-[10px] font-black uppercase tracking-widest hover:text-[#00b4d8] transition">Watch the Technical Demo (2 Mins)</a>
+            </div> -->
         </div>
-      </section>
+    </section>
 
-      <!-- INDUSTRY COVERAGE -->
-      <section class="section section-soft" id="coverage">
-        <div class="container">
-          <div class="section-head">
-            <h2>Industries & sectors supported</h2>
-            <p>
-              Coverage is broad by design — specific calculator sets may vary by
-              role and use case.
-            </p>
-          </div>
-
-          <div class="split">
-            <div class="split-card">
-              <h3>Primary Sector</h3>
-              <ul class="list">
-                <li>Agriculture</li>
-                <li>Forestry</li>
-                <li>Fishing</li>
-                <li>Mining</li>
-                <li>Oil & Gas</li>
-                <li>Renewable Energy</li>
-              </ul>
+      <!-- FOOTER -->
+    <footer class="py-24 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-12">
+                <div class="text-left">
+                    <div class="flex items-center gap-4 mb-4">
+                        <!-- BRAND LOGO INTEGRATION -->
+                        <div class="h-10 w-10 flex items-center justify-center overflow-hidden border border-white/10">
+                            <img src="images/Untitled design.png" alt="Logo" class="h-8 w-auto">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-white font-black uppercase tracking-widest text-sm italic">Sandile SystemsWorks</span>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Systems Architecture & Industrial Logic</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-[10px] uppercase font-bold tracking-widest ml-14">Built in Richards Bay, South Africa.</p>
+                </div>
+                
+                <!-- CONTACT & SOCIAL -->
+                <div class="flex gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                    <a href="mailto:thabethesandile44@gmail.com" class="hover:text-white transition-colors duration-300">Email</a>
+                    <a href="https://wa.me/27833062796" class="hover:text-white transition-colors duration-300">WhatsApp</a>
+                    <a href="https://www.linkedin.com/in/sandilestystemsworks" class="hover:text-white transition-colors duration-300">LinkedIn</a>
+                </div>
             </div>
 
-            <div class="split-card">
-              <h3>Secondary Sector</h3>
-              <ul class="list">
-                <li>Manufacturing</li>
-                <li>Construction</li>
-                <li>Automotive</li>
-                <li>Electronics</li>
-                <li>Textiles</li>
-                <li>Food & Beverage</li>
-              </ul>
-            </div>
-
-            <div class="split-card">
-              <h3>Tertiary Sector</h3>
-              <ul class="list">
-                <li>Real Estate</li>
-                <li>Retail</li>
-                <li>Restaurants</li>
-                <li>Hospitality</li>
-                <li>Logistics</li>
-                <li>Healthcare</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="split" style="margin-top: 1.2rem">
-            <div class="split-card">
-              <h3>Education & Finance</h3>
-              <ul class="list">
-                <li>Education</li>
-                <li>Finance</li>
-                <li>Marketing</li>
-                <li>Consulting</li>
-              </ul>
-            </div>
-
-            <div class="split-card">
-              <h3>Quaternary Sector</h3>
-              <ul class="list">
-                <li>Software</li>
-                <li>SaaS</li>
-                <li>IT Services</li>
-                <li>Media</li>
-                <li>R&D</li>
-                <li>Telecommunications</li>
-              </ul>
-            </div>
-
-            <div class="split-card">
-              <h3>Quinary Sector</h3>
-              <ul class="list">
-                <li>Government</li>
-                <li>NGOs</li>
-                <li>Social & Community Services</li>
-                <li>Public Administration</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-   <!-- PLANS -->
-<section class="section" id="plans">
-  <div class="container">
-
-    <div class="section-head">
-      <h2>Business Access</h2>
-
-      <p>
-        Operational intelligence platform for profitability analysis,
-        forecasting, scenario planning, and business decision support across
-        multiple industries.
-      </p>
-    </div>
-
-    <div class="split">
-
-      <!-- MAIN PLAN -->
-      <div
-        class="split-card"
-        style="border-color: rgba(0, 213, 255, 0.22)"
-      >
-
-        <p class="eyebrow" style="margin-bottom: 0.6rem">
-          AVAILABLE NOW
-        </p>
-
-        <h3>Business Intelligence Access</h3>
-
-        <p
-          style="
-            color: var(--text-muted);
-            font-weight: 650;
-            margin-top: 0.35rem;
-            line-height: 1.7;
-          "
-        >
-          Advanced profitability and operational decision platform built for
-          businesses that need faster, clearer, and more reliable financial
-          analysis.
-        </p>
-
-        <div class="price" style="margin: 1rem 0 0.9rem">
-          <span class="price-amount">R12,499</span>
-          <span class="price-period">/month</span>
-        </div>
-
-        <a href="signup.html" class="btn btn-primary btn-block">
-          Start 7-Day Free Trial
-        </a>
-
-        <p class="tiny">
-          ✅ Full platform access. Cancel anytime.
-        </p>
-
-        <ul class="list">
-
-          <li>
-            Detect unprofitable business decisions before committing capital
-          </li>
-
-          <li>
-            Evaluate projects, operations, investments, logistics, production,
-            and commercial opportunities
-          </li>
-
-          <li>
-            Instant profit, margin, ROI, break-even, and operational performance
-            calculations
-          </li>
-
-          <li>
-            Identify hidden cost risks and weak financial structures faster than
-            traditional spreadsheets
-          </li>
-
-          <li>
-            Compare multiple business scenarios in real time
-          </li>
-
-          <li>
-            Generate executive-style decision insights and profitability reports
-          </li>
-
-          <li>
-            Save business analyses and revisit previous operational decisions
-          </li>
-
-          <li>
-            Export professional reports and share analysis with teams or clients
-          </li>
-
-          <li>
-            Centralized operational intelligence platform instead of fragmented
-            spreadsheets and manual calculations
-          </li>
-
-          <li>
-            Continuous platform updates with expanding industry decision engines
-          </li>
-
-        </ul>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-      
-      <!-- CTA BAND -->
-      <section class="section section-soft">
-        <div class="container">
-          <div class="cta-band">
-            <div>
-              <h3>Ready to test it?</h3>
-              <p>
-                Start your 7-day free trial and explore the calculators and
-                dashboards.
-              </p>
-            </div>
-            <div class="cta-band-actions">
-              <a href="signup.html" class="btn btn-primary">Start free trial</a>
-              <a href="contact.html" class="btn btn-ghost">Questions?</a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <!-- BRAND -->
-          <div class="footer-brand">
-            <div class="footer-logo-row">
-              <img
-                src="images/Untitled design.png"
-                alt="Sandile SystemsWorks"
-                class="brand-logo"
-              />
-              <div>
-                <div class="brand-name">Sandile SystemsWorks</div>
-                <p class="footer-desc">
-                  Premium business decision tools: calculators, dashboards, and
-                  SaaS systems built to help businesses move faster.
+            <!-- COPYRIGHT FOOTNOTE -->
+            <div class="mt-16 pt-8 border-t border-white/5 text-center">
+                <p class="text-[9px] font-bold text-slate-800 tracking-[0.5em] uppercase mb-2">
+                    © 2026 Sandile SystemsWorks. All Rights Reserved.
                 </p>
-              </div>
+                <p class="text-[10px] font-black text-white/20 tracking-[0.3em] uppercase italic">
+                    Engineered for Clarity.
+                </p>
             </div>
-
-            <p class="footer-note">
-              Need a premium website too? We build high-converting sites.
-              <a href="company.html" class="footer-link">See our work</a>
-            </p>
-
-            <!-- SOCIAL ICONS -->
-            <div class="footer-socials">
-              <a href="https://www.tiktok.com/@sandilesystemsworks_sa" target="_blank" rel="noopener" class="social-btn tiktok" aria-label="TikTok">
-                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-                </svg>
-              </a>
-              <a href="https://www.linkedin.com/in/sandilestystemsworks?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" class="social-btn linkedin" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- PAGES -->
-          <div class="footer-col">
-            <h4>Pages</h4>
-            <a href="index.html">Home</a>
-            <a href="product.html">Product</a>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="company.html">Company</a>
-            <a href="contact.html">Contact</a>
-          </div>
-
-          <!-- PRODUCT -->
-          <div class="footer-col">
-            <h4>Product</h4>
-            <a href="features.html">Features</a>
-            <a href="solutions.html">Solutions</a>
-            <a href="pricing.html">Pricing</a>
-          </div>
-
-          <!-- CONTACT -->
-          <div class="footer-col">
-            <h4>Contact</h4>
-            <a href="mailto:thabethesandile44@gmail.com">thabethesandile44@gmail.com</a>
-            <a href="tel:0833062796">0833062796</a>
-            <a href="contact.html">Send a message</a>
-          </div>
         </div>
-
-        <div class="footer-bottom">
-          <p>© 2026 Sandile SystemsWorks. All rights reserved.</p>
-          <div class="footer-bottom-socials">
-            <a href="https://www.tiktok.com/@sandilesystemsworks_sa" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/in/sandilestystemsworks?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
     </footer>
+   
+<script src="js/home.js"></script>
 
-<script src="js/translation.js"></script>
-
-    <script>
-      const navToggle = document.getElementById('navToggle');
-      const mainNav = document.getElementById('mainNav');
-      const navOverlay = document.getElementById('navOverlay');
-
-      navToggle.addEventListener('click', () => {
-        const isOpen = mainNav.classList.toggle('open');
-        navToggle.classList.toggle('open');
-        navOverlay.classList.toggle('active');
-        navToggle.setAttribute('aria-expanded', isOpen);
-      });
-
-      navOverlay.addEventListener('click', () => {
-        mainNav.classList.remove('open');
-        navToggle.classList.remove('open');
-        navOverlay.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', false);
-      });
-
-      mainNav.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-          mainNav.classList.remove('open');
-          navToggle.classList.remove('open');
-          navOverlay.classList.remove('active');
-          navToggle.setAttribute('aria-expanded', false);
-        });
-      });
-    </script>
-
-<script src="js/early-adopter-bar.js"></script>
-
-  </body>
+</body>
 </html>

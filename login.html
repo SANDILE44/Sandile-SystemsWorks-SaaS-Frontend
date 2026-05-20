@@ -1,224 +1,356 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  <meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Sign In - Sandile SystemsWorks</title>  <link rel="stylesheet" href="css/landing.css">  
-<link rel="stylesheet" href="css/auth.css">  
-<link rel="stylesheet" href="css/loader.css">  <!-- Google Analytics -->  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1M5L4408K"></script>  <script>  
-window.dataLayer = window.dataLayer || [];  
-function gtag(){dataLayer.push(arguments);}  
-gtag('js', new Date());  
-gtag('config', 'G-V1M5L4408K');  
-</script>  <script src="https://accounts.google.com/gsi/client" async defer></script>  <style>  
-/* ── GOOGLE OVERLAY ── */  
-#g-overlay {  
-  position: fixed;  
-  inset: 0;  
-  background: rgba(3,10,20,0.94);  
-  backdrop-filter: blur(10px);  
-  display: flex;  
-  align-items: center;  
-  justify-content: center;  
-  z-index: 9999;  
-  opacity: 0;  
-  animation: gFadeIn 0.35s ease forwards;  
-}  
-  
-@keyframes gFadeIn {  
-  to { opacity: 1; }  
-}  
-  
-#g-overlay.fade-out {  
-  animation: gFadeOut 0.4s ease forwards;  
-}  
-  
-@keyframes gFadeOut {  
-  to { opacity: 0; pointer-events: none; }  
-}  
-  
-.g-wrap {  
-  position: relative;  
-  width: 110px;  
-  height: 110px;  
-  display: flex;  
-  align-items: center;  
-  justify-content: center;  
-}  
-  
-/* SPINNING RING */  
-.g-ring {  
-  position: absolute;  
-  inset: 0;  
-  border-radius: 50%;  
-  border: 2.5px solid rgba(0,213,255,0.1);  
-  border-top-color: #00d5ff;  
-  animation: gSpin 0.85s linear infinite;  
-  box-shadow: 0 0 24px rgba(0,213,255,0.15);  
-}  
-  
-@keyframes gSpin {  
-  to { transform: rotate(360deg); }  
-}  
-  
-/* LOGO */  
-.g-logo {  
-  width: 56px;  
-  height: 56px;  
-  object-fit: contain;  
-  mix-blend-mode: screen;  
-  position: relative;  
-  z-index: 1;  
-  animation: gLogoPulse 1.4s ease-in-out infinite;  
-}  
-  
-@keyframes gLogoPulse {  
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(0,213,255,0.5)); }  
-  50%       { filter: drop-shadow(0 0 30px rgba(0,213,255,1));   }  
-}  
-  
-/* GLOW BEHIND LOGO */  
-.g-glow {  
-  position: absolute;  
-  width: 180px;  
-  height: 180px;  
-  border-radius: 50%;  
-  background: radial-gradient(circle, rgba(0,213,255,0.12) 0%, transparent 70%);  
-  animation: gGlowPulse 1.4s ease-in-out infinite;  
-  pointer-events: none;  
-}  
-  
-@keyframes gGlowPulse {  
-  0%, 100% { transform: scale(1);    opacity: 0.7; }  
-  50%       { transform: scale(1.2); opacity: 1;   }  
-}  
-  
-/* SUCCESS STATE — checkmark */  
-.g-check-wrap {  
-  position: absolute;  
-  inset: 0;  
-  display: flex;  
-  align-items: center;  
-  justify-content: center;  
-  opacity: 0;  
-  pointer-events: none;  
-  transition: opacity 0.3s ease;  
-}  
-  
-.g-check-wrap.show {  
-  opacity: 1;  
-}  
-  
-.g-circle {  
-  position: absolute;  
-  inset: 0;  
-  border-radius: 50%;  
-  border: 2.5px solid #00e87a;  
-  transform: scale(0);  
-  animation: none;  
-}  
-  
-.g-circle.pop {  
-  animation: gCirclePop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards,  
-             gCircleGlow 1.2s ease-in-out infinite 0.4s;  
-}  
-  
-@keyframes gCirclePop {  
-  from { transform: scale(0.5); opacity: 0; }  
-  to   { transform: scale(1);   opacity: 1; }  
-}  
-  
-@keyframes gCircleGlow {  
-  0%, 100% { box-shadow: 0 0 16px rgba(0,232,122,0.3); }  
-  50%       { box-shadow: 0 0 44px rgba(0,232,122,0.8); }  
-}  
-  
-.g-check-svg {  
-  width: 38px;  
-  height: 38px;  
-  stroke: #00e87a;  
-  stroke-width: 3;  
-  stroke-linecap: round;  
-  stroke-linejoin: round;  
-  fill: none;  
-  position: relative;  
-  z-index: 1;  
-  filter: drop-shadow(0 0 8px rgba(0,232,122,0.9));  
-}  
-  
-.g-check-path {  
-  stroke-dasharray: 50;  
-  stroke-dashoffset: 50;  
-}  
-  
-.g-check-path.draw {  
-  animation: gDraw 0.45s ease forwards 0.2s;  
-}  
-  
-@keyframes gDraw {  
-  to { stroke-dashoffset: 0; }  
-}  
-</style>  </head>  
-<body>  <header class="header">  
-<div class="container">  
-<div class="header-inner">  <div class="brand">  
-<a href="index.html" style="display:flex;align-items:center;gap:.65rem;min-width:220px;">  
-<img src="images/Untitled design.png" alt="Logo" class="brand-logo">  
-<span class="brand-name">Sandile SystemsWorks</span>  
-</a>  
-</div>  <div class="header-actions">  
-<a href="signup.html" class="btn btn-primary">Start free trial</a>  
-</div>  </div>  
-</div>  
-</header>  <div class="auth-container">  
-<div class="auth-card">  <div class="auth-head">  
-<img src="images/Untitled design.png" alt="Logo" class="auth-logo">  
-<div>  
-<h1>Welcome back</h1>  
-<p>Sign in to your Sandile SystemsWorks account.</p>  
-</div>  
- <form id="loginForm">  
-<div class="form-group">  
-<label for="email">Email address</label>  
-<input type="email" id="email" placeholder="your@email.com" required>  
-</div>  
-<div class="form-group">  
-<label for="password">Password</label>  
-<input type="password" id="password" placeholder="Your password" required>  
-</div>  
-<button type="submit" class="auth-submit">Sign in</button>  
-<p id="msg"></p>  
-</form>  <div class="auth-footer">  
-Don't have an account? <a href="signup.html">Create one</a>  
-</div>  </div>  
-</div>  <!-- GLOBAL LOADER -->  <div id="global-loader" class="loader-overlay hidden">  
-<div class="loader-spinner"></div>  
-<p>Please wait…</p>  
-</div>  <script src="js/config.js"></script>  <script src="js/api.js"></script>  <script src="js/auth.js"></script>  <script src="js/loader.js"></script>  <script>  
-  
-/* ── IN-APP BROWSER DETECTION ── */  
-window.addEventListener('load', () => {  
-  const ua = navigator.userAgent || '';  
-  const isInApp = /TikTok|BytedanceWebview|Instagram|FBAN|FBAV|Twitter|Line|MicroMessenger/i.test(ua);  
-  
-  if (isInApp) {  
-    const googleAuth = document.querySelector('.google-auth');  
-    if (googleAuth) {  
-      googleAuth.innerHTML = `  
-        <div style="  
-          background: rgba(255,184,0,0.08);  
-          border: 1px solid rgba(255,184,0,0.2);  
-          border-radius: 12px;  
-          padding: 14px 16px;  
-          font-size: 0.85rem;  
-          color: #ffb800;  
-          font-weight: 600;  
-          line-height: 1.5;  
-          text-align: center;  
-        ">  
-          ⚠️ Open in Chrome or Safari to use Google Sign-In  
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Sign In - Sandile SystemsWorks</title>  
+    
+    <!-- TAILWIND & LUCIDE ENGINE CORE -->
+    <script src="https://cdn.tailwindcss.com"></script>  
+    <script src="https://unpkg.com/lucide@latest"></script>  
+    
+    <style>  
+        /* ── SYSTEM DESIGN SYSTEM VARIABLES ── */
+        :root {  
+            --bg-main: #020617;  
+            --accent: #00b4d8;  
+            --border-soft: rgba(255, 255, 255, 0.06);  
+        }  
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: #e5e7eb;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .glass {  
+            background: rgba(255, 255, 255, 0.02);  
+            backdrop-filter: blur(16px);  
+            border: 1px solid var(--border-soft);  
+        }  
+
+        /* ── AUTH CARD ARCHITECTURE ── */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 1.5rem 2rem 1.5rem;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border-soft);
+            border-radius: 4px;
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #94a3b8;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 180, 216, 0.02);
+            box-shadow: 0 0 12px rgba(0, 180, 216, 0.1);
+        }
+
+        .auth-submit {
+            width: 100%;
+            background: var(--accent);
+            color: #000000;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            padding: 1rem;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .auth-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* ── SYSTEMSWORKS INTERACTIVE LOADER ── */  
+        #system-loader {  
+            position: fixed;  
+            inset: 0;  
+            background: rgba(2, 6, 23, 0.96);  
+            backdrop-filter: blur(12px);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            z-index: 9999;  
+            opacity: 0;  
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }  
+          
+        #system-loader.show {  
+            opacity: 1;  
+            pointer-events: auto;
+        }  
+          
+        .loader-wrap {  
+            position: relative;  
+            width: 110px;  
+            height: 110px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+        }  
+          
+        .loader-ring {  
+            position: absolute;  
+            inset: 0;  
+            border-radius: 50%;  
+            border: 2.5px solid rgba(0, 180, 216, 0.1);  
+            border-top-color: var(--accent);  
+            animation: loaderSpin 0.85s linear infinite;  
+            box-shadow: 0 0 24px rgba(0, 180, 216, 0.15);  
+        }  
+          
+        @keyframes loaderSpin {  
+            to { transform: rotate(360deg); }  
+        }  
+          
+        .loader-logo {  
+            width: 56px;  
+            height: 56px;  
+            object-fit: contain;  
+            position: relative;  
+            z-index: 1;  
+            animation: logoPulse 1.4s ease-in-out infinite;  
+        }  
+          
+        @keyframes logoPulse {  
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 180, 216, 0.4)); }  
+            50%      { filter: drop-shadow(0 0 30px rgba(0, 180, 216, 0.8)); }  
+        }  
+          
+        .loader-glow {  
+            position: absolute;  
+            width: 180px;  
+            height: 180px;  
+            border-radius: 50%;  
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.1) 0%, transparent 70%);  
+            animation: glowPulse 1.4s ease-in-out infinite;  
+            pointer-events: none;  
+        }  
+          
+        @keyframes glowPulse {  
+            0%, 100% { transform: scale(1); opacity: 0.7; }  
+            50%      { transform: scale(1.2); opacity: 1; }  
+        }  
+          
+        /* SUCCESS TICK SYSTEM */  
+        .success-wrap {  
+            position: absolute;  
+            inset: 0;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            opacity: 0;  
+            pointer-events: none;  
+            transition: opacity 0.25s ease;  
+        }  
+          
+        .success-wrap.show {  
+            opacity: 1;  
+        }  
+          
+        .success-circle {  
+            position: absolute;  
+            inset: 0;  
+            border-radius: 50%;  
+            border: 2.5px solid #00e87a;  
+            transform: scale(0);  
+        }  
+          
+        .success-circle.pop {  
+            animation: circlePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,  
+                      circleGlow 1.2s ease-in-out infinite 0.4s;  
+        }  
+          
+        @keyframes circlePop {  
+            from { transform: scale(0.5); opacity: 0; }  
+            to   { transform: scale(1); opacity: 1; }  
+        }  
+          
+        @keyframes circleGlow {  
+            0%, 100% { box-shadow: 0 0 16px rgba(0, 232, 122, 0.2); }  
+            50%      { box-shadow: 0 0 44px rgba(0, 232, 122, 0.6); }  
+        }  
+          
+        .success-svg {  
+            width: 38px;  
+            height: 38px;  
+            stroke: #00e87a;  
+            stroke-width: 3;  
+            stroke-linecap: round;  
+            stroke-linejoin: round;  
+            fill: none;  
+            position: relative;  
+            z-index: 1;  
+            filter: drop-shadow(0 0 8px rgba(0, 232, 122, 0.8));  
+        }  
+          
+        .success-path {  
+            stroke-dasharray: 50;  
+            stroke-dashoffset: 50;  
+        }  
+          
+        .success-path.draw {  
+            animation: drawCheck 0.45s ease forwards 0.15s;  
+        }  
+          
+        @keyframes drawCheck {  
+            to { stroke-dashoffset: 0; }  
+        }  
+    </style>  
+</head>  
+<body class="antialiased">  
+
+    <!-- TOP NAVIGATION -->  
+    <nav class="fixed w-full z-50 top-0 glass border-b border-white/5">  
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">  
+            <div class="flex items-center justify-between h-20">  
+                <div class="flex items-center gap-3">  
+                    <img src="images/Untitled design.png" alt="Logo" class="h-8 w-auto">  
+                    <span class="text-lg font-bold tracking-tighter text-white uppercase italic">  
+                        Sandile <span class="text-[#00b4d8]">SystemsWorks</span>  
+                    </span>  
+                </div>  
+                <div>  
+                    <a href="signup.html" class="bg-[#00b4d8] text-black px-5 py-2 text-[10px] uppercase font-bold tracking-wider rounded-sm hover:opacity-90 transition">
+                        Start free trial
+                    </a>  
+                </div>  
+            </div>  
         </div>  
-      `;  
-    }  
-  }  
-});  
-</script>  </body>  
-</html>  
+    </nav>  
+
+    <!-- CENTERED CONTENT LAYER -->  
+    <main class="auth-wrapper">  
+        <div class="auth-card">  
+            <div class="text-center mb-8">  
+                <img src="images/Untitled design.png" alt="Logo" class="h-10 w-auto mx-auto mb-4">  
+                <h1 class="text-2xl font-extrabold text-white tracking-tight uppercase italic mb-1">Welcome back</h1>  
+                <p class="text-xs text-slate-400 font-light">Sign in to your Sandile SystemsWorks account.</p>  
+            </div>
+
+            <form id="loginForm">  
+                <div class="form-group">  
+                    <label for="email">Email address</label>  
+                    <input type="email" id="email" placeholder="your@email.com" required>  
+                </div>  
+                <div class="form-group">  
+                    <label for="password">Password</label>  
+                    <input type="password" id="password" placeholder="Your password" required>  
+                </div>  
+                <button type="submit" class="auth-submit">Sign in</button>  
+                <p id="msg" class="text-xs text-center mt-4 text-emerald-400 font-medium"></p>  
+            </form>  
+
+            <div class="text-center mt-6 text-xs text-slate-500">  
+                Don't have an account? <a href="signup.html" class="text-[#00b4d8] hover:underline">Create one</a>  
+            </div>  
+        </div>  
+    </main>  
+
+    <!-- METRIC LOADER OVERLAY FRAMEWORK -->  
+    <div id="system-loader">  
+        <div class="loader-wrap" id="loader-elements">  
+            <div class="loader-glow"></div>  
+            <div class="loader-ring"></div>  
+            <img src="images/Untitled design.png" alt="Loading Industrial Logic" class="loader-logo">  
+        </div>  
+
+        <!-- ANIMATED VERDICT CONFIRMATION -->  
+        <div class="success-wrap" id="success-element">  
+            <div class="success-circle" id="success-circle"></div>  
+            <svg class="success-svg" viewBox="0 0 24 24">  
+                <path class="success-path" id="success-path" d="M20 6L9 17l-5-5"></path>  
+            </svg>  
+        </div>  
+    </div>  
+
+    <!-- INTERACTION & TRANSITION CONTROLLER -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const loader = document.getElementById('system-loader');
+            const loaderElements = document.getElementById('loader-elements');
+            const successElement = document.getElementById('success-element');
+            const successCircle = document.getElementById('success-circle');
+            const successPath = document.getElementById('success-path');
+
+            // 1. Launch architectural screen overlay
+            loader.classList.add('show');
+
+            // 2. Simulate validation routine logic
+            setTimeout(() => {
+                // Terminate background spinning configurations
+                loaderElements.style.display = 'none';
+
+                // Display success check transition elements
+                successElement.classList.add('show');
+                successCircle.classList.add('pop');
+                successPath.classList.add('draw');
+
+                // 3. Complete system handshake and route inside dashboard environment
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 1300);
+
+            }, 2000); 
+        });
+
+        // Initialize Lucide iconography array safely once loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            if(window.lucide) {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>  
+</html>

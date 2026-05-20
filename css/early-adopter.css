@@ -1,0 +1,98 @@
+/* EARLY BADGE */
+.early-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0,213,255,0.08);
+  border: 1px solid rgba(0,213,255,0.2);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #00d5ff;
+  letter-spacing: 0.04em;
+  margin-bottom: 18px;
+}
+
+/* PRICE BLOCK */
+.price-block {
+  margin-bottom: 20px;
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.price-was {
+  font-size: 0.82rem;
+  color: #4a6a85;
+  margin-bottom: 6px;
+}
+
+.price-was span {
+  text-decoration: line-through;
+  color: #4a6a85;
+}
+
+.price-lock {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #00e87a;
+  margin-top: 4px;
+}
+
+/* DIVIDER */
+.pricing-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.pricing-divider::before,
+.pricing-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+.pricing-divider span {
+  color: #4a6a85;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* WHATSAPP BUTTON */
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #25d366, #1da851);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.97rem;
+  border-radius: 13px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 28px rgba(37,211,102,0.25);
+  letter-spacing: 0.1px;
+}
+
+.btn-whatsapp:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(37,211,102,0.35);
+}
+
+.btn-whatsapp svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
