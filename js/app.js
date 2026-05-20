@@ -151,7 +151,7 @@
         <div class="upgrade-box p-4 border rounded bg-light shadow-sm">
           <h5 class="fw-bold">Enjoying the Trial?</h5>
           <p>Your trial ends on ${formatDate(access.trialEnd)}. Upgrade now for uninterrupted access.</p>
-          <button id="payBtn" class="btn btn-primary w-100">Upgrade to Premium — R12,499</button>
+          <button id="payBtn" class="btn btn-primary w-100">Upgrade to Premium — R6,999</button>
         </div>
       `;
     } else if (access.expired) {
@@ -159,7 +159,7 @@
         <div class="upgrade-box p-4 border border-danger rounded bg-white shadow-sm">
           <h5 class="fw-bold text-danger">Access Expired</h5>
           <p>Your subscription has ended. Renew now to access your calculators and data.</p>
-          <button id="payBtn" class="btn btn-primary w-100">Renew Access — R12,499</button>
+          <button id="payBtn" class="btn btn-primary w-100">Renew Access — R6,999</button>
         </div>
       `;
     }
