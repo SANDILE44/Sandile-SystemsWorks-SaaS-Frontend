@@ -278,127 +278,78 @@ async function run() {
 
 
 
-  /* ================= SAVE / UPDATE ================= */
-
-  async function saveDeal() {
-
-
-
-    if (!latestData) return alert("Run calculator first");
-
-
-
-    const token = localStorage.getItem("token");
-
-    const editId = localStorage.getItem("editDealId");
-
-
-
-    const clientNameValue =
-
-      $("client-name-input")?.value || "Untitled Project";
-
-
-
-    const payload = {
-
-      type: "construction",
-
-      clientName: clientNameValue,
-
-      inputs: getInputs(),
-
-      results: {
-
-        profit: latestData.profit,
-
-        margin: latestData.margin,
-
-        revenue: latestData.value,
-
-        status: latestData.decision,
-
-        riskLevel: latestData.riskLevel
-
-      }
-
-    };
-
-
-
-    const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
-
-    const method = editId ? "PUT" : "POST";
-
-
-
-    try {
-
-
-
-      const res = await fetch(`${API_BASE}${url}`, {
-
-        method,
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${token}`
-
-        },
-
-        body: JSON.stringify(payload)
-
-      });
-
-
-
-      if (!res.ok) throw new Error("Save failed");
-
-
-
-      alert(editId
-
-        ? `Updated: ${clientNameValue}`
-
-        : `Saved: ${clientNameValue}`
-
-      );
-
-
-
-      if (editId) {
-
-        localStorage.removeItem("editDeal");
-
-        localStorage.removeItem("editDealId");
-
-        localStorage.removeItem("editId");
-
-      }
-
-
-
-      if ($("client-name-input")) {
-
-        $("client-name-input").value = "";
-
-      }
-
-
-
-    } catch (err) {
-
-      console.error(err);
-
-      alert("Save failed");
-
-    }
-
+/* ================= SAVE / UPDATE (FIXED) ================= */
+async function saveDeal(e) {
+  // 1. Prevent any accidental browser reloads or form tracking
+  if (e && typeof e.preventDefault === "function") {
+    e.preventDefault();
   }
 
+  if (!latestData) return alert("Run calculator first");
 
+  const token = localStorage.getItem("token");
+  const editId = localStorage.getItem("editDealId");
+
+  const clientNameValue =
+    $("client-name-input")?.value || "Untitled Project";
+
+  const payload = {
+    type: "construction",
+    clientName: clientNameValue,
+    inputs: getInputs(),
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      revenue: latestData.value || latestData.revenue,
+      status: latestData.decision,
+      riskLevel: latestData.riskLevel
+    }
+  };
+
+  // Build endpoint strictly
+  const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
+  const method = editId ? "PUT" : "POST";
+
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: method, // Explicitly enforce PUT or POST
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const serverErr = await res.text();
+      console.error("Backend rejection:", serverErr);
+      throw new Error("Save failed");
+    }
+
+    alert(editId
+      ? `Successfully Updated: ${clientNameValue}`
+      : `Successfully Saved: ${clientNameValue}`
+    );
+
+    // 2. Clear cache keys safely AFTER verification of response
+    if (editId) {
+      localStorage.removeItem("editDeal");
+      localStorage.removeItem("editDealId");
+    }
+
+    if ($("client-name-input")) {
+      $("client-name-input").value = "";
+    }
+
+    // 3. Re-route them back to look at their project cards layout
+    // Change "dashboard.html" to whatever your main engine panel file is named
+    window.location.href = "dashboard.html";
+
+  } catch (err) {
+    console.error("Save system crash:", err);
+    alert("Could not update record. Check server logs.");
+  }
+}
 
   /* ================= RESET ================= */
 
