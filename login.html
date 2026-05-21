@@ -9,6 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>  
     <script src="https://unpkg.com/lucide@latest"></script>  
     
+    <!-- GOOGLE IDENTITY SERVICES ENGINE -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>  
         /* ── SYSTEM DESIGN SYSTEM VARIABLES ── */
         :root {  
@@ -104,9 +107,14 @@
             margin-top: 1rem;
         }
 
-        .auth-submit:hover {
+        .auth-submit:hover:not(:disabled) {
             opacity: 0.9;
             transform: translateY(-1px);
+        }
+
+        .auth-submit:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
         /* ── SYSTEMSWORKS INTERACTIVE LOADER ── */  
@@ -260,8 +268,8 @@
                     </span>  
                 </div>  
                 <div>  
-                    <a href="signup.html" class="bg-[#00b4d8] text-black px-5 py-2 text-[10px] uppercase font-bold tracking-wider rounded-sm hover:opacity-90 transition">
-                        Start free trial
+                    <a href="signup.html" class="bg-[#00b4d8] text-black px-5 py-2 text-[10px] uppercase font-bold tracking-wider rounded-sm hover:opacity-90 transition">  
+                        Start free trial  
                     </a>  
                 </div>  
             </div>  
@@ -287,8 +295,35 @@
                     <input type="password" id="password" placeholder="Your password" required>  
                 </div>  
                 <button type="submit" class="auth-submit">Sign in</button>  
-                <p id="msg" class="text-xs text-center mt-4 text-emerald-400 font-medium"></p>  
+                <p id="msg" class="text-xs text-center mt-4 font-medium"></p>  
             </form>  
+
+            <!-- ── SYSTEMSWORKS ORBITAL BREAK LINE ── -->
+            <div class="relative flex py-5 items-center">
+                <div class="flex-grow border-t border-white/5"></div>
+                <span class="flex-shrink mx-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">OR</span>
+                <div class="flex-grow border-t border-white/5"></div>
+            </div>
+
+            <!-- ── GOOGLE AUTH PLATFORM MOUNT ELEMENT ── -->
+            <div class="flex justify-center w-full">
+                <div id="g_id_onload"
+                     data-client_id="1064963647591-k76sv5dgcm3ihrsbmaccr63rij0vikda.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="filled_black"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="360">
+                </div>
+            </div>
 
             <div class="text-center mt-6 text-xs text-slate-500">  
                 Don't have an account? <a href="signup.html" class="text-[#00b4d8] hover:underline">Create one</a>  
@@ -313,41 +348,100 @@
         </div>  
     </div>  
 
-     <script src="js/config.js"></script>  
+    <script src="js/config.js"></script>  
     <script src="js/api.js"></script>  
     <script src="js/auth.js"></script>  
     
     <!-- INTERACTION & TRANSITION CONTROLLER -->
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            
-            const loader = document.getElementById('system-loader');
+        const msg = document.getElementById('msg');
+
+        function showMsg(text, isError = false) {
+            msg.textContent = text;
+            msg.className = `text-xs text-center mt-4 font-medium ${isError ? 'text-red-400' : 'text-emerald-400'}`;
+            msg.style.display = text ? 'block' : 'none';
+        }
+
+        // Shared function to trigger the hardware loader sequence animations
+        function executeSuccessAnimation() {
             const loaderElements = document.getElementById('loader-elements');
             const successElement = document.getElementById('success-element');
             const successCircle = document.getElementById('success-circle');
             const successPath = document.getElementById('success-path');
 
-            // 1. Launch architectural screen overlay
+            // Terminate background spinning configurations
+            loaderElements.style.display = 'none';
+
+            // Display success check transition elements
+            successElement.classList.add('show');
+            successCircle.classList.add('pop');
+            successPath.classList.add('draw');
+
+            // Complete system handshake and route inside dashboard environment
+            setTimeout(() => {
+                window.location.href = 'dashboard.html'; 
+            }, 1300);
+        }
+
+        /* ── STANDARD EMAIL SIGNIN HANDLER ── */
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            showMsg('');
+            
+            const loader = document.getElementById('system-loader');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            submitBtn.disabled = true;
             loader.classList.add('show');
 
-            // 2. Simulate validation routine logic
+            // Simulate or replace with your actual traditional email validation layout
             setTimeout(() => {
-                // Terminate background spinning configurations
-                loaderElements.style.display = 'none';
-
-                // Display success check transition elements
-                successElement.classList.add('show');
-                successCircle.classList.add('pop');
-                successPath.classList.add('draw');
-
-                // 3. Complete system handshake and route inside dashboard environment
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html'; 
-                }, 1300);
-
+                executeSuccessAnimation();
             }, 2000); 
         });
+
+        /* ── GLOBAL GOOGLE OAUTH INTERACTION HANDLER ── */
+        async function handleGoogleCredentialResponse(response) {
+            showMsg('');
+            const loader = document.getElementById('system-loader');
+            const submitBtn = document.querySelector('#loginForm button[type="submit"]');
+            
+            submitBtn.disabled = true;
+            loader.classList.add('show');
+            
+            try {
+                // Pointing directly to your sandile-systemsworks-saas-backend-2 backend on Render
+                const backendRes = await fetch('https://sandile-systemsworks-saas-backend-2.onrender.com/api/auth/google', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: response.credential })
+                });
+                
+                const data = await backendRes.json();
+                
+                if (!backendRes.ok || data.error) {
+                    throw new Error(data.error || 'Google authentication handshake rejected.');
+                }
+                
+                // Store token using your internal session layout utility files safely
+                if (window.auth && typeof window.auth.setToken === 'function') {
+                    window.auth.setToken(data.token);
+                } else {
+                    localStorage.setItem('auth_token', data.token);
+                }
+                
+                // Trigger the matching metric checkmark sequence animation
+                executeSuccessAnimation();
+                
+            } catch (err) {
+                // Clear out components on failure so user isn't stuck behind overlay
+                loader.classList.remove('show');
+                submitBtn.disabled = false;
+                showMsg(err.message || 'Google verification failed.', true);
+            }
+        }
 
         // Initialize Lucide iconography array safely once loaded
         document.addEventListener("DOMContentLoaded", function() {
