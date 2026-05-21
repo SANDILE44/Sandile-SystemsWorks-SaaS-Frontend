@@ -242,7 +242,7 @@
       }
 
       // Re-route clean back to dashboard layout view
-      window.location.href = "dashboard.html";
+      window.location.href = "industry-construction.html";
 
     } catch (err) {
       console.error("Save system crash trajectory:", err);
