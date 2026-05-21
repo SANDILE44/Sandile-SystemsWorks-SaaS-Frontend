@@ -563,7 +563,6 @@ async function shareDeal() {
     
     // 1. Construct the payload to match the backend SharedDealSchema
     const payload = {
-        // Generate a random unique ID for the shareId field
         shareId: "share_" + Math.random().toString(36).substring(2, 9), 
         type: "construction",
         inputs: getInputs(), 
@@ -581,7 +580,7 @@ async function shareDeal() {
         },
         meta: {
             title: projectName,
-            createdBy: "Sandile" // Directly using the business identity
+            createdBy: "Sandile"
         },
         permissions: {
             mode: "view",
@@ -610,9 +609,8 @@ async function shareDeal() {
         // 2. Identify the final ID from the server response
         const finalId = data.shareId || data.id || data._id;
 
-        // 3. Build the URL including the specific repository path for GitHub Pages
-        const repoPath = "/Sandile-SystemsWorks-SaaS-Frontend";
-        const shareUrl = `${window.location.origin}${repoPath}/share.html?id=${finalId}`;
+        // 3. VERCEL CLEAN URL: No repository sub-paths needed
+        const shareUrl = `${window.location.origin}/share.html?id=${finalId}`;
 
         const shareMessage = 
             `🏗️ Project Intelligence Report: ${projectName}\n` +
