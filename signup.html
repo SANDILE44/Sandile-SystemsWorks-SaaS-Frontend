@@ -8,6 +8,9 @@
     <!-- TAILWIND CORE ENGINE -->
     <script src="https://cdn.tailwindcss.com"></script>  
     
+    <!-- GOOGLE IDENTITY SERVICES ENGINE -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>  
         /* ── SYSTEM DESIGN SYSTEM VARIABLES ── */
         :root {  
@@ -276,6 +279,33 @@
                 <p id="msg"></p>  
             </form>  
 
+            <!-- ── SYSTEMSWORKS ORBITAL BREAK LINE ── -->
+            <div class="relative flex py-5 items-center">
+                <div class="flex-grow border-t border-white/5"></div>
+                <span class="flex-shrink mx-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">OR</span>
+                <div class="flex-grow border-t border-white/5"></div>
+            </div>
+
+            <!-- ── GOOGLE AUTH PLATFORM MOUNT ELEMENT ── -->
+            <div class="flex justify-center w-full">
+                <div id="g_id_onload"
+                     data-client_id="1064963647591-k76sv5dgcm3ihrsbmaccr63rij0vikda.apps.googleusercontent.com"
+                     data-context="signup"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="filled_black"
+                     data-text="signup_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="360">
+                </div>
+            </div>
+
             <div class="text-center mt-6 text-xs text-slate-500">  
                 Already have an account? <a href="login.html" class="text-[#00b4d8] hover:underline">Sign in</a>  
             </div>  
@@ -341,10 +371,10 @@
             wrap.appendChild(checkWrap);  
             overlay.appendChild(wrap);  
             document.body.appendChild(overlay);  
-            
+              
             // Force a DOM reflow to enable CSS transition state smoothly
-            stats = overlay.offsetHeight;
-            overlay.style.opacity = '1';
+            let stats = overlay.offsetHeight;
+            overlay.style.opacity = '1';  
               
             return { overlay, ring, logo, checkWrap, circle, path };  
         }  
@@ -408,6 +438,53 @@
                 showMsg(err.message || 'Signup failed', 'error');  
             }  
         });  
+
+        /* ── GLOBAL GOOGLE OAUTH INTERACTION HANDLER ── */
+        async function handleGoogleCredentialResponse(response) {
+            showMsg('');
+            const submitBtn = signupForm.querySelector('button');
+            submitBtn.disabled = true;
+            
+            // Trigger your custom loading overlay interface
+            const uiElements = showOverlay();
+            
+            try {
+                // Point this fetch destination string directly to your Render live API endpoint.
+                // Replace 'https://your-backend-server.onrender.com' with your actual Render service link.
+                const backendRes = await fetch('https://sandile-systemsworks-saas-backend-2.onrender.com/api/auth/google', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: response.credential })
+                });
+                
+                const data = await backendRes.json();
+                
+                if (!backendRes.ok || data.error) {
+                    throw new Error(data.error || 'Google authentication handshake rejected.');
+                }
+                
+                // Store token using your internal session layout utilities
+                if (window.auth && typeof window.auth.setToken === 'function') {
+                    window.auth.setToken(data.token);
+                } else {
+                    localStorage.setItem('auth_token', data.token);
+                }
+                
+                // Fire the animated success checkmark
+                triggerSuccess(uiElements);
+                
+                setTimeout(() => {  
+                    window.location.replace('dashboard.html');  
+                }, 1800);
+                
+            } catch (err) {
+                uiElements.overlay.remove();
+                submitBtn.disabled = false;
+                showMsg(err.message || 'Google signup execution failed.', 'error');
+            }
+        }
     </script>  
 </body>  
 </html>
