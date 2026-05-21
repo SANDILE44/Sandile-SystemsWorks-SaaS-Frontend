@@ -12,7 +12,7 @@
     <!-- GOOGLE IDENTITY SERVICES ENGINE -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-    <style>  
+<style>  
         /* ── SYSTEM DESIGN SYSTEM VARIABLES ── */
         :root {  
             --bg-main: #020617;  
@@ -189,10 +189,11 @@
             50%      { transform: scale(1.2); opacity: 1; }  
         }  
           
-        /* SUCCESS TICK SYSTEM */  
+        /* SUCCESS TICK SYSTEM - FIXED DIMENSIONS */  
         .success-wrap {  
             position: absolute;  
-            inset: 0;  
+            width: 110px;        /* Match exact width of loader-wrap */
+            height: 110px;       /* Match exact height of loader-wrap */
             display: flex;  
             align-items: center;  
             justify-content: center;  
@@ -225,7 +226,7 @@
           
         @keyframes circleGlow {  
             0%, 100% { box-shadow: 0 0 16px rgba(0, 232, 122, 0.2); }  
-            50%      { box-shadow: 0 0 44px rgba(0, 232, 122, 0.6); }  
+            50%      { box-shadow: 0 0 32px rgba(0, 232, 122, 0.5); }  
         }  
           
         .success-svg {  
@@ -253,7 +254,7 @@
         @keyframes drawCheck {  
             to { stroke-dashoffset: 0; }  
         }  
-    </style>  
+    </style>
 </head>  
 <body class="antialiased">  
 
