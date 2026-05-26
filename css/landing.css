@@ -44,3 +44,38 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+/* Mobile Optimization Reset */
+@media (max-width: 768px) {
+    body, html {
+        overflow-x: hidden; /* Prevents horizontal scrolling */
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Ensure images don't break the layout */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Adjust padding for mobile readability */
+    section {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Fix typography scaling */
+    h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Force full-width for containers */
+    .max-w-7xl, .max-w-5xl, .max-w-2xl {
+        width: 100% !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
