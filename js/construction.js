@@ -78,21 +78,13 @@
     }
   }
 
-  /* ================= RUN ENGINE ================= */
+    /* ================= RUN ENGINE ================= */
   async function run() {
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.warn("No authentication token found.");
-      return;
-    }
+    if (!token) return;
 
     const inputs = getInputs();
-
-    // Guard against empty baseline queries
-    if (inputs.value === 0) {
-      console.log("Waiting for input values...");
-      return;
-    }
+    if (inputs.value === 0) return;
 
     try {
       const res = await fetch(`${API_BASE}/api/calculators/construction/project`, {
@@ -104,24 +96,30 @@
         body: JSON.stringify(inputs)
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.error("API Error Response:", errorData);
-        return;
-      }
+      if (!res.ok) return;
 
       const d = await res.json();
       latestData = d;
 
-      // UI Text Injection
+      // 1. Inject Text Metrics
       $("const-total-costs").textContent = money(d.totalCosts);
       $("const-profit").textContent = money(d.profit);
-      $("const-margin").textContent = percent(d.margin);
-      $("const-roi").textContent = percent(d.roi);
       $("const-breakeven").textContent = money(d.breakEvenValue);
       $("const-monthly-profit").textContent = money(d.monthlyProfit);
       $("const-annual-profit").textContent = money(d.annualProfit);
 
+      // 2. Inject Percentage Metrics with Dynamic Coloring
+      const marginEl = $("const-margin");
+      const roiEl = $("const-roi");
+
+      marginEl.textContent = percent(d.margin);
+      roiEl.textContent = percent(d.roi);
+
+      // Apply color logic based on the riskLevel returned by your API
+      applyMetricColoring(marginEl, d.riskLevel);
+      applyMetricColoring(roiEl, d.riskLevel);
+
+      // 3. Inject Decision Status
       const statusEl = $("decision-status");
       if (statusEl) {
         statusEl.textContent = d.decision || "—";
@@ -133,9 +131,22 @@
       renderInsights(d.insights || {});
 
     } catch (err) {
-      console.error("Connection failed. Is the Render server awake?", err);
+      console.error("Engine failure:", err);
     }
   }
+
+  /* ================= HELPER: DYNAMIC COLORING ================= */
+  function applyMetricColoring(el, riskLevel) {
+    if (!el) return;
+    // Reset existing classes
+    el.classList.remove("positive", "caution", "negative");
+    
+    // Assign class based on risk
+    if (riskLevel === "High") el.classList.add("negative");
+    else if (riskLevel === "Medium") el.classList.add("caution");
+    else el.classList.add("positive");
+  }
+
 
   /* ================= INSIGHTS ================= */
   function renderInsights(insights) {
