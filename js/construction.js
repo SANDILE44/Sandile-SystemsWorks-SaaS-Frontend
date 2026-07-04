@@ -191,39 +191,78 @@
   }
 
   /* ================= SAVE / UPDATE (PATCHED & SECURED) ================= */
-  async function saveDeal(e) {
-    // Force the browser to abandon standard navigation or page reloads instantly
-    if (e) {
-      if (typeof e.preventDefault === "function") e.preventDefault();
-      if (typeof e.stopPropagation === "function") e.stopPropagation();
+async function saveDeal(e) {
+  // Force the browser to abandon standard navigation or page reloads instantly
+  if (e) {
+    if (typeof e.preventDefault === "function") e.preventDefault();
+    if (typeof e.stopPropagation === "function") e.stopPropagation();
+  }
+
+  if (!latestData) return alert("Run the engine first to calculate project data.");
+
+  const token = localStorage.getItem("token");
+  let editId = localStorage.getItem("editDealId");
+  const clientNameValue = $("client-name-input")?.value || "Untitled Project";
+
+  const payload = {
+    type: "construction",
+    clientName: clientNameValue,
+    inputs: getInputs(),
+    results: {
+      profit: latestData.profit,
+      margin: latestData.margin,
+      revenue: latestData.value || latestData.revenue || getInputs().value,
+      status: latestData.decision,
+      riskLevel: latestData.riskLevel
+    }
+  };
+
+  try {
+
+    // ================= UPDATE EXISTING DEAL =================
+    if (editId) {
+
+      let res = await fetch(`${API_BASE}/api/saved-deals/${editId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // If the deal no longer exists, automatically save as a new one
+      if (res.status === 404) {
+
+        console.warn("Stored editDealId no longer exists. Creating a new deal.");
+
+        localStorage.removeItem("editDeal");
+        localStorage.removeItem("editDealId");
+        editId = null;
+
+        res = await fetch(`${API_BASE}/api/saved-deals`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (!res.ok) {
+        const serverErr = await res.text();
+        console.error("Backend rejection log:", serverErr);
+        throw new Error(`Server error response code: ${res.status}`);
+      }
+
     }
 
-    if (!latestData) return alert("Run the engine first to calculate project data.");
+    // ================= CREATE NEW DEAL =================
+    else {
 
-    const token = localStorage.getItem("token");
-    const editId = localStorage.getItem("editDealId");
-    const clientNameValue = $("client-name-input")?.value || "Untitled Project";
-
-    const payload = {
-      type: "construction",
-      clientName: clientNameValue,
-      inputs: getInputs(),
-      results: {
-        profit: latestData.profit,
-        margin: latestData.margin,
-        revenue: latestData.value || latestData.revenue || getInputs().value,
-        status: latestData.decision,
-        riskLevel: latestData.riskLevel
-      }
-    };
-
-    // Construct targeted endpoints strictly
-    const url = editId ? `/api/saved-deals/${editId}` : `/api/saved-deals`;
-    const method = editId ? "PUT" : "POST";
-
-    try {
-      const res = await fetch(`${API_BASE}${url}`, {
-        method: method,
+      const res = await fetch(`${API_BASE}/api/saved-deals`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
@@ -237,29 +276,30 @@
         throw new Error(`Server error response code: ${res.status}`);
       }
 
-      alert(editId
+    }
+
+    alert(
+      editId
         ? `Successfully Updated: ${clientNameValue}`
         : `Successfully Saved: ${clientNameValue}`
-      );
+    );
 
-      // Clean local pipeline cache state ONLY on confirmed network completion
-      if (editId) {
-        localStorage.removeItem("editDeal");
-        localStorage.removeItem("editDealId");
-      }
+    // Clean local pipeline cache state
+    localStorage.removeItem("editDeal");
+    localStorage.removeItem("editDealId");
 
-      if ($("client-name-input")) {
-        $("client-name-input").value = "";
-      }
-
-      // Re-route clean back to dashboard layout view
-      window.location.href = "industry-construction.html";
-
-    } catch (err) {
-      console.error("Save system crash trajectory:", err);
-      alert("Could not commit updates to the database. Verify console network telemetry logs.");
+    if ($("client-name-input")) {
+      $("client-name-input").value = "";
     }
+
+    // Re-route clean back to dashboard layout view
+    window.location.href = "industry-construction.html";
+
+  } catch (err) {
+    console.error("Save system crash trajectory:", err);
+    alert("Could not commit updates to the database. Verify console network telemetry logs.");
   }
+}
 
   /* ================= RESET ================= */
   function resetAll() {
