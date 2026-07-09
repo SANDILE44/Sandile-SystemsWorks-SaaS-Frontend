@@ -175,36 +175,69 @@ async function runShipment() {
 
   const inputs = {
     quote: +$("ship-quote")?.value || 0,
-    distance: +$("ship-distance")?.value || 0
+    minimumMargin: +$("ship-min-margin")?.value || 0,
+    safetyBuffer: +$("ship-buffer")?.value || 0,
+
+    distance: +$("ship-distance")?.value || 0,
+    fuelPerKm: +$("ship-fuel-km")?.value || 0,
+    vehicleWearPerKm: +$("ship-vehicle-km")?.value || 0,
+    loadFactor: +$("ship-load-factor")?.value || 0,
+
+    drivingHours: +$("ship-driving-hours")?.value || 0,
+    waitingHours: +$("ship-wait-hours")?.value || 0,
+    driverRate: +$("ship-driver-rate")?.value || 0,
+
+    tolls: +$("ship-tolls")?.value || 0,
+    permits: +$("ship-permits")?.value || 0,
+    otherFees: +$("ship-other-fees")?.value || 0,
+
+    cargoValue: +$("ship-cargo-value")?.value || 0,
+    insuranceRate: +$("ship-insurance")?.value || 0,
+
+    customsDuties: +$("ship-duties")?.value || 0,
+    handlingFees: +$("ship-handling")?.value || 0,
+    passThroughCosts: +$("ship-pass-through")?.value || 0
   };
 
   const data = await apiPost("/api/calculators/logistics/shipment", inputs);
   if (!data) return;
 
+  // Financial Results
   setText("ship-total-cost", money(data.totalCost));
   setText("ship-profit", money(data.profit));
   setText("ship-margin", percent(data.margin));
-  setText("ship-decision", data.decision);
+  setText("ship-min-quote", money(data.recommendedQuote));
 
-  setClass($("ship-profit"),
+  // Decision
+  setText("ship-decision", data.decision);
+  setText("ship-reason", data.reason);
+
+  // Colours
+  setClass(
+    $("ship-profit"),
     data.profit >= 0 ? "profit-positive" : "profit-negative"
   );
 
-  setClass($("ship-margin"),
-    data.margin >= 20 ? "margin-strong" :
-    data.margin >= 10 ? "margin-medium" : "margin-low"
+  setClass(
+    $("ship-margin"),
+    data.margin >= 20
+      ? "margin-strong"
+      : data.margin >= 10
+      ? "margin-medium"
+      : "margin-low"
   );
 
-  setClass($("ship-decision"),
-    data.decision === "APPROVE" ? "decision-approve" :
-    data.decision === "REJECT" ? "decision-reject" : "decision-review"
+  setClass(
+    $("ship-decision"),
+    data.decision === "APPROVE"
+      ? "decision-approve"
+      : data.decision === "REJECT"
+      ? "decision-reject"
+      : "decision-review"
   );
 
-  renderSteps("ship-steps", data.steps);
-
-  $("saveShipmentBtn")?.onclick = () => {
-    saveDeal("logistics-shipment", { inputs, results: data });
-  };
+  // Guidance Steps
+  renderSteps("ship-steps", data.steps || []);
 }
 
 /* =====================================================
