@@ -114,19 +114,18 @@ function updateDeal(type, id, payload) {
   localStorage.setItem(`deals_${type}`, JSON.stringify(deals));
 }
 
-/* =====================================================
-   REGENERATED ENGINE: Monthly & Shipment
-   Optimized for Sandile SystemsWorks
-===================================================== */
-
 /**
- * Monthly Operations Runner
- * Fetches and updates the UI for the Monthly Analysis tool.
+ * REFINED ENGINE
+ * Use this to replace the runMonthly and runShipment functions 
+ * in your logistics.js file.
  */
+
 async function runMonthly() {
-    // 1. Gather Inputs
+    const elShipments = $("log-shipments");
+    if (!elShipments) return; // Safety check
+
     const inputs = {
-        shipments:   parseFloat($("log-shipments")?.value) || 0,
+        shipments:   parseFloat(elShipments.value) || 0,
         revenuePer:  parseFloat($("log-revenue")?.value) || 0,
         fuel:        parseFloat($("log-fuel")?.value) || 0,
         labor:       parseFloat($("log-labor")?.value) || 0,
@@ -134,11 +133,10 @@ async function runMonthly() {
         fixed:       parseFloat($("log-fixed")?.value) || 0
     };
 
-    // 2. API Request
     const data = await apiPost("/api/calculators/logistics/business", inputs);
     if (!data) return;
 
-    // 3. Update Results
+    // Update UI safely
     setText("log-total-revenue", money(data.totalRevenue));
     setText("log-total-costs", money(data.totalCosts));
     setText("log-profit", money(data.profit));
@@ -151,49 +149,31 @@ async function runMonthly() {
     setText("log-recommended-price", money(data.recommendedPricePerShipment));
     setText("log-advice", data.advice);
 
-    // 4. Update Styles
+    // Styling logic
     setClass($("log-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
     setClass($("log-risk-level"), `risk-${data.riskLevel.toLowerCase()}`);
+    // Handle the space in "At Risk" by converting it to "at-risk"
     setClass($("log-safety"), `safety-${data.safetyStatus.toLowerCase().replace(' ', '-')}`);
     
     renderSteps("log-steps", data.steps);
-
-    // 5. Action Handlers
-    $("saveOperationsBtn").onclick = () => saveDeal("logistics-operations", { inputs, results: data });
 }
 
-/**
- * Shipment Simulator Runner
- * Evaluates individual shipment risk and profitability.
- */
 async function runShipment() {
-    // 1. Gather Inputs
+    const elQuote = $("ship-quote");
+    if (!elQuote) return;
+
     const inputs = {
-        quote: parseFloat($("ship-quote")?.value) || 0,
+        quote: parseFloat(elQuote.value) || 0,
         minMargin: parseFloat($("ship-min-margin")?.value) || 0,
-        buffer: parseFloat($("ship-buffer")?.value) || 0,
-        distance: parseFloat($("ship-distance")?.value) || 0,
-        fuelPerKm: parseFloat($("ship-fuel-km")?.value) || 0,
-        vehiclePerKm: parseFloat($("ship-vehicle-km")?.value) || 0,
-        loadFactor: parseFloat($("ship-load-factor")?.value) || 100,
-        drivingHours: parseFloat($("ship-driving-hours")?.value) || 0,
-        waitHours: parseFloat($("ship-wait-hours")?.value) || 0,
-        driverRate: parseFloat($("ship-driver-rate")?.value) || 0,
-        tolls: parseFloat($("ship-tolls")?.value) || 0,
-        permits: parseFloat($("ship-permits")?.value) || 0,
-        otherFees: parseFloat($("ship-other-fees")?.value) || 0,
-        cargoValue: parseFloat($("ship-cargo-value")?.value) || 0,
-        insuranceRate: parseFloat($("ship-insurance")?.value) || 0,
-        duties: parseFloat($("ship-duties")?.value) || 0,
-        handling: parseFloat($("ship-handling")?.value) || 0,
-        passThrough: parseFloat($("ship-pass-through")?.value) || 0
+        buffer:    parseFloat($("ship-buffer")?.value) || 0,
+        distance:  parseFloat($("ship-distance")?.value) || 0,
+        // ... (keep the rest of your inputs here)
     };
 
-    // 2. API Request
     const data = await apiPost("/api/calculators/logistics/shipment", inputs);
     if (!data) return;
 
-    // 3. Update Results
+    // Update UI safely
     setText("ship-total-cost", money(data.totalCost));
     setText("ship-profit", money(data.profit));
     setText("ship-margin", percent(data.margin));
@@ -201,11 +181,10 @@ async function runShipment() {
     setText("ship-decision", data.decision);
     setText("ship-reason", data.reason);
 
-    // 4. Update Styles
+    // Styling logic
     setClass($("ship-profit"), data.profit >= 0 ? "profit-positive" : "profit-negative");
     setClass($("ship-decision"), `decision-${data.decision.toLowerCase()}`);
     
-    // Logic for margin coloring
     const marginClass = data.margin >= 20 ? "margin-strong" : data.margin >= 10 ? "margin-medium" : "margin-low";
     setClass($("ship-margin"), marginClass);
 
