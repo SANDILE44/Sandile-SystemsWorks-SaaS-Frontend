@@ -175,16 +175,16 @@ async function runShipment() {
 
   const inputs = {
     quote: +$("ship-quote")?.value || 0,
-    minimumMargin: +$("ship-min-margin")?.value || 0,
-    safetyBuffer: +$("ship-buffer")?.value || 0,
+    minMargin: +$("ship-min-margin")?.value || 0,
+    buffer: +$("ship-buffer")?.value || 0,
 
     distance: +$("ship-distance")?.value || 0,
     fuelPerKm: +$("ship-fuel-km")?.value || 0,
-    vehicleWearPerKm: +$("ship-vehicle-km")?.value || 0,
-    loadFactor: +$("ship-load-factor")?.value || 0,
+    vehiclePerKm: +$("ship-vehicle-km")?.value || 0,
+    loadFactor: +$("ship-load-factor")?.value || 100,
 
     drivingHours: +$("ship-driving-hours")?.value || 0,
-    waitingHours: +$("ship-wait-hours")?.value || 0,
+    waitHours: +$("ship-wait-hours")?.value || 0,
     driverRate: +$("ship-driver-rate")?.value || 0,
 
     tolls: +$("ship-tolls")?.value || 0,
@@ -194,19 +194,20 @@ async function runShipment() {
     cargoValue: +$("ship-cargo-value")?.value || 0,
     insuranceRate: +$("ship-insurance")?.value || 0,
 
-    customsDuties: +$("ship-duties")?.value || 0,
-    handlingFees: +$("ship-handling")?.value || 0,
-    passThroughCosts: +$("ship-pass-through")?.value || 0
+    duties: +$("ship-duties")?.value || 0,
+    handling: +$("ship-handling")?.value || 0,
+    passThrough: +$("ship-pass-through")?.value || 0
   };
 
   const data = await apiPost("/api/calculators/logistics/shipment", inputs);
+
   if (!data) return;
 
-  // Financial Results
+  // Results
   setText("ship-total-cost", money(data.totalCost));
   setText("ship-profit", money(data.profit));
   setText("ship-margin", percent(data.margin));
-  setText("ship-min-quote", money(data.recommendedQuote));
+  setText("ship-min-quote", money(data.recommendedMinQuote));
 
   // Decision
   setText("ship-decision", data.decision);
@@ -236,10 +237,9 @@ async function runShipment() {
       : "decision-review"
   );
 
-  // Guidance Steps
+  // Guidance
   renderSteps("ship-steps", data.steps || []);
 }
-
 /* =====================================================
    FREIGHT ENGINE
 ===================================================== */
