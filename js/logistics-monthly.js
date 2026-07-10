@@ -72,60 +72,91 @@ async function runMonthly() {
        DECISION ENGINE
     ========================== */
 
-    setText("log-risk-level", decision.riskLevel);
-    setText("log-safety", decision.safetyStatus);
+    setText("log-risk-level", decision.riskLevel || "—");
+    setText("log-safety", decision.safetyStatus || "—");
     setText(
         "log-recommended-price",
-        money(decision.recommendedPricePerShipment)
+        money(decision.recommendedPricePerShipment || 0)
     );
-    setText("log-advice", decision.advice);
+    setText("log-advice", decision.advice || "");
 
     /* ==========================
        FINANCIAL SUMMARY
     ========================== */
 
-    renderCards(
-        "financial-summary",
-        data.financialSummary || []
-    );
+    if (typeof renderCards === "function") {
+        renderCards(
+            "financial-summary",
+            data.financialSummary || []
+        );
+    }
 
     /* ==========================
        PROFITABILITY
     ========================== */
 
-    renderCards(
-        "profitability",
-        data.profitability || []
-    );
+    if (typeof renderCards === "function") {
+        renderCards(
+            "profitability",
+            data.profitability || []
+        );
+    }
 
     /* ==========================
        DROPDOWN SECTIONS
     ========================== */
 
-    renderAccordion(
-        "priority-actions",
-        data.priorityActions || []
-    );
+    if (typeof renderAccordion === "function") {
 
-    renderAccordion(
-        "cost-analysis",
-        data.costAnalysis || []
-    );
+        renderAccordion(
+            "priority-actions",
+            data.priorityActions || []
+        );
 
-    renderAccordion(
-        "pricing-strategy",
-        data.pricingStrategy || []
-    );
+        renderAccordion(
+            "cost-analysis",
+            data.costAnalysis || []
+        );
 
-    renderAccordion(
-        "break-even-analysis",
-        data.breakEvenAnalysis || []
-    );
+        renderAccordion(
+            "pricing-strategy",
+            data.pricingStrategy || []
+        );
 
-    renderAccordion(
-        "annual-outlook",
-        data.annualOutlook || []
-    );
+        renderAccordion(
+            "break-even-analysis",
+            data.breakEvenAnalysis || []
+        );
+
+        renderAccordion(
+            "annual-outlook",
+            data.annualOutlook || []
+        );
+
+    }
+
+    /* ==========================
+       STEP BY STEP GUIDANCE
+    ========================== */
+
+    if (typeof renderSteps === "function") {
+
+        renderSteps(
+            "log-steps",
+            data.steps || []
+        );
+
+    }
+
+    /* ==========================
+       FLAGS (OPTIONAL)
+    ========================== */
+
+    if (data.flags) {
+
+        console.log("Calculator Flags:", data.flags);
+
+    }
 
     /* ==========================
        COLOURING
