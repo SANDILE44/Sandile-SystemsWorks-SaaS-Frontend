@@ -260,6 +260,28 @@ line-height: 1.4;
   padding-left: 41px; /* adjust to keep text aligned */
 }
 
+      .input-dropdown{
+    margin-bottom:18px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fff;
+}
+
+.input-dropdown summary{
+    cursor:pointer;
+    padding:14px 18px;
+    font-weight:600;
+    font-size:15px;
+    list-style:none;
+}
+
+.input-dropdown[open] summary{
+    border-bottom:1px solid #eee;
+}
+
+.input-dropdown .input-group{
+    padding:0 18px 14px;
+}
 
 </style>
     
@@ -604,176 +626,161 @@ clear margin visibility and operational risk detection.
 
           <div class="calculator-grid">
             <!-- INPUTS -->
-            <div class="input-section">
-              <h3>Shipment Inputs</h3>
+<div class="input-section">
 
-              <div class="input-group">
-                <label for="ship-quote">Client Quote Price</label>
-                <input
-                  type="number"
-                  id="ship-quote"
-                  placeholder="Total amount the client will pay for this shipment"
-                />
-              </div>
+<h3>Shipment Inputs</h3>
 
-              <div class="input-group">
-                <label for="ship-min-margin">Required Minimum Margin (%)</label>
-                <input
-                  type="number"
-                  id="ship-min-margin"
-                  placeholder="Minimum profit margin your business requires"
-                />
-              </div>
+<!-- =====================================
+     PRICING (OPEN BY DEFAULT)
+===================================== -->
+<details class="input-dropdown" open>
 
-              <div class="input-group">
-                <label for="ship-buffer">Safety Buffer (%)</label>
-                <input
-                  type="number"
-                  id="ship-buffer"
-                  placeholder="Extra margin cushion for unexpected costs"
-                />
-              </div>
+  <summary>💰 Pricing & Profit Targets</summary>
 
-              <hr />
+  <div class="input-group">
+    <label for="ship-quote">Client Quote Price</label>
+    <input
+      type="number"
+      id="ship-quote"
+      placeholder="Total amount charged to the client"
+    />
+  </div>
 
-              <div class="input-group">
-                <label for="ship-distance">Distance (km)</label>
-                <input
-                  type="number"
-                  id="ship-distance"
-                  placeholder="Total route distance"
-                />
-              </div>
+  <div class="input-group">
+    <label for="ship-min-margin">Required Minimum Profit Margin (%)</label>
+    <input
+      type="number"
+      id="ship-min-margin"
+      placeholder="Minimum acceptable profit margin"
+    />
+  </div>
 
-              <div class="input-group">
-                <label for="ship-fuel-km">Fuel Cost Per KM</label>
-                <input
-                  type="number"
-                  id="ship-fuel-km"
-                  placeholder="Estimated fuel expense per kilometre"
-                />
-              </div>
+  <div class="input-group">
+    <label for="ship-buffer">Safety Buffer (%)</label>
+    <input
+      type="number"
+      id="ship-buffer"
+      placeholder="Extra margin for unexpected costs"
+    />
+  </div>
 
-              <div class="input-group">
-                <label for="ship-vehicle-km">Vehicle Wear Cost Per KM</label>
-                <input
-                  type="number"
-                  id="ship-vehicle-km"
-                  placeholder="Maintenance & depreciation per kilometre"
-                />
-              </div>
+</details>
 
-              <div class="input-group">
-                <label for="ship-load-factor">Load Factor (%)</label>
-                <input
-                  type="number"
-                  id="ship-load-factor"
-                  placeholder="Percentage of truck capacity used"
-                />
-              </div>
+<!-- ===================================== -->
+<details class="input-dropdown">
 
-              <hr />
+<summary>🚚 Route & Vehicle</summary>
 
-              <div class="input-group">
-                <label for="ship-driving-hours">Driving Time (Hours)</label>
-                <input
-                  type="number"
-                  id="ship-driving-hours"
-                  placeholder="Total estimated driving time"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-distance">Distance (km)</label>
+<input type="number" id="ship-distance">
+</div>
 
-              <div class="input-group">
-                <label for="ship-wait-hours">Loading / Waiting Time (Hours)</label>
-                <input
-                  type="number"
-                  id="ship-wait-hours"
-                  placeholder="Time spent loading/unloading/waiting"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-fuel-km">Fuel Cost Per KM</label>
+<input type="number" id="ship-fuel-km">
+</div>
 
-              <div class="input-group">
-                <label for="ship-driver-rate">Driver Cost Per Hour</label>
-                <input
-                  type="number"
-                  id="ship-driver-rate"
-                  placeholder="Hourly wage or assigned driver cost"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-vehicle-km">Vehicle Wear Cost Per KM</label>
+<input type="number" id="ship-vehicle-km">
+</div>
 
-              <hr />
+<div class="input-group">
+<label for="ship-load-factor">Load Factor (%)</label>
+<input type="number" id="ship-load-factor">
+</div>
 
-              <div class="input-group">
-                <label for="ship-tolls">Toll Costs</label>
-                <input type="number" id="ship-tolls" placeholder="Total toll costs" />
-              </div>
+</details>
 
-              <div class="input-group">
-                <label for="ship-permits">Permits / Border Fees</label>
-                <input
-                  type="number"
-                  id="ship-permits"
-                  placeholder="Permits, border charges, admin costs"
-                />
-              </div>
+<!-- ===================================== -->
+<details class="input-dropdown">
 
-              <div class="input-group">
-                <label for="ship-other-fees">Other Route Expenses</label>
-                <input
-                  type="number"
-                  id="ship-other-fees"
-                  placeholder="Additional route-related expenses"
-                />
-              </div>
+<summary>👷 Driver & Labour</summary>
 
-              <hr />
+<div class="input-group">
+<label for="ship-driving-hours">Driving Time (Hours)</label>
+<input type="number" id="ship-driving-hours">
+</div>
 
-              <div class="input-group">
-                <label for="ship-cargo-value">Cargo Value</label>
-                <input
-                  type="number"
-                  id="ship-cargo-value"
-                  placeholder="Declared value of goods"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-wait-hours">Loading / Waiting Time</label>
+<input type="number" id="ship-wait-hours">
+</div>
 
-              <div class="input-group">
-                <label for="ship-insurance">Insurance Rate (%)</label>
-                <input
-                  type="number"
-                  id="ship-insurance"
-                  placeholder="Insurance % applied to cargo value"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-driver-rate">Driver Cost Per Hour</label>
+<input type="number" id="ship-driver-rate">
+</div>
 
-              <hr />
+</details>
 
-              <div class="input-group">
-                <label for="ship-duties">Customs Duties</label>
-                <input type="number" id="ship-duties" placeholder="Customs duties" />
-              </div>
+<!-- ===================================== -->
+<details class="input-dropdown">
 
-              <div class="input-group">
-                <label for="ship-handling">Handling Fees</label>
-                <input
-                  type="number"
-                  id="ship-handling"
-                  placeholder="Warehouse / loading / unloading fees"
-                />
-              </div>
+<summary>🛣 Route Charges</summary>
 
-              <div class="input-group">
-                <label for="ship-pass-through">Pass-through Costs</label>
-                <input
-                  type="number"
-                  id="ship-pass-through"
-                  placeholder="Third-party charges passed to you"
-                />
-              </div>
+<div class="input-group">
+<label for="ship-tolls">Toll Costs</label>
+<input type="number" id="ship-tolls">
+</div>
 
-              <!-- ✅ UNIQUE RESET ID -->
-              <button type="button" id="resetShipmentBtn">Reset All</button>
-            </div>
+<div class="input-group">
+<label for="ship-permits">Permits / Border Fees</label>
+<input type="number" id="ship-permits">
+</div>
+
+<div class="input-group">
+<label for="ship-other-fees">Other Route Expenses</label>
+<input type="number" id="ship-other-fees">
+</div>
+
+</details>
+
+<!-- ===================================== -->
+<details class="input-dropdown">
+
+<summary>📦 Cargo & Insurance</summary>
+
+<div class="input-group">
+<label for="ship-cargo-value">Cargo Value</label>
+<input type="number" id="ship-cargo-value">
+</div>
+
+<div class="input-group">
+<label for="ship-insurance">Insurance Rate (%)</label>
+<input type="number" id="ship-insurance">
+</div>
+
+</details>
+
+<!-- ===================================== -->
+<details class="input-dropdown">
+
+<summary>🌍 Customs & Handling</summary>
+
+<div class="input-group">
+<label for="ship-duties">Customs Duties</label>
+<input type="number" id="ship-duties">
+</div>
+
+<div class="input-group">
+<label for="ship-handling">Handling Fees</label>
+<input type="number" id="ship-handling">
+</div>
+
+<div class="input-group">
+<label for="ship-pass-through">Pass-through Costs</label>
+<input type="number" id="ship-pass-through">
+</div>
+
+</details>
+
+<button id="resetShipmentBtn">
+Reset All
+</button>
+
+</div>
 
 <!-- ==================== SHIPMENT OUTPUTS ==================== -->
 <div class="output-section">
