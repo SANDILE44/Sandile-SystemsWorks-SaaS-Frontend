@@ -23,6 +23,8 @@ async function runMonthly() {
 
     if (!data) return;
 
+    const decision = data.decision || {};
+
     /* ==========================
        FINANCIAL OVERVIEW
     ========================== */
@@ -30,7 +32,7 @@ async function runMonthly() {
     setText("log-total-revenue", money(data.totalRevenue));
     setText("log-total-costs", money(data.totalCosts));
     setText("log-profit", money(data.profit));
-    setText("log-status", data.status || "—");
+    setText("log-status", decision.status || "—");
     setText("log-annual-profit", money(data.annualProfit));
 
     /* ==========================
@@ -39,12 +41,12 @@ async function runMonthly() {
 
     setText(
         "log-shipments-output",
-        data.shipments ?? inputs.shipments
+        data.shipments
     );
 
     setText(
         "log-revenue-per-shipment",
-        money(data.revenuePerShipment ?? inputs.revenuePer)
+        money(inputs.revenuePer)
     );
 
     setText(
@@ -67,19 +69,66 @@ async function runMonthly() {
     setText("log-fixed-pct", percent(data.fixedPercent));
 
     /* ==========================
-       RISK ANALYSIS
+       DECISION ENGINE
     ========================== */
 
-    setText("log-risk-level", data.riskLevel);
-    setText("log-safety", data.safetyStatus);
+    setText("log-risk-level", decision.riskLevel);
+    setText("log-safety", decision.safetyStatus);
     setText(
         "log-recommended-price",
-        money(data.recommendedPricePerShipment)
+        money(decision.recommendedPricePerShipment)
     );
-    setText("log-advice", data.advice);
+    setText("log-advice", decision.advice);
 
     /* ==========================
-       COLOURS
+       FINANCIAL SUMMARY
+    ========================== */
+
+    renderCards(
+        "financial-summary",
+        data.financialSummary || []
+    );
+
+    /* ==========================
+       PROFITABILITY
+    ========================== */
+
+    renderCards(
+        "profitability",
+        data.profitability || []
+    );
+
+    /* ==========================
+       DROPDOWN SECTIONS
+    ========================== */
+
+    renderAccordion(
+        "priority-actions",
+        data.priorityActions || []
+    );
+
+    renderAccordion(
+        "cost-analysis",
+        data.costAnalysis || []
+    );
+
+    renderAccordion(
+        "pricing-strategy",
+        data.pricingStrategy || []
+    );
+
+    renderAccordion(
+        "break-even-analysis",
+        data.breakEvenAnalysis || []
+    );
+
+    renderAccordion(
+        "annual-outlook",
+        data.annualOutlook || []
+    );
+
+    /* ==========================
+       COLOURING
     ========================== */
 
     setClass(
@@ -89,22 +138,22 @@ async function runMonthly() {
             : "profit-negative"
     );
 
-    if (data.riskLevel) {
+    if (decision.riskLevel) {
 
         setClass(
             $("log-risk-level"),
-            `risk-${String(data.riskLevel)
+            `risk-${decision.riskLevel
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`
         );
 
     }
 
-    if (data.safetyStatus) {
+    if (decision.safetyStatus) {
 
         setClass(
             $("log-safety"),
-            `safety-${String(data.safetyStatus)
+            `safety-${decision.safetyStatus
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`
         );
@@ -112,16 +161,7 @@ async function runMonthly() {
     }
 
     /* ==========================
-       STEP BY STEP
-    ========================== */
-
-    renderSteps(
-        "log-steps",
-        data.steps || []
-    );
-
-    /* ==========================
-       SAVE BUTTON
+       SAVE DEAL
     ========================== */
 
     const saveBtn = $("saveOperationsBtn");
