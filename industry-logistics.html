@@ -450,154 +450,182 @@ clear margin visibility and operational risk detection.
 
   <br>
 
+<!-- ==================== RESULTS ==================== -->
+<div class="output-section">
+
     <!-- ==========================
-       ACTION BUTTONS
-  =========================== -->
+         DECISION
+    =========================== -->
 
-  <div class="action-stack">
+    <h3>Decision</h3>
 
-      <button id="saveOperationsBtn" class="saveDealBtn">
-          <i data-lucide="save"></i>
-          <span>Save Deal</span>
-      </button>
+    <div class="output-group">
+        <div class="output-label">Decision</div>
+        <div class="output-value" id="log-status">—</div>
+    </div>
 
-      <button id="shareOperationsBtn" class="saveDealBtn share-theme">
-          <i data-lucide="share-2"></i>
-          <span>Share Deal</span>
-      </button>
+    <div class="output-group">
+        <div class="output-label">Operational Risk</div>
+        <div class="output-value" id="log-risk-level">—</div>
+    </div>
 
-  </div>
+    <div class="output-group">
+        <div class="output-label">Safety Status</div>
+        <div class="output-value" id="log-safety">—</div>
+    </div>
 
-  <div class="export-group">
+    <div class="output-group">
+        <div class="output-label">Recommendation</div>
+        <div class="output-value" id="log-advice">—</div>
+    </div>
 
-      <button id="exportOperationsCsvBtn" class="exportBtn">
-          <i data-lucide="file-spreadsheet"></i>
-          <span>Export CSV</span>
-      </button>
+    <br>
 
-      <button id="exportOperationsReportBtn" class="exportBtn">
-          <i data-lucide="file-text"></i>
-          <span>Export Report</span>
-      </button>
+    <!-- ACTION BUTTONS -->
 
-  </div>
+    <div class="action-stack">
 
-  <!-- ==========================
-       FINANCIAL SUMMARY
-  =========================== -->
+        <button id="saveOperationsBtn" class="saveDealBtn">
+            <i data-lucide="save"></i>
+            <span>Save Deal</span>
+        </button>
 
-  <h3>Financial Summary</h3>
+        <button id="shareOperationsBtn" class="saveDealBtn share-theme">
+            <i data-lucide="share-2"></i>
+            <span>Share Deal</span>
+        </button>
 
-  <div id="financial-summary" class="cards-container"></div>
+    </div>
 
-  <br>
+    <div class="export-group">
 
-  <!-- ==========================
-       PROFITABILITY
-  =========================== -->
+        <button id="exportOperationsCsvBtn" class="exportBtn">
+            <i data-lucide="file-spreadsheet"></i>
+            <span>Export CSV</span>
+        </button>
 
-  <h3>Profitability</h3>
+        <button id="exportOperationsReportBtn" class="exportBtn">
+            <i data-lucide="file-text"></i>
+            <span>Export Report</span>
+        </button>
 
-  <div id="profitability" class="cards-container"></div>
+    </div>
 
-  <br>
+    <br>
 
-  <!-- ==========================
-       KEY METRICS
-  =========================== -->
+    <!-- ==========================
+         FINANCIAL SUMMARY
+    =========================== -->
 
-  <h3>Key Financial Metrics</h3>
+    <h3>Financial Summary</h3>
 
-  <div class="output-group">
-    <div class="output-label">Total Revenue</div>
-    <div class="output-value" id="log-total-revenue">R0.00</div>
-  </div>
+    <div id="financial-summary" class="cards-container"></div>
 
-  <div class="output-group">
-    <div class="output-label">Total Costs</div>
-    <div class="output-value" id="log-total-costs">R0.00</div>
-  </div>
+    <br>
 
-  <div class="output-group">
-    <div class="output-label">Net Profit</div>
-    <div class="output-value" id="log-profit">R0.00</div>
-  </div>
+    <h4>Financial Metrics</h4>
 
-  <div class="output-group">
-    <div class="output-label">Annual Projection</div>
-    <div class="output-value" id="log-annual-profit">R0.00</div>
-  </div>
+    <div class="output-group">
+        <div class="output-label">Total Revenue</div>
+        <div class="output-value" id="log-total-revenue">R0.00</div>
+    </div>
 
-  <div class="output-group">
-    <div class="output-label">Shipments</div>
-    <div class="output-value" id="log-shipments-output">0</div>
-  </div>
+    <div class="output-group">
+        <div class="output-label">Total Costs</div>
+        <div class="output-value" id="log-total-costs">R0.00</div>
+    </div>
 
-  <div class="output-group">
-    <div class="output-label">Revenue / Shipment</div>
-    <div class="output-value" id="log-revenue-per-shipment">R0.00</div>
-  </div>
+    <div class="output-group">
+        <div class="output-label">Net Profit</div>
+        <div class="output-value" id="log-profit">R0.00</div>
+    </div>
 
-  <div class="output-group">
-    <div class="output-label">Cost / Shipment</div>
-    <div class="output-value" id="log-per-shipment">R0.00</div>
-  </div>
+    <div class="output-group">
+        <div class="output-label">Annual Profit Projection</div>
+        <div class="output-value" id="log-annual-profit">R0.00</div>
+    </div>
 
-  <div class="output-group">
-    <div class="output-label">Profit / Shipment</div>
-    <div class="output-value" id="log-profit-per-shipment">R0.00</div>
-  </div>
+    <br>
 
-  <div class="output-group">
-    <div class="output-label">Recommended Price</div>
-    <div class="output-value" id="log-recommended-price">R0.00</div>
-  </div>
+    <!-- ==========================
+         PROFITABILITY
+    =========================== -->
 
-  <br>
+    <h3>Profitability</h3>
 
-  <!-- ==========================
-       ACCORDIONS
-  =========================== -->
+    <div id="profitability" class="cards-container"></div>
 
-  <details class="analysis-dropdown">
-      <summary>Priority Actions</summary>
-      <div id="priority-actions"></div>
-  </details>
+    <br>
 
-  <details class="analysis-dropdown">
-      <summary>Cost Analysis</summary>
-      <div id="cost-analysis"></div>
-  </details>
+    <h4>Profitability Metrics</h4>
 
-  <details class="analysis-dropdown">
-      <summary>Pricing Strategy</summary>
-      <div id="pricing-strategy"></div>
-  </details>
+    <div class="output-group">
+        <div class="output-label">Monthly Shipments</div>
+        <div class="output-value" id="log-shipments-output">0</div>
+    </div>
 
-  <details class="analysis-dropdown">
-      <summary>Break-even Analysis</summary>
-      <div id="break-even-analysis"></div>
-  </details>
+    <div class="output-group">
+        <div class="output-label">Revenue per Shipment</div>
+        <div class="output-value" id="log-revenue-per-shipment">R0.00</div>
+    </div>
 
-  <details class="analysis-dropdown">
-      <summary>Annual Outlook</summary>
-      <div id="annual-outlook"></div>
-  </details>
+    <div class="output-group">
+        <div class="output-label">Cost per Shipment</div>
+        <div class="output-value" id="log-per-shipment">R0.00</div>
+    </div>
 
-  <br>
+    <div class="output-group">
+        <div class="output-label">Profit per Shipment</div>
+        <div class="output-value" id="log-profit-per-shipment">R0.00</div>
+    </div>
 
-  <!-- ==========================
-       STEP BY STEP
-  =========================== -->
+    <div class="output-group">
+        <div class="output-label">Recommended Price</div>
+        <div class="output-value" id="log-recommended-price">R0.00</div>
+    </div>
 
-  <h3>Step-by-Step Guidance</h3>
+    <br>
 
-  <ol id="log-steps" class="steps-list"></ol>
+    <!-- ==========================
+         ANALYSIS
+    =========================== -->
 
-  <br>
+    <details class="analysis-dropdown">
+        <summary>Priority Actions</summary>
+        <div id="priority-actions"></div>
+    </details>
+
+    <details class="analysis-dropdown">
+        <summary>Cost Analysis</summary>
+        <div id="cost-analysis"></div>
+    </details>
+
+    <details class="analysis-dropdown">
+        <summary>Pricing Strategy</summary>
+        <div id="pricing-strategy"></div>
+    </details>
+
+    <details class="analysis-dropdown">
+        <summary>Break-even Analysis</summary>
+        <div id="break-even-analysis"></div>
+    </details>
+
+    <details class="analysis-dropdown">
+        <summary>Annual Outlook</summary>
+        <div id="annual-outlook"></div>
+    </details>
+
+    <br>
+
+    <!-- ==========================
+         STEP-BY-STEP GUIDANCE
+    =========================== -->
+
+    <h3>Step-by-Step Guidance</h3>
+
+    <ol id="log-steps" class="steps-list"></ol>
 
 
-<br>
 
 </div> <!-- output-section -->
 </div> <!-- calculator-grid -->
