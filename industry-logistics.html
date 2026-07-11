@@ -785,27 +785,7 @@ Reset All
 <!-- ==================== SHIPMENT OUTPUTS ==================== -->
 <div class="output-section">
 
-  <h3>Shipment Results</h3>
-
-  <!-- FINANCIAL METRICS -->
-  <div class="output-group">
-    <div class="output-label">Total Shipment Cost</div>
-    <div class="output-value" id="ship-total-cost">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Estimated Profit</div>
-    <div class="output-value" id="ship-profit">0.00</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Profit Margin</div>
-    <div class="output-value" id="ship-margin">0.00%</div>
-  </div>
-  <div class="output-group">
-    <div class="output-label">Recommended Minimum Quote</div>
-    <div class="output-value" id="ship-min-quote">0.00</div>
-  </div>
-
-  <!-- DECISION SUPPORT -->
+   <!-- DECISION SUPPORT -->
   <div class="output-group">
     <div class="output-label">Decision</div>
     <div class="output-value" id="ship-decision">—</div>
@@ -814,16 +794,8 @@ Reset All
     <div class="output-label">Decision Explanation</div>
     <div class="output-value" id="ship-reason">—</div>
   </div>
-
-  <!-- STEP-BY-STEP GUIDANCE -->
-  <div class="steps-section">
-    <h3>Step-by-Step Guidance</h3>
-    <ol id="ship-steps" class="steps-list">
-      <!-- JS will insert steps here -->
-    </ol>
-  </div>
-
-<!-- PRIMARY ACTIONS -->
+  
+  <!-- PRIMARY ACTIONS -->
 <br>
 <div class="action-stack">
   <button id="saveShipmentBtn" class="saveDealBtn">
@@ -850,6 +822,38 @@ Reset All
   </button>
 </div>
 <br>
+  <h3>Shipment Results</h3>
+
+  <!-- FINANCIAL METRICS -->
+  <div class="output-group">
+    <div class="output-label">Total Shipment Cost</div>
+    <div class="output-value" id="ship-total-cost">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Estimated Profit</div>
+    <div class="output-value" id="ship-profit">0.00</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Profit Margin</div>
+    <div class="output-value" id="ship-margin">0.00%</div>
+  </div>
+  <div class="output-group">
+    <div class="output-label">Recommended Minimum Quote</div>
+    <div class="output-value" id="ship-min-quote">0.00</div>
+  </div>
+
+ 
+
+  <!-- STEP-BY-STEP GUIDANCE -->
+  <details class="analysis-dropdown">
+
+    <summary>Step-by-Step Guidance</summary>
+
+    <ol id="ship-steps" class="steps-list"></ol>
+
+</details>
+
+
 
 </div> <!-- output-section -->
 </div> <!-- calculator-grid -->
