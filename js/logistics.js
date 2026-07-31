@@ -54,7 +54,8 @@ async function apiPost(url, body) {
     }
 
     if (!response.ok) {
-        console.error("API Error:", response.status);
+        const errorText = await response.text();
+        console.error("API Error Status:", response.status, "Response:", errorText);
         return null;
     }
 
@@ -148,9 +149,9 @@ function updateDeal(type, id, payload) {
 
         deal.id === id
             ? {
-                  ...deal,
-                  ...payload,
-                  updatedAt: new Date().toISOString()
+                ...deal,
+                ...payload,
+                updatedAt: new Date().toISOString()
               }
             : deal
 
