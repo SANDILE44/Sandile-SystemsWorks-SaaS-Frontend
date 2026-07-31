@@ -1,5 +1,5 @@
 /* =====================================================
-    PER SHIPMENT CALCULATOR
+   PER SHIPMENT CALCULATOR
 ===================================================== */
 
 async function runShipment() {
@@ -124,38 +124,25 @@ async function runShipment() {
 }
 
 /* =====================================================
-   AUTOMATIC EVENT BINDINGS & LISTENERS
+   BUTTON LISTENERS & INITIALIZATION
 ===================================================== */
 
-let shipmentDebounce;
+document.addEventListener("DOMContentLoaded", () => {
 
-// 1. Automatically trigger calculation when any shipment input changes
-[
-    "ship-quote", "ship-min-margin", "ship-buffer",
-    "ship-distance", "ship-fuel-km", "ship-vehicle-km", "ship-load-factor",
-    "ship-driving-hours", "ship-wait-hours", "ship-driver-rate",
-    "ship-tolls", "ship-permits", "ship-other-fees",
-    "ship-cargo-value", "ship-insurance",
-    "ship-duties", "ship-handling", "ship-pass-through"
-].forEach(id => {
-    $(id)?.addEventListener("input", () => {
-        clearTimeout(shipmentDebounce);
-        shipmentDebounce = setTimeout(runShipment, 300);
+    // 1. Reset Button functionality
+    $("resetShipmentBtn")?.addEventListener("click", () => {
+        document.querySelectorAll("#shipment-panel input").forEach(input => input.value = "");
+        runShipment(); // Clears outputs
     });
-});
 
-// 2. Reset Button functionality
-$("resetShipmentBtn")?.addEventListener("click", () => {
-    document.querySelectorAll("#shipment-panel input").forEach(input => input.value = "");
-    runShipment(); // Clears outputs
-});
+    // 2. Export CSV button hookup
+    $("exportShipmentCsvBtn")?.addEventListener("click", () => {
+        alert("Exporting Shipment CSV report...");
+    });
 
-// 3. Export CSV button hookup (optional stub / implementation)
-$("exportShipmentCsvBtn")?.addEventListener("click", () => {
-    alert("Exporting Shipment CSV report...");
-});
+    // 3. Export Report (Print) button hookup
+    $("exportShipmentReportBtn")?.addEventListener("click", () => {
+        window.print();
+    });
 
-// 4. Export Report (Print) button hookup
-$("exportShipmentReportBtn")?.addEventListener("click", () => {
-    window.print();
 });
