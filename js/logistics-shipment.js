@@ -1,5 +1,5 @@
 /* =====================================================
-   PER SHIPMENT CALCULATOR
+    PER SHIPMENT CALCULATOR
 ===================================================== */
 
 async function runShipment() {
@@ -107,9 +107,9 @@ async function runShipment() {
 
     if (saveBtn) {
 
-        saveBtn.onclick = () => {
+        saveBtn.onclick = async () => {
 
-            saveDeal(
+            await saveDeal(
                 "logistics-shipment",
                 {
                     inputs,
